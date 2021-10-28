@@ -15,125 +15,116 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
 <style>
-    div{box-sizing: border-box;}
-    #header{
-        width:80%;
-        height:100px;
-        padding-top: 20px;
-        margin:auto;
+    .dropdown:hover .dropdown-menu { 
+        display: block;
+        margin-top: 0;
     }
-    #header>div{width:100%; margin-bottom:10px}
-    #header_1{height:40%;}
-    #header_2{height:60%;}
-
-    #header_1>div{
-        height:100%;
-        float:left;
+    #header{ 
+        line-height:10px; 
     }
-    #header_1_left{width:30%;position:relative;}
-    #header_1_center{width:20%;}
-    #header_1_right{width:40%;}
-
-    #header_1_left>img{height:80%;position:absolute;margin:auto;top:0;bottom:0;right: 0;left:0;}
-    #header_1_right{text-align: center; line-height:35px; font-size: 12px; text-indent: 35px;}
-    #header_1_right>a{margin: 5px;}
-    #header_1_right>a:hover{cursor: pointer;}
-    
-    #header_2>ul{width:100%; height:100%; list-style-type: none; margin: auto; padding:0;}
-    #header_2>ul>li{float:left; width:25%; height:100%; line-height: 55px; text-align:center;}
-    #header_2>ul>li a{text-decoration: none; color:black; font-size: 18px; font-weight: 900;}
-
-    #header_2{border-top:1px solid lightgray}
-
-    #header a{text-decoration:none; color:black}
-    
-    /* 세부 페이지마다 공통적으로 유지할 style */
-    .content{
-        background-color:rgb(247, 245, 245);
-        width:80%;
-        margin:auto;
+    .navbar{
+        background-color: rgb(10, 23, 78);
+        
     }
-    .innerOuter{
-        border:1px solid lightgray;
-        width:80%;
-        margin:auto;
-        padding:5% 10%;
-        background:white;
+    .navbar-nav{
+        margin-left: 50px;
+    }
+    .navbar-nav>h1{
+        color:rgb(245, 208, 66)
+    }
+    .nav-link{
+        color: rgb(245, 208, 66);
+        margin-right: 0px;
+        margin-left: 50px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .dropdown-menu{
+        background-color:rgba(10, 23, 78, 0.68);
+    }
+    .dropdown-item{
+        color: rgb(245, 208, 66);
+        font-weight: bold;
+    }
+     .login,.managerLogin{
+        color: rgb(245, 208, 66);
     }
 
-</style>
-</head>
-<body>
-	<c:if test="${ !empty msg }">
-		<script>
-			alert("${msg}");
-		</script>
-		<c:remove var="msg" scope="session"/>
-	</c:if>
-	
-	
-	<div id="header">
-        <div id="header_1">
-            <div id="header_1_left">
-                <img src="https://www.iei.or.kr/resources/images/common/top_logo_s.jpg" alt="" onclick="location.href='${ pageContext.servletContext.contextPath }';">
-            </div>
-            <div id="header_1_center"></div>
-            <div id="header_1_right">
-            
-                <!-- 로그인 전 -->
-                <c:if test="${ empty sessionScope.loginUser }">
-	                <a href="enrollForm.me">회원가입</a> | 
-	                <a data-toggle="modal" data-target="#loginModal">로그인</a> 
-                </c:if>
-                
-                <!-- 로그인 후  -->
-                <c:if test="${ !empty sessionScope.loginUser }">
-	                <label>${ sessionScope.loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
-	                <a href="myPage.me">마이페이지</a>
-	                <a href="logout.me">로그아웃</a>
-                </c:if>  
-                
-              
-            </div>
-        </div>
-      
-        <div id="header_2">
-            <ul>
-                <li><a href="${ pageContext.servletContext.contextPath }">HOME</a></li>
-                <li><a href="">공지사항</a></li>
-                <li><a href="list.bo">자유게시판</a></li>
+    </style>
+<body class="container-fluid">
+    <header>  
+        <nav class="navbar navbar-expand-xl">
+            <ul class="navbar-nav mr-auto">
+                <h1>SnackPot</h1>
+                <li class="nav-item dropdown"> 
+                    <!--스낵팟-->
+                    <a class="nav-link" data-toggle="dropdown" href="#" role="button" >스낵팟</a>
+                    <div class="dropdown-menu"> 
+                        <!--구독회사 직원-->
+                        <a class="dropdown-item" href="list.pro">간식 고르기</a> 
+                        <a class="dropdown-item" href="#">간식 조회</a> 
+                        <!--구독회사 담당자-->
+                        <a class="dropdown-item" href="#">구독 정보</a>
+                        <a class="dropdown-item" href="#">리스트 조회</a>
+                        <a class="dropdown-item" href="#">주문내역</a>
+                    </div>
+                    
+                </li>
+                <li class="nav-item dropdown"> 
+                    <!--생일팟-->
+                    <a class="nav-link" data-toggle="dropdown" href="#" role="button"><label>생일팟</label></a>
+                    <div class="dropdown-menu"> 
+                        <!--구독회사 직원-->
+                        <a class="dropdown-item" href="#">선물 리스트 조회</a> 
+                        <!--구독회사 담당자-->
+                        <a class="dropdown-item" href="#">구독 정보</a> 
+                        <a class="dropdown-item" href="#">발송 진행 현황</a>
+                        <a class="dropdown-item" href="#">발송 및 공지</a>
+                        <a class="dropdown-item" href="#">주문내역</a>
+                    </div>
+                </li>
+                <!--소통,랭킹,문의-->
+                 <li class="nav-item"><a class="nav-link" href="#">소통팟</a></li>
+                 <li class="nav-item"><a class="nav-link" href="#">랭킹팟</a></li>
+                 <li class="nav-item"><a class="nav-link" href="#">문의</a></li>
             </ul>
-        </div>
-    </div>
-
-    <!-- 로그인 클릭 시 뜨는 모달  -->
-    <div class="modal fade" id="loginModal">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Login</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button> 
-            </div>
-
-            <form action="login.me" method="post">
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <label for="userId" class="mr-sm-2">ID :</label>
-                    <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Enter ID" id="userId" name="userId"> <br>
-                    <label for="userPwd" class="mr-sm-2">Password:</label>
-                    <input type="password" class="form-control mb-2 mr-sm-2" placeholder="Enter password" id="userPwd" name="userPwd">
+            <!--로그인-->
+            <div id="header">
+                <div id="header_1">
+                    <div id="header_1_left">
+                    </div>
+                    <div id="header_1_right">
+                        <!-- 로그인 전 -->
+                        <c:if test="${ empty sessionScope.loginUser }">
+                            <a class="login" href="enrollForm.co">로그인</a>
+                            <a class="managerLogin" href="#">관리자 로그인</a> 
+                        </c:if>
+                        
+                        <!-- 로그인 후 (직원일때 , 본사직원일때) -->
+                        <c:if test="${ !empty sessionScope.loginUser }">
+                            <li class="nav-item dropdown" style="list-style: none;"> 
+                                <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <label>구독회사 직원  님</label></a>
+                                <div class="dropdown-menu"> 
+                                    <a class="dropdown-item" href="#">회원정보 수정</a> 
+                                    <a class="dropdown-item" href="#">회원관리</a>
+                                </div>
+                            </li>      
+                       </c:if>  
+                      <!--<c:if test="${ !empty sessionScope.loginUser }">
+                            <li class="nav-item dropdown" style="list-style: none;"> 
+                                <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <label> 본사 직원  님</label></a>
+                                <div class="dropdown-menu"> 
+                                    <a class="dropdown-item" href="#">회원정보 수정</a> 
+                                    <a class="dropdown-item" href="#">회원관리</a>
+                                </div>
+                            </li>      
+                        </c:if>   	 --> 
+                    </div>
                 </div>
-                
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">로그인</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
-                </div>
-            </form>
-            </div>
-        </div>
-    </div>
+        </nav>
+    </header>
 
     <br clear="both">
 

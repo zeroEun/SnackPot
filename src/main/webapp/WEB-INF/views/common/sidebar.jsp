@@ -83,10 +83,6 @@
 </head>
 <body>
 
-    <div class="container-fluid">
-        <div class="row">
-
-         
             <!-- Sidebar -->
 
             <nav id="sidebar" class="sidebar col-2">
@@ -195,9 +191,6 @@
                 
                 </ul>
             </nav>
-      
-        </div>
-    </div>
 
 </body>
 </html>

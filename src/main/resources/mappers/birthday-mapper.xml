@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="birthdayMapper">
+
+	<resultMap type="Birthday" id="bServiceResultMap">
+		<id property="bservice_no" column="BSERVICE_NO"/>
+		<result property="sending_time" column="SENDING_TIME"/>
+		<result property="notification_msg" column="NOTIFICATION_MESSAGE"/>
+		<result property="completion_msg" column="COMPLETION_MESSAGE"/>
+		<result property="settlement_date" column="SETTLEMENT_DATE"/>
+		<result property="bservice_status" column="BSERVICE_STATUS"/>
+		<result property="com_code" column="COM_CODE"/>
+	</resultMap>
+
+	<insert id="subscribe" parameterType="Birthday">
+		INSERT INTO BIRTHDAY_SERVICE VALUES
+		('1', #{per_amount}, #{sending_time), #{notification_msg}, #{completion_msg}, SYSDATE, 'Y', #{com_code})
+	</insert>
+	
+	<select id="subscribeInfo" resultMap="bServiceResultMap">
+		SELECT * FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{comCode} AND STATUS='Y'
+	</select>
+	
+	<select id="subscribeChk" resultType="int">
+		SELECT COUNT(*) FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{com_code} AND STATUS='Y'
+	</select>
+	
+</mapper>

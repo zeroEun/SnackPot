@@ -11,12 +11,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.spring.company.model.vo.Company;
+import com.kh.spring.companyMember.model.service.CompanyMemberService;
 import com.kh.spring.companyMember.model.vo.CompanyMember;
 
 @Controller
 public class CompanyMemberController {
+	
+	@Autowired
+	private CompanyMemberService cms;
 	
 	@Autowired
 	private Company co;
@@ -24,9 +29,23 @@ public class CompanyMemberController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	@RequestMapping("enrollForm.me")
+	@RequestMapping("enrollForm.co")
 	public String enrollForm() {
 		return "companyMember/companyMemberEnrollForm";
+	}
+	
+	@RequestMapping("login.co")
+	public String login() {
+		return "companyMember/companyMemberLogin";
+	}
+	
+	@ResponseBody
+	@RequestMapping("idCheck.co")
+	public String idCheck(String memId) {
+		
+		int result = cms.idCheck(memId);
+		
+		return String.valueOf(result);
 	}
 	
 	@RequestMapping("insertComMem.co")

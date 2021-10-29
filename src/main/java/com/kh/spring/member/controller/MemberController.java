@@ -221,7 +221,7 @@ public class MemberController {
 		}
 		
 	} */
-	
+/*	
 	//로그아웃 변경(@SessionAttributes)
 	@RequestMapping("logout.me")
 	public String logoutMember(SessionStatus status) {
@@ -290,7 +290,7 @@ public class MemberController {
 		
 		return "member/myPage";
 	}
-	
+*/	
 	/*
 	@RequestMapping("delete.me")
 	public String deleteMember(@ModelAttribute Member m, HttpSession session, SessionStatus status) {
@@ -303,7 +303,7 @@ public class MemberController {
 		return "redirect:/";
 	}*/
 	
-	
+/*	
 	@RequestMapping("delete.me")
 	public String deleteMember(String userId) {
 		
@@ -346,6 +346,6 @@ public class MemberController {
 	
 	
 
-	
+*/
 	
 }

@@ -19,7 +19,7 @@
 </style>
 <body>
     <h3>생일 구독 신청</h3>
-    <form class="" action="">
+    <form class="" action="subscribe.birth" method="post">
         <label for="">1인당 최대 금액</label>
         <div class="form-group">            
             <div class="form-check per_amount">
@@ -58,13 +58,15 @@
         <hr>
         <label for="">선물 선택 알림 메시지</label>
         <div class="form-group">            
-            <textarea class="form_control" cols="50" rows="5"></textarea>
+            <textarea class="form-control" name="notification_msg" cols="50" rows="5" style="resize: none;"></textarea>
         </div>
         <hr>
         <label for="">수신자 정보</label><br>
         <button class="btn btn-dark">사원 리스트 불러오기</button>
         <hr>
-        <button class="btn btn-dark">이전으로</button><button class="btn btn-outline-primary">구독 신청하기</button>
+        <input type="hidden" name="com_code" value="${comCode}">
+        
+        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button><button type="submit" class="btn btn-outline-primary">구독 신청하기</button>
     </form>
 </body>
 </html>

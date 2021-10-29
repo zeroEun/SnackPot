@@ -16,12 +16,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="detailNo" column="DETAIL_NO"/>
 		<result property="tasteNo" column="TASTE_NO"/>
 		<result property="aromaNo" column="AROMA_NO"/>
+		<result property="changeName" column="CHANGE_NAME"/>
 	</resultMap>
 
 <select id="selectList" resultMap="productResultSet">
-		SELECT *
-		FROM SNACK
-		WHERE STATUS = 'Y'
+		SELECT S.SNACK_NO , S.SNACK_NAME , S.PURCHASE_PRICE , S.CATEGORY_NO
+				 , S.DETAIL_NO ,S.TASTE_NO , S.AROMA_NO , A.CHANGE_NAME
+		FROM SNACK S
+		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
+		WHERE STATUS = 'Y' 
 		AND CATEGORY_NO = 1
 </select>
 

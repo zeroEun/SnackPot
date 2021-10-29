@@ -18,7 +18,13 @@
 </head>
 <body>
 
-<jsp:include page="../common/sidebar.jsp"/>
+	<div class="container-fluid">
+    	<div class="row flex-nowrap">
+
+		<jsp:include page="../common/sidebar.jsp"/>
+		
+		</div>
+	</div>
 
 </body>
 </html>

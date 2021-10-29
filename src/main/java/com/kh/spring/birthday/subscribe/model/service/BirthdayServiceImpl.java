@@ -14,7 +14,7 @@ public class BirthdayServiceImpl implements BirthdayService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	@Autowired
+	@Autowired(required=false)
 	private BirthdayDao bDao;
 	
 	@Override

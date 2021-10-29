@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.kh.spring.member.model.vo.Member;
+//import com.kh.spring.member.model.vo.Member;
 
 @Aspect
 @Component
@@ -15,7 +15,7 @@ public class AfterReturningAspect {
 
    private static final Logger logger = LoggerFactory.getLogger(AfterReturningAspect.class);
    
-   @AfterReturning(pointcut="execution(* com.kh.spring..*ServiceImpl.login*(..))", returning = "returnObj")
+  /* @AfterReturning(pointcut="execution(* com.kh.spring..*ServiceImpl.login*(..))", returning = "returnObj")
    public void loggerAdvice(JoinPoint joinpoint, Object returnObj) {
       if(returnObj instanceof Member) {
          Member m = (Member)returnObj;
@@ -26,7 +26,7 @@ public class AfterReturningAspect {
             logger.info(" [LOG] : "+ m.getUserId() +"로그인 성공!!");
          }
       }
-   }
+   }*/
    
    
 }

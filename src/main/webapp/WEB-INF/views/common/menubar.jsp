@@ -96,7 +96,7 @@
                     <div id="header_1_right">
                         <!-- 로그인 전 -->
                         <c:if test="${ empty sessionScope.loginUser }">
-                            <a class="login" href="enrollForm.co">로그인</a>
+                            <a class="login" href="login.co">로그인</a>
                             <a class="managerLogin" href="#">관리자 로그인</a> 
                         </c:if>
                         

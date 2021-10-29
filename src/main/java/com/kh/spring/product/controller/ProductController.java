@@ -24,7 +24,7 @@ public class ProductController {
 		System.out.println("product list : " + list);
 		model.addAttribute("list", list);
 		
-		return "product/productMainView";
+		return "product/productSnackView";
 	}
 	
 	

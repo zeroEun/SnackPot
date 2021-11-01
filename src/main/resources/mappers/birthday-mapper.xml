@@ -16,15 +16,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="subscribe" parameterType="Birthday">
 		INSERT INTO BIRTHDAY_SERVICE VALUES
-		('1', #{per_amount}, #{sending_time), #{notification_msg}, #{completion_msg}, SYSDATE, 'Y', #{com_code})
+		<!-- ('1', #{per_amount}, #{sending_time}, #{notification_msg}, #{completion_msg}, SYSDATE, DEFAULT, #{com_code}) -->
+		('1', #{per_amount}, #{sending_time}, #{notification_msg}, #{completion_msg}, SYSDATE, DEFAULT, 'A')
 	</insert>
 	
-	<select id="subscribeInfo" resultMap="bServiceResultMap">
-		SELECT * FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{comCode} AND STATUS='Y'
+	<select id="subscribeInfo" parameterType="String" resultMap="bServiceResultMap">
+		SELECT * FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{comCode} AND BSERVICE_STATUS='Y'
 	</select>
 	
 	<select id="subscribeChk" resultType="int">
-		SELECT COUNT(*) FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{com_code} AND STATUS='Y'
+		SELECT COUNT(*) FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{com_code} AND BSERVICE_STATUS='Y'
 	</select>
 	
 </mapper>

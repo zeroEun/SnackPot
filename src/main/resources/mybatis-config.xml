@@ -9,12 +9,14 @@
 	<typeAliases>
 		<typeAlias type="com.kh.spring.product.model.vo.Product" alias="Product"/>
 		<typeAlias type="com.kh.spring.companyMember.model.vo.CompanyMember" alias="CompanyMember"/>
+		<typeAlias type="com.kh.spring.birthday.subscribe.model.vo.Birthday" alias="Birthday"/>
 	</typeAliases>
 
 
 	<mappers>
 		<mapper resource="/mappers/product-mapper.xml"/> 
 		<mapper resource="/mappers/companyMember-mapper.xml"/>
+		<mapper resource="/mappers/birthday-mapper.xml"/>
 	</mappers>
 
 

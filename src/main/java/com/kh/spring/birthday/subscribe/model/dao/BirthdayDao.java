@@ -1,9 +1,12 @@
 package com.kh.spring.birthday.subscribe.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.kh.spring.birthday.subscribe.model.vo.Birthday;
 
+
+@Repository
 public class BirthdayDao {
 
 	public int subscribe(SqlSessionTemplate sqlSession, Birthday b) {

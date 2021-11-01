@@ -8,6 +8,6 @@
 </head>
 <body>
 	<a href="subscribeForm.birth">구독신청페이지</a>
-	<a href="subscribeInfo.birth">구독신청페이지</a>
+	<a href="subscribeInfo.birth">구독정보페이지</a>
 </body>
 </html>

@@ -45,7 +45,9 @@ public class BirthdayController {
 	@RequestMapping("subscribeInfo.birth")
 	public ModelAndView subscribeInfo(String comCode, ModelAndView mv) {
 		
+		comCode="A"; //임의로 A값 삽입
 		Birthday b = bService.subscribeInfo(comCode);
+		//System.out.println("comCode : " + comCode);
 		
 		mv.addObject("b",b).setViewName("birthday/birthday_service_info");
 		

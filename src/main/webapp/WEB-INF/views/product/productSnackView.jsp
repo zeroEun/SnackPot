@@ -38,26 +38,40 @@
    .btn-outline:hover{
      background-color: purple;
    }
-   .card-outer{
-     display: inline;
-     width: 100%;
-     height: 100%;
+     /*상품 card*/
+   .row{
+     padding: 0 40px;
    }
-   .card-outer .card{
-     width: 260px;
-     height: 260px;
-     margin-left: 40px;
+   .col{
+     padding: 0%;
    }
-   .snack_img{
+   .card{
+     border: none;
+   }
+   .card:hover{
+   	background-color:  rgba(251, 251, 251, 0.35);
+   }
+   .card-img-top{
      width: 260px;
      height: 230px;
-     background-color: chocolate;
    }
-   .snack_name{
-     font-weight: bolder;
-     background-color: goldenrod;
+   .card-body{
      width: 260px;
+     height: 80px;
+     background-color: skyblue;
+     padding: 0%;
+   }
+  .card-title{
+     background-color: pink;
      height: 40px;
+     font-weight: bold;
+   }
+   /*메뉴 랭크*/
+   .rank li{
+     float: right;
+     margin: 20px 20px 0px;
+     list-style: none;
+     text-align: right;
    }
 
     </style>
@@ -112,16 +126,27 @@
         <button type="button" class="btn btn-outline">시리얼바</button>
       </div>
     </div>
-
-    <br><br>
-    <c:forEach items="${list}" var="p">
-  <div class="card-outer">
-    <div class="card">
-      <img src="${ pageContext.servletContext.contextPath }/resources/images/${p.changeName}"  width="200px" height="230px">
-      <div class="snack_name">${p.snackName}</div>
-      <div class="snack_price">${p.purchasePrice }원</div>
+	 <ul class="rank">
+	    <li><a>판매인기순</a></li>
+	    <li><a>높은가격순</a></li>
+	    <li><a>낮은가격순</a></li>
+	  </ul>
+     <br><br><br><br>
+   
+   <div class="container-fluid">
+    <div class="row">
+     <c:forEach items="${list}" var="p">
+        <div class="col">
+          <div class="card">
+            <img class="card-img-top" src="${ pageContext.servletContext.contextPath }/resources/images/${p.changeName}">
+            <div class="card-body">
+              <P class="card-title">${p.snackName }</P>
+              <p class="card-text">${p.purchasePrice}원</p>
+            </div>
+          </div>
+        </div>
+        </c:forEach>
     </div>
   </div>
-  </c:forEach>
 </body>
 </html>

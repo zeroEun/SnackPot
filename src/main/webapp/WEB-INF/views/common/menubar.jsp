@@ -61,6 +61,7 @@
                     <a class="nav-link" data-toggle="dropdown" href="#" role="button" >스낵팟</a>
                     <div class="dropdown-menu"> 
                         <!--구독회사 직원-->
+                        <a class="dropdown-item" href="subsForm.sn">간식 구독하기</a>
                         <a class="dropdown-item" href="list.pro">간식 고르기</a> 
                         <a class="dropdown-item" href="#">간식 조회</a> 
                         <!--구독회사 담당자-->
@@ -75,6 +76,7 @@
                     <a class="nav-link" data-toggle="dropdown" href="#" role="button"><label>생일팟</label></a>
                     <div class="dropdown-menu"> 
                         <!--구독회사 직원-->
+                         <a class="dropdown-item" href="#">선물 구독하기</a> 
                         <a class="dropdown-item" href="#">선물 리스트 조회</a> 
                         <!--구독회사 담당자-->
                         <a class="dropdown-item" href="#">구독 정보</a> 

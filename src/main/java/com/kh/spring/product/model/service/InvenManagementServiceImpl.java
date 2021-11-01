@@ -25,6 +25,7 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 			throw new CommException("등록에 실패했습니다.");
 		}
 		
+		
 	}
 
 }

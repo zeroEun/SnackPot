@@ -10,13 +10,19 @@
 		<typeAlias type="com.kh.spring.product.model.vo.Product" alias="Product"/>
 		<typeAlias type="com.kh.spring.companyMember.model.vo.CompanyMember" alias="CompanyMember"/>
 		<typeAlias type="com.kh.spring.birthday.subscribe.model.vo.Birthday" alias="Birthday"/>
+		<typeAlias type="com.kh.spring.product.model.vo.SnackSubCategory" alias="SnackSubCategory"/>
+		<typeAlias type="com.kh.spring.product.model.vo.Aroma" alias="Aroma"/>
+		<typeAlias type="com.kh.spring.product.model.vo.Taste" alias="Taste"/>
+		<typeAlias type="com.kh.spring.snack.snackSubs.model.vo.SnackSubs" alias="SnackSubs"/>
+		<typeAlias type="com.kh.spring.birthday_HO.currentStatus.model.vo.CurStatus" alias="CurStatus"/>
 	</typeAliases>
-
 
 	<mappers>
 		<mapper resource="/mappers/product-mapper.xml"/> 
 		<mapper resource="/mappers/companyMember-mapper.xml"/>
 		<mapper resource="/mappers/birthday-mapper.xml"/>
+		<mapper resource="/mappers/snackCategory-mapper.xml"/>
+		<mapper resource="/mappers/snackSubs-mapper.xml"/>
 	</mappers>
 
 

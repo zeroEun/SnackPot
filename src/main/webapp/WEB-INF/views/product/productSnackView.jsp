@@ -16,7 +16,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
    </head>
-    <style>
+  <style>
     .dropdown:hover .dropdown-menu { 
         display: block;
         margin-top: 0;
@@ -27,6 +27,7 @@
    .navbar{
        justify-content: center;
    }
+   /*상세보기 메뉴바*/
    .detail-menu{
        background-color: aquamarine;
        text-align: center;
@@ -38,7 +39,7 @@
    .btn-outline:hover{
      background-color: purple;
    }
-     /*상품 card*/
+   /*상품 card*/
    .row{
      padding: 0 40px;
    }
@@ -47,10 +48,9 @@
    }
    .card{
      border: none;
+     position: relative;
    }
-   .card:hover{
-   	background-color:  rgba(251, 251, 251, 0.35);
-   }
+   
    .card-img-top{
      width: 260px;
      height: 230px;
@@ -66,6 +66,21 @@
      height: 40px;
      font-weight: bold;
    }
+   .wishBtn{
+     position: absolute;
+     width: 200px;
+  	 left: 30px;
+     top: 30%;
+     text-align: center;
+     opacity: 0;
+     transition: opacity .35e ease;
+   }
+
+   .card:hover .wishBtn{
+     opacity: 1;
+   
+   }
+ 
    /*메뉴 랭크*/
    .rank li{
      float: right;
@@ -143,10 +158,30 @@
               <P class="card-title">${p.snackName }</P>
               <p class="card-text">${p.purchasePrice}원</p>
             </div>
+             <span class="wishButton">
+              <button class="wishBtn" value="${p.snackNo}" onclick="wishAdd(this.value)">위시</button>
+            </span>
           </div>
         </div>
         </c:forEach>
     </div>
   </div>
 </body>
+<script type="text/javascript">
+ 	function wishAdd(val){
+ 		var wishSnackNo = val;
+ 		alert(wishSnackNo)
+ 		//간식번호를 보내서 wishlist에 저장하기
+ 		$.ajax({
+ 			url : "insert.wish",
+ 			data : {
+ 				wishSnackNo : wishSnackNo
+ 			},
+ 			type : "post",
+ 			success : alert('ajax성공')
+ 		})
+ 	} 	
+ 	
+ 	
+</script>
 </html>

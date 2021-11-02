@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>    
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <title>Insert title here</title>
 </head>
@@ -19,15 +21,6 @@
             $("#sending_complete_table").hide();
         }
 
-        /*
-        $(function(){
-            $("#sending_expected").css("background","black")
-            $("#sending_complete").css("background","darkgray")
-                
-            $("#sending_expected_table").show();
-            $("#sending_complete_table").hide();
-        });
-		*/
         $(document).ready(function(){
             $("#sending_expected").click(function(){
                 $("#sending_expected").css("background","black")
@@ -49,6 +42,7 @@
     </script>
     <button type="button" class="btn btn-secondary" id="sending_expected">발송 예정</button>
     <button type="button" class="btn btn-secondary" id="sending_complete">발송 완료</button>
+    
     <table class="table" id="sending_expected_table">
         <thead class="thead-light">
             <tr>
@@ -62,18 +56,24 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td scope="row">1</td>
-                <td>인사과</td>
-                <td>부장</td>
-                <td>김OO</td>
-                <td>010-1111-2222</td>
-                <td>1962-10-28</td>
-                <td>2021-10-25</td>
-            </tr>
+	        <c:forEach items="${ list }" var="curSts" varStatus="status">
+	        <c:if test="${ curSts.selectDate == null }">
+	        <c:set var="num1" value="${ num1+1 }"/>
+	            <tr>
+	                <td scope="row">${ num1 }</td>
+	                <td>${ curSts.cempDept }</td>
+	                <td>${ curSts.cempJob }</td>
+	                <td>${ curSts.cempName }</td>
+	                <td>${ curSts.cempPhone }</td>
+	                <td>${ curSts.cempBirth }</td>
+	                <td>${ curSts.sendingMsgDate }</td>
+	            </tr>
+	        </c:if>
+	        </c:forEach>
         </tbody>
     </table>
-
+	
+	
     <table class="table" id="sending_complete_table">
         <thead class="thead-light">
             <tr>
@@ -87,17 +87,23 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td scope="row">1</td>
-                <td>영업부</td>
-                <td>대리</td>
-                <td>차OO</td>
-                <td>010-3333-4444</td>
-                <td>1985-10-03</td>
-                <td>2021-10-01</td>
-            </tr>
+        	
+            <c:forEach items="${ list }" var="curSts" varStatus="status">         
+	        <c:if test="${ curSts.selectDate != null }">
+	        <c:set var="num2" value="${ num2+1 }"/>
+	            <tr>
+	                <td scope="row">${ num2 }</td>
+	                <td>${ curSts.cempDept }</td>
+	                <td>${ curSts.cempJob }</td>
+	                <td>${ curSts.cempName }</td>
+	                <td>${ curSts.cempPhone }</td>
+	                <td>${ curSts.cempBirth }</td>
+	                <td>${ curSts.sendingMsgDate }</td>
+	            </tr>
+	        </c:if>
+	        </c:forEach>
         </tbody>
     </table>
-    <button class="btn btn-dark">이전으로</button>
+    <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
 </body>
 </html>

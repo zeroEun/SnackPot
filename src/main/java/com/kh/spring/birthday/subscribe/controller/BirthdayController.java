@@ -20,9 +20,7 @@ public class BirthdayController {
 	public String subscribeForm() {
 		
 		return "birthday/birthday_service_subs";
-	}
-	
-	
+	}	
 	
 	@RequestMapping("subscribe.birth")
 	public String subscribe(Birthday b, HttpSession session) {

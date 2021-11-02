@@ -65,7 +65,7 @@
         <label for="">결제일</label><span> <b>매월 1일</b></span>
         
         <hr>
-        <button class="btn btn-dark">이전으로</button><button class="btn btn-outline-primary">구독 수정하기</button>
+        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button><button class="btn btn-outline-primary">구독 수정하기</button>
     </form>
 </body>
 </html>

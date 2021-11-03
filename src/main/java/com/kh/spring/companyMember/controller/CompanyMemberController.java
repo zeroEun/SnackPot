@@ -31,14 +31,14 @@ public class CompanyMemberController {
 	
 	@RequestMapping("enrollForm.co")
 	public String enrollForm() {
-		return "companyMember/companyMemberEnrollForm";
+		return "company/companyMember/companyMemberEnrollForm";
 	}
 	
 	@RequestMapping("login.co")
 	public String login() {
-		return "companyMember/companyMemberLogin";
+		return "company/companyMember/companyMemberLogin";
 	}
-	
+	 
 	@ResponseBody
 	@RequestMapping("idCheck.co")
 	public String idCheck(String memId) {
@@ -48,14 +48,26 @@ public class CompanyMemberController {
 		return String.valueOf(result);
 	}
 	
+	@ResponseBody
+	@RequestMapping("codeCheck.co")
+	public String codeCheck(String comCode) {
+		
+		int result = cms.codeCheck(comCode);
+		
+		return String.valueOf(result);
+	}
+	
 	@RequestMapping("insertComMem.co")
 	public String insertMember(@ModelAttribute CompanyMember m, String memType, String comName, String comAddress, HttpSession session) {
 		
+		//암호회된 비밀번호
 		String encPwd = bCryptPasswordEncoder.encode(m.getMemPw());
 		m.setMemPw(encPwd);
 		
+		//회원과 관리자에 따라 구분 
 		if(memType.equals("member")) {
 			m.setAdmin("N");
+//			cms.insertCompanyMember(m);
 		}else {
 			m.setAdmin("Y");
 			co.setComName(comName);
@@ -69,9 +81,11 @@ public class CompanyMemberController {
 	        String time = formatter.format (today);
 	        String comCode = first.concat(time);
 	        System.out.println("회사코드 : " + comCode);
+	        System.out.println("괸리자 : " + m);
 	        
 	        co.setComCode(comCode);
-			
+			cms.insertCompany(co);
+//			cms.insertCompanyMember(m);
 		}
 		
 		session.setAttribute("msg", "회원가입 성공");

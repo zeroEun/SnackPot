@@ -47,18 +47,25 @@
             <div class="row">
 
                 <div class="content  col-10">
-                    <h4>간식 구독 신청</h4>
+                    <h4>간식 구독 정보 조회</h4>
                     <hr>
+                    
+                    <c:if test="${ empty subs }">
+                    	<p>현재 구독 중인 간식이 없습니다.</p>
+                    </c:if>
 
-                    <form id="subsEnroll" method="post" action="insertSubs.sn">
-                    	<input type="hidden" name="comCode" value="k2111021928"><!-- ${loginUser.comCode } -->
+					<c:if test="${ !empty subs }">
+					
+                    <form id="subsEnroll" method="post" action="updateSubs.sn">
+                    	<input type="hidden" name="subsNo" value="${subs.subsNo}">
+                    	<input type="hidden" name="comCode" value="${subs.comCode}">
 
                         <div class="form-group row" id="snack-budget">
 
                             <!-- 숫자만 입력하도록 하기-->
                             <label for="budget" class="col-md-2 col-form-label">간식 예산</label> 
                             <div class="col-md-3">
-                                <input type="text" class="form-control" id="budget" name="budget" placeholder="금액을 입력해 주세요">
+                                <input type="text" class="form-control" id="budget" name="budget" placeholder="금액을 입력해 주세요" value="${subs.budget}">
                             </div>
                            
                         </div>
@@ -72,17 +79,17 @@
                                     <!-- 숫자만 입력하도록 하기-->
                                 <label for="snack-ratio" class="col-md-1 col-form-label">스낵</label> 
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" id="snack-ratio" name="snackRatio" placeholder="%">
+                                    <input type="text" class="form-control" id="snack-ratio" name="snackRatio" placeholder="%" value="${subs.snackRatio}">
                                 </div>
 
                                 <label for="drink-ratio" class="col-md-1 col-form-label">음료</label> 
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" id="drink-ratio" name="drinkRatio" placeholder="%">
+                                    <input type="text" class="form-control" id="drink-ratio" name="drinkRatio" placeholder="%" value="${subs.drinkRatio}">
                                 </div>
 
                                 <label for="retort-ratio" class="col-md-1 col-form-label">간편식</label> 
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" id="retort-ratio" name="retortRatio" placeholder="%">
+                                    <input type="text" class="form-control" id="retort-ratio" name="retortRatio" placeholder="%" value="${subs.retortRatio}">
                                 </div>
                             </div>
                            
@@ -146,13 +153,16 @@
 
                             <div class="col-md-10 category-menu" id="category-menu">
                                 <div class="col-md-12">
-	                                <c:forEach items="${taste}" var="t">
-	                                	<div class="form-check form-check-inline">
-	                                        <input class="form-check-input" type="checkbox" id="tasteCheckbox${t.tasteNo}" name="preferTaste" value="${t.tasteNo}">
-	                                        <label class="form-check-label" for="tasteCheckbox${t.tasteNo}">${t.taste}</label>
-	                                    </div>
-	                                </c:forEach>
+                                
+                                <c:forEach items="${taste}" var="t">
+                                	<div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="tasteCheckbox${t.tasteNo}" name="preferTaste" value="${t.tasteNo}">
+                                        <label class="form-check-label" for="tasteCheckbox${t.tasteNo}">${t.taste}</label>
+                                    </div>
+                                </c:forEach>
+                                    
                                 </div>
+                            
                             </div>
 
                         </div>
@@ -163,13 +173,16 @@
 
                             <div class="col-md-10 category-menu" id="category-menu">
                                 <div class="col-md-12 ">
-	                                <c:forEach items="${flavour}" var="f">
-	                                	<div class="form-check form-check-inline">
-	                                        <input class="form-check-input" type="checkbox" id="flavourCheckbox${f.aromaNo}" name="dislikeFlavour" value="${f.aromaNo}">
-	                                        <label class="form-check-label" for="flavourCheckbox${f.aromaNo}">${f.aroma}</label>
-	                                    </div>
-	                                </c:forEach>
+                                
+                                <c:forEach items="${flavour}" var="f">
+                                	<div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="flavourCheckbox${f.aromaNo}" name="dislikeFlavour" value="${f.aromaNo}">
+                                        <label class="form-check-label" for="flavourCheckbox${f.aromaNo}">${f.aroma}</label>
+                                    </div>
+                                </c:forEach>
+                    
                                 </div>
+                            
                             </div>
 
                         </div>
@@ -179,7 +192,7 @@
 
                             <label for="delivery-date" class="col-md-2 col-form-label">배송 예정일</label> 
                             <div class="col-md-3 d-flex"> <!-- d-flex 인라인으로 정렬 -->
-                                <p>매달</p><input type="text" class="form-control" id="delivery-date" name="deliveryDate"><p>일</p>
+                                <p>매달</p><input type="text" class="form-control" id="delivery-date" name="deliveryDate" value="${subs.deliveryDate}"><p>일</p>
                             </div>
             
                         </div>
@@ -195,10 +208,17 @@
                         </div>
                         
 
-                        <button type="submit" class="btn btn-warning mr-2 float-right">구독 신청하기</button>
-
+                        <button type="submit" class="btn btn-warning mr-2 float-right" id="updateBtn">내용 수정하기</button>
+						<button type="button" class="btn btn-secondary mr-2 float-right" id="cancelBtn">구독 취소하기</button>
 
                     </form>
+                    
+                    <!-- 구독 취소하기 버튼 눌렀을 때 -->
+                    <form action="cancelSubs.sn" method="post" id="postForm">
+				    	<input type="hidden" name="subsNo" value="${subs.subsNo}">
+				    </form>
+				    
+				    </c:if>
 
                 </div>
 
@@ -211,10 +231,56 @@
     
 <script type="text/javascript">
 	$(function(){
-		var today = new Date();
-		var date = today.getDate();
-		console.log(date);
-		$('#settlement-date').attr('value', date);
+		
+		var snackCate = "${subs.snackCategory}".split(",");
+		var drinkCate = "${subs.drinkCategory}".split(",");
+		var retortCate = "${subs.retortCategory}".split(",");
+		var taste = "${subs.preferTaste}".split(",");
+		var flavour = "${subs.dislikeFlavour}".split(",");
+		var settleDate = new Date("${subs.settleDate}");
+		
+		/*구독 일자만 보여주기*/
+		$('#settlement-date').attr('value', settleDate.getDate());
+
+		/*선택한 카테고리 번호 이용 해당 번호 id에 checked 속성 주기*/
+		snackCate.forEach(function(e){
+			$('#snackCheckbox'+e).attr('checked', true);
+			console.log(e);
+		});
+
+		drinkCate.forEach(function(e){
+			$('#drinkCheckbox'+e).attr('checked', true);
+			console.log(e);
+		});
+		
+		retortCate.forEach(function(e){
+			$('#retortCheckbox'+e).attr('checked', true);
+			console.log(e);
+		});
+		
+		taste.forEach(function(e){
+			$('#tasteCheckbox'+e).attr('checked', true);
+			console.log(e);
+		});
+		
+		flavour.forEach(function(e){
+			$('#flavourCheckbox'+e).attr('checked', true);
+			console.log(e);
+		});
+		
+		/*구독 취소하기 버튼 클릭 시*/
+		$('#cancelBtn').click(function(){
+			var result = confirm("정말로 구독을 취소하시겠습니까?")
+			
+			if(result){
+				/*replace 기존페이지를 새 페이지로 덮어씀, 뒤로가기 불가
+				  href='' 새로운 페이지로 이동, 페이지가 기록됨 */
+				//location.replace('cancelSubs.sn?subsNo=${subs.subsNo}');
+				$('#postForm').submit();
+			}
+		});
+		
+		
 	});
 </script>
 

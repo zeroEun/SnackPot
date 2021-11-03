@@ -30,7 +30,7 @@
 	}
 	
 	/*텍스트 색*/
-	.sidebar a, h2, h5, li {
+	.sidebar a, .sidebar h2, .sidebar h5, .sidebar li {
 		color: rgb(245, 208, 66);
 	}
 	
@@ -146,7 +146,7 @@
                         </a>
                         <div class="collapse" id="order-management">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">리스트 발송</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="listSchedule.sn">리스트 발송</a></li>
                             <li class="nav-item"> <a class="nav-link" href="#">리스트 발송 내역</a></li>
                             <li class="nav-item"> <a class="nav-link" href="#">주문 내역</a></li>
                         </ul>

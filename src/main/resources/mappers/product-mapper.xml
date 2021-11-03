@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="changeName" column="CHANGE_NAME"/>
 	</resultMap>
 
-<select id="selectList" resultMap="productResultSet">
+ <select id="selectList" resultMap="productResultSet">
 		SELECT S.SNACK_NO , S.SNACK_NAME , S.PURCHASE_PRICE , S.CATEGORY_NO
 				 , S.DETAIL_NO ,S.TASTE_NO , S.AROMA_NO , A.CHANGE_NAME
 		FROM SNACK S
@@ -27,5 +27,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE STATUS = 'Y' 
 		AND CATEGORY_NO = 1
 </select>
+
+<select id="selectDeliveryDate" parameterType="string" resultType = "string">
+	SELECT DELIVERY_DATE 
+	FROM SNACK_SUBS
+	WHERE COM_CODE = #{comCode}
+</select>
+
+<select id="chkSnackNo" resultType="_int">
+	SELECT COUNT(SNACK_NO)
+	FROM WISHLIST
+	WHERE SNACK_NO = #{wishSnackNo}
+</select>
+
+<insert id="insertWishList" parameterType="hashMap">
+	INSERT INTO WISHLIST
+	VALUES (WISHLIST_SEQ.NEXTVAL , #{comCode} , #{wishSnackNo}, DEFAULT , #{wishEndDate})
+</insert>
+
+ <update id="updateSnackCount" parameterType="hashMap">
+	UPDATE WISHLIST SET SNACK_COUNT = SNACK_COUNT + 1
+	WHERE SNACK_NO = #{wishSnackNo} 
+</update>
+
 
 </mapper>

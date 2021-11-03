@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectSubCategory" parameterType="_int" resultMap="subCategoryResultSet">
 		SELECT *
 		FROM SNACK_CATEGORY_DETAIL
-		WHERE CATEGORY_NO = ${categoryNo}
+		WHERE CATEGORY_NO = #{categoryNo}
 	</select>
 	
 	<select id="selectAroma" resultMap="aromaResultSet">

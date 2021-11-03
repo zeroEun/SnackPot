@@ -26,7 +26,19 @@ public class SnackSubsDao {
 	}
 
 	public int insertSnackSubs(SqlSessionTemplate sqlSession, SnackSubs snackSubs) {
-		return sqlSession.insert("");
+		return sqlSession.insert("snackSubsMapper.insertSnackSubs", snackSubs);
+	}
+
+	public SnackSubs selectSubsInfo(SqlSessionTemplate sqlSession, String comCode) {
+		return sqlSession.selectOne("snackSubsMapper.selectSubsInfo", comCode);
+	}
+
+	public int updateSnackSubs(SqlSessionTemplate sqlSession, SnackSubs snackSubs) {
+		return sqlSession.update("snackSubsMapper.updateSnackSubs", snackSubs);
+	}
+
+	public int cancelSnackSubs(SqlSessionTemplate sqlSession, int subsNo) {
+		return sqlSession.update("snackSubsMapper.cancelSnackSubs", subsNo);
 	}
 
 

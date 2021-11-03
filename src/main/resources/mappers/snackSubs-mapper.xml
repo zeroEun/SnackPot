@@ -23,5 +23,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="subsStatus" column="SUBS_STATUS"/>
 	</resultMap>
 
+	<insert id="insertSnackSubs" parameterType="SnackSubs">
+		INSERT INTO SNACK_SUBS
+		VALUES(SNACK_SUBS_SEQ.NEXTVAL, #{comCode}, #{budget}, #{snackRatio}, #{drinkRatio}, #{retortRatio}, #{snackCategory}, #{drinkCategory}, #{retortCategory}, #{preferTaste}, #{dislikeFlavour}, #{deliveryDate}, SYSDATE, SYSDATE, NULL, DEFAULT)
+	</insert>
+	
+	<select id="selectSubsInfo" parameterType="String" resultMap="SnackSubsResultSet">
+		SELECT *
+		FROM SNACK_SUBS
+		WHERE COM_CODE = #{comCode}
+		AND SUBS_STATUS = 'Y'
+	</select>
+	
+	<update id="updateSnackSubs" parameterType="SnackSubs">
+		UPDATE SNACK_SUBS
+		SET BUDGET = #{budget}, SNACK_RATIO = #{snackRatio}, DRINK_RATIO = #{drinkRatio}, RETORT_RATIO = #{retortRatio}, 
+		    SNACK_CATEGORY = #{snackCategory}, DRINK_CATEGORY = #{drinkCategory}, RETORT_CATEGORY = #{retortCategory}, 
+		    PREFER_TASTE = #{preferTaste}, DISLIKE_FLAVOUR = #{dislikeFlavour}, DELIVERY_DATE = #{deliveryDate}, MODIFY_DATE = SYSDATE
+		WHERE SUBS_NO = #{subsNo}
+	</update>
+	
+	<update id="cancelSnackSubs" parameterType="_int">
+		UPDATE SNACK_SUBS
+		SET CANCEL_DATE = SYSDATE, SUBS_STATUS = 'N'
+		WHERE SUBS_NO = #{subsNo}
+	</update>
 
 </mapper>

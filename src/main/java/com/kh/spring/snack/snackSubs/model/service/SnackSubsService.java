@@ -17,6 +17,12 @@ public interface SnackSubsService {
 
 	void insertSnackSubs(SnackSubs snackSubs);
 
+	SnackSubs selectSubsInfo(String comCode);
+
+	void updateSnackSubs(SnackSubs snackSubs);
+
+	void cancelSnackSubs(int subsNo);
+
 	
 
 }

@@ -49,5 +49,31 @@ public class SnackSubsServiceImpl implements SnackSubsService {
 		
 	}
 
+	@Override
+	public SnackSubs selectSubsInfo(String comCode) {
+		
+		return snackSubsDao.selectSubsInfo(sqlSession, comCode);
+	}
+
+	@Override
+	public void updateSnackSubs(SnackSubs snackSubs) {
+		
+		int result = snackSubsDao.updateSnackSubs(sqlSession, snackSubs);
+		
+		if(result < 0 ) {
+			throw new CommException("구독 수정 실패");
+		}
+	}
+
+	@Override
+	public void cancelSnackSubs(int subsNo) {
+		
+		int result = snackSubsDao.cancelSnackSubs(sqlSession, subsNo);
+		
+		if(result < 0 ) {
+			throw new CommException("구독 취소 실패");
+		}
+	}
+
 
 }

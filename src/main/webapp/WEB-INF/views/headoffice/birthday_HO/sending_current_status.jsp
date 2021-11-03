@@ -60,7 +60,7 @@
 	        <c:if test="${ curSts.selectDate == null }">
 	        <c:set var="num1" value="${ num1+1 }"/>
 	            <tr>
-	                <td scope="row">${ num1 }</td>
+	                <td>${ num1 }</td>
 	                <td>${ curSts.cempDept }</td>
 	                <td>${ curSts.cempJob }</td>
 	                <td>${ curSts.cempName }</td>
@@ -92,7 +92,7 @@
 	        <c:if test="${ curSts.selectDate != null }">
 	        <c:set var="num2" value="${ num2+1 }"/>
 	            <tr>
-	                <td scope="row">${ num2 }</td>
+	                <td>${ num2 }</td>
 	                <td>${ curSts.cempDept }</td>
 	                <td>${ curSts.cempJob }</td>
 	                <td>${ curSts.cempName }</td>

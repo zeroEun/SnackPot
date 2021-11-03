@@ -13,6 +13,7 @@
 	
 	<h4>본사</h4>
 	<a href="sendingcursts.ho">발송현황(본사)</a>
-	<a href="">발송리스트(본사)</a>
+	<a href="sendingList.ho">발송리스트(본사)</a>
+	<a href="giftList.ho">선물리스트 관리(본사)</a>
 </body>
 </html>

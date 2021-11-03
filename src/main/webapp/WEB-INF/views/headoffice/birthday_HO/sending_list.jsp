@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,26 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <title>Insert title here</title>
 </head>
-<script>
-    $(function(){
-        $("#sending_list1").click(function(){
-            var checkYN = $("#sending_list1").is(":checked")
-
-            if(checkYN == true){
-                $("input[name='sending_check']").attr("checked",true);
-            }else{
-                $("input[name='sending_check']").attr("checked",false);
-            }
-        })
-
-    })
-</script>
 <body>
-    <h3>OO월 발송 리스트</h3>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="sending_check" id="sending_list1">
-        <label class="form-check-label" for="sending_list1">전체 선택</label>
-    </div>
+    <h3>OO월 발송 리스트</h3>    
     <table class="table">
         <thead class="thead-light">
             <tr>
@@ -43,24 +26,18 @@
             </tr>            
         </thead>
         <tbody>
+        	<c:forEach items="${list }" var="sendList">
+        	<c:set var="num" value="${num+1 }"/>
             <tr>
-                <td><input name="sending_check" type="checkbox">1</td>
-                <td>기획1팀</td>
-                <td>부장</td>
-                <td>하OO</td>
-                <td>010-1234-5454</td>
-                <td>1968-11-02</td>
-                <td>2021-10-30</td>
+                <td>${num }</td>
+                <td>${sendList.cempDept }</td>
+                <td>${sendList.cempJob }</td>
+                <td>${sendList.cempName }</td>
+                <td>${sendList.cempPhone }</td>
+                <td>${sendList.cempBirth }</td>
+                <td>${sendList.sendMsgDate }</td>
             </tr>
-            <tr>
-                <td><input name="sending_check" type="checkbox">2</td>
-                <td>기획1팀</td>
-                <td>부장</td>
-                <td>하OO</td>
-                <td>010-1234-5454</td>
-                <td>1968-11-02</td>
-                <td>2021-10-30</td>
-            </tr>
+            </c:forEach>   
         </tbody>
     </table>
 </body>

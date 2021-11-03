@@ -15,6 +15,9 @@
 		<typeAlias type="com.kh.spring.product.model.vo.Taste" alias="Taste"/>
 		<typeAlias type="com.kh.spring.snack.snackSubs.model.vo.SnackSubs" alias="SnackSubs"/>
 		<typeAlias type="com.kh.spring.birthday_HO.currentStatus.model.vo.CurStatus" alias="CurStatus"/>
+		<typeAlias type="com.kh.spring.company.model.vo.Company" alias="Company"/>
+		<typeAlias type="com.kh.spring.birthday_HO.sendingList.model.vo.SendingList" alias="SendingList"/>
+		<typeAlias type="com.kh.spring.birthday_HO.giftList.model.vo.GiftList" alias="GiftList"/>
 	</typeAliases>
 
 	<mappers>
@@ -23,6 +26,8 @@
 		<mapper resource="/mappers/birthday-mapper.xml"/>
 		<mapper resource="/mappers/snackCategory-mapper.xml"/>
 		<mapper resource="/mappers/snackSubs-mapper.xml"/>
+		<mapper resource="/mappers/company-mapper.xml"/>
+		<mapper resource="/mappers/inven-mapper.xml"/>
 	</mappers>
 
 

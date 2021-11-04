@@ -64,11 +64,11 @@
 
                         <tbody>
                             <tr>
-                                <td>카카오</td>
-                                <td>2021-10-18</td>
-                                <td>2021-10-23</td>
-                                <td>2021-10-25</td>
-                                <td>Y</td>
+                                <td>${s.comName}</td>
+                                <td>${s.listTransDate}</td>
+                                <td>${s.orderDeadline}</td>
+                                <td>${s.deliveryDate}</td>
+                                <td>${s.status}</td>
                             </tr>
 
                         </tbody>

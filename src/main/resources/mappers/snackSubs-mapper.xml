@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="preferTaste" column="PREFER_TASTE"/>
 		<result property="dislikeFlavour" column="DISLIKE_FLAVOUR"/>
 		<result property="deliveryDate" column="DELIVERY_DATE"/>
-		<result property="SettleDate" column="SETTLEMENT_DATE"/>
+		<result property="settleDate" column="SETTLEMENT_DATE"/>
 		<result property="modifyDate" column="MODIFY_DATE"/>
 		<result property="cancelDate" column="CANCEL_DATE"/>
 		<result property="subsStatus" column="SUBS_STATUS"/>

@@ -34,12 +34,6 @@ public class SnackSubsController {
 	@RequestMapping("insertSubs.sn")
 	public String insertSnackSubs(SnackSubs snackSubs, HttpSession session) {
 		
-		/*
-		String snackCategory = "";
-		if(snackArr != null) {
-			snackCategory = String.join(",", snackArr);
-		}*/
-		
 		//이미 구독 중일 경우 알림 띄우기 화면단에서 validation check?
 		
 		snackSubsService.insertSnackSubs(snackSubs);
@@ -75,8 +69,6 @@ public class SnackSubsController {
 	
 	@RequestMapping("cancelSubs.sn")
 	public String cancelSnackSubs(@RequestParam int subsNo) {
-		
-		System.out.println(subsNo);
 		
 		snackSubsService.cancelSnackSubs(subsNo);
 		

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="snackListMapper">
+
+	<resultMap type="ListSchedule" id="ListScheduleResultSet">
+		<result property="comCode" column="COM_CODE"/>
+		<result property="comName" column="COM_NAME"/>
+		<result property="deliveryDate" column="DELIVERY_DATE"/>
+		<result property="settleDate" column="SETTLEMENT_DATE"/>
+	</resultMap>
+	
+	<select id="selectSubsInfo" parameterType="String" resultMap="ListScheduleResultSet">
+		
+		<![CDATA[
+			SELECT A.COM_CODE, B.COM_NAME, A.DELIVERY_DATE, A.SETTLEMENT_DATE
+			FROM SNACK_SUBS A
+			JOIN COMPANY B ON A.COM_CODE = B.COM_CODE
+			WHERE A.COM_CODE = #{comCode}
+			AND A.SUBS_STATUS = 'Y'
+			AND A.SETTLEMENT_DATE < TRUNC(SYSDATE, 'MM')
+		]]>
+		
+	</select>
+	
+	<select id="countSnackList" parameterType="String" resultType="_int">
+
+		SELECT COUNT(*)
+		FROM SNACK_LIST
+		WHERE COM_CODE = #{comCode}
+		AND TRANS_STATUS = 'Y'
+		AND TRANS_DATE BETWEEN TRUNC(SYSDATE, 'MM') AND LAST_DAY(SYSDATE)
+		
+	</select>
+
+
+</mapper>

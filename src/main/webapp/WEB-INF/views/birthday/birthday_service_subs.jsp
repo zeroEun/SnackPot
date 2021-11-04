@@ -62,7 +62,7 @@
         </div>
         <hr>
         <label for="">수신자 정보</label><br>
-        <button class="btn btn-dark">사원 리스트 불러오기</button>
+        <button class="btn btn-dark">사원 정보 등록하러가기</button>
         <hr>
         <input type="hidden" name="com_code" value="${comCode}">
         

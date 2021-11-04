@@ -20,5 +20,6 @@ public class SnackpotEmp {
 	private String sempJob;
 	private String sempEmail;
 	private String sempCompany;
+	private String sempStatus;
 	
 }

@@ -22,8 +22,8 @@
         </div>
         &emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;<input type="text" class="input" id="memId" name="memId" placeholder=" 아이디 (영문, 숫자 조합 4~16자리)" minlength="4" maxlength="16">
         <button type="button" class="check" id="idCheckBtn" onclick="checkId();">중복확인</button><br>
-        <input type="password" class="input" id="memPw" name="memPw" placeholder=" 비밀번호 (영문, 숫자 조합 10~16자)" minlength="10" maxlength="16" autocomplete="new-password"><br>
-        <input type="password" class="input" id="memPwCheck" name="memPwCheck" placeholder=" 비밀번호 확인" minlength="10" maxlength="16"><br>
+        <input type="password" class="input" id="memPw" name="memPw" placeholder=" 비밀번호 (영문, 숫자 조합 8~16자)" minlength="8" maxlength="16" autocomplete="new-password"><br>
+        <input type="password" class="input" id="memPwCheck" name="memPwCheck" placeholder=" 비밀번호 확인" minlength="8" maxlength="16" autocomplete="new-password"><br>
         <input type="text" class="input" id="memName" name="memName" placeholder=" 이름" maxlength="4"><br>
         <input type="tel" class="input" id="phone" name="memPhone" placeholder=" 휴대폰 번호 (-제외입력)" maxlength="11"><br>
         <input type="text" class="input" name="memEmail" placeholder=" 이메일"><br>
@@ -161,6 +161,7 @@
 		var valueCheck = $('input[name="memType"]:checked').val();
 		var comName = $("input[name='comName']");
 		var comAddress = $("input[name='comAddress']");
+		var pw = $("input[name='memPw']").val();
 		if(memPw.val().trim() == "" || memPwCheck.val().trim() == ""){
 			alert("비밀번호를 입력하세요");
 			return false;
@@ -168,6 +169,9 @@
 			alert("비밀번호가 다릅니다");
 			checkPwd.val('');
 			checkPwd.focus();
+			return false;
+		}else if(pw.length < 8 || pw.length > 16){
+			alert("비밀번호는 8자에서 16자 이내로 입력해주세요");
 			return false;
 		}else if(memName.val().trim() == ""){
 			alert("이름을 입력하세요");

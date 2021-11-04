@@ -9,14 +9,18 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.kh.spring.company.model.vo.Company;
 import com.kh.spring.companyMember.model.service.CompanyMemberService;
 import com.kh.spring.companyMember.model.vo.CompanyMember;
 
+@SessionAttributes("loginUser")
 @Controller
 public class CompanyMemberController {
 	
@@ -29,6 +33,16 @@ public class CompanyMemberController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@RequestMapping("findId.co")
+	public String findID() {
+		return "company/companyMember/companyMemberFindId";
+	}
+	
+	@RequestMapping("findPw.co")
+	public String findPw() {
+		return "company/companyMember/companyMemberFindPw";
+	}
+	
 	@RequestMapping("enrollForm.co")
 	public String enrollForm() {
 		return "company/companyMember/companyMemberEnrollForm";
@@ -36,6 +50,16 @@ public class CompanyMemberController {
 	
 	@RequestMapping("login.co")
 	public String login() {
+		return "company/companyMember/companyMemberLogin";
+	}
+	
+	@RequestMapping("modifyMember.co")
+	public String modifyMember() {
+		return "company/companyMember/companyMemberLogin";
+	}
+	
+	@RequestMapping("modifyAdmin.co")
+	public String modifyAdmin() {
 		return "company/companyMember/companyMemberLogin";
 	}
 	 
@@ -58,16 +82,19 @@ public class CompanyMemberController {
 	}
 	
 	@RequestMapping("insertComMem.co")
-	public String insertMember(@ModelAttribute CompanyMember m, String memType, String comName, String comAddress, HttpSession session) {
+	public String insertMember(@ModelAttribute CompanyMember m, String comCodeMem, String memType, String comName, String comAddress, HttpSession session) {
 		
 		//암호회된 비밀번호
 		String encPwd = bCryptPasswordEncoder.encode(m.getMemPw());
 		m.setMemPw(encPwd);
 		
+		m.setMemStatus("Y");
+		
 		//회원과 관리자에 따라 구분 
 		if(memType.equals("member")) {
 			m.setAdmin("N");
-//			cms.insertCompanyMember(m);
+			m.setComCode(comCodeMem);
+			cms.insertCompanyMember(m);
 		}else {
 			m.setAdmin("Y");
 			co.setComName(comName);
@@ -83,13 +110,29 @@ public class CompanyMemberController {
 	        System.out.println("회사코드 : " + comCode);
 	        System.out.println("괸리자 : " + m);
 	        
+	        m.setComCode(comCode);
 	        co.setComCode(comCode);
 			cms.insertCompany(co);
-//			cms.insertCompanyMember(m);
+			cms.insertCompanyAdmin(m);
 		}
 		
 		session.setAttribute("msg", "회원가입 성공");
 		return "redirect:/";
 	}
 	
+	@RequestMapping("loginMember.co")
+	public String loginMember(CompanyMember m, Model model) {
+		
+		CompanyMember loginUser;
+
+			loginUser = cms.loginMember(bCryptPasswordEncoder, m);
+			model.addAttribute("loginUser", loginUser); 
+			return "redirect:/"; 
+	}
+	
+	@RequestMapping("logout.co")
+	public String logoutMember(SessionStatus status) { 
+		status.setComplete(); 
+		return "redirect:/";
+	}
 }

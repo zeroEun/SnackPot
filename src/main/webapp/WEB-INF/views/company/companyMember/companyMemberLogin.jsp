@@ -11,12 +11,12 @@
   
         <div id="outer">
             <div id="inner">
-            	<form method="POST">
+            	<form id="loginForm" method="POST">
                 <h1 id="title">LOGIN</h1><br>
                 <input type="text" class="input" id="memId" name="memId" placeholder=" 아이디" minlength="4" maxlength="16"><br>
-                <input type="password" class="input" id="memPw" name="memPw" placeholder=" 비밀번호" minlength="10" maxlength="16" autocomplete="new-password"><br>
-                <div id="find"><a href="">아이디 찾기</a><label> | </label><a href="">비밀번호 찾기</a><br><br></div>
-                <button type="submit" id="loginBtn" formaction="loginComMem.co">로그인</button><br>
+                <input type="password" class="input" id="memPw" name="memPw" placeholder=" 비밀번호" minlength="8" maxlength="16" autocomplete="new-password"><br>
+                <div id="find"><a href="findId.co">아이디 찾기</a><label> | </label><a href="findPw.co">비밀번호 찾기</a><br><br></div>
+                <button type="submit" id="loginBtn" formaction="loginMember.co">로그인</button><br>
                 </form>
                 <button type="button" id="enrollBtn" onclick="location='<%=request.getContextPath()%>/enrollForm.co'">회원가입</button>
             </div>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.service.InvenManagementService;
 import com.kh.spring.product.model.vo.Product;
+import com.kh.spring.product.model.vo.ProductAttachment;
 
 @Controller
 public class InvenManagementController {
@@ -35,29 +37,35 @@ public class InvenManagementController {
 	
 	//제품 insert
 		@RequestMapping("insert.pm")
-		public String insertSnack(@ModelAttribute Product p, HttpSession session, HttpServletRequest request
+		public String insertSnack(Product p,Model model, HttpSession session, HttpServletRequest request
 									,@RequestParam(name="uploadFile", required = false) MultipartFile file) {
 			
 			System.out.println(file.getOriginalFilename());
 			
+			
+			System.out.println(file);
 			System.out.println(p);
 			
+			ProductAttachment pa = new ProductAttachment();
 			if(!file.getOriginalFilename().equals("")) {
 				
-				String changeName = saveFile(file, request);
+				String changeName = saveFile(file, request, p.getSnackNo());
 				if(changeName != null) {
-					p.setChangeName(changeName);
+					pa.setChangeName(changeName);
+					//pa.setFilePath(file.);
 					
 				}
 			}
 			
+			
 			invenManagementService.insertSnack(p);
+			invenManagementService.insertSnackAttach(p);
 		
 			session.setAttribute("msg", "상품 등록 성공");
-			return "headoffice/invenManagement/snackEnrollForm";
+			return "redirect:/headoffice/invenManagement/snackEnrollForm";
 		}
 		
-		private String saveFile(MultipartFile file, HttpServletRequest request) {
+		private String saveFile(MultipartFile file, HttpServletRequest request, int snackNo) {
 			
 			String resources = request.getSession().getServletContext().getRealPath("resources");
 			String savePath = resources+"/upload_file";

@@ -22,9 +22,19 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 		int result = invenManagementDao.insertSnack(sqlSession, p);
 		
 		if(result < 0) {
-			throw new CommException("등록에 실패했습니다.");
+			throw new CommException("상품 등록에 실패했습니다.");
 		}
 		
+		
+	}
+
+	@Override
+	public void insertSnackAttach(Product p) {
+		int result = invenManagementDao.insertSnackAttach(sqlSession, p);
+		
+		if(result < 0) {
+			throw new CommException("상품 이미지 등록에 실패했습니다.");
+		}
 		
 	}
 

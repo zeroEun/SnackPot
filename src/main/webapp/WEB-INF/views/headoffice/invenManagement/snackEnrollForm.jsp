@@ -26,13 +26,13 @@
 
         <h2>간식품목등록</h2>
 
-        <form id="snackEnroll" action="insert.pm" method="post">
+        <form id="snackEnroll" action="insert.pm" method="post" enctype="multipart/form-data">
 
 
 
             <table border="1px">
                <tr>
-                   <td rowspan="9">사진등록
+                   <td rowspan="10">사진등록
                        <br>
                        <input type="file" name="uploadFile">
                 </td>
@@ -42,6 +42,12 @@
                     <br>
                     <input type="text" name="snackName" class="inputForm">
                     </td>
+               </tr>
+                 <tr>
+                   <td>상품코드
+                    <br>
+                    <input type="text" name="snackNo" class="inputForm">
+                   </td>
                </tr>
                <tr>
                    <td>상품단위

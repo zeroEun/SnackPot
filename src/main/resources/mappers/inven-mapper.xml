@@ -8,13 +8,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 INSERT INTO SNACK 
-VALUE (SNACK_SEQ.NEXTVAL, ${snackName}, ${purchasePrice},
-${releasePrice}, sysdate, 'Y', 0, ${unit}, ${categoryNo}, ${detailNo},
+VALUES (${snackNo}, '${snackName}', ${purchasePrice},
+${releasePrice}, sysdate, 'Y', 0, '${unit}', ${categoryNo}, ${detailNo},
 ${tasteNo}, ${aromaNo}
 )
 
 </insert>
 
+<!-- <insert id="insertSnackAttach" parameterType="Product">
 
+INSERT INTO 
+
+</insert>
+ -->
 
 </mapper>

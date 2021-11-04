@@ -10,7 +10,12 @@ public class InvenManagementDao {
 
 	public int insertSnack(SqlSessionTemplate sqlSession, Product p) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert("invenMapper.insertSnack", p);
+	}
+
+	public int insertSnackAttach(SqlSessionTemplate sqlSession, Product p) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("invenMapper.insertSnackAttach", p);
 	}
 	
 	

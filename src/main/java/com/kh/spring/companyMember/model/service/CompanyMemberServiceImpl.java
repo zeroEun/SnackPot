@@ -2,11 +2,13 @@ package com.kh.spring.companyMember.model.service;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.company.model.vo.Company;
 import com.kh.spring.companyMember.model.dao.CompanyMemberDao;
+import com.kh.spring.companyMember.model.vo.CompanyMember;
 
 @Service
 public class CompanyMemberServiceImpl implements CompanyMemberService {
@@ -39,6 +41,38 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 		if(result < 0) {
 			throw new CommException("회사등록에 실패했습니다");
 		}
+	}
+
+	@Override
+	public void insertCompanyMember(CompanyMember m) {
+		int result = cmd.insertCompanyMember(sqlSession, m);
+		
+		if(result < 0) {
+			throw new CommException("회사등록에 실패했습니다");
+		}
+	}
+
+	@Override
+	public void insertCompanyAdmin(CompanyMember m) {
+		int result = cmd.insertCompanyAdmin(sqlSession, m);
+		
+		if(result < 0) {
+			throw new CommException("회사등록에 실패했습니다");
+		}
+	}
+
+	@Override
+	public CompanyMember loginMember(BCryptPasswordEncoder bCryptPasswordEncoder, CompanyMember m) {
+		CompanyMember loginUser = cmd.loginMember(sqlSession, m);
+		if(loginUser == null) {
+			throw new CommException("loginUser 확인"); 
+		}
+
+		if(!bCryptPasswordEncoder.matches(m.getMemPw(), loginUser.getMemPw())) {
+			throw new CommException("암호 불일치");
+		}
+		
+		return loginUser;
 	}
 	
 }

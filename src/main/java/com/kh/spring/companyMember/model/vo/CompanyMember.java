@@ -20,5 +20,6 @@ public class CompanyMember {
 	private String memEmail;
 	private String comCode;
 	private String admin;
+	private String memStatus;
 
 }

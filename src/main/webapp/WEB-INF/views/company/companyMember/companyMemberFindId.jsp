@@ -36,15 +36,46 @@
     </style>
 </head>
 <body>
- <form method="POST">
+ <form id="findIdForm" method="POST">
         <div id="outer">
             <div id="inner">
                 <h1 id="title">FIND ID</h1><br>
                 <input type="text" class="input" id="memName" name="memName" placeholder=" 이름" maxlength="4"><br>
                 <input type="tel" class="input" id="phone" name="memPhone" placeholder=" 휴대폰 번호 (-제외입력)" maxlength="11"><br>
-                <button type="submit" id="findIdBtn" formaction="findIdBtn.co">아이디 찾기</button><br>
+                <button type="submit" id="findIdBtn" onclick="findId();">아이디 찾기</button><br>
             </div>
         </div>
     </form>
+    
+<script>
+function findId(){
+	var memName = $("#findIdForm input[name=memName]");
+	var memPhone = $("#findIdForm input[name=memPhone]");
+	if(memName.val()==""){
+		alert("이름을 입력해주세요");
+		return false;
+	}else if(memPhone.val()==""){
+		alert("휴대폰 번호를 입력해주세요");
+		return false;
+	}
+	$.ajax({
+		url: "findIdBtn.co",
+		type:"post",
+		data:{comCode : comCode.val()},
+		success:function(result){
+			if(result > 0){
+				alert("인증에 성공하였습니다.");
+				comCode.attr("readonly","true");
+			}else{
+				alert("인증에 실패했습니다. 다시 입력해주세요.");
+				memId.focus();		
+			}
+		},
+		error:function(){
+			console.log("서버통신실패");
+		}
+	})
+}
+</script>
 </body>
 </html>

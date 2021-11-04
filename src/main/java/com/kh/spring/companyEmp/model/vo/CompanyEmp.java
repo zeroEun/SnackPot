@@ -22,5 +22,6 @@ public class CompanyEmp {
 	private int cempBirth;
 	private String comCode;
 	private int cempNum;
+	private String cempStatus;
 	
 }

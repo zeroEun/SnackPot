@@ -28,8 +28,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND CATEGORY_NO = 1
 </select>
 
+<!-- TO_DATE(EXTRACT(YEAR FROM SYSDATE)  ||  EXTRACT(MONTH FROM SYSDATE) || DELIVERY_DATE , 'YYYY-MM-DD') -->
 <select id="selectDeliveryDate" parameterType="string" resultType = "string">
-	SELECT DELIVERY_DATE 
+	SELECT DELIVERY_DATE
 	FROM SNACK_SUBS
 	WHERE COM_CODE = #{comCode}
 </select>
@@ -42,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <insert id="insertWishList" parameterType="hashMap">
 	INSERT INTO WISHLIST
-	VALUES (WISHLIST_SEQ.NEXTVAL , #{comCode} , #{wishSnackNo}, DEFAULT , #{wishEndDate})
+	VALUES (WISH_SEQ.NEXTVAL , #{comCode} , #{wishSnackNo}, DEFAULT , #{wishEndDate})
 </insert>
 
  <update id="updateSnackCount" parameterType="hashMap">
@@ -50,5 +51,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE SNACK_NO = #{wishSnackNo} 
 </update>
 
+ <select id="selectDrinkList" resultMap="productResultSet">
+		SELECT S.SNACK_NO , S.SNACK_NAME , S.PURCHASE_PRICE , S.CATEGORY_NO
+				 , S.DETAIL_NO ,S.TASTE_NO , S.AROMA_NO , A.CHANGE_NAME
+		FROM SNACK S
+		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
+		WHERE STATUS = 'Y' 
+		AND CATEGORY_NO = 2
+		AND DETAIL_NO = #{dtc}
+</select>
 
 </mapper>

@@ -54,4 +54,10 @@ public class ProductServiceImpl implements ProductService {
 		
 		return result1;
 	}
+
+	@Override //음료리스트
+	public ArrayList<Product> selectDrinkList(int dtc) {
+		
+		return productDao.selectDrinkList(sqlSession , dtc);
+	}
 }

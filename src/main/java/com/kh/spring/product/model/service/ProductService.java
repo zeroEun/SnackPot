@@ -20,4 +20,6 @@ public interface ProductService {
 	
 	int updateSnackCount(HashMap<String, Object> map);
 
+	ArrayList<Product> selectDrinkList(int dtc);
+
 }

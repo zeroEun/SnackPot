@@ -27,7 +27,7 @@ public class SnackSubs {
 	private String preferTaste;
 	private String dislikeFlavour;
 	private int deliveryDate;
-	private Date SettleDate;
+	private Date settleDate;
 	private Date modifyDate;
 	private Date cancelDate;
 	private String subsStatus;

@@ -65,7 +65,7 @@
                         <a class="dropdown-item" href="list.pro">간식 고르기</a> 
                         <a class="dropdown-item" href="#">간식 조회</a> 
                         <!--구독회사 담당자-->
-                        <a class="dropdown-item" href="#">구독 정보</a>
+                        <a class="dropdown-item" href="subsInfo.sn">구독 정보</a>
                         <a class="dropdown-item" href="#">리스트 조회</a>
                         <a class="dropdown-item" href="#">주문내역</a>
                     </div>
@@ -97,22 +97,35 @@
                     </div>
                     <div id="header_1_right">
                         <!-- 로그인 전 -->
-                        <c:if test="${ empty sessionScope.loginUser }">
+                        <c:if test="${ empty sessionScope.loginUser}">
                             <a class="login" href="login.co">로그인</a>
                             <a class="managerLogin" href="#">관리자 로그인</a> 
                         </c:if>
                         
-                        <!-- 로그인 후 (직원일때 , 본사직원일때) -->
-                        <c:if test="${ !empty sessionScope.loginUser }">
+                        <!-- 로그인 후 (구독회사 관리자일때) -->
+                        <c:if test="${ loginUser.admin == 'Y' }">
                             <li class="nav-item dropdown" style="list-style: none;"> 
                                 <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <label>구독회사 직원  님</label></a>
+                                    <label>${ sessionScope.loginUser.memName}님</label> <a class="logout" href="logout.co">로그아웃</a></a>
                                 <div class="dropdown-menu"> 
-                                    <a class="dropdown-item" href="#">회원정보 수정</a> 
+                                    <a class="dropdown-item" href="modifyAdmin.co">회원정보 수정</a> 
                                     <a class="dropdown-item" href="#">회원관리</a>
                                 </div>
                             </li>      
                        </c:if>  
+                       
+                        <!-- 로그인 후 (구독회사 직원) -->
+                        <c:if test="${ loginUser.admin == 'N' }">
+                            <li class="nav-item dropdown" style="list-style: none;"> 
+                                <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <label>${ sessionScope.loginUser.memName}님</label> <a class="logout" href="logout.co">로그아웃</a></a>
+                                <div class="dropdown-menu"> 
+                                    <a class="dropdown-item" href="modifyMember.co">회원정보 수정</a> 
+                                    <a class="dropdown-item" href="#">회원관리</a>
+                                </div>
+                            </li>      
+                       </c:if>  
+                       <!-- 본사일때 -->
                       <!--<c:if test="${ !empty sessionScope.loginUser }">
                             <li class="nav-item dropdown" style="list-style: none;"> 
                                 <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">

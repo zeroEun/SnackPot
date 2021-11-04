@@ -25,13 +25,27 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
-	//상품리스트 가져오기
+	//스낵류(1)
 	@RequestMapping("list.pro")
 	public String selectList(Model model) {
 		
 		ArrayList<Product> list = productService.selectList();
-		System.out.println("product list : " + list);
+//		System.out.println("product list : " + list);
 		model.addAttribute("list", list);
+		model.addAttribute("ctdNo" , "1");
+		System.out.println(model.toString());
+		
+		return "product/productSnackView";
+	}
+	
+	//음료류 (2)
+	@RequestMapping("list.drink")
+	public String selectDrinkList(Model model , @RequestParam(value="dtc")int dtc) {
+		System.out.println("dtc : " + dtc);// 세부카테고리 받아오기
+		
+		ArrayList<Product> list = productService.selectDrinkList(dtc);
+		model.addAttribute("list", list);
+		model.addAttribute("ctdNo" , "2");
 		
 		return "product/productSnackView";
 	}
@@ -42,15 +56,27 @@ public class ProductController {
 		//System.out.println("wishSnackNo : " + wishSnackNo);
 		
 		//로그인하면 사원 session에서 회사코드 가져와서 같이 insert해주기
-		String comCode = "KAKAO";
-		
+		//String comCode = "KAKAO";
+		String comCode = "A211104";
 		//마감날짜를 간식구독 테이블에서 가져오기
-		String deliveryDate = productService.selectDeliveryDate(comCode);
-		Date changeDate = null;
+		int deliveryDate =  Integer.parseInt(productService.selectDeliveryDate(comCode)); //8
+		System.out.println("deliveryDate : " + deliveryDate);
+		
+	/* test */	
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		
+		cal.set(Calendar.DAY_OF_MONTH, deliveryDate);
+		cal.add(Calendar.MONTH, +1);
+		cal.add(Calendar.DATE, -8); 
+		System.out.println(sdf.format(cal.getTime()));
+		
+/*		Date changeDate = null;
 	
-		//String -> Date
+//		String -> Date 
 		SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
+			
 			changeDate = dtf.parse(deliveryDate);
 			
 		} catch (ParseException e) {
@@ -61,12 +87,14 @@ public class ProductController {
 		//마감 날짜 : 간식리스트 발송일 (D-7)일 보다 하루전 (D-8)
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(changeDate);
+		cal.add(Calendar.MONTH, +1);
 		cal.add(Calendar.DATE, -8); 
 		
 		String wishEndDate = dtf.format(cal.getTime());
 	
-//		System.out.println("deliveryDate : " + deliveryDate);
-//		System.out.println("wishEndDate : " + wishEndDate);
+		System.out.println("deliveryDate : " + deliveryDate);
+		System.out.println("wishEndDate : " + wishEndDate);
+		
 		
 		//HashMap으로 insert
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -82,7 +110,7 @@ public class ProductController {
 		}else {
 			int result = productService.updateSnackCount(map);
 		}
-		
+	*/	
 		
 		return "product/productSnackView";
 	

@@ -91,6 +91,7 @@
 
     </style>
 <body>
+	<!-- 메뉴바 아래  큰 드롭 카테고리-->
     <nav class="navbar navbar-expand-sm bg-light ">
         <ul class="navbar-nav mr-auto ">
             <li class="nav-item dropdown"> 
@@ -105,15 +106,15 @@
                 <a class="dropdown-item" href="#">시리얼바</a>
             </div>
           </li>
-          <li class="nav-item dropdown"> 
+          <li class="nav-item dropdown"> <!-- 큰카테고리 : 2 -->
             <a class="nav-link" data-toggle="dropdown" href="#" role="button" >음료</a>
             <div class="dropdown-menu"> 
-                <a class="dropdown-item" href="#">탄산음료</a> 
-                <a class="dropdown-item" href="#">이온음료</a> 
-                <a class="dropdown-item" href="#">과일음료수</a>
-                <a class="dropdown-item" href="#">에너지음료</a>
-                <a class="dropdown-item" href="#">커피</a>
-                <a class="dropdown-item" href="#">유산균</a>
+                <a class="dropdown-item" href="list.drink?dtc=1" >탄산음료</a> 
+                <a class="dropdown-item" href="list.drink?dtc=2">이온음료</a> 
+                <a class="dropdown-item" href="list.drink?dtc=3">과일음료수</a>
+                <a class="dropdown-item" href="list.drink?dtc=4">에너지음료</a>
+                <a class="dropdown-item" href="list.drink?dtc=5">유산균</a>
+                <a class="dropdown-item" href="list.drink?dtc=6">커피</a>
             </div>
           </li>
           <li class="nav-item dropdown"> 
@@ -130,6 +131,9 @@
       </nav>
     <br>
     <br>
+    <!-- 세부 카테고리 버튼 -->
+    <!-- 스낵 -->
+ 	<c:if test="${ctdNo eq '1'}">
     <div class="detail-menu">
       <div class="btn-group">
         <button type="button" class="btn btn-outline">스낵</button>
@@ -141,6 +145,26 @@
         <button type="button" class="btn btn-outline">시리얼바</button>
       </div>
     </div>
+  </c:if>
+  
+  
+    <!-- 음료 -->
+    <c:if test="${ctdNo eq '2'}">
+    <div class="detail-menu">
+      <div class="btn-group">
+        <button type="button" class="btn btn-outline">탄산음료</button>
+        <button type="button" class="btn btn-outline">이온음료</button>
+        <button type="button" class="btn btn-outline">과일음료</button>
+        <button type="button" class="btn btn-outline">에너지음료</button>
+        <button type="button" class="btn btn-outline">유산균음료</button>
+        <button type="button" class="btn btn-outline">커피</button>
+      </div>
+    </div>
+    </c:if>
+ 
+	
+    
+    <!-- 랭킹순위 -->
 	 <ul class="rank">
 	    <li><a>판매인기순</a></li>
 	    <li><a>높은가격순</a></li>
@@ -148,6 +172,7 @@
 	  </ul>
      <br><br><br><br>
    
+   <!-- 상품정렬 -->
    <div class="container-fluid">
     <div class="row">
      <c:forEach items="${list}" var="p">
@@ -182,6 +207,7 @@
  		})
  	} 	
  	
+
  	
 </script>
 </html>

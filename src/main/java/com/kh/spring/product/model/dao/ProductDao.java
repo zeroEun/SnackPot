@@ -42,4 +42,10 @@ public class ProductDao {
 		return sqlSession.update("productMapper.updateSnackCount" , map);
 	}
 
+
+	public ArrayList<Product> selectDrinkList(SqlSessionTemplate sqlSession, int dtc) {
+	
+		return (ArrayList)sqlSession.selectList("productMapper.selectDrinkList" , dtc);
+	}
+
 }

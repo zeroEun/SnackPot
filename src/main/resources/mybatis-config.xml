@@ -19,6 +19,10 @@
 		<typeAlias type="com.kh.spring.birthday_HO.sendingList.model.vo.SendingList" alias="SendingList"/>
 		<typeAlias type="com.kh.spring.birthday_HO.giftList.model.vo.GiftList" alias="GiftList"/>
 		<typeAlias type="com.kh.spring.snack.snackList.model.vo.ListSchedule" alias="ListSchedule"/>
+		<typeAlias type="com.kh.spring.product.model.vo.ProductAttachment" alias="ProductAttachment"/>
+		<typeAlias type="com.kh.spring.product.arrival.model.vo.Arrival" alias="Arrival"/>
+		<typeAlias type="com.kh.spring.product.release.model.vo.Release" alias="Release"/>
+		
 	</typeAliases>
 
 	<mappers>

@@ -1,5 +1,7 @@
 package com.kh.spring.snack.snackSubs.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.spring.product.model.vo.SnackSubCategory;
 import com.kh.spring.snack.snackSubs.model.service.SnackSubsService;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
@@ -73,6 +77,15 @@ public class SnackSubsController {
 		snackSubsService.cancelSnackSubs(subsNo);
 		
 		return "redirect:/";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="selectSubCate.sn" , produces="application/json; charset=utf-8")
+	public ArrayList<SnackSubCategory> selectSubCategory(@RequestParam int cNo) {
+		
+		ArrayList<SnackSubCategory> category = snackSubsService.selectSubCategory(cNo);
+		
+		return category;
 	}
 	
 }

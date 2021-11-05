@@ -15,6 +15,7 @@ import lombok.ToString;
 @ToString
 public class ListSchedule {
 	
+	private int subsNo;
 	private String comCode;
 	private String comName;
 	private String listTransDate;

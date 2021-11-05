@@ -51,7 +51,7 @@
                     <hr>
 
                     <form id="subsEnroll" method="post" action="insertSubs.sn">
-                    	<input type="hidden" name="comCode" value="k2111021928"><!-- ${loginUser.comCode } -->
+                    	<input type="hidden" name="comCode" value="k2111042028"><!-- ${loginUser.comCode } -->
 
                         <div class="form-group row" id="snack-budget">
 

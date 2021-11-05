@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,14 +64,24 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>${s.comName}</td>
-                                <td>${s.listTransDate}</td>
-                                <td>${s.orderDeadline}</td>
-                                <td>${s.deliveryDate}</td>
-                                <td>${s.status}</td>
-                            </tr>
-
+	                        <c:forEach items="${schedule}" var="s">
+	                        
+	                        	<form action="createListForm.sn" method="post"  class="postForm" id="postForm${s.subsNo}">
+	                        		<input type="hidden" name="subsNo" value="${s.subsNo}">
+	                        		<input type="hidden" name="comCode" value="${s.comCode}">
+	                        		<input type="hidden" name="comName" value="${s.comName}">
+	                        		<input type="hidden" name="orderDeadline" value="${s.orderDeadline}">
+	                        		<input type="hidden" name="deliveryDate" value="${s.deliveryDate}">
+	                        	</form>
+	                        
+	                            <tr>
+	                                <td><button type="button"  class="btn comBtn" id="comBtn" value="postForm${s.subsNo}">${s.comName}</button></td>
+	                                <td>${s.listTransDate}</td>
+	                                <td>${s.orderDeadline}</td>
+	                                <td>${s.deliveryDate}</td>
+	                                <td>${s.status}</td>
+	                            </tr>
+							</c:forEach>
                         </tbody>
 
                     </table>
@@ -87,8 +98,16 @@
 	$(function(){
 		var today = new Date();
 		var month = today.getMonth()+1+'월';
-		console.log(month);
 		$('.month').text(month);
+	
+		
+		$('.comBtn').click(function(){
+			
+			var no = '#' + $(this).val();
+			$(no).submit();
+		});
+		
+		
 	});
 </script>
 

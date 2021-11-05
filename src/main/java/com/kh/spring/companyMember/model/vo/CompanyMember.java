@@ -21,5 +21,21 @@ public class CompanyMember {
 	private String comCode;
 	private String admin;
 	private String memStatus;
-
+	private String comName;
+	private String comAddress;
+	
+	public CompanyMember(String memId, String memPw, String memName, String memPhone, String memEmail, String comCode,
+			String admin, String memStatus) {
+		super();
+		this.memId = memId;
+		this.memPw = memPw;
+		this.memName = memName;
+		this.memPhone = memPhone;
+		this.memEmail = memEmail;
+		this.comCode = comCode;
+		this.admin = admin;
+		this.memStatus = memStatus;
+	}
+	
+	
 }

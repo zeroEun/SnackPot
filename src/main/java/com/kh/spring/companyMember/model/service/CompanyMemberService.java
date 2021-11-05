@@ -19,4 +19,12 @@ public interface CompanyMemberService {
 
 	CompanyMember loginMember(BCryptPasswordEncoder bCryptPasswordEncoder, CompanyMember m);
 
+	String findId(String memName, String memPhone);
+
+	Company selectCompany(String comCode);
+
+	void updateCompany(Company co);
+
+	void updateMember(CompanyMember m);
+
 }

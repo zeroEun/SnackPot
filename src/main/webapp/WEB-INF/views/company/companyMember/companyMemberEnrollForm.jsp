@@ -9,6 +9,7 @@
 <title>구독회사 멤버 회원가입</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 	<form id="enrollForm" action="insertComMem.co" method="POST" autocomplete="off">
         <div id="outer">
         <div id="inner">
@@ -193,6 +194,7 @@
 			return false;
 		}else{
 			$("#enrollForm").submit();
+			alert("회원가입이 완료되었습니다.")
 			return true;
 		}
 		

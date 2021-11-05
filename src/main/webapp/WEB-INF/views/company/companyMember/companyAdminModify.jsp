@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <title>구독회사 관리자 정보변경</title>
   <style>
         #outer{
@@ -38,22 +40,21 @@
     </style>
 </head>
 <body>
- <form action="insertComMem.co" method="POST">
+<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
+ <form id="adminModifyForm" action="updateAdmin.co" method="POST">
         <div id="outer">
             <div id="inner">
                 <h1 id="title">MODIFY</h1><br>
-                <div id="modify"><a href="">비밀번호 변경</a><label> &ensp; </label><a href="">회원 탈퇴</a><br><br></div>
-                <input type="text" class="input" id="memId" name="memId" placeholder=" 아이디" minlength="4" maxlength="16"><br>
+                <div id="modify"><a href="modifyPw.co">비밀번호 변경</a><label>&nbsp | &nbsp</label><a href="">관리자 변경</a><label>&nbsp | &nbsp</label><a href="">회원 탈퇴</a><br><br></div>
+                <input type="text" class="input" id="memId" name="memId" value="${ loginUser.memId }" readonly><br>
                 <input type="password" class="input" id="memPw" name="memPw" placeholder=" 비밀번호" minlength="10" maxlength="16"><br>
-                <input type="password" class="input" id="memPwCheck" name="memPwCheck" placeholder=" 비밀번호 확인" minlength="10" maxlength="16"><br>
-                <input type="text" class="input" id="memName" name="memName" placeholder=" 이름" maxlength="4"><br>
-                <input type="tel" class="input" id="phone" name="memPhone" placeholder=" 휴대폰 번호 (-제외입력)" maxlength="11"><br>
-                <input type="text" class="input" name="memEmail" placeholder=" 이메일"><br>
-                <div id="adminForm">
-                    <input type="text" class="input" name="comName" placeholder=" 회사명"><br>
-                    <input type="text" class="input" name="comAddress" placeholder=" 회사주소"><br>
-                </div>
-                <button type="submit" id="btn">정보수정</button>
+                <input type="password" class="input" id="memPwCheck" name="memPwCheck" placeholder=" 비밀번호 확인" minlength="8" maxlength="16" autocomplete="new-password"><br>
+                <input type="text" class="input" id="memName" name="memName" placeholder=" 이름" value="${ loginUser.memName }" maxlength="4"><br>
+                <input type="tel" class="input" id="phone" name="memPhone" placeholder=" 휴대폰 번호 (-제외입력)" value="${ loginUser.memPhone }" maxlength="11"><br>
+                <input type="text" class="input" name="memEmail" placeholder=" 이메일" value="${ loginUser.memEmail }"><br>       
+                <input type="text" class="input" name="comName" placeholder=" 회사명" value="${ loginUser.comName }"><br>
+                <input type="text" class="input" name="comAddress" placeholder=" 회사주소" value="${ loginUser.comAddress }"><br>
+                <button type="button" id="btn" onclick="modify();">정보수정</button>
             </div>
         </div>
     </form>
@@ -95,7 +96,48 @@
                 $(this).val($(this).val().replace(replaceChar, ""));
        });
 
-    });       
+    });    
+    
+  //기타 유효성 체크
+    function modify(){
+		var memPw = $("input[name='memPw']");
+		var memPwCheck = $("input[name='memPwCheck']");
+		var memName = $("input[name='memName']");
+		var memPhone = $("input[name='memPhone']");
+		var memEmail = $("input[name='memEmail']");
+		var valueCheck = $('input[name="memType"]:checked').val();
+		var comName = $("input[name='comName']");
+		var comAddress = $("input[name='comAddress']");
+		var pw = $("input[name='memPw']").val();
+		if(memPw.val().trim() == "" || memPwCheck.val().trim() == ""){
+			alert("비밀번호를 입력하세요");
+			return false;
+		}else if(memPw.val() != memPwCheck.val()){
+			alert("비밀번호가 다릅니다");
+			checkPwd.val('');
+			checkPwd.focus();
+			return false;
+		}else if(memName.val().trim() == ""){
+			alert("이름을 입력하세요");
+			return false;
+		}else if(memPhone.val().trim() == ""){
+			alert("휴대폰번호를 입력하세요");
+			return false;
+		}else if(memEmail.val().trim() == ""){
+			alert("이메일을 입력하세요");
+			return false;
+		}else if(valueCheck=="admin" && comName.val().trim() == ""){
+			alert("회사명을 입력하세요");
+			return false;
+		}else if(valueCheck=="admin" && comAddress.val().trim() == ""){
+			alert("회사주소를 입력하세요");
+			return false;
+		}else{
+			$("#adminModifyForm").submit();
+			return true;
+		}
+		
+	}
 
 </script>
 </body>

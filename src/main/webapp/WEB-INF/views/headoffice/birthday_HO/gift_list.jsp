@@ -21,20 +21,6 @@
 	display: inline-block;
 }
 </style>
-<script>
-    $(function(){
-        $("#wholeChk").click(function(){
-            var checkYN = $("#wholeChk").is(":checked")
-
-            if(checkYN == true){
-                $("input[name='giftChk']").attr("checked",true);
-            }else{
-                $("input[name='giftChk']").attr("checked",false);
-            }
-        })
-
-    })
-</script>
 <body>
 	<h3>선물 리스트</h3>
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteGift">선택 삭제</button>
@@ -163,7 +149,7 @@
 
 	<div class="row row-cols-1 row-cols-md-5">
 		<c:forEach items="${list }" var="giftList">
-			<div class="col mb-4">
+			<div class="col mb-4 gift">
 				<div class="card h-100">
 					<div class="form-check">
 						<input type="checkbox" class="form-check-input" name="giftChk">
@@ -173,7 +159,7 @@
 					<div class="card-body">
 						<h5 class="card-title">${giftList.giftBrand }</h5>
 						<p class="card-text">${giftList.giftName }</p>
-						<p class="card-text">${giftList.giftPrice }</p>
+						<h6 class="card-text">${giftList.giftPrice }</h6>
 					</div>
 				</div>
 			</div>

@@ -24,4 +24,9 @@ public class BirthdayDao {
 		return sqlSession.selectOne("birthdayMapper.subscribeChk", com_code);
 	}
 
+	public int countEmp(SqlSessionTemplate sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("birthdayMapper.countEmp", comCode);
+	}
+
 }

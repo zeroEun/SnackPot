@@ -49,26 +49,24 @@ public class InvenManagementController {
 			ProductAttachment pa = new ProductAttachment();
 			if(!file.getOriginalFilename().equals("")) {
 				
-				String changeName = saveFile(file, request, p.getSnackNo());
-				if(changeName != null) {
-					pa.setChangeName(changeName);
-					//pa.setFilePath(file.);
-					
-				}
+				pa = saveFile(file, request, p.getSnackNo());
+						
 			}
 			
 			
 			invenManagementService.insertSnack(p);
-			invenManagementService.insertSnackAttach(p);
+			invenManagementService.insertSnackAttach(pa);
 		
 			session.setAttribute("msg", "상품 등록 성공");
-			return "redirect:/headoffice/invenManagement/snackEnrollForm";
+			return "redirect:/snackEnrollForm.pm";
 		}
 		
-		private String saveFile(MultipartFile file, HttpServletRequest request, int snackNo) {
+		private ProductAttachment saveFile(MultipartFile file, HttpServletRequest request, int snackNo) {
+			
+			ProductAttachment pa = new ProductAttachment();
 			
 			String resources = request.getSession().getServletContext().getRealPath("resources");
-			String savePath = resources+"/upload_file";
+			String savePath = resources+"/upload_files/";
 			
 			System.out.println("savePath : " + savePath);
 			
@@ -84,13 +82,18 @@ public class InvenManagementController {
 			
 			try {
 				file.transferTo(new File(savePath +changeName));
+				pa.setChangeName(changeName);
+				pa.setFilePath(savePath);
+				pa.setSnackNo(snackNo);
+				pa.setOriginName(originName);
+				
 			} catch (IllegalStateException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				throw new CommException("file upload error");
 			}
 			
-			return changeName;
+			return pa;
 		}
 
 

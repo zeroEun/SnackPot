@@ -15,11 +15,15 @@ ${tasteNo}, ${aromaNo}
 
 </insert>
 
-<!-- <insert id="insertSnackAttach" parameterType="Product">
+<insert id="insertSnackAttach" parameterType="ProductAttachment">
 
-INSERT INTO 
+INSERT INTO SNACK_ATTACHMENT
+VALUES (
+SNACKATTACH_SEQ.NEXTVAL, '${originName}', '${changeName}', '${filePath}', 
+${snackNo}
+)
 
 </insert>
- -->
+
 
 </mapper>

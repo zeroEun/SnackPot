@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.dao.InvenManagementDao;
 import com.kh.spring.product.model.vo.Product;
+import com.kh.spring.product.model.vo.ProductAttachment;
 
 @Service
 public class InvenManagementServiceImpl implements InvenManagementService {
@@ -29,8 +30,8 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 	}
 
 	@Override
-	public void insertSnackAttach(Product p) {
-		int result = invenManagementDao.insertSnackAttach(sqlSession, p);
+	public void insertSnackAttach(ProductAttachment pa) {
+		int result = invenManagementDao.insertSnackAttach(sqlSession, pa);
 		
 		if(result < 0) {
 			throw new CommException("상품 이미지 등록에 실패했습니다.");

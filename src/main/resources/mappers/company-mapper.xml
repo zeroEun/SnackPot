@@ -6,14 +6,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="Company" id="companyResultSet">
 		<id property="comCode" column="COM_CODE"/>
+		<result property="comAdmin" column="COM_ADMIN"/>
 		<result property="comName" column="COM_NAME"/>
 		<result property="comAddress" column="COM_ADDRESS"/>
-		<result property="comAdmin" column="COM_ADMIN"/>
 	</resultMap>
 	
 	<insert id="insertCompany" parameterType="Company">
 		INSERT INTO COMPANY
-		VALUES(#{comCode}, #{comName}, #{comAddress}, #{comAdmin})
+		VALUES(#{comCode}, #{comAdmin}, #{comName}, #{comAddress})
 	</insert>
 	
+	<select id="selectCompany" parameterType="string" resultMap="companyResultSet">
+		SELECT *
+		FROM COMPANY
+		WHERE COM_CODE=#{comCode}
+	</select>
+	
+	<update id="updateCompany" parameterType="Company">
+		UPDATE COMPANY
+		SET COM_NAME=#{comName}, COM_ADDRESS=#{comAddress}
+		WHERE COM_CODE=#{comCode}
+	</update>
 </mapper>

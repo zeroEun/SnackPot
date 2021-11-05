@@ -74,5 +74,39 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 		
 		return loginUser;
 	}
+
+	@Override
+	public String findId(String memName, String memPhone) {
+		String id = "";
+		id = cmd.findId(sqlSession, memName, memPhone);
+		
+		return id;
+	}
+
+	@Override
+	public Company selectCompany(String comCode) {
+		
+		Company co = cmd.selectCompany(sqlSession, comCode);
+		
+		return co;
+	}
+
+	@Override
+	public void updateCompany(Company co) {
+		int result = cmd.updateCompany(sqlSession, co);
+		
+		if(result < 0) {
+			throw new CommException("회사정보 변경에 실패했습니다");
+		}
+	}
+
+	@Override
+	public void updateMember(CompanyMember m) {
+		int result = cmd.updateMember(sqlSession, m);
+		
+		if(result < 0) {
+			throw new CommException("회원정보 변경에 실패했습니다");
+		}
+	}
 	
 }

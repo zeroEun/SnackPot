@@ -46,6 +46,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
  <form method="POST">
         <div id="outer">
             <div id="inner">

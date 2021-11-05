@@ -1,5 +1,8 @@
 package com.kh.spring.companyMember.model.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -44,5 +47,33 @@ public class CompanyMemberDao {
 		
 		return mem;
 	}
+
+	public String findId(SqlSessionTemplate sqlSession, String memName, String memPhone) {
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("memName", memName);
+		parameters.put("memPhone", memPhone);
+		CompanyMember mem = sqlSession.selectOne("companyMemberMapper.findId", parameters);
+		
+		return mem.getMemId();
+	}
+
+	public Company selectCompany(SqlSessionTemplate sqlSession, String comCode) {
+		
+		Company co = sqlSession.selectOne("companyMapper.selectCompany", comCode);
+		
+		return co;
+	}
+
+	public int updateCompany(SqlSessionTemplate sqlSession, Company co) {
+		
+		return sqlSession.update("companyMapper.updateCompany", co);
+	}
+
+	public int updateMember(SqlSessionTemplate sqlSession, CompanyMember m) {
+		
+		return sqlSession.update("companyMemberMapper.updateMember", m);
+	}
+
 
 }

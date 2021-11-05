@@ -10,16 +10,40 @@ import com.kh.spring.product.model.vo.Product;
 
 public interface ProductService {
 
-	ArrayList<Product> selectList();
+	ArrayList<Product> selectList(int dtc);
+	
+	ArrayList<Product> selectDrinkList(int dtc);
+
+	ArrayList<Product> selectFoodList(int dtc);
 
 	String selectDeliveryDate(String comCode);
-
-	int chkSnackNo(String wishSnackNo);
+	
+	int chkWishList(String comCode);
 
 	int insertWishList(HashMap<String, Object> map);
 	
+	int selectSubWishNo(String comCode);
+	
+	int insertWishDetail(HashMap<String, Object> map);
+	
+	int chkSnackNo(String wishSnackNo);
+
 	int updateSnackCount(HashMap<String, Object> map);
 
-	ArrayList<Product> selectDrinkList(int dtc);
+	
+
+	
+
+
+
+	
+
+
+
+
+
+	
+
+
 
 }

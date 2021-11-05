@@ -23,8 +23,20 @@ public class ProductServiceImpl implements ProductService {
 	private ProductDao productDao;
 	
 	@Override
-	public ArrayList<Product> selectList() {
-		return productDao.selectList(sqlSession);
+	public ArrayList<Product> selectList(int dtc) {
+		return productDao.selectList(sqlSession , dtc);
+	}
+	
+	@Override //음료리스트
+	public ArrayList<Product> selectDrinkList(int dtc) {
+		
+		return productDao.selectDrinkList(sqlSession , dtc);
+	}
+
+	@Override
+	public ArrayList<Product> selectFoodList(int dtc) {
+		
+		return productDao.selectFoodList(sqlSession , dtc);
 	}
 
 	@Override
@@ -32,13 +44,13 @@ public class ProductServiceImpl implements ProductService {
 		
 		return productDao.selectDeliveryDate(sqlSession , comCode);
 	}
-
+	
 	@Override
-	public int chkSnackNo(String wishSnackNo) {
+	public int chkWishList(String comCode) {
 		
-		return productDao.chkSnackNo(sqlSession , wishSnackNo);
+		return productDao.chkWishList(sqlSession , comCode);
+		
 	}
-
 	
 	@Override
 	public int insertWishList(HashMap<String, Object> map) {
@@ -48,16 +60,34 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public int updateSnackCount(HashMap<String, Object> map) {
+	public int selectSubWishNo(String comCode) {
 		
-		int result1 = productDao.updateSnackCount(sqlSession , map);
+		return productDao.selectSubWishNo(sqlSession , comCode);
+	}
+	
+	@Override
+	public int insertWishDetail(HashMap<String, Object> map) {
+		int result1 = productDao.insertWishDetail(sqlSession , map);
 		
 		return result1;
 	}
 
-	@Override //음료리스트
-	public ArrayList<Product> selectDrinkList(int dtc) {
+	@Override
+	public int chkSnackNo(String wishSnackNo) {
 		
-		return productDao.selectDrinkList(sqlSession , dtc);
+		return productDao.chkSnackNo(sqlSession , wishSnackNo);
 	}
+
+	@Override
+	public int updateSnackCount(HashMap<String, Object> map) {
+		
+		int result = productDao.updateSnackCount(sqlSession , map);
+		
+		return result;
+	}
+
+	
+	
+
+
 }

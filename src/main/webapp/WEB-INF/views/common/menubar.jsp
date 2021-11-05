@@ -62,8 +62,8 @@
                     <div class="dropdown-menu"> 
                         <!--구독회사 직원-->
                         <a class="dropdown-item" href="subsForm.sn">간식 구독하기</a>
-                        <a class="dropdown-item" href="list.pro">간식 고르기</a> 
-                        <a class="dropdown-item" href="#">간식 조회</a> 
+                        <a class="dropdown-item" href="list.pro?dtc=1">간식 고르기</a> 
+                        <a class="dropdown-item" href="wishList">간식 조회</a> 
                         <!--구독회사 담당자-->
                         <a class="dropdown-item" href="subsInfo.sn">구독 정보</a>
                         <a class="dropdown-item" href="#">리스트 조회</a>

@@ -26,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
 		WHERE STATUS = 'Y' 
 		AND CATEGORY_NO = 1
+		AND DETAIL_NO = #{dtc}
 </select>
 
 <!-- TO_DATE(EXTRACT(YEAR FROM SYSDATE)  ||  EXTRACT(MONTH FROM SYSDATE) || DELIVERY_DATE , 'YYYY-MM-DD') -->
@@ -35,19 +36,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE COM_CODE = #{comCode}
 </select>
 
-<select id="chkSnackNo" resultType="_int">
-	SELECT COUNT(SNACK_NO)
+<select id="chkWishList" resultType="_int">
+	SELECT COUNT(COM_CODE)
 	FROM WISHLIST
-	WHERE SNACK_NO = #{wishSnackNo}
+	WHERE COM_CODE = #{comCode}
+	AND STATUS = 'N'
 </select>
+
 
 <insert id="insertWishList" parameterType="hashMap">
 	INSERT INTO WISHLIST
-	VALUES (WISH_SEQ.NEXTVAL , #{comCode} , #{wishSnackNo}, DEFAULT , #{wishEndDate})
+	VALUES (WISH_SEQ.NEXTVAL , #{comCode} , #{wishEndDate}, DEFAULT)
 </insert>
 
- <update id="updateSnackCount" parameterType="hashMap">
-	UPDATE WISHLIST SET SNACK_COUNT = SNACK_COUNT + 1
+<select id="selectSubWishNo" resultType="_int">
+	SELECT WISH_NO
+	FROM WISHLIST
+	WHERE COM_CODE = #{comCode}
+	AND STATUS = 'N'
+</select>
+
+<insert id="insertWishDetail" parameterType="hashMap">
+	INSERT INTO WISHLIST_DETAIL
+	VALUES (WISH_DETAIL_SEQ.NEXTVAL , #{SubWishNo} , DEFAULT, #{wishSnackNo})
+</insert>
+
+<select id="chkSnackNo" resultType="_int">
+	SELECT COUNT(SNACK_NO)
+	FROM WISHLIST_DETAIL
+	WHERE SNACK_NO = #{wishSnackNo}
+</select>
+
+<update id="updateSnackCount" parameterType="hashMap">
+	UPDATE WISHLIST_DETAIL SET COUNT = COUNT + 1
 	WHERE SNACK_NO = #{wishSnackNo} 
 </update>
 
@@ -58,6 +79,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
 		WHERE STATUS = 'Y' 
 		AND CATEGORY_NO = 2
+		AND DETAIL_NO = #{dtc}
+</select>
+
+ <select id="selectFoodList" resultMap="productResultSet">
+		SELECT S.SNACK_NO , S.SNACK_NAME , S.PURCHASE_PRICE , S.CATEGORY_NO
+				 , S.DETAIL_NO ,S.TASTE_NO , S.AROMA_NO , A.CHANGE_NAME
+		FROM SNACK S
+		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
+		WHERE STATUS = 'Y' 
+		AND CATEGORY_NO = 3
 		AND DETAIL_NO = #{dtc}
 </select>
 

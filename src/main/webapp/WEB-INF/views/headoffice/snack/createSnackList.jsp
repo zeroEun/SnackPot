@@ -79,34 +79,35 @@
                     <h5>간식 리스트 발송</h5>
                     <hr>
 
-                    <span class="company-name">카카오</span>
+                    <span class="company-name">${s.comName}</span>
                     <br><br>
-                    <span class="">예산 : 500,000원</span>&nbsp;&nbsp;&nbsp;<span class="">총 금액 : 500,000원</span>
+                    <span class="">예산 : ${subs.budget}원</span>&nbsp;&nbsp;&nbsp;
+                    <span class="">총 금액 : 500,000원</span>&nbsp;&nbsp;&nbsp;
+                 	<span class="">주문 마감일 : ${s.orderDeadline}</span>
 
                     <button type="button" class="btn btn-primary">위시리스트 조회</button>
-                    <button type="button" class="btn btn-primary">리스트 생성</button>
+                  	<button type="button" class="btn btn-primary">리스트 생성</button>
                    
                     <hr>
-
+                 
                     <div class="search-list">
 
                         <div class="search-sub ">
                             
                                 
-                            <select class=" search-select" id="sel1">
-                                <option>카테고리</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
+                            <select class="search-select category" name="category" id="category">
+                                <option value="">카테고리</option>
+                                <option value="1">스낵</option>
+                                <option value="2">음료</option>
+                                <option value="3">간편식</option>
                             </select>
 
-                            <select class=" search-select" id="sel2">
-                                <option>세부 카테고리</option>
+                            <select class="search-select subCategory" name="subCategory" id="subCategory">
+                                <option value="">세부 카테고리</option>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
                             </select>
-                            
 
                         
                             <div class="input-group search-input">
@@ -122,6 +123,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>카테고리</th>
+                                    <th>상세 카테고리</th>
                                     <th>이미지</th>
                                     <th>품목명</th>
                                     <th>공급가</th>
@@ -133,6 +135,7 @@
     
                             <tbody>
                                 <tr>
+                                	<td>스낵</td>
                                     <td>스낵</td>
                                     <td></td>
                                     <td>꼬북칩</td>
@@ -156,6 +159,7 @@
                             <tr>
                                 <th>선택</th>
                                 <th>카테고리</th>
+                                <th>상세 카테고리</th>
                                 <th>이미지</th>
                                 <th>품목명</th>
                                 <th>공급가</th>
@@ -173,19 +177,6 @@
                                     </div>
                                 </td>
                                 <td>스낵</td>
-                                <td></td>
-                                <td>꼬북칩</td>
-                                <td>1,050원</td>
-                                <td><input type="number" class="amount"></td>
-                                <td>450</td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div class="form-check form-check-inline" style='zoom:1.5;'>
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="">
-                                    </div>
-                                </td>
                                 <td>스낵</td>
                                 <td></td>
                                 <td>꼬북칩</td>
@@ -193,6 +184,7 @@
                                 <td><input type="number" class="amount"></td>
                                 <td>450</td>
                             </tr>
+
 
                         </tbody>
 
@@ -211,6 +203,37 @@
         </div>
     
     </section>
+    
+<script type="text/javascript">
+
+	$(function(){
+		
+		<%-- select option 값 선택시 이벤트 : on change  --%>
+		$('#category').on('change', function(){
+			
+			var c = $('select[name=category]').val();
+			console.log(c)
+			
+			$.ajax({
+				
+				url:'selectSubCate.sn',
+				data: {cNo : c},
+				success: function(category){
+					console.log(category);
+				},error:function(){
+					console.log("댓글 작성 ajax 통신 실패");
+				}
+				
+			});
+			
+		})
+		
+		
+		
+		
+	});
+
+</script>
 
 </body>
 </html>

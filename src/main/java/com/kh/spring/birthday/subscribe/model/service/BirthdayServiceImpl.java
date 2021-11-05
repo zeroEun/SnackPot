@@ -18,13 +18,15 @@ public class BirthdayServiceImpl implements BirthdayService {
 	private BirthdayDao bDao;
 	
 	@Override
-	public void subscribe(Birthday b) {
+	public int subscribe(Birthday b) {
 		
 		int result = bDao.subscribe(sqlSession, b);
 		
 		if(result < 0) {
 			throw new CommException("생일 구독 신청 실패");
 		}
+		
+		return result;
 		
 	}
 
@@ -44,6 +46,12 @@ public class BirthdayServiceImpl implements BirthdayService {
 		int result = bDao.subscribeChk(sqlSession, com_code);
 		
 		return result;
+	}
+
+	@Override
+	public int countEmp(String comCode) {
+		// TODO Auto-generated method stub
+		return bDao.countEmp(sqlSession, comCode);
 	}
 
 }

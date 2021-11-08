@@ -22,12 +22,10 @@
 	$(function(){
 		
 		var perAmount = ${b.per_amount};
-		var sendingTime = "${b.sending_time}";
-		var notificationMsg = "${b.notification_msg}";
+		var sendingTime = "${b.sending_time}";		
 		
 		console.log(perAmount);
 		console.log(sendingTime);
-		console.log(notificationMsg);
 		
 		switch(perAmount){
 		case 10000 :
@@ -56,13 +54,9 @@
 			break;		
 		}
 		
-		$("#sendMsgArea").val(notificationMsg);
-		
-		
 	});
 </script>
 <body>
-<button type="button" id="testBtn">테스트</button>
     <h3>생일 구독 정보</h3>
     <form class="" action="updateSubscribe.birth">
         <label for="">1인당 최대 금액</label><!--데이터와 일치하는 값 속성 checked-->
@@ -111,7 +105,7 @@
                 <option value="2">선택2 메시지에요~</option>
                 <option value="3">직접 입력</option>
             </select>
-            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요." disabled></textarea>
+            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요." disabled>${b.notification_msg}</textarea>
         </div>
         <script>
             $(function(){
@@ -177,7 +171,7 @@
         
         <hr>
         
-        <input type="hidden" name="com_code" value="${comCode}">
+        <input type="hidden" name="com_code" value="${loginUser.comCode}">
         
         <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button><button type="submit" class="btn btn-outline-primary">구독 수정하기</button>
     </form>

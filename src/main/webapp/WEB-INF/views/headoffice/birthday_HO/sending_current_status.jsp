@@ -105,7 +105,6 @@ li>p {
 					</tr>
 				</thead>
 				<tbody>
-
 					<c:forEach items="${ list }" var="curSts" varStatus="status">
 						<c:if test="${ curSts.selectDate != null }">
 							<c:set var="num2" value="${ num2+1 }" />

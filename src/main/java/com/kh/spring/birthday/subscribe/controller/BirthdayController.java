@@ -1,10 +1,7 @@
 package com.kh.spring.birthday.subscribe.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,13 +15,19 @@ public class BirthdayController {
 	private BirthdayService bService;
 	
 	@RequestMapping("subscribeForm.birth")
-	public ModelAndView subscribeForm(String comCode, ModelAndView mv) {
+	public ModelAndView subscribeForm(Birthday b, ModelAndView mv) {
 		
-		comCode="A";
-		int result = bService.countEmp(comCode);
-		System.out.println("countEmp : " + result);
+		//사원리스트 불러오기 버튼 눌렀을 때 사원 등록이 되어있는지 유무를 확인하기 위해 가져오는 데이터
+		b.setCom_code("A");
+		int empCount = bService.countEmp(b.getCom_code());
 		
-		mv.addObject("countEmp", result).setViewName("company/birthday/birthday_service_subs");
+
+		//현재 생일 구독 서비스를 이용중인지 체크하기 위한 데이터
+		int chkResult = bService.subscribeChk(b.getCom_code());
+		
+		mv.addObject("countEmp", empCount);
+		mv.addObject("chkResult", chkResult);
+		mv.setViewName("company/birthday/birthday_service_subs");
 		
 		return mv;
 	}
@@ -32,25 +35,14 @@ public class BirthdayController {
 	
 	
 	@RequestMapping("subscribe.birth")
-	public String subscribe(Birthday b, HttpSession session) {
+	public ModelAndView subscribe(Birthday b, ModelAndView mv) {
 		
-		//먼저 테이블 상에 해당 회사코드를 가지고 있는 데이터가 있는지 조회
-		System.out.println("확인1 : " + b.getPer_amount());
-		System.out.println("확인2 : " + b.getSending_time());
-		System.out.println("선택알림메시지:"+b.getNotification_msg());
+		b.setNotification_msg(b.getNotification_msg().replaceAll("\n", "<br>"));
 		
-		int result = bService.subscribeChk(b.getCom_code());		
-		
-		if(result != 0) {
-			session.setAttribute("msg", "이미 구독 정보가 존재합니다.");
-			return "redirect:/";//매핑 구독 신청 버튼 있는 페이지로 변경
-		}else {
-			bService.subscribe(b);
+		bService.subscribe(b);
+		mv.addObject("b", b).setViewName("redirect:/");
 			
-			session.setAttribute("msg", "생일 구독 신청 성공");
-			return "redirect:/";
-		}
-		
+		return mv;
 	}
 	
 	@RequestMapping("subscribeInfo.birth")
@@ -58,9 +50,11 @@ public class BirthdayController {
 		
 		comCode="A"; //임의로 A값 삽입
 		Birthday b = bService.subscribeInfo(comCode);
-		System.out.println("bithday1 : "+b.getPer_amount());
-		System.out.println("bithday2 : "+b.getSending_time());
-		System.out.println("bithday3 : "+b.getNotification_msg());
+		b.setNotification_msg(b.getNotification_msg().replaceAll("<br>", "\n"));
+		System.out.println("텍스트아레아 : " + b.getNotification_msg());
+		//System.out.println("bithday1 : "+b.getPer_amount());
+		//System.out.println("bithday2 : "+b.getSending_time());
+		//System.out.println("bithday3 : "+b.getNotification_msg());
 		//System.out.println("comCode : " + comCode);
 		
 		mv.addObject("b",b).setViewName("company/birthday/birthday_service_info");
@@ -68,5 +62,16 @@ public class BirthdayController {
 		return mv;
 	}
 	
+	@RequestMapping("updateSubscribe.birth")
+	public ModelAndView updateSubscribe(Birthday b, ModelAndView mv) {
+		
+		b.setCom_code("A");// 우선 A로 설정
+		
+		bService.updateSubscribe(b);
+		
+		mv.addObject("comCode", b.getCom_code()).setViewName("redirect:/");
+		
+		return mv;
+	}
 	
 }

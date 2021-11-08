@@ -12,4 +12,6 @@ public interface BirthdayService {
 
 	int countEmp(String comCode);
 
+	void updateSubscribe(Birthday b);
+
 }

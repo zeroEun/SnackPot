@@ -54,4 +54,14 @@ public class BirthdayServiceImpl implements BirthdayService {
 		return bDao.countEmp(sqlSession, comCode);
 	}
 
+	@Override
+	public void updateSubscribe(Birthday b) {
+
+		int result = bDao.updateSubscribe(sqlSession, b);
+		
+		if(result < 0) {
+			throw new CommException("구독 정보 수정 실패");
+		}	
+	}
+
 }

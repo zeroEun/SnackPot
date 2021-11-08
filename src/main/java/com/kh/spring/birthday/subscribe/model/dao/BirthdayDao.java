@@ -29,4 +29,9 @@ public class BirthdayDao {
 		return sqlSession.selectOne("birthdayMapper.countEmp", comCode);
 	}
 
+	public int updateSubscribe(SqlSessionTemplate sqlSession, Birthday b) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("birthdayMapper.updateSubscribe", b);
+	}
+
 }

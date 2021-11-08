@@ -25,6 +25,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="selectDate" column="SELECT_COMPLETE_DATE"></result>
 	</resultMap>
 	
+	<resultMap type="SendingStatus" id="sendingStsResultSet">
+		<id property="curStatusNo" column="SCSTATUS_NO"></id>
+		<result property="cempDept" column="CEMP_DEPT"></result>
+		<result property="cempJob" column="CEMP_JOB"></result>
+		<result property="cempName" column="CEMP_NAME"></result>
+		<result property="cempPhone" column="CEMP_PHONE"></result>
+		<result property="cempBirth" column="CEMP_BIRTH"></result>
+		<result property="sendingMsgDate" column="SENDING_MESSAGE_DATE"></result>
+		<result property="selectDate" column="SELECT_COMPLETE_DATE"></result>
+	</resultMap>
+	
 	<resultMap type="SendingList" id="sendListResultSet">
 		<id property="sListNo" column="SLIST_NO"></id>
 		<result property="cempDept" column="CEMP_DEPT"></result>
@@ -62,9 +73,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{comCode} AND BSERVICE_STATUS='Y'
 	</select>
 	
+	<update id="updateSubscribe" parameterType="Birthday">
+		UPDATE BIRTHDAY_SERVICE SET
+		PER_AMOUNT=#{per_amount}, SENDING_TIME=#{sending_time}, NOTIFICATION_MESSAGE=#{notification_msg}
+		WHERE COM_CODE=#{com_code}
+	</update>
+	
 	<select id="subscribeChk" parameterType="String" resultType="int">
 		SELECT COUNT(*) FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{com_code} AND BSERVICE_STATUS='Y'
 	</select>
+	
+	<!-- 구독회사용 -->
+	<select id="selectsList" resultMap="sendingStsResultSet">
+		SELECT 
+		B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
+		, A.SENDING_MESSAGE_DATE, A.SELECT_COMPLETE_DATE
+		FROM SENDING_CURRENT_STATUS A
+		JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
+		WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(SYSDATE,'MM')
+		ORDER BY SENDING_MESSAGE_DATE
+	</select>
+	
 	
 	<!-- 본사용 -->
 	<select id="selectList" resultMap="curStsResultSet">

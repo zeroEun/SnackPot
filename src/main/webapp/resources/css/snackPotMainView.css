@@ -1,0 +1,111 @@
+@charset "UTF-8";
+
+/*간식 ,생일 구독 배너*/
+.img1{
+    height: 540px;
+}
+.carousel-caption>h1,p{
+    font-weight: bold;
+    color: black;
+   
+}
+
+.carousel-caption {
+    margin-bottom: 180px;
+    margin-right: 500px;
+    color: black;
+}
+
+/*스낵구독, 생일구독 버튼*/
+.carousel-caption>.snackBtn , .hbdkBtn{
+    margin-left: 33%;
+   
+}
+a.animated-button.thar-three {
+	color: rgb(245, 208, 66);
+    background-color: rgb(10, 23, 78);
+    font-size: 18px;
+    width: 150px;
+    height: 40px;
+	cursor: pointer;
+	display: block;
+	position: relative;
+	transition: all 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+    border-radius: 5px;
+}
+a.animated-button.thar-three:hover {
+	color: rgb(10, 23, 78) !important;
+	background-color: transparent;
+	text-shadow: nthree;
+}
+a.animated-button.thar-three:hover:before {
+	left: 0%;
+	right: auto;
+	width: 100%;
+}
+a.animated-button.thar-three:before {
+	display: block;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 100%;
+	width: 0px;
+	z-index: -1;
+	content: '';
+	color: #000 !important;
+	background: rgb(245, 208, 66);
+	transition: all 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+    border-radius: 5px;
+}
+/*홈페이지 내용*/
+.snackPotName{
+    color:rgb(245, 208, 66);
+    font-weight: bolder;
+}
+/*스낵팟 이유*/
+.question>h4{
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: bolder;
+}
+body{
+    margin-top:20px; 
+}
+.m-t-5{
+    margin-top: 5px;   
+}
+.card {
+    background: #fff;
+    margin-bottom: 30px;
+    transition: .5s;
+    border: 1px solid lightgray;
+    border-radius: 1.5em;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    box-shadow: none;
+}
+.card .body {
+    font-size: 14px;
+    color: black;
+    padding: 20px;
+    font-weight: 400;
+}
+.queTxt{
+    text-align: left;
+    font-size: medium;
+}
+.col-md-8{
+    padding-top: 30px;
+}
+.profile-page .profile-header {
+    position: relative
+}
+.profile-page .profile-header .profile-image img {
+    border-radius: 50%;
+    width: 120px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+}
+
+
+

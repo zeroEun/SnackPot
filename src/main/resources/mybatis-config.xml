@@ -22,7 +22,8 @@
 		<typeAlias type="com.kh.spring.product.model.vo.ProductAttachment" alias="ProductAttachment"/>
 		<typeAlias type="com.kh.spring.product.arrival.model.vo.Arrival" alias="Arrival"/>
 		<typeAlias type="com.kh.spring.product.release.model.vo.Release" alias="Release"/>
-		
+		<typeAlias type="com.kh.spring.product.model.vo.WishListDtail" alias="WishListDtail"/>
+		<typeAlias type="com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus" alias="SendingStatus"/>
 	</typeAliases>
 
 	<mappers>

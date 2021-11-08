@@ -30,6 +30,12 @@ public interface ProductService {
 
 	int updateSnackCount(HashMap<String, Object> map);
 
+	ArrayList<Product> selectWishDetailList(String comCode);
+
+	int updateWishEndDate(HashMap<String, Object> map);
+
+//	int updatePlusCount(String snackCountUp);
+
 	
 
 	

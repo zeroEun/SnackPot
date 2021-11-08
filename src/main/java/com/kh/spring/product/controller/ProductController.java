@@ -1,5 +1,6 @@
 package com.kh.spring.product.controller;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -98,11 +101,11 @@ public class ProductController {
 			int result = productService.insertWishList(map);
 			
 			if(result > 0) { // 담은 간식이 있다
-				int SubWishNo = productService.selectSubWishNo(comCode);
+				int SubWishNo = productService.selectSubWishNo(comCode); //위시리스트에서 구독번호 알아오기
 				System.out.println("SubWishNo : " + SubWishNo);
 		
-				int result1 = productService.insertWishDetail(map);
-				
+				int result1 = productService.insertWishDetail(map); //구독번호를 통해서 상세테이블에 상품 담기
+			
 			}
 			
 		}else if(wishListChk == 1) {//이미 위시리스트가 생성되어있다
@@ -116,9 +119,12 @@ public class ProductController {
 				System.out.println("SubWishNo : " + SubWishNo);
 				map.put("SubWishNo", SubWishNo);
 				
+				int result2 = productService.updateWishEndDate(map); //배송예정일이 바뀔수도 있기때문에 update
 				int result = productService.insertWishDetail(map);
 			}else {
+				int result2 = productService.updateWishEndDate(map);
 				int result = productService.updateSnackCount(map);
+				
 			}
 			
 		}
@@ -131,10 +137,37 @@ public class ProductController {
 	
 	/*위시리스트 view*/
 	@RequestMapping("wishList")
-	public String wishListView() {
+	public String wishListView(Model model, HttpSession session ) {
 		
+		/*로그인한 유저의 회사*/
+		String comCode = "KAKAO";
+		//String comCode = "A211104";
 		
-		return  "product/wishListMainView";
+		int companyChk = productService.chkWishList(comCode); //회사코드와 상태값이 'N' 이면  1 
+		
+		if(companyChk == 0 ) {
+		
+			session.setAttribute("msg", "위시리스트가 존재하지 않습니다. 간식을 담아주세요");
+			return "redirect:/";	
+		}else {
+		
+			ArrayList<Product> list = productService.selectWishDetailList(comCode);
+			model.addAttribute("list" , list);
+			
+			return  "product/wishListMainView";
+		}
 	}
+	
+	/*위시리스트 수량
+	@RequestMapping("updateCount.wish")
+	public String updatePlusCount(@RequestParam("snackCountUp") String snackCountUp) {
+		
+		System.out.println("snackCountUp할 스낵번호 : " + snackCountUp );
+		
+		int result = productService.updatePlusCount(snackCountUp);
+		
+		return "product/wishListMainView";
+	}
+	*/
 	
 }

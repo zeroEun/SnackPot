@@ -70,6 +70,23 @@ public class ProductDao {
 		return sqlSession.update("productMapper.updateSnackCount" , map);
 	}
 
+	public ArrayList<Product> selectWishDetailList(SqlSessionTemplate sqlSession, String comCode) {
+		
+		return (ArrayList)sqlSession.selectList("productMapper.selectWishDetailList" , comCode);
+	}
+
+	public int updateWishEndDate(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		
+		return sqlSession.update("productMapper.updateWishEndDate" , map);
+		
+	}
+
+//	public int updatePlusCount(SqlSessionTemplate sqlSession, String snackCountUp) {
+//		
+//		return sqlSession.update("productMapper.updatePlusCount" , snackCountUp);
+//		
+//	}
+
 
 	
 

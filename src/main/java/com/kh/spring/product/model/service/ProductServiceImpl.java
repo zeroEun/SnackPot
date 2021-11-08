@@ -86,6 +86,28 @@ public class ProductServiceImpl implements ProductService {
 		return result;
 	}
 
+	@Override
+	public ArrayList<Product> selectWishDetailList(String comCode) {
+		
+		return productDao.selectWishDetailList(sqlSession , comCode);
+		
+	}
+
+	@Override
+	public int updateWishEndDate(HashMap<String, Object> map) {
+		
+		int result2 = productDao.updateWishEndDate(sqlSession , map);
+		return result2;
+	}
+
+//	@Override
+//	public int updatePlusCount(String snackCountUp) {
+//		
+//		int result = productDao.updatePlusCount(sqlSession , snackCountUp);
+//		
+//		return result;
+//	}
+
 	
 	
 

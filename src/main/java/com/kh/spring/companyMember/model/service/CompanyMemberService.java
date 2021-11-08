@@ -27,4 +27,8 @@ public interface CompanyMemberService {
 
 	void updateMember(CompanyMember m);
 
+	void updatePw(CompanyMember m);
+
+	void deleteMem(String memId);
+
 }

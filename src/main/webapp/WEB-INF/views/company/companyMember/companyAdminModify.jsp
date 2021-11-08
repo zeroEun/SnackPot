@@ -45,7 +45,7 @@
         <div id="outer">
             <div id="inner">
                 <h1 id="title">MODIFY</h1><br>
-                <div id="modify"><a href="modifyPw.co">비밀번호 변경</a><label>&nbsp | &nbsp</label><a href="">관리자 변경</a><label>&nbsp | &nbsp</label><a href="">회원 탈퇴</a><br><br></div>
+                <div id="modify"><a href="modifyPw.co">비밀번호 변경</a><label>&nbsp | &nbsp</label><a href="changeAdmin.co">담당자 변경</a><label>&nbsp | &nbsp</label><a href="">회원 탈퇴</a><br><br></div>
                 <input type="text" class="input" id="memId" name="memId" value="${ loginUser.memId }" readonly><br>
                 <input type="password" class="input" id="memPw" name="memPw" placeholder=" 비밀번호" minlength="10" maxlength="16"><br>
                 <input type="password" class="input" id="memPwCheck" name="memPwCheck" placeholder=" 비밀번호 확인" minlength="8" maxlength="16" autocomplete="new-password"><br>
@@ -114,8 +114,8 @@
 			return false;
 		}else if(memPw.val() != memPwCheck.val()){
 			alert("비밀번호가 다릅니다");
-			checkPwd.val('');
-			checkPwd.focus();
+			memPwCheck.val('');
+			memPwCheck.focus();
 			return false;
 		}else if(memName.val().trim() == ""){
 			alert("이름을 입력하세요");

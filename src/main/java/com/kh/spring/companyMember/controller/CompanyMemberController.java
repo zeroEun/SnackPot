@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -69,6 +70,16 @@ public class CompanyMemberController {
 	@RequestMapping("modifyPw.co")
 	public String modifyPw() {
 		return "company/companyMember/companyMemberModifyPw";
+	}
+	
+	@RequestMapping("main.co")
+	public String main() {
+		return "common/menubar";
+	}
+	
+	@RequestMapping("changeAdmin.co")
+	public String changeAdmin() {
+		return "company/companyMember/companyChangeAdmin";
 	}
 	 
 	@ResponseBody
@@ -217,5 +228,35 @@ public class CompanyMemberController {
 			session.setAttribute("msg", "비밀번호가 일치하지 않아 변경에 실패했습니다.");
 		}
 		return "common/menubar";
+	}
+	
+	@RequestMapping("updatePw.co")
+	public String updatePw(@ModelAttribute CompanyMember m, String originPw, String memPw, String memPwCheck, HttpSession session) {
+		
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		
+		if (bCryptPasswordEncoder.matches(originPw, loginUser.getMemPw())) {
+			String encPw = bCryptPasswordEncoder.encode(memPw);
+			m.setMemId(loginUser.getMemId());
+			m.setMemPw(encPw);
+			cms.updatePw(m);
+		}else {
+		session.setAttribute("msg", "비밀번호가 일치하지 않아 변경에 실패했습니다.");
+		}
+		return "redirect:logout.co";
+	}
+	
+	@RequestMapping("deleteMem.co")
+	public String deleteMem(HttpSession session) {
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		String memId = loginUser.getMemId();
+		cms.deleteMem(memId);
+		return "redirect:logout.co";
+	}
+	
+	@RequestMapping("changingAdmin.co")
+	public String changingAdmin(@ModelAttribute CompanyMember m) {
+		System.out.println("새 어드민 : " + m);
+		return null;	
 	}
 }

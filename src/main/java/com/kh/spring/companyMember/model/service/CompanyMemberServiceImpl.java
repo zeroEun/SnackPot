@@ -65,7 +65,7 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 	public CompanyMember loginMember(BCryptPasswordEncoder bCryptPasswordEncoder, CompanyMember m) {
 		CompanyMember loginUser = cmd.loginMember(sqlSession, m);
 		if(loginUser == null) {
-			throw new CommException("loginUser 확인"); 
+			throw new CommException("회원정보가 존재하지 않습니다"); 
 		}
 
 		if(!bCryptPasswordEncoder.matches(m.getMemPw(), loginUser.getMemPw())) {
@@ -106,6 +106,24 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 		
 		if(result < 0) {
 			throw new CommException("회원정보 변경에 실패했습니다");
+		}
+	}
+
+	@Override
+	public void updatePw(CompanyMember m) {
+		int result = cmd.updatePw(sqlSession, m);
+		
+		if(result < 0) {
+			throw new CommException("비밀번호 변경에 실패했습니다");
+		}
+	}
+
+	@Override
+	public void deleteMem(String memId) {
+		int result = cmd.deleteMem(sqlSession, memId);
+		
+		if(result < 0) {
+			throw new CommException("회원삭제 실패");
 		}
 	}
 	

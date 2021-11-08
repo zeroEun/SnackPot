@@ -52,4 +52,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET MEM_NAME=#{memName}, MEM_PHONE=#{memPhone}, MEM_EMAIL=#{memEmail}
 		WHERE MEM_ID=#{memId}
 	</update>
+	
+	<update id="updatePw" parameterType="CompanyMember">
+		UPDATE COMPANY_MEMBER
+		SET MEM_PW=#{memPw}
+		WHERE MEM_ID=#{memId}
+	</update>
+	
+	<update id="deleteMem" parameterType="string">
+		UPDATE COMPANY_MEMBER
+		SET MEM_STATUS='N'
+		WHERE MEM_ID=#{memId}
+	</update>
 </mapper>

@@ -75,5 +75,15 @@ public class CompanyMemberDao {
 		return sqlSession.update("companyMemberMapper.updateMember", m);
 	}
 
+	public int updatePw(SqlSessionTemplate sqlSession, CompanyMember m) {
+	
+		return sqlSession.update("companyMemberMapper.updatePw", m);
+	}
+
+	public int deleteMem(SqlSessionTemplate sqlSession, String memId) {
+		
+		return sqlSession.update("companyMemberMapper.deleteMem", memId);
+	}
+
 
 }

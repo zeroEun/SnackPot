@@ -9,9 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.spring.product.model.vo.Product;
+import com.kh.spring.product.model.vo.SnackSubCategory;
 import com.kh.spring.snack.snackList.model.service.HoSnackListService;
 import com.kh.spring.snack.snackList.model.vo.ListSchedule;
+import com.kh.spring.snack.snackList.model.vo.SearchSnack;
+import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackSubs.model.service.SnackSubsService;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
@@ -74,9 +80,10 @@ public class HoSnackListController {
 			s.setListTransDate(sdf.format(cal.getTime()));
 			
 			//해당 월 리스트 발송 여부 확인
+			//리스트가 존재해도 transStatus 상태값이 N이면 set 'N'
 			int result = hoSnackListService.listCheck(s.getComCode());
 			
-			if( result > 0) {
+			if(result > 0) {
 				s.setStatus("Y");
 			}else {
 				s.setStatus("N");
@@ -90,10 +97,25 @@ public class HoSnackListController {
 	}
 	
 	
+	
 	@RequestMapping("createListForm.sn")
-	public String createSnackListForm(ListSchedule schedule, Model model) {
+	public String createSnackListForm(String comCode, ListSchedule schedule, Model model) {
 		
-		String comCode = schedule.getComCode();
+		
+		//회사 정보 객체 만들어 불러오기 : 회사명, 주문 마감일, 예산, 리스트 번호
+		//주문 마감일 구하는 메소드 따로 만들기 가능?ㅜ
+		
+		//리스트 생성 여부 확인, 발송 여부에 N이 있으면 추가 X 기존 리스트No 불러오기, N이 없으면 insert
+		int listNo = hoSnackListService.selectSnackListNo(comCode);
+		
+		if(listNo > 0) {
+			ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
+			model.addAttribute("dList", dList);
+		}else {
+			hoSnackListService.insertSanckList(comCode);
+		}
+		
+		
 		SnackSubs subs = snackSubsService.selectSubsInfo(comCode);
 		
 		System.out.println(schedule);
@@ -102,4 +124,27 @@ public class HoSnackListController {
 		model.addAttribute("subs", subs);
 		return "headoffice/snack/createSnackList";
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="selectSubCate.sn" , produces="application/json; charset=utf-8")
+	public ArrayList<SnackSubCategory> selectSubCategory(@RequestParam int cNo) {
+		
+		ArrayList<SnackSubCategory> category = snackSubsService.selectSubCategory(cNo);
+		
+		return category;
+	}
+	
+	@RequestMapping("searchSnack.sn")
+	public String searchSnack(SearchSnack search,  Model model) {
+		
+		System.out.println(search);
+		
+		ArrayList<Product> searchList = hoSnackListService.searchSnack(search);
+		
+		model.addAttribute("searchList", searchList);
+		return "headoffice/snack/createSnackList";
+	}
+	
+	
 }

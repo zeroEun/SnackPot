@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,9 +40,10 @@
         }
 
         .search-list{
-            
+            max-height: 300px;
             padding: 20px;
             background: seashell;
+            overflow-y: auto;
             
         }
 
@@ -54,6 +56,7 @@
         .search-table{
             background: white;
             margin: auto;
+            
         }
 
         .search-select{
@@ -79,6 +82,10 @@
                     <h5>간식 리스트 발송</h5>
                     <hr>
 
+					<!--  화면에 항상 있어야 할 정보 
+						    회사명, 예산, 주문 마감일, 리스트 번호      
+					 -->
+					<input type="hidden" name="comCode" value="${s.comCode}">
                     <span class="company-name">${s.comName}</span>
                     <br><br>
                     <span class="">예산 : ${subs.budget}원</span>&nbsp;&nbsp;&nbsp;
@@ -92,33 +99,28 @@
                  
                     <div class="search-list">
 
+						<!-- 검색 부분 -->
                         <div class="search-sub ">
-                            
-                                
-                            <select class="search-select category" name="category" id="category">
-                                <option value="">카테고리</option>
-                                <option value="1">스낵</option>
-                                <option value="2">음료</option>
-                                <option value="3">간편식</option>
-                            </select>
-
-                            <select class="search-select subCategory" name="subCategory" id="subCategory">
-                                <option value="">세부 카테고리</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </select>
-
-                        
-                            <div class="input-group search-input">
-                                <input type="text" class="" placeholder="검색어 입력" aria-describedby="button-addon2">
-                                <button class="btn btn-warning" type="button" id="button-addon2">검색</button>
-                            </div>
-
+                            <form action="searchSnack.sn">    
+	                            <select class="search-select category" name="category" id="category">
+	                                <option value="0">카테고리</option>
+	                                <option value="1">스낵</option>
+	                                <option value="2">음료</option>
+	                                <option value="3">간편식</option>
+	                            </select>
+	
+	                            <select class="search-select subCategory" name="subCategory" id="subCategory">
+	                                <option value="0">상세 카테고리</option>
+	                            </select>
+	
+	                            <div class="input-group search-input">
+	                                <input type="text" class="" placeholder="검색어 입력" name="search" aria-describedby="searchBtn">
+	                                <button class="btn btn-warning" type="submit" id="searchBtn">검색</button>
+	                            </div>
+							</form>
                         </div>
                         
-                        
-                        
+                        <!-- 검색 결과 -->
                         <table class="table table-bordered search-table">
                             <thead class="thead-light">
                                 <tr>
@@ -129,22 +131,26 @@
                                     <th>공급가</th>
                                     <th>수량</th>
                                     <th>재고</th>
-                                    <th>추가 하기</th>
+                                    <th>리스트 추가</th>
                                 </tr>
                             </thead>
     
                             <tbody>
-                                <tr>
-                                	<td>스낵</td>
-                                    <td>스낵</td>
-                                    <td></td>
-                                    <td>꼬북칩</td>
-                                    <td>1,050원</td>
-                                    <td><input type="number" class="amount"></td>
-                                    <td>450</td>
-                                    <td><button type="button" >추가</button></td>
-                                </tr>
-    
+                            
+                            	<!-- 추가 버튼 클릭 시 리스트번호, 해당 스낵 번호, 수량 넘기기 -->
+                            	<c:forEach items="${searchList}" var="list">
+                            		<tr>
+	                                	<td>${list.categoryName}</td>
+	                                    <td>${list.subCategoryName}</td>
+	                                    <td></td>
+	                                    <td>${list.snackName}</td>
+	                                    <td>${list.releasePrice}원</td>
+	                                    <td><input type="number" class="amount" value=1 min=1></td>
+	                                    <td>${list.stock}</td>
+	                                    <td><button type="button" class="addBtn" >추가</button></td>
+                                	</tr>
+                            	</c:forEach>
+                            	
                             </tbody>
     
                         </table>
@@ -219,14 +225,26 @@
 				url:'selectSubCate.sn',
 				data: {cNo : c},
 				success: function(category){
-					console.log(category);
+					
+					$('#subCategory').html('');
+					var $default = $(document.createElement('option')).val(0).text('상세 카테고리');
+					$('#subCategory').append($default);
+					
+					$.each(category, function(index, value){
+						
+						var $opt = $(document.createElement('option')).val(value.detailNo).text(value.detailCategory);
+						$('#subCategory').append($opt);
+					})
+					
+					
 				},error:function(){
 					console.log("댓글 작성 ajax 통신 실패");
 				}
 				
 			});
-			
+
 		})
+		
 		
 		
 		

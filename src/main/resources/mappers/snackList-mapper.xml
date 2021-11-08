@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="snackListMapper">
 
-	<resultMap type="ListSchedule" id="ListScheduleResultSet">
+	<resultMap type="ListSchedule" id="listScheduleResultSet">
 		<id property="subsNo" column="SUBS_NO"/>
 		<result property="comCode" column="COM_CODE"/>
 		<result property="comName" column="COM_NAME"/>
@@ -12,8 +12,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="settleDate" column="SETTLEMENT_DATE"/>
 	</resultMap>
 	
-	<select id="selectSubsInfo" parameterType="java.util.HashMap" resultMap="ListScheduleResultSet">
-		
+	<resultMap type="com.kh.spring.snack.snackList.model.vo.SnackDList" id="snackDListResultSet">
+	 	<id property="snackDNo" column="SNACK_D_NO"/>
+		<result property="snackListNo" column="SNACK_LIST_NO"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="categoryName" column="CATEGORY"/>
+		<result property="subCategoryNo" column="DETAIL_NO"/>
+		<result property="subCategoryName" column="DETAIL"/>
+		<result property="snackNo" column="SNACK_NO"/>
+		<result property="snackName" column="SNACK_NAME"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="releasePrice" column="RELEASE_PRICE"/>
+		<result property="stock" column="STOCK"/>
+		<result property="imageName" column="CHANGE_NAME"/>
+	</resultMap>
+	
+	<select id="selectSubsInfo" parameterType="java.util.HashMap" resultMap="listScheduleResultSet">
 		
 			SELECT A.SUBS_NO, A.COM_CODE, B.COM_NAME, A.DELIVERY_DATE, A.SETTLEMENT_DATE
 			FROM SNACK_SUBS A
@@ -38,6 +52,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND TRANS_DATE BETWEEN TRUNC(SYSDATE, 'MM') AND LAST_DAY(SYSDATE)
 		
 	</select>
+	
+	<select id="searchSnack" parameterType="com.kh.spring.snack.snackList.model.vo.SearchSnack"  resultMap="snackDListResultSet">
+	
+		SELECT S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
+			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
+		FROM SNACK S
+		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
+		JOIN SNACK_CATEGORY C ON (S.CATEGORY_NO = C.CATEGORY_NO)
+		JOIN SNACK_CATEGORY_DETAIL D ON (S.DETAIL_NO = D.DETAIL_NO)
+		WHERE STATUS = 'Y' 
+	  	<if test="category != 0">
+			AND S.CATEGORY_NO = #{category}
+		</if>
+		<if test="subCategory != 0">
+			AND S.DETAIL_NO = #{subCategory}
+		</if>
+		<if test="search != ''">
+			AND S.SNACK_NAME LIKE '%'||#{search}||'%'
+		</if>
+		ORDER BY S.CATEGORY_NO ASC, S.DETAIL_NO ASC
+	</select>
+	
+	<select id="selectSnackListNo" parameterType="String" resultType="_int">
 
+		SELECT NVL(MAX(SNACK_LIST_NO), 0)
+		FROM SNACK_LIST
+		WHERE COM_CODE = #{comCode}
+		AND TRANS_STATUS = 'N'
+		AND TRANS_DATE BETWEEN TRUNC(SYSDATE, 'MM') AND LAST_DAY(SYSDATE)
+		
+	</select>
+
+	<select id="selectSnackDList" parameterType="_int" resultMap="snackDListResultSet">
+		SELECT L.SNACK_D_NO L.SNACK_LIST_NO S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
+			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
+		FROM SNACK_D_LIST L 
+		JOIN SNACK S ON (L.SNACK_NO = S.SNACK_NO)
+		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
+		JOIN SNACK_CATEGORY C ON (S.CATEGORY_NO = C.CATEGORY_NO)
+		JOIN SNACK_CATEGORY_DETAIL D ON (S.DETAIL_NO = D.DETAIL_NO)
+		WHERE SNACK_LIST_NO = #{listNo} 
+		
+	</select>
+	
+	<insert id="insertSanckList" parameterType="String">
+		INSERT INTO SNACK_LIST
+		VALUES(SNACK_LIST_SEQ.NEXTVAL, #{comCode}, DEFAULT, NULL)
+	</insert>
 
 </mapper>

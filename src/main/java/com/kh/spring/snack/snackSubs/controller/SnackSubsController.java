@@ -79,13 +79,6 @@ public class SnackSubsController {
 		return "redirect:/";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="selectSubCate.sn" , produces="application/json; charset=utf-8")
-	public ArrayList<SnackSubCategory> selectSubCategory(@RequestParam int cNo) {
-		
-		ArrayList<SnackSubCategory> category = snackSubsService.selectSubCategory(cNo);
-		
-		return category;
-	}
+
 	
 }

@@ -45,7 +45,7 @@
         <div id="outer">
             <div id="inner">
                 <h1 id="title">MODIFY</h1><br>
-                <div id="modify"><a href="modifyPw.co">비밀번호 변경</a><label>&nbsp | &nbsp</label><a href="changeAdmin.co">담당자 변경</a><label>&nbsp | &nbsp</label><a href="">회원 탈퇴</a><br><br></div>
+                <div id="modify"><a href="modifyPw.co">비밀번호 변경</a><label>&nbsp | &nbsp</label><a href="changeAdmin.co">담당자 변경</a><label>&nbsp | &nbsp</label><a href="#" onclick="delOk();">회원 탈퇴</a><br><br></div>
                 <input type="text" class="input" id="memId" name="memId" value="${ loginUser.memId }" readonly><br>
                 <input type="password" class="input" id="memPw" name="memPw" placeholder=" 비밀번호" minlength="10" maxlength="16"><br>
                 <input type="password" class="input" id="memPwCheck" name="memPwCheck" placeholder=" 비밀번호 확인" minlength="8" maxlength="16" autocomplete="new-password"><br>
@@ -137,6 +137,33 @@
 			return true;
 		}
 		
+	}
+  
+  	//탈퇴 가능 여부
+  	function delOk(){
+		var memId = $("#adminModifyForm input[name=memId]");
+		$.ajax({
+			url: "selectSubStatus.co",
+			type:"post",
+			data:{
+				memId : memId.val()
+			},
+			success:function(subStatus){
+				if(subStatus == "Y"){
+					alert("구독 중엔 탈퇴하실 수 없습니다.");
+					return;
+				}else{
+					if(confirm('탈퇴하시면 귀사 회원들의 모든 정보가 사라집니다. 정말로 탈퇴하시겠습니까?')){
+						document.location.href="deleteAdmin.co";
+					  }else{
+						 return; 
+					  }
+				}
+			},
+			error:function(){
+				console.log("서버통신실패");
+			}
+		})
 	}
 
 </script>

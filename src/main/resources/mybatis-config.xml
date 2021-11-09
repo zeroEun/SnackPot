@@ -24,6 +24,7 @@
 		<typeAlias type="com.kh.spring.product.release.model.vo.Release" alias="Release"/>
 		<typeAlias type="com.kh.spring.product.model.vo.WishListDtail" alias="WishListDtail"/>
 		<typeAlias type="com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus" alias="SendingStatus"/>
+		<typeAlias type="com.kh.spring.snackpotEmp.model.vo.SnackpotEmp" alias="SnackpotEmp"/>
 	</typeAliases>
 
 	<mappers>
@@ -35,6 +36,7 @@
 		<mapper resource="/mappers/company-mapper.xml"/>
 		<mapper resource="/mappers/inven-mapper.xml"/>
 		<mapper resource="/mappers/snackList-mapper.xml"/>
+		<mapper resource="/mappers/snackpotEmp-mapper.xml"/>
 	</mappers>
 
 

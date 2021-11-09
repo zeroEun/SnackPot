@@ -14,12 +14,12 @@ import lombok.ToString;
 public class SnackpotEmp {
 
 	private int sempNum;
+	private String sempComCode;
 	private String sempPw;
 	private String sempName;
 	private String sempDept;
 	private String sempJob;
 	private String sempEmail;
-	private String sempCompany;
 	private String sempStatus;
 	
 }

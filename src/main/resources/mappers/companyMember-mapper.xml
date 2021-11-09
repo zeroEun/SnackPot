@@ -64,4 +64,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET MEM_STATUS='N'
 		WHERE MEM_ID=#{memId}
 	</update>
+	
+	<insert id="insertNewAdmin" parameterType="CompanyMember">
+		INSERT INTO COMPANY_MEMBER
+		VALUES(#{memId}, #{memPw}, #{memName}, #{memPhone}, #{memEmail}, #{comCode}, #{admin}, #{memStatus})
+	</insert>
+	
+	<update id="retireAdmin" parameterType="string">
+		UPDATE COMPANY_MEMBER
+		SET ADMIN='N'
+		WHERE MEM_ID=#{memId}
+	</update>
+	
+	<select id="selectId" parameterType="string" resultType="string">
+		SELECT MEM_ID
+		FROM COMPANY_MEMBER
+		WHERE MEM_ID=#{memId}
+	</select>
+	
+	<update id="updateNewAdmin" parameterType="string">
+		UPDATE COMPANY_MEMBER
+		SET ADMIN='Y'
+		WHERE MEM_ID=#{memId}
+	</update>
+	
+	<select id="selectSnackSubSta" parameterType="string" resultType="string">
+		SELECT C.SUBS_STATUS
+		FROM COMPANY_MEMBER A
+		JOIN COMPANY B ON A.MEM_ID = B.ADMIN_ID
+		JOIN SNACK_SUBS C ON B.COM_CODE = C.COM_CODE
+		WHERE A.MEM_ID = #{memId}
+	</select>
+	
+	<select id="selectbirthSubSta" parameterType="string" resultType="string">
+		SELECT C.BSERVICE_STATUS
+		FROM COMPANY_MEMBER A
+		JOIN COMPANY B ON A.MEM_ID = B.ADMIN_ID
+		JOIN BIRTHDAY_SERVICE C ON B.COM_CODE = C.COM_CODE
+		WHERE A.MEM_ID = #{memId}
+	</select>
+	
+	<update id="deleteAllMem" parameterType="string">
+		UPDATE COMPANY_MEMBER
+		SET MEM_STATUS='N'
+		WHERE COM_CODE=#{comCode}
+	</update>
 </mapper>

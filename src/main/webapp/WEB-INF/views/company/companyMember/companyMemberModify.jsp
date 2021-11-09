@@ -131,10 +131,8 @@
   
   function delOk(){
 	  if(confirm('정말로 탈퇴하시겠습니까?')){
-		 alert("탈퇴가 완료되었습니다.")
-		 return true;
 	  }else{
-		 return false; 
+		 return; 
 	  }
   }
 </script>

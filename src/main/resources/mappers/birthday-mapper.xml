@@ -27,13 +27,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type="SendingStatus" id="sendingStsResultSet">
 		<id property="curStatusNo" column="SCSTATUS_NO"></id>
+		<result property="cempSeq" column="CEMP_SEQ"></result>
 		<result property="cempDept" column="CEMP_DEPT"></result>
 		<result property="cempJob" column="CEMP_JOB"></result>
 		<result property="cempName" column="CEMP_NAME"></result>
 		<result property="cempPhone" column="CEMP_PHONE"></result>
 		<result property="cempBirth" column="CEMP_BIRTH"></result>
+		<result property="cempEmail" column="CEMP_EMAIL"></result>
 		<result property="sendingMsgDate" column="SENDING_MESSAGE_DATE"></result>
-		<result property="selectDate" column="SELECT_COMPLETE_DATE"></result>
+		<result property="selectDate" column="SELECT_COMPLETE_DATE"></result>		
 	</resultMap>
 	
 	<resultMap type="SendingList" id="sendListResultSet">
@@ -79,21 +81,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE COM_CODE=#{com_code}
 	</update>
 	
-	<select id="subscribeChk" parameterType="String" resultType="int">
+	<select id="subscribeChk" parameterType="String" resultType="_int">
 		SELECT COUNT(*) FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{com_code} AND BSERVICE_STATUS='Y'
 	</select>
 	
 	<!-- 구독회사용 -->
 	<select id="selectsList" resultMap="sendingStsResultSet">
 		SELECT 
-		B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
+		B.CEMP_SEQ, B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
 		, A.SENDING_MESSAGE_DATE, A.SELECT_COMPLETE_DATE
 		FROM SENDING_CURRENT_STATUS A
 		JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
 		WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(SYSDATE,'MM')
+		AND B.CEMP_STATUS='Y'
 		ORDER BY SENDING_MESSAGE_DATE
 	</select>
 	
+	<!-- 발송 현황/발송 예정 리스트에서 선택 삭제 -->
+	<delete id="deleteSendStatus" parameterType="_int">
+		UPDATE COMPANY_EMP SET CEMP_STATUS = 'N'
+		WHERE CEMP_SEQ = #{cempSeq}
+	</delete>
+	
+	<insert id="insertSendStatus" parameterType="SendingStatus">
+		INSERT INTO COMPANY_EMP VALUES
+		(COM_EMP_SEQ.NEXTVAL, #{cempName}, #{cempDept}, #{cempJob}, #{cempEmail}, #{cempPhone}, #{cempBirth}, 'A', TEST_SEQ1.NEXTVAL, 'Y')
+	</insert>
 	
 	<!-- 본사용 -->
 	<select id="selectList" resultMap="curStsResultSet">
@@ -103,6 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM SENDING_CURRENT_STATUS A
 		JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
 		WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(SYSDATE,'MM')
+		AND B.CEMP_STATUS='Y'
 		ORDER BY SENDING_MESSAGE_DATE
 	</select>
 	
@@ -113,6 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM SENDING_LIST A
 		JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
 		WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE,'MM'),1),'MM')
+		AND B.CEMP_STATUS='Y'
 		ORDER BY SENDING_MESSAGE_DATE
 	</select>
 	

@@ -15,4 +15,14 @@ public class SendingStatusDao {
 		return (ArrayList)sqlSession.selectList("birthdayMapper.selectsList");
 	}
 
+	public int deleteSendStatus(SqlSessionTemplate sqlSession, int cempSeq) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("birthdayMapper.deleteSendStatus", cempSeq);
+	}
+
+	public int insertSendStatus(SqlSessionTemplate sqlSession, SendingStatus s) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("birthdayMapper.insertSendStatus", s);
+	}
+
 }

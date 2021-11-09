@@ -8,4 +8,8 @@ public interface SendingStatusService {
 
 	ArrayList<SendingStatus> selectsList();
 
+	int deleteSendStatus(int i);
+
+	int insertSendStatus(SendingStatus s);
+
 }

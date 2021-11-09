@@ -16,10 +16,12 @@ import lombok.ToString;
 public class SendingStatus {
 
 	private int curStatusNo;
+	private int cempSeq;
 	private String cempDept;
 	private String cempJob;
 	private String cempName;
 	private String cempPhone;
+	private String cempEmail;
 	private Date cempBirth;
 	private Date sendingMsgDate;
 	private Date selectDate;

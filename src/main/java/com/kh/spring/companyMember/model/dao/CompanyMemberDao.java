@@ -85,5 +85,54 @@ public class CompanyMemberDao {
 		return sqlSession.update("companyMemberMapper.deleteMem", memId);
 	}
 
+	public int insertNewAdmin(SqlSessionTemplate sqlSession, CompanyMember m) {
+		
+		return sqlSession.insert("companyMemberMapper.insertNewAdmin", m);
+	}
+
+	public int retireAdmin(SqlSessionTemplate sqlSession, String memId) {
+		
+		return sqlSession.update("companyMemberMapper.retireAdmin", memId);
+	}
+
+	public int updateCompanyAdmin(SqlSessionTemplate sqlSession, String memId, String comCode) {
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("memId", memId);
+		parameters.put("comCode", comCode);
+		
+		return sqlSession.update("companyMapper.updateCompanyAdmin", parameters);
+	}
+
+	public String selectId(SqlSessionTemplate sqlSession, String memId) {
+		
+		String id = sqlSession.selectOne("companyMemberMapper.selectId", memId);
+		
+		return id;
+	}
+
+	public int updateNewAdmin(SqlSessionTemplate sqlSession, String memId) {
+	
+		return sqlSession.update("companyMemberMapper.updateNewAdmin", memId);
+	}
+
+	public String selectSnackSubSta(SqlSessionTemplate sqlSession, String memId) {
+		
+		String snackStatus = sqlSession.selectOne("companyMemberMapper.selectSnackSubSta", memId);
+				
+		return snackStatus;
+	}
+
+	public String selectbirthSubSta(SqlSessionTemplate sqlSession, String memId) {
+		String birthStatus = sqlSession.selectOne("companyMemberMapper.selectbirthSubSta", memId);
+		
+		return birthStatus;
+	}
+
+	public int deleteAllMem(SqlSessionTemplate sqlSession, String comCode) {
+		
+		return sqlSession.update("companyMemberMapper.deleteAllMem", comCode);
+	}
+
 
 }

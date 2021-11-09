@@ -1,12 +1,8 @@
 package com.kh.spring.companyMember.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -74,7 +69,7 @@ public class CompanyMemberController {
 	
 	@RequestMapping("main.co")
 	public String main() {
-		return "common/menubar";
+		return "redirect:/";
 	}
 	
 	@RequestMapping("changeAdmin.co")
@@ -89,6 +84,20 @@ public class CompanyMemberController {
 		int result = cms.idCheck(memId);
 		
 		return String.valueOf(result);
+	}
+	
+	@ResponseBody
+	@RequestMapping("selectId.co")
+	public String selectId(String memId) {
+		
+		String id = "";
+		try {
+		id = cms.selectId(memId);
+		}catch(Exception e) {
+			id = null;
+		}
+		
+		return id;
 	}
 	
 	@ResponseBody
@@ -115,7 +124,7 @@ public class CompanyMemberController {
 	}
 	
 	@RequestMapping("insertComMem.co")
-	public String insertMember(@ModelAttribute CompanyMember m, String comCodeMem, String memType, String comName, String comAddress, HttpSession session) {
+	public String insertMember(@ModelAttribute CompanyMember m, String comCodeMem, String memType, String comName, String comAddress, Model model) {
 		
 		//암호회된 비밀번호
 		String encPwd = bCryptPasswordEncoder.encode(m.getMemPw());
@@ -147,8 +156,10 @@ public class CompanyMemberController {
 			cms.insertCompanyAdmin(m);
 		}
 		
-		session.setAttribute("msg", "회원가입 성공");
-		return "redirect:/";
+		model.addAttribute("msg","회원가입이 완료되었습니다.");
+        model.addAttribute("url","/");
+	
+        return "common/alert";	
 	}
 	
 	@RequestMapping("loginMember.co")
@@ -176,62 +187,59 @@ public class CompanyMemberController {
 		return "redirect:/";
 	}
 	
-	//alert창 컨트롤러단에서 띄우기 위한 작업 
-	public static void init(HttpServletResponse response) {
-        response.setContentType("text/html; charset=euc-kr");
-        response.setCharacterEncoding("euc-kr");
-    }
-	
-	public static void alert(HttpServletResponse response, String alertText) {
-        init(response);
-        PrintWriter out;
-		try {
-			out = response.getWriter();  
-			out.println("<script>alert('" + alertText + "');</script> ");
-			out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-	
 	@RequestMapping("updateAdmin.co")
-	public String updateAdmin(@ModelAttribute CompanyMember m, HttpSession session, HttpServletResponse response) {
+	public String updateAdmin(@ModelAttribute CompanyMember m, HttpSession session, Model model) {
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		
 		if (bCryptPasswordEncoder.matches(m.getMemPw(), loginUser.getMemPw())) {
 			
 			//회원정보 업데이트
 			cms.updateMember(m);	
+			loginUser.setMemName(m.getMemName());
+			loginUser.setMemPhone(m.getMemPhone());
+			loginUser.setMemEmail(m.getMemEmail());
+			
 			
 			//회사정보 업데이트
 			co.setComCode(loginUser.getComCode());
 			co.setComName(m.getComName());
 			co.setComAddress(m.getComAddress());
 			cms.updateCompany(co);
+			loginUser.setComName(m.getComName());
+			loginUser.setComAddress(m.getComAddress());
 			
-			this.alert(response, "회원정보 변경에 성공하였습니다.");
+			model.addAttribute("msg","회원정보 변경에 성공하였습니다.");
+	        model.addAttribute("url","/");
+			
 		}else {
-			session.setAttribute("msg", "비밀번호가 일치하지 않아 변경에 실패했습니다.");
+			model.addAttribute("msg","비밀번호가 일치하지 않아 변경에 실패했습니다.");
+	        model.addAttribute("url","/modifyAdmin.co");
 		}
-		return "common/menubar";
+		return "common/alert";	
 	}
 	
 	@RequestMapping("updateMember.co")
-	public String updateMember(@ModelAttribute CompanyMember m, HttpSession session, HttpServletResponse response) {
+	public String updateMember(@ModelAttribute CompanyMember m, HttpSession session, Model model) {
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		
 		if (bCryptPasswordEncoder.matches(m.getMemPw(), loginUser.getMemPw())) {
 			cms.updateMember(m);	
-			this.alert(response, "회원정보 변경에 성공하였습니다.");
+			loginUser.setMemName(m.getMemName());
+			loginUser.setMemPhone(m.getMemPhone());
+			loginUser.setMemEmail(m.getMemEmail());
+			
+			model.addAttribute("msg","회원정보 변경에 성공하였습니다.");
+	        model.addAttribute("url","/");
+			
 		}else {
-			session.setAttribute("msg", "비밀번호가 일치하지 않아 변경에 실패했습니다.");
+			model.addAttribute("msg","비밀번호가 일치하지 않아 변경에 실패했습니다.");
+	        model.addAttribute("url","/modifyMember.co");
 		}
-		return "common/menubar";
+		return "common/alert";	
 	}
 	
 	@RequestMapping("updatePw.co")
-	public String updatePw(@ModelAttribute CompanyMember m, String originPw, String memPw, String memPwCheck, HttpSession session) {
+	public String updatePw(@ModelAttribute CompanyMember m, String originPw, String memPw, String memPwCheck, HttpSession session, Model model) {
 		
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		
@@ -240,23 +248,112 @@ public class CompanyMemberController {
 			m.setMemId(loginUser.getMemId());
 			m.setMemPw(encPw);
 			cms.updatePw(m);
+			
+			loginUser.setMemPw(encPw);
+			
+			model.addAttribute("msg","비밀번호 변경에 성공하였습니다.");
+	        model.addAttribute("url","/");
+	        
 		}else {
-		session.setAttribute("msg", "비밀번호가 일치하지 않아 변경에 실패했습니다.");
+		model.addAttribute("msg","비밀번호가 일치하지 않아 변경에 실패했습니다.");
+        model.addAttribute("url","/modifyPw.co");
 		}
-		return "redirect:logout.co";
+		return "common/alert";	
 	}
 	
 	@RequestMapping("deleteMem.co")
-	public String deleteMem(HttpSession session) {
+	public String deleteMem(HttpSession session, Model model) {
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		String memId = loginUser.getMemId();
 		cms.deleteMem(memId);
-		return "redirect:logout.co";
+		
+		model.addAttribute("msg","탈퇴가 완료되었습니다.");
+        model.addAttribute("url","/logout.co");
+        
+        return "common/alert";	
 	}
 	
 	@RequestMapping("changingAdmin.co")
-	public String changingAdmin(@ModelAttribute CompanyMember m) {
-		System.out.println("새 어드민 : " + m);
-		return null;	
+	public String changingAdmin(@ModelAttribute CompanyMember m, String originMemId, String memType, HttpSession session, Model model) {
+		
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		
+		//기존회원 담당자로 변경
+		if(memType.equals("origin")) {
+			
+			//담당자로 변경
+			cms.updateNewAdmin(originMemId);
+			
+			//기존 담당자 권한 회수
+			String memId = loginUser.getMemId();
+			cms.retireAdmin(memId);
+			loginUser.setAdmin("N");
+			
+			//구독회사 테이블에 새로운 담당자로 변경
+			cms.updateCompanyAdmin(originMemId, loginUser.getComCode());
+			
+		//새로운 회원 담당자로 변경 
+		}else if(memType.equals("new")){
+			
+			//새로운 담당자로 추가
+			m.setComCode(loginUser.getComCode());
+			String encPwd = bCryptPasswordEncoder.encode(m.getMemPw());
+			m.setMemPw(encPwd);
+			m.setAdmin("Y");
+			m.setMemStatus("Y");
+			cms.insertNewAdmin(m);
+			
+			//기존 담당자 권한 회수
+			String memId = loginUser.getMemId();
+			cms.retireAdmin(memId);
+			loginUser.setAdmin("N");
+			
+			//구독회사 테이블에 새로운 담당자로 변경
+			String newMemId = m.getMemId();
+			String comCode = m.getComCode();
+			cms.updateCompanyAdmin(newMemId, comCode);
+			
+		}
+		
+		model.addAttribute("msg","담당자 변경이 완료되었습니다.");
+        model.addAttribute("url","/");
+		
+		return "common/alert";	
 	}
+	
+	@ResponseBody
+	@RequestMapping("selectSubStatus.co")
+	public String selectSubStatus(String memId) {
+		
+		String subStatus = "";
+		
+		//간식, 생일 구독의 상태 각각 확인
+		String snackStatus = cms.selectSnackSubSta(memId);
+		String birthStatus = cms.selectbirthSubSta(memId);
+		
+		//둘 중 하나라도 구독 중일 경우 Y 넘겨줌
+		if(snackStatus.equals("Y") || birthStatus.equals("Y")) {
+			subStatus = "Y";
+		}else {
+			subStatus = "N";
+		}
+		
+		System.out.println("구독상태 : " + subStatus);
+		return subStatus;
+	}
+	
+	@RequestMapping("deleteAdmin.co")
+	public String deleteAdmin(HttpSession session, Model model) {
+		
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		
+		String comCode = loginUser.getComCode();
+		cms.deleteAllMem(comCode);
+		
+		model.addAttribute("msg","탈퇴가 완료되었습니다.");
+        model.addAttribute("url","/logout.co");
+		
+		return "common/alert";	
+	}
+	
 }

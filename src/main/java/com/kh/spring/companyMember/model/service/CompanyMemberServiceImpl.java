@@ -77,8 +77,8 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 
 	@Override
 	public String findId(String memName, String memPhone) {
-		String id = "";
-		id = cmd.findId(sqlSession, memName, memPhone);
+	
+		String id = cmd.findId(sqlSession, memName, memPhone);
 		
 		return id;
 	}
@@ -123,7 +123,72 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 		int result = cmd.deleteMem(sqlSession, memId);
 		
 		if(result < 0) {
-			throw new CommException("회원삭제 실패");
+			throw new CommException("회원탈퇴에 실패했습니다");
+		}
+	}
+
+	@Override
+	public void insertNewAdmin(CompanyMember m) {
+		int result = cmd.insertNewAdmin(sqlSession, m);
+		
+		if(result < 0) {
+			throw new CommException("담당자 등록에 실패했습니다");
+		}	
+	}
+
+	@Override
+	public void retireAdmin(String memId) {
+		int result = cmd.retireAdmin(sqlSession, memId);
+		
+		if(result < 0) {
+			throw new CommException("담당자 권한 회수에 실패했습니다");
+		}
+	}
+
+	@Override
+	public void updateCompanyAdmin(String newMemId, String comCode) {
+		int result = cmd.updateCompanyAdmin(sqlSession, newMemId, comCode);
+		
+		if(result < 0) {
+			throw new CommException("담당자 아이디 변경에 실패했습니다");
+		}
+	}
+
+	@Override
+	public String selectId(String memId) {
+	
+		String id = cmd.selectId(sqlSession, memId);
+		
+		return id;
+	}
+
+	@Override
+	public void updateNewAdmin(String originMemId) {
+		int result = cmd.updateNewAdmin(sqlSession, originMemId);
+		
+		if(result < 0) {
+			throw new CommException("담당자 권한 변경에 실패했습니다");
+		}
+	}
+
+	@Override
+	public String selectSnackSubSta(String memId) {
+		String snackStatus = cmd.selectSnackSubSta(sqlSession, memId);
+		return snackStatus;
+	}
+
+	@Override
+	public String selectbirthSubSta(String memId) {
+		String birthStatus = cmd.selectbirthSubSta(sqlSession, memId);
+		return birthStatus;
+	}
+
+	@Override
+	public void deleteAllMem(String comCode) {
+		int result = cmd.deleteAllMem(sqlSession, comCode);
+		
+		if(result < 0) {
+			throw new CommException("회원탈퇴에 실패했습니다");
 		}
 	}
 	

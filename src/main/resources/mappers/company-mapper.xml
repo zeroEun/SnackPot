@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="Company" id="companyResultSet">
 		<id property="comCode" column="COM_CODE"/>
-		<result property="comAdmin" column="COM_ADMIN"/>
+		<result property="comAdmin" column="ADMIN_ID"/>
 		<result property="comName" column="COM_NAME"/>
 		<result property="comAddress" column="COM_ADDRESS"/>
 	</resultMap>
@@ -27,4 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET COM_NAME=#{comName}, COM_ADDRESS=#{comAddress}
 		WHERE COM_CODE=#{comCode}
 	</update>
+	
+	<update id="updateCompanyAdmin" parameterType="hashMap">
+		UPDATE COMPANY
+		SET ADMIN_ID=#{memId}
+		WHERE COM_CODE=#{comCode}
+	</update>
+	
+	
 </mapper>

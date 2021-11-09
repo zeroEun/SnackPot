@@ -23,7 +23,7 @@
             height: 40px;
             margin: 10px;
         }
-        #joinBtn{
+        .eBtn{
             background-color: rgb(10, 23, 78);
             border: none;
             width: 300px;
@@ -52,6 +52,14 @@
         <div id="outer">
         <div id="inner">
         <h1 id="title">CHANGE ADMIN</h1><br>
+        <input type="radio" class="radioVal" id="origin" value="origin" name="memType" checked><label for="origin">기존 회원</label>&emsp;&emsp;
+        <input type="radio" class="radioVal" id="new" value="new" name="memType"><label for="new">새 회원</label><br>
+        <div id="originMem">
+        &emsp;&emsp;&emsp;<input type="text" class="input" id="originMemId" name="originMemId" placeholder=" 담당자로 변경할 회원의 아이디" minlength="4" maxlength="16">
+        <button type="button" class="check" id="idSelectBtn" onclick="selectId();">검색</button><br>
+        <input type="button" class="eBtn" id="enterBtn" disabled="disabled" onclick="enter();" value="담당자 등록">
+        </div>
+        <div id="newAdmin" style="display: none;">
         &emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="input" id="memId" name="memId" placeholder=" 아이디 (영문, 숫자 조합 4~16자리)" minlength="4" maxlength="16">
         <button type="button" class="check" id="idCheckBtn" onclick="checkId();">중복확인</button><br>
         <input type="password" class="input" id="memPw" name="memPw" placeholder=" 비밀번호 (영문, 숫자 조합 8~16자)" minlength="8" maxlength="16" autocomplete="new-password"><br>
@@ -60,12 +68,57 @@
         <input type="tel" class="input" id="phone" name="memPhone" placeholder=" 휴대폰 번호 (-제외입력)" maxlength="11"><br>
         <input type="text" class="input" name="memEmail" placeholder=" 이메일"><br>
         <input type="checkbox" id="ck"><label id="ck" for="ck">개인정보 수집 및 이용에 동의합니다.</label><br>
-        <input type="button" id="joinBtn" disabled="disabled" onclick="enroll();" value="담당자 등록">
+        <input type="button" class="eBtn" id="enrollBtn" name="enrollBtn" disabled="disabled" onclick="enroll();" value="담당자 등록">
+        </div>
         </div>
         </div>
     </form>
     <script>
 
+ 	//회원여부 체크
+    $(".radioVal").on('click', function() {
+        var valueCheck = $('input[name="memType"]:checked').val();
+        if ( valueCheck == "origin" ) {
+            $("#newAdmin").hide();
+            $("#originMem").show();
+        } else {
+            $("#newAdmin").show(); 
+            $("#originMem").hide(); 
+            
+        }
+    });
+    
+    //아이디 검색
+    function selectId(){
+		var memId = $("#enrollForm input[name=originMemId]");
+		if(memId.val()==""){
+			alert("아이디를 입력해주세요");
+			return false;
+		}
+		$.ajax({
+			url: "selectId.co",
+			type:"post",
+			data:{memId : memId.val()},
+			success:function(id){
+				if(id == ""){
+					alert("아이디를 찾을 수 없습니다.");
+					memName.focus();
+				}else{
+					alert("아이디 검색에 성공하였습니다.");
+					memId.attr("readonly","true");
+					$("#enterBtn").removeAttr("disabled");
+				}
+			},
+			error:function(){
+				console.log("서버통신실패");
+			}
+		})
+	}
+    
+    function enter(){
+		$("#enrollForm").submit();
+    }
+    
     //휴대폰 번호 
     $("#phone").keyup(function(event){
         var inputVal = $(this).val();
@@ -128,7 +181,7 @@
 				}else{
 					if(confirm("사용가능한 아이디 입니다. 사용하시겠습니까?")){
 						memId.attr("readonly","true");
-						$("#joinBtn").removeAttr("disabled");
+						$("#enrollBtn").removeAttr("disabled");
 					}else{
 						memId.focus();
 					}
@@ -173,7 +226,6 @@
 			return false;
 		}else{
 			$("#enrollForm").submit();
-			alert("담당자 등록이 완료되었습니다.")
 			return true;
 		}
 		

@@ -31,4 +31,20 @@ public interface CompanyMemberService {
 
 	void deleteMem(String memId);
 
+	void insertNewAdmin(CompanyMember m);
+
+	void retireAdmin(String memId);
+
+	void updateCompanyAdmin(String newMemId, String comCode);
+
+	String selectId(String memId);
+
+	void updateNewAdmin(String originMemId);
+
+	String selectSnackSubSta(String memId);
+
+	String selectbirthSubSta(String memId);
+
+	void deleteAllMem(String comCode);
+
 }

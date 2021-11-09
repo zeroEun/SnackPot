@@ -52,6 +52,8 @@
             </tr>
 
         </table>
+        
+         <button onclick="location.href='releaseEnrollFrom.im';">출고 등록</button>
 
     </div>
       </div>

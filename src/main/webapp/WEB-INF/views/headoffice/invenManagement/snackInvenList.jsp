@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>입고 목록 조회</title>
+<title>상세조회</title>
 
   <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -23,7 +23,7 @@
 	
     <div id="arrivalWrap">
 
-        <h3>입고목록</h3>
+        <h3>재고 관리</h3>
 
         <input type="date">
         <br>
@@ -41,19 +41,18 @@
         <table id="arrivalList" border="1">
 
 
-            <tr>
-                <th>입고번호</th>    
+            <tr>  
                 <th>상품코드</th>  
                 <th>상품명</th>   
-                <th>입고수량</th>   
+                <th>카테고리</th>   
+                <th>세부카테고리</th>   
                 <th>재고량</th>              
                 <th>단위</th>   
-                <th>비고</th>   
+                <th>상세조회</th>   
             </tr>
 
         </table>
         
-        <button onclick="location.href='arrivalEnrollFrom.im';">입고 등록</button>
 
     </div>
       </div>

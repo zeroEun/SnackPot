@@ -85,23 +85,29 @@
 					<!--  화면에 항상 있어야 할 정보 
 						    회사명, 예산, 주문 마감일, 리스트 번호      
 					 -->
-					<input type="hidden" name="comCode" value="${s.comCode}">
+					 
+					<form action="createList.sn" method="post" id="submitForm">
+						<input type="hidden" name="comCode" value="${s.comCode}">
+						<input type="hidden" name="listNo" value="${listNo}">
+					</form> 
+					
                     <span class="company-name">${s.comName}</span>
                     <br><br>
-                    <span class="">예산 : ${subs.budget}원</span>&nbsp;&nbsp;&nbsp;
+                    <span class="">예산 : ${s.budget}원</span>&nbsp;&nbsp;&nbsp;
                     <span class="">총 금액 : 500,000원</span>&nbsp;&nbsp;&nbsp;
                  	<span class="">주문 마감일 : ${s.orderDeadline}</span>
 
                     <button type="button" class="btn btn-primary">위시리스트 조회</button>
-                  	<button type="button" class="btn btn-primary">리스트 생성</button>
+                  	<button type="button" class="btn btn-primary" onclick="$('#submitForm').submit();">리스트 생성</button>
                    
                     <hr>
                  
                     <div class="search-list">
-
+      
 						<!-- 검색 부분 -->
                         <div class="search-sub ">
                             <form action="searchSnack.sn">    
+                            	<input type="hidden" name="comCode" value="${s.comCode}">
 	                            <select class="search-select category" name="category" id="category">
 	                                <option value="0">카테고리</option>
 	                                <option value="1">스낵</option>
@@ -176,20 +182,23 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div class="form-check form-check-inline" style='zoom:1.5;'>
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="">
-                                    </div>
-                                </td>
-                                <td>스낵</td>
-                                <td>스낵</td>
-                                <td></td>
-                                <td>꼬북칩</td>
-                                <td>1,050원</td>
-                                <td><input type="number" class="amount"></td>
-                                <td>450</td>
-                            </tr>
+                            
+                            <c:forEach items="${dList}" var="dList">
+                            	<tr>
+	                            	<td>
+	                                    <div class="form-check form-check-inline" style='zoom:1.5;'>
+	                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="${dList.snackDNo }">
+	                                    </div>
+	                                </td>
+	                            	<td>${dList.categoryName}</td>
+	                                <td>${dList.subCategoryName}</td>
+	                                <td></td>
+	                                <td>${dList.snackName}</td>
+	                                <td>${dList.releasePrice}원</td>
+	                                <td><input type="number" class="amount" value="${dList.amount}" min=1></td>
+	                                <td>${dList.stock}</td>
+                                </tr>
+                            </c:forEach>
 
 
                         </tbody>

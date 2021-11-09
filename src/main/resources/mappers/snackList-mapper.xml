@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="comName" column="COM_NAME"/>
 		<result property="deliveryDate" column="DELIVERY_DATE"/>
 		<result property="settleDate" column="SETTLEMENT_DATE"/>
+		<result property="budget" column="BUDGET"/>
 	</resultMap>
 	
 	<resultMap type="com.kh.spring.snack.snackList.model.vo.SnackDList" id="snackDListResultSet">
@@ -29,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectSubsInfo" parameterType="java.util.HashMap" resultMap="listScheduleResultSet">
 		
-			SELECT A.SUBS_NO, A.COM_CODE, B.COM_NAME, A.DELIVERY_DATE, A.SETTLEMENT_DATE
+			SELECT A.SUBS_NO, A.COM_CODE, B.COM_NAME, A.DELIVERY_DATE, A.SETTLEMENT_DATE, A.BUDGET
 			FROM SNACK_SUBS A
 			JOIN COMPANY B ON A.COM_CODE = B.COM_CODE
 			WHERE A.COM_CODE IN(
@@ -80,12 +81,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM SNACK_LIST
 		WHERE COM_CODE = #{comCode}
 		AND TRANS_STATUS = 'N'
-		AND TRANS_DATE BETWEEN TRUNC(SYSDATE, 'MM') AND LAST_DAY(SYSDATE)
 		
 	</select>
 
 	<select id="selectSnackDList" parameterType="_int" resultMap="snackDListResultSet">
-		SELECT L.SNACK_D_NO L.SNACK_LIST_NO S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
+		SELECT L.SNACK_D_NO, L.SNACK_LIST_NO, S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
 			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
 		FROM SNACK_D_LIST L 
 		JOIN SNACK S ON (L.SNACK_NO = S.SNACK_NO)
@@ -100,5 +100,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO SNACK_LIST
 		VALUES(SNACK_LIST_SEQ.NEXTVAL, #{comCode}, DEFAULT, NULL)
 	</insert>
+
+	<select id="selectSnack" parameterType="SnackSubs" resultMap="snackDListResultSet">
+		SELECT S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
+			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
+		FROM SNACK S 
+		LEFT JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
+		JOIN SNACK_CATEGORY C ON (S.CATEGORY_NO = C.CATEGORY_NO)
+		JOIN SNACK_CATEGORY_DETAIL D ON (S.DETAIL_NO = D.DETAIL_NO)
+		WHERE S.DETAIL_NO IN (${snackCategory},${drinkCategory},${retortCategory})
+		AND S.TASTE_NO IN (${preferTaste})
+		AND S.AROMA_NO NOT IN (${dislikeFlavour})
+		
+	</select>
 
 </mapper>

@@ -13,6 +13,7 @@ import com.kh.spring.snack.snackList.model.dao.HoSnackListDao;
 import com.kh.spring.snack.snackList.model.vo.ListSchedule;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
+import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
 @Service
 public class HoSnackListServiceImpl implements HoSnackListService {
@@ -63,6 +64,12 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 			throw new CommException("insertSanckList 실패");
 		}
 		
+	}
+
+
+	@Override
+	public ArrayList<SnackDList> selectSnack(SnackSubs subs) {
+		return  hoSnackListDao.selectSnack(sqlSession, subs);
 	}
 
 }

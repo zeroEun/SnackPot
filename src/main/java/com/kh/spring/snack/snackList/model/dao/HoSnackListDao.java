@@ -10,6 +10,7 @@ import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.snack.snackList.model.vo.ListSchedule;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
+import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
 @Repository
 public class HoSnackListDao {
@@ -36,6 +37,10 @@ public class HoSnackListDao {
 
 	public int insertSanckList(SqlSessionTemplate sqlSession, String comCode) {
 		return sqlSession.insert("snackListMapper.insertSanckList", comCode);
+	}
+
+	public ArrayList<SnackDList> selectSnack(SqlSessionTemplate sqlSession, SnackSubs subs) {
+		return (ArrayList)sqlSession.selectList("snackListMapper.selectSnack", subs);
 	}
 
 }

@@ -72,6 +72,7 @@
 	                        		<input type="hidden" name="comName" value="${s.comName}">
 	                        		<input type="hidden" name="orderDeadline" value="${s.orderDeadline}">
 	                        		<input type="hidden" name="deliveryDate" value="${s.deliveryDate}">
+	                        		<input type="hidden" name="budget" value="${s.budget}">
 	                        	</form>
 	                        
 	                            <tr>

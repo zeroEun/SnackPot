@@ -23,5 +23,6 @@ public class ListSchedule {
 	private String deliveryDate;
 	private Date settleDate;
 	private String status;
+	private int budget;
 
 }

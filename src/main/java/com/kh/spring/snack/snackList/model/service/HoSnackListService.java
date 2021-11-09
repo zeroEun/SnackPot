@@ -7,6 +7,7 @@ import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.snack.snackList.model.vo.ListSchedule;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
+import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
 public interface HoSnackListService {
 
@@ -21,5 +22,7 @@ public interface HoSnackListService {
 	ArrayList<SnackDList> selectSnackDList(int listNo);
 
 	void insertSanckList(String comCode);
+
+	ArrayList<SnackDList> selectSnack(SnackSubs subs);
 
 }

@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <insert id="insertWishDetail" parameterType="hashMap">
 	INSERT INTO WISHLIST_DETAIL
-	VALUES (WISH_DETAIL_SEQ.NEXTVAL , #{SubWishNo} , DEFAULT, #{wishSnackNo})
+	VALUES (WISH_DETAIL_SEQ.NEXTVAL , #{SubWishNo} , #{wishSnackNo}, DEFAULT )
 </insert>
 
 <select id="chkSnackNo" resultType="_int">
@@ -108,9 +108,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </select>
 
 <select id="selectWishDetailList"  resultMap="WishListDtailResult">
-		SELECT 	C.COM_CODE , D.COM_NAME 
-			,A.WISH_NO, B.CATEGORY_NO, A.SNACK_NO ,
-            B.SNACK_NAME  , A.COUNT , B.PURCHASE_PRICE , C.WISH_END_DATE , E.CHANGE_NAME
+	SELECT 	C.COM_CODE , D.COM_NAME 
+		,A.WISH_NO, B.CATEGORY_NO, A.SNACK_NO ,
+         B.SNACK_NAME  , A.COUNT , B.PURCHASE_PRICE , C.WISH_END_DATE , E.CHANGE_NAME
 	FROM WISHLIST_DETAIL A
 	JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
     JOIN SNACK_ATTACHMENT E ON (B.SNACK_NO = E.SNACK_NO)
@@ -126,10 +126,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE COM_CODE = #{comCode}
 </update>
 
-<!--  
-<update id="updatePlusCount" parameterType="_int">
-	UPDATE WISHLIST_DETAIL SET COUNT = COUNT + 1
-	WHERE SNACK_NO = #{snackCountUp} 
+ <!-- 위시리스트 수량 변경 -->
+<update id="updatePlusCount" parameterType="hashMap">
+	UPDATE WISHLIST_DETAIL SET COUNT = #{addCount}
+	WHERE SNACK_NO = #{snackNo} 
+	AND WISH_NO = #{wishNo}
 </update>
--->
+
+<!-- 위시리스트 상품 삭제 -->
+<delete id="deleteSnack">
+	DELETE FROM WISHLIST_DETAIL 
+	WHERE WISH_NO = #{wishNo}
+	AND SNACK_NO = #{snackNo}
+</delete>
+
 </mapper>

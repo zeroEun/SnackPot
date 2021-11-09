@@ -17,7 +17,7 @@
 <header>
 <nav class="navbar navbar-expand-xl ">
     <ul class="navbar-nav">
-       <div  style="color:rgb(245, 208, 66); "  onclick="location.href='${ pageContext.servletContext.contextPath }';"><h2>SnackPot</h2></div> 
+       <div  style="color:rgb(245, 208, 66); " onclick="location.href='${ pageContext.servletContext.contextPath }';"><h2>SnackPot</h2></div> 
         <!--스낵 팟-->
         <li class=" nav-link nav-item dropdown"> 
             <a class="dropdown nav-menu" data-toggle="dropdown">스낵팟</a>
@@ -35,10 +35,10 @@
         <li class="nav-link nav-item dropdown">  
           <a class="dropdown nav-menu" data-toggle="dropdown">생일팟</a> 
             <div class="dropdown-menu"> 
-                <a class="dropdown-item" href="#">선물 구독하기</a> 
+                <a class="dropdown-item" href="subscribeForm.birth">선물 구독하기</a> 
                 <a class="dropdown-item" href="#">리스트 조회</a> 
-                <a class="dropdown-item" href="#">구독 정보</a> 
-                <a class="dropdown-item" href="#">발송 및 진행</a>
+                <a class="dropdown-item" href="subscribeInfo.birth">구독 정보</a> 
+                <a class="dropdown-item" href="sendingcursts.birth">발송 및 진행</a>
                 <a class="dropdown-item" href="#">주문내역</a>
             </div>
         </li>
@@ -55,7 +55,7 @@
                 <c:if test="${ empty sessionScope.loginUser}">
                 <div class="loginDiv">
                     <a href="login.co"><label class="loginlb">로그인</label></a>
-                    <a href="#"><label class="loginlb">관리자 로그인</label></a>
+                    <a href="login.sn"><label class="loginlb">관리자 로그인</label></a>
                 </div>
                 </c:if>
                 
@@ -82,7 +82,7 @@
                     </li>  
                     <a href="logout.co"><label class = "logOut" >로그아웃</label></a> 
                </c:if>   
-                <!-- 로그인 후 (본사직원 ? ) 
+                <%-- 로그인 후 (본사직원 ? ) 
                 <c:if test="${ loginUser}">
                     <li class="nav-item dropdown" style="list-style: none;"> 
                         <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -92,7 +92,7 @@
                         </div>
                     </li>      
                </c:if>  
-               -->
+               --%>
             </div>
         </div>
 </nav>

@@ -108,6 +108,21 @@ public class ProductServiceImpl implements ProductService {
 //		return result;
 //	}
 
+	@Override
+	public int updatePlusCount(HashMap<String, Object> map) {
+		
+		int result = productDao.updatePlusCount(sqlSession , map);
+		
+		return result;
+	}
+
+	@Override
+	public int deleteSnack(HashMap<String, Object> map) {
+		
+		int result = productDao.deleteSnack(sqlSession , map);
+		return result;
+	}
+
 	
 	
 

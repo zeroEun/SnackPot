@@ -87,6 +87,16 @@ public class ProductDao {
 //		
 //	}
 
+	public int updatePlusCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		
+		return sqlSession.update("productMapper.updatePlusCount" , map);
+	}
+
+	public int deleteSnack(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+	
+		return sqlSession.delete("productMapper.deleteSnack" , map);
+	}
+
 
 	
 

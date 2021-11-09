@@ -36,6 +36,10 @@ public interface ProductService {
 
 //	int updatePlusCount(String snackCountUp);
 
+	int updatePlusCount(HashMap<String, Object> map);
+
+	int deleteSnack(HashMap<String, Object> map);
+
 	
 
 	

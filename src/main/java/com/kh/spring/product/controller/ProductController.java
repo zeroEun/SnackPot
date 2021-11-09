@@ -84,13 +84,13 @@ public class ProductController {
 		cal.add(Calendar.MONTH, +1);
 		cal.add(Calendar.DATE, -8); 
 		
-		String wishEndDate = sdf.format(cal.getTime());
+		String wishEndDate = sdf.format(cal.getTime()); //위시리스트마감일(YYYY-MM-DD)
 		System.out.println("wishEndDate : " + wishEndDate );
 		
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("comCode", comCode);
-		map.put("wishEndDate" , wishEndDate);
+		map.put("wishEndDate" , wishEndDate); 
 		map.put("wishSnackNo" , wishSnackNo);
 		
 		/*위시리스트테이블에  회사위시리스트가 이미 있는지 체크하기*/
@@ -103,6 +103,7 @@ public class ProductController {
 			if(result > 0) { // 담은 간식이 있다
 				int SubWishNo = productService.selectSubWishNo(comCode); //위시리스트에서 구독번호 알아오기
 				System.out.println("SubWishNo : " + SubWishNo);
+				map.put("SubWishNo", SubWishNo);
 		
 				int result1 = productService.insertWishDetail(map); //구독번호를 통해서 상세테이블에 상품 담기
 			
@@ -158,16 +159,35 @@ public class ProductController {
 		}
 	}
 	
-	/*위시리스트 수량
+	/*위시리스트 수량*/
+	//수량증가
 	@RequestMapping("updateCount.wish")
-	public String updatePlusCount(@RequestParam("snackCountUp") String snackCountUp) {
+	public String updatePlusCount(@RequestParam("snackNo") String snackNo , @RequestParam("addCount") String addCount ,
+			 					  @RequestParam("wishNo") String wishNo ) {
 		
-		System.out.println("snackCountUp할 스낵번호 : " + snackCountUp );
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("snackNo", snackNo);
+		map.put("addCount", addCount);
+		map.put("wishNo", wishNo);
 		
-		int result = productService.updatePlusCount(snackCountUp);
+		int result = productService.updatePlusCount(map);
 		
-		return "product/wishListMainView";
+		return  "product/wishListMainView";
 	}
-	*/
+	
+	/*위시리스트 간식 삭제 - wishNo랑 같이 가져가서 삭제해야함*/
+	@RequestMapping("delete.wish")
+	public String deleteSnack(@RequestParam("snackNo") String snackNo , @RequestParam("wishNo") String wishNo){
+		
+		System.out.println("삭제할 스낵번호랑 구독번호 : " + snackNo + wishNo);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("snackNo", snackNo);
+		map.put("wishNo", wishNo);
+		
+		int result = productService.deleteSnack(map);
+		
+		return  "product/wishListMainView"; 
+	}
+	
 	
 }

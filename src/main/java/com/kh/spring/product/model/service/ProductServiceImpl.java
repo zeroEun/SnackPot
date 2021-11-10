@@ -100,13 +100,6 @@ public class ProductServiceImpl implements ProductService {
 		return result2;
 	}
 
-//	@Override
-//	public int updatePlusCount(String snackCountUp) {
-//		
-//		int result = productDao.updatePlusCount(sqlSession , snackCountUp);
-//		
-//		return result;
-//	}
 
 	@Override
 	public int updatePlusCount(HashMap<String, Object> map) {

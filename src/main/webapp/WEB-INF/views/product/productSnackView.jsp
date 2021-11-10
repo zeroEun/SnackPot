@@ -6,13 +6,143 @@
 <head>
 <meta charset="UTF-8">
   <title>SnackPot</title>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  <!--스타일 cdn?-->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!--jQuery연결하는 CDN-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="resources/css/productView.css">
+			 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  <!--스타일 cdn?-->
+            <!-- jQuery library -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!--jQuery연결하는 CDN-->
+            <!-- Popper JS -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <!-- Latest compiled JavaScript -->
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
     </head>
+<style>
+/*메뉴바 아래 드롭다운 메뉴바(스낵류 , 음료 , 간편식) */
+.dropdown:hover .wish-menu { 
+   display: block;
+   margin-top: 0;
+   margin-left: 180px;
+}
+.wish-nav-link {
+  color: black;
+  font-size: 15px;
+  font-weight: bolder;
+}
+.wish-navbar{
+  justify-content: center;
+}
+/*스낵류 ,음료 , 간편식 드롭다운 메뉴바*/
+.nav-item>label{
+	margin-left: 130px;	
+}
+/*스낵류 ,음료 , 간편식 드롭다운 메뉴바 색*/
+.nav-item>label>.wish-nav-link{
+	color : black;
+}
+/*스낵류 ,음료 , 간편식 드롭다운 메뉴바 마우스 오버*/
+.nav-item>label>.wish-nav-link:hover{
+	color :rgb(245, 208, 66);
+}
+/*상세보기 메뉴바 (상위 카테고리 안의 하위 카테고리)*/
+.detail-menu{
+  text-align: center;
+}
+.btn-group> .btn-outline{
+border-color : lightgray;
+padding : 5px 70px;
+}
+.btn-outline:hover{
+background-color: rgb(245, 208, 66);
+}
 
+/*간식리스트 card*/
+.row{
+padding: 0 40px;
+}
+.col{
+padding: 5px;
+}
+.card{
+border: none;
+position: relative;
+
+}
+/*간식 이미지*/
+.card-img-top{
+width: 100px;
+height: 200px;
+padding-left : 30px;
+padding-right : 30px;
+padding-top: 10px;
+}
+.card-img-top:hover{
+  opacity: 0.5;
+}
+.card-body{
+width: 250px;
+height:70px;
+padding: 5%;
+}
+.card-title{
+font-weight: bold;
+height:10px;
+}
+
+/*간식위시리스트 버튼*/
+.wishBtn{
+position: absolute;
+width: 80px;
+height: 80px;
+left: 34%;
+top: 77px;
+text-align: center;
+opacity: 0;
+transition: opacity .35e ease;
+border-radius: 50%;
+border-style: none;
+background-color: white;
+
+}
+.card:hover .wishBtn{
+opacity: 1;
+
+}
+.blank{
+  font-size: 40px;
+  color: black;
+}
+.wishBtn:hover{
+  background-color: red;
+}
+.wishBtn:hover .blank{
+  color: white;
+}
+
+/*메뉴 랭크*/
+.rank li {
+float: right;
+margin: 20px  0px;
+list-style: none;
+text-align: center;
+}
+.rank li > a {
+   margin-right: 50px;
+}
+.justify-content-center{
+   margin-left: 30%;
+   height: 35px;
+}
+/*메뉴바 아래 메뉴바*/
+.ctg > .dropdown-menu {
+  background-color: white;
+  
+}
+.ctg > .dropdown-menu > .dropdown-item {
+  color: black;
+   
+}
+
+
+</style>
 <body>
  <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 	<!-- 메뉴바 아래  큰 드롭 카테고리-->
@@ -124,7 +254,8 @@
             <p class="card-text">${p.purchasePrice}원</p>
           </div>
            <span class="wishButton">
-            <button class="wishBtn" value="${p.snackNo}" onclick="wishAdd(this.value)">위시</button>
+  			    <!--<button class="wishBtn" value="${p.snackNo}" onclick="wishAdd(this.value)">위시</button>--> 
+           <button class="wishBtn" value="${p.snackNo}" onclick="wishAdd(this.value)"><i class="blank far fa-heart"></i></button>     
           </span>
         </div>
       </div>
@@ -136,6 +267,7 @@
  function wishAdd(val){
    var wishSnackNo = val;
    alert(wishSnackNo)
+    console.log(wishSnackNo)
    //간식번호를 보내서 wishlist에 저장하기
    $.ajax({
      url : "insert.wish",
@@ -146,6 +278,8 @@
      success : alert('ajax성공')
    })
  } 	
+ 
+ 
 </script>
 </html>
   

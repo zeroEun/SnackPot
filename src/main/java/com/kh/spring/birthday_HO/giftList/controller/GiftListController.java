@@ -24,6 +24,6 @@ public class GiftListController {
 		System.out.println("giftList : " + list);
 		model.addAttribute("list",list);
 		
-		return "headoffice/birthday_HO/gift_list";
+		return "headoffice/birthday_HO/gift_list_HO";
 	}
 }

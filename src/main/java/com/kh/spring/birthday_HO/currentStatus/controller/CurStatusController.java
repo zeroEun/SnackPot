@@ -24,7 +24,7 @@ public class CurStatusController {
 		
 		model.addAttribute("list", list);
 		
-		return "headoffice/birthday_HO/sending_current_status";
+		return "headoffice/birthday_HO/sending_current_status_HO";
 	}
 	
 	

@@ -42,7 +42,25 @@ public class SendingStatusServiceImpl implements SendingStatusService {
 		int result = sendingStatusDao.insertSendStatus(sqlSession, s);
 		
 		if(result < 0) {
-			throw new CommException("발송현황 선택 삭제 실패");
+			throw new CommException("발송현황 추가하기 실패");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public SendingStatus selectEmpOne(int cempSeq) {
+		
+		return sendingStatusDao.selectEmpOne(sqlSession, cempSeq);
+	}
+
+	@Override
+	public int updateSendStatus(SendingStatus s) {
+
+		int result = sendingStatusDao.updateSendStatus(sqlSession, s);
+		
+		if(result < 0) {
+			throw new CommException("발송현황 수정하기 실패");
 		}
 		
 		return result;

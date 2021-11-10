@@ -1,5 +1,7 @@
 package com.kh.spring.snackpotEmp.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +15,11 @@ public class SnackpotEmpDao {
 		SnackpotEmp loginEmp = sqlSession.selectOne("snackpotEmpMapper.loginEmp", se);
 		
 		return loginEmp;
+	}
+
+	public ArrayList<SnackpotEmp> selectEmpList(SqlSessionTemplate sqlSession) {
+	
+		return (ArrayList)sqlSession.selectList("snackpotEmpMapper.selectEmpList");
 	}
 
 }

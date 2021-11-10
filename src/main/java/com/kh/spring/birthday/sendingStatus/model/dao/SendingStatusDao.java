@@ -25,4 +25,14 @@ public class SendingStatusDao {
 		return sqlSession.insert("birthdayMapper.insertSendStatus", s);
 	}
 
+	public SendingStatus selectEmpOne(SqlSessionTemplate sqlSession, int cempSeq) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("birthdayMapper.selectEmpOne", cempSeq);
+	}
+
+	public int updateSendStatus(SqlSessionTemplate sqlSession, SendingStatus s) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("birthdayMapper.updateSendStatus", s);
+	}
+
 }

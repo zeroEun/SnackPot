@@ -12,4 +12,8 @@ public interface SendingStatusService {
 
 	int insertSendStatus(SendingStatus s);
 
+	SendingStatus selectEmpOne(int cempSeq);
+
+	int updateSendStatus(SendingStatus s);
+
 }

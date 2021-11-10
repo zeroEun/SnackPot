@@ -1,5 +1,6 @@
 package com.kh.spring.birthday.sendingStatus.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +56,47 @@ public class SendingStatusController {
 	public String insertSendStatus(SendingStatus s) {
 		
 		int result = sendingStatusService.insertSendStatus(s);
+		
+		return String.valueOf(result);
+		
+	}
+	
+	/*
+	@RequestMapping(value="selectEmpOne.birth")
+	public ModelAndView selectEmpOne(int cempSeq, ModelAndView mv) {
+		System.out.println("cempSeq : " + cempSeq);
+		SendingStatus s = sendingStatusService.selectEmpOne(cempSeq);
+		System.out.println("선택 수정 선택 객체 : " + s);
+		mv.addObject("s", s).setViewName("redirect:/");
+		
+		return mv;
+		
+		
+	}*/
+	
+	@ResponseBody
+	@RequestMapping(value="selectEmpOne.birth")
+	public SendingStatus selectEmpOne(int cempSeq) {
+		System.out.println("cempSeq : " + cempSeq);
+		SendingStatus s = sendingStatusService.selectEmpOne(cempSeq);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println("cempBirth : " + s.getCempBirth());
+		
+		s.setCempBirthSdf(sdf.format(s.getCempBirth()));
+		System.out.println("cempBirth2 : " + s.getCempBirthSdf());
+		System.out.println("선택 수정 선택 객체 : " + s);		
+		
+		return s;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="updSendSts.birth")
+	public String updateSendStatus(SendingStatus s) {
+		
+		int result = sendingStatusService.updateSendStatus(s);
+		System.out.println("수정result: " + result);
 		
 		return String.valueOf(result);
 		

@@ -1,4 +1,4 @@
-package com.kh.spring.birthday.sendingStatus.model.vo;
+package com.kh.spring.birthday.sendList.model.vo;
 
 import java.sql.Date;
 
@@ -13,18 +13,16 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class SendingStatus {
+public class SendList {
 
-	private int curStatusNo;
-	private int cempSeq;
+	private String sListNo;
 	private String cempDept;
 	private String cempJob;
 	private String cempName;
 	private String cempPhone;
-	private String cempEmail;
 	private Date cempBirth;
-	private Date sendingMsgDate;
-	private Date selectDate;
-	
-	private String cempBirthSdf; //Date객체에 담아온 값을 수정 페이지에 원하는 형식으로 나타내기 위함
+	private Date sendMsgDate;
+	private String sListStatus;
+	private int glistNo;
+	private int cempSeq;
 }

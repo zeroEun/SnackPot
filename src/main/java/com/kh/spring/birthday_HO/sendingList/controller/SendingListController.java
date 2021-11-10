@@ -24,6 +24,6 @@ public class SendingListController {
 		
 		model.addAttribute("list", list);
 		
-		return "headoffice/birthday_HO/sending_list";
+		return "headoffice/birthday_HO/sending_list_HO";
 	}
 }

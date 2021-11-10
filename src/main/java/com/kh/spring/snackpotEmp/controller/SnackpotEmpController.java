@@ -1,5 +1,9 @@
 package com.kh.spring.snackpotEmp.controller;
 
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,10 +29,23 @@ public class SnackpotEmpController {
 		return "headoffice/snackpotEmp/loginEmp";
 	}
 	
+	@RequestMapping("empList.sn")
+	public String empList(Model model) {
+		
+		ArrayList <SnackpotEmp> list = ses.selectEmpList();
+		model.addAttribute("list", list);
+		
+		System.out.println("사원 리스트 : " + list);
+		
+		return "headoffice/snackpotEmp/empList";
+	}
+	
 	@RequestMapping("loginEmp.sn")
 	public String loginEmp(SnackpotEmp se, Model model) {
-		SnackpotEmp loginEmp = ses.loginEmp(bCryptPasswordEncoder, se);
+//		String encPwd = bCryptPasswordEncoder.encode(se.getSempPw());
+//		System.out.println("비밀번호 : " + encPwd);
 		
+		SnackpotEmp loginEmp = ses.loginEmp(bCryptPasswordEncoder, se);
 		model.addAttribute("loginEmp", loginEmp);
 		
 		return "redirect:/mainPage.ho";

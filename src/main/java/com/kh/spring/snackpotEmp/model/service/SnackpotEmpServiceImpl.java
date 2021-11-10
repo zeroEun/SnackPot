@@ -1,5 +1,7 @@
 package com.kh.spring.snackpotEmp.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +35,12 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 		}
 		
 		return loginEmp;
+	}
+
+	@Override
+	public ArrayList<SnackpotEmp> selectEmpList() {
+
+		return sed.selectEmpList(sqlSession);
 	}
 
 }

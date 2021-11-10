@@ -20,4 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE SEMP_NUM=#{sempNum} AND SEMP_STATUS='Y'	
 	</select>
 	
+	<select id="selectEmpList" resultMap="snackpotEmpResultSet">
+		SELECT * FROM SNACKPOT_EMP
+		WHERE SEMP_NAME NOT IN ('관리자')
+	</select>
 </mapper>

@@ -81,11 +81,6 @@ public class ProductDao {
 		
 	}
 
-//	public int updatePlusCount(SqlSessionTemplate sqlSession, String snackCountUp) {
-//		
-//		return sqlSession.update("productMapper.updatePlusCount" , snackCountUp);
-//		
-//	}
 
 	public int updatePlusCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		

@@ -30,7 +30,7 @@
                 <h1>간식의 공식, 스낵팟</h1>
                 <p>NO.1 맞춤형 간식구독 서비스</p><br>
                 <div class="col-md-3 col-sm-3 col-xs-6 snackBtn"> 
-                    <a href="#" class="btn btn-sm animated-button thar-three">구독하기</a>
+                    <a href="subsForm.sn" class="btn btn-sm animated-button thar-three">구독하기</a>
                 </div>
               </div>
           </div>
@@ -41,7 +41,7 @@
                 <h1>1년의 단하루,</h1>
                 <p>직원의 행복한 생일을 만들어주는 구독서비스</p><br>
                 <div class="col-md-3 col-sm-3 col-xs-6 hbdkBtn"> 
-                    <a href="#" class="btn btn-sm animated-button thar-three ">구독하기</a>
+                    <a href="subscribeForm.birth" class="btn btn-sm animated-button thar-three ">구독하기</a>
                 </div>
               </div>
           </div>

@@ -1,15 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>wishList</title>
-<!--Bootstrap4 를 시작할때 필요한 CDN들-->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script
@@ -18,6 +16,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 </head>
 <style>
 /*회사명 , 마감시간*/
@@ -123,10 +122,10 @@
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 	<br>
 	<br>
-	<br>
 	<div class="header">
-		<span class="companyName">${list[0].comName}</span><br> <span
-			class="time">주문마감까지</span>
+		<span class="companyName">${list[0].comName}</span><br>
+		    <i class="far fa-clock"></i><div id="D-day"></div>
+		<!--<fmt:formatDate value="${list[0].wishEndDate}" pattern="yyyy-MM-dd"/>-->
 	</div>
 	<div class="container-fluid">
 		<div class="snackTitle">Snack</div>
@@ -143,10 +142,10 @@
 								<div class="countBtn">
 									  <input type="text" class="price" value="${w.purchasePrice * w.count}">원&nbsp;&nbsp;
 									<button class="minus" id="minusId" value="${w.snackNo}" onclick="minusCount( this.value , ${w.wishNo})">
-										<span>−</span>
+										<span> − </span>
 									</button>
 									<input type="text" class="countTxt" name="countTxt" value="${w.count}" readonly ></input>
-									<button class="plus" id="plusId" value="${w.snackNo}" onclick="plusCount( this.value , ${w.wishNo})">
+									<button class="plus" id="plusId" value="${w.snackNo}" onclick="plusCount( this.value , ${w.wishNo})" >
 										<span>+</span>
 									</button>
 								</div>
@@ -200,12 +199,12 @@
 								<p class="card-text">${w.snackName}</p>
 								<div class="countBtn">
 									  <input type="text" class="price" value="${w.purchasePrice * w.count}">원&nbsp;&nbsp;
-									<button class="minus" id="minusId" value="${w.snackNo}" onclick="minusCount( this.value , ${w.wishNo})">
-										<span>−</span>
+									<button class="minus" id="minusId" value="${w.snackNo}" onclick="minusCount( this.value ${w.wishNo})">
+									<span>−</span>
 									</button>
 									<input type="text" class="countTxt" name="countTxt" value="${w.count}" readonly></input>
 									<button class="plus" id="plusId" value="${w.snackNo}" onclick="plusCount( this.value , ${w.wishNo})">
-										<span>+</span>
+									<span>+</span>
 									</button>
 								</div>
 							</div>
@@ -224,6 +223,7 @@
 	//	console.log(${fn:length(list)});
 	//	console.log(snackNo)
 		const snackNo = val;
+
 		const listSize = "${fn:length(list)}";
 		const amount = $('.countTxt');
 		
@@ -306,6 +306,29 @@
 		}
 	})
 	
+
+	//d-day
+	$(function(){
+
+		const wishEndDate = "<fmt:formatDate value="${list[0].wishEndDate}" pattern="yyyy-MM-dd"/>"
+			console.log(wishEndDate)
+		const closingDate = new Date(wishEndDate).getTime() //위시리스트 마감일
+	
+		var x = setInterval(function(){
+            var now = new Date().getTime();
+
+            var distance = closingDate - now;
+            
+            var day = Math.floor(distance / (1000 * 60 * 60 * 24)); 
+            var hour = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
+            var minute = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)); 
+            var second = Math.floor((distance % (1000 * 60)) / 1000);
+      
+        
+            document.getElementById("D-day").innerHTML = "마감시간까지 "+ "D-" + day + " " + hour + " : "  + minute + " : " + second ;
 		
+		})
+	},1000);
+	
 	</script>
 </html>

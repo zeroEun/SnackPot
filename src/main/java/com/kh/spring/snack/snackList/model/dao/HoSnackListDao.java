@@ -43,4 +43,16 @@ public class HoSnackListDao {
 		return (ArrayList)sqlSession.selectList("snackListMapper.selectSnack", subs);
 	}
 
+	public int insertSnackDList(SqlSessionTemplate sqlSession, ArrayList<SnackDList> dList) {
+		return sqlSession.update("snackListMapper.insertSnackDList", dList);
+	}
+
+	public int selectTotalPrice(SqlSessionTemplate sqlSession, int listNo) {
+		return sqlSession.selectOne("snackListMapper.selectTotalPrice", listNo);
+	}
+
+	public int deleteSnackDList(SqlSessionTemplate sqlSession, int listNo) {
+		return sqlSession.insert("snackListMapper.deleteSnackDList", listNo);
+	}
+
 }

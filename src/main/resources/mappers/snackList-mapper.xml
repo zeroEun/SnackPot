@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
 			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
 		FROM SNACK S
-		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
+		LEFT JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
 		JOIN SNACK_CATEGORY C ON (S.CATEGORY_NO = C.CATEGORY_NO)
 		JOIN SNACK_CATEGORY_DETAIL D ON (S.DETAIL_NO = D.DETAIL_NO)
 		WHERE STATUS = 'Y' 
@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="search != ''">
 			AND S.SNACK_NAME LIKE '%'||#{search}||'%'
 		</if>
-		ORDER BY S.CATEGORY_NO ASC, S.DETAIL_NO ASC
+		ORDER BY S.CATEGORY_NO ASC, S.DETAIL_NO ASC, S.SNACK_NAME ASC
 	</select>
 	
 	<select id="selectSnackListNo" parameterType="String" resultType="_int">
@@ -85,15 +85,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectSnackDList" parameterType="_int" resultMap="snackDListResultSet">
-		SELECT L.SNACK_D_NO, L.SNACK_LIST_NO, S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
+		SELECT L.SNACK_D_NO, L.SNACK_LIST_NO, L.AMOUNT, S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
 			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
 		FROM SNACK_D_LIST L 
 		JOIN SNACK S ON (L.SNACK_NO = S.SNACK_NO)
-		JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
+		LEFT JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
 		JOIN SNACK_CATEGORY C ON (S.CATEGORY_NO = C.CATEGORY_NO)
 		JOIN SNACK_CATEGORY_DETAIL D ON (S.DETAIL_NO = D.DETAIL_NO)
-		WHERE SNACK_LIST_NO = #{listNo} 
-		
+		WHERE L.SNACK_LIST_NO = #{listNo} 
+		ORDER BY S.CATEGORY_NO ASC, S.DETAIL_NO ASC, S.SNACK_NAME ASC
 	</select>
 	
 	<insert id="insertSanckList" parameterType="String">
@@ -113,5 +113,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND S.AROMA_NO NOT IN (${dislikeFlavour})
 		
 	</select>
+	
+	<update id="insertSnackDList" parameterType="java.util.List" >
+		INSERT INTO SNACK_D_LIST
+		SELECT SNACK_D_LIST_SEQ.NEXTVAL, S.*
+		FROM(
+			<foreach item="item" collection="list" separator="UNION ALL">
+				SELECT #{item.snackListNo}, #{item.snackNo}, #{item.amount}
+				FROM SYS.DUAL
+			</foreach>
+		)S
+		
+	</update>
+	
+	<select id="selectTotalPrice" parameterType="_int" resultType="_int">
+		SELECT SUM(S.RELEASE_PRICE * L.AMOUNT)
+		FROM SNACK_D_LIST L
+		JOIN SNACK S ON (L.SNACK_NO = S.SNACK_NO)
+		WHERE L.SNACK_LIST_NO = #{listNo}
+	</select>
+	
+	<delete id="deleteSnackDList" parameterType="_int">
+		DELETE FROM SNACK_D_LIST
+		WHERE SNACK_LIST_NO = #{listNo}
+	</delete>
 
 </mapper>

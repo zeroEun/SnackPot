@@ -43,7 +43,7 @@ public class HoSnackListController {
 		return "headoffice/snack/snackListSchedule";
 	}
 	
-	
+	//구독 회사의 리스트 정보(스케줄)를 생성하는 메소드 comListInfo
 	public ArrayList<ListSchedule> companyInfo(String comCode) {
 		
 		
@@ -102,71 +102,71 @@ public class HoSnackListController {
 				}
 				
 				return schedule;
-		
-		
 	}
-	
-	
 	
 	@RequestMapping("createListForm.sn")
 	public String createSnackListForm(String comCode, ListSchedule schedule, Model model) {
 		
-		
-		//회사 정보 객체 만들어 불러오기 : 회사명, 주문 마감일, 예산, 리스트 번호
-		//주문 마감일 구하는 메소드 따로 만들기 가능?ㅜ
+		//회사 정보 객체 만들어 불러오기 : 회사명, 주문 마감일, 예산, 총 금액, 리스트 번호
 		
 		//리스트 생성 여부 확인, 발송 여부에 N이 있으면 추가 X 기존 리스트No 불러오기, N이 없으면 insert
-		int listNo = hoSnackListService.selectSnackListNo(comCode);
+		int listNo = selectSnackListNo(comCode);
+		ArrayList<SnackDList> dList = null;
 		
 		if(listNo > 0) {
-			ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
-			model.addAttribute("dList", dList);
-			model.addAttribute("listNo", listNo);
-			System.out.println(dList);
+			dList =  hoSnackListService.selectSnackDList(listNo);
 		}else {
 			hoSnackListService.insertSanckList(comCode);
-			model.addAttribute("listNo", hoSnackListService.selectSnackListNo(comCode));
+			listNo = selectSnackListNo(comCode);
 		}
 		
+		schedule.setListNo(listNo);
+		schedule.setTotalPrice(selectTotalPrice(listNo));
 		
 		System.out.println(schedule);
-		
+		model.addAttribute("dList", dList);
 		model.addAttribute("s", schedule);
 		return "headoffice/snack/createSnackList";
 	}
 	
-	
-	@ResponseBody
-	@RequestMapping(value="selectSubCate.sn" , produces="application/json; charset=utf-8")
-	public ArrayList<SnackSubCategory> selectSubCategory(@RequestParam int cNo) {
+	//간식 리스트 번호 불러오는 메소드, 리스트 번호가 없을 경우 0 리턴
+	public int selectSnackListNo(String comCode) {
 		
-		ArrayList<SnackSubCategory> category = snackSubsService.selectSubCategory(cNo);
-		
-		return category;
+		return hoSnackListService.selectSnackListNo(comCode);
 	}
 	
-	@RequestMapping("searchSnack.sn")
-	public String searchSnack(String comCode, SearchSnack search,  Model model) {
+	//해당 간식 리스트의 총 금액을 불러오는 메소드
+	public int selectTotalPrice(int listNo) {
 		
-		System.out.println(search);
-		
-		ArrayList<Product> searchList = hoSnackListService.searchSnack(search);
-		
-		
-		ListSchedule schedule = companyInfo(comCode).get(0);
-		System.out.println(schedule);
-		
-		
-		model.addAttribute("s", schedule);
-		model.addAttribute("searchList", searchList);
-		return "headoffice/snack/createSnackList";
+		return hoSnackListService.selectTotalPrice(listNo);
 	}
+	
 	
 	@RequestMapping("createList.sn")
 	public String createList(String comCode, int listNo, Model model){
 		
+		deleteSnackDList(listNo);
+		insertSnackDList(comCode, listNo);
+		ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
+		
 		ListSchedule schedule = companyInfo(comCode).get(0);
+		schedule.setTotalPrice(selectTotalPrice(listNo));
+		schedule.setComCode(comCode);
+		schedule.setListNo(listNo);
+		
 		model.addAttribute("s", schedule);
+		model.addAttribute("dList", dList);
+		return "headoffice/snack/createSnackList";
+	
+	}
+	
+	//간식 상세 리스트 삭제 메소드
+	public void deleteSnackDList(int listNo) {
+		hoSnackListService.deleteSnackDList(listNo);
+	}
+	
+	//리스트 생성 버튼 클릭시 간식 리스트 생성 후 간식 상세 리스트 insert하는 메소드
+	public void insertSnackDList(String comCode, int listNo) {
 		
 		SnackSubs subs = snackSubsService.selectSubsInfo(comCode);
 		ArrayList<SnackDList> list =  hoSnackListService.selectSnack(subs);
@@ -192,6 +192,8 @@ public class HoSnackListController {
 			int r = (int)((Math.random())*151 + 1);
 			System.out.println(r);
 			
+			if(list.isEmpty()) break;
+				
 			Iterator<SnackDList> iter = list.iterator();
 			while(iter.hasNext()) {
 				
@@ -205,28 +207,29 @@ public class HoSnackListController {
 						
 						switch(s.getCategoryNo()){
 						case 1: 
-							System.out.println(snackBudget);
 							if(snackBudget > 0) {
 								snackBudget -= s.getReleasePrice()*amount;
-								System.out.println("snackBudget" +snackBudget);
+							}else{
+								continue;
 							}break;
 						case 2: 
 							if(drinkBudget > 0) {
 								drinkBudget -= s.getReleasePrice()*amount;
-								System.out.println("drinkBudget" +drinkBudget);
+							}else{
+								continue;
 							}break;
 						case 3: 
 							if(retortBudget > 0) {
 								retortBudget -= s.getReleasePrice()*amount;
-								System.out.println("retortBudget" +retortBudget);
+							}else{
+								continue;
 							}break;	
 						}
-						
 						s.setAmount(amount);
+						s.setSnackListNo(listNo);
 						dList.add(s);
 						iter.remove(); //중복 제거를 위해 remove
 						total = snackBudget + drinkBudget + retortBudget;
-						
 					}
 						
 				}
@@ -234,13 +237,43 @@ public class HoSnackListController {
 			}
 				
 		}
-			
-		model.addAttribute("dList", dList);
-		model.addAttribute("comCode", comCode);
-		model.addAttribute("listNo", listNo);
-		return "headoffice/snack/createSnackList";
-	
-	}
 		
+		hoSnackListService.insertSnackDList(dList);
+		
+	}
+	
+	//검색 카테고리 불러오는 메소드
+	@ResponseBody
+	@RequestMapping(value="selectSubCate.sn" , produces="application/json; charset=utf-8")
+	public ArrayList<SnackSubCategory> selectSubCategory(@RequestParam int cNo) {
+		
+		ArrayList<SnackSubCategory> category = snackSubsService.selectSubCategory(cNo);
+		
+		return category;
+	}
+	
+	//검색 결과 리스트 반환 메소드
+	@RequestMapping("searchSnack.sn")
+	public String searchSnack(String comCode, int listNo, SearchSnack search,  Model model) {
+		
+		System.out.println(search);
+		
+		ArrayList<Product> searchList = hoSnackListService.searchSnack(search);
+		ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
+		
+		
+		ListSchedule schedule = companyInfo(comCode).get(0);
+		schedule.setTotalPrice(selectTotalPrice(listNo));
+		schedule.setComCode(comCode);
+		schedule.setListNo(listNo);
+		
+		
+		model.addAttribute("dList", dList);
+		model.addAttribute("s", schedule);
+		model.addAttribute("searchList", searchList);
+		return "headoffice/snack/createSnackList";
+	}
+	
+	
 	
 }

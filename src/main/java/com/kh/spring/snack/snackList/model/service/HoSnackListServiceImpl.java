@@ -72,4 +72,32 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 		return  hoSnackListDao.selectSnack(sqlSession, subs);
 	}
 
+
+	@Override
+	public void insertSnackDList(ArrayList<SnackDList> dList) {
+
+		int result = hoSnackListDao.insertSnackDList(sqlSession, dList);
+		
+		if(result < 0) {
+			throw new CommException("insertSnackDList 실패");
+		}
+	}
+
+
+	@Override
+	public int selectTotalPrice(int listNo) {
+		return hoSnackListDao.selectTotalPrice(sqlSession, listNo);
+	}
+
+
+	@Override
+	public void deleteSnackDList(int listNo) {
+		
+		int result = hoSnackListDao.deleteSnackDList(sqlSession, listNo);
+		
+		if(result < 0) {
+			throw new CommException("deleteSnackDList 실패");
+		}
+	}
+
 }

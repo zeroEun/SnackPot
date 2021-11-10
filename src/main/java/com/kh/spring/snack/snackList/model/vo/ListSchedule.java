@@ -24,5 +24,7 @@ public class ListSchedule {
 	private Date settleDate;
 	private String status;
 	private int budget;
-
+	private int totalPrice;
+	private int listNo;
+	
 }

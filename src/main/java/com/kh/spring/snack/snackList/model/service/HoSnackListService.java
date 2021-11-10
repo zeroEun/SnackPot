@@ -25,4 +25,10 @@ public interface HoSnackListService {
 
 	ArrayList<SnackDList> selectSnack(SnackSubs subs);
 
+	void insertSnackDList(ArrayList<SnackDList> dList);
+
+	int selectTotalPrice(int listNo);
+
+	void deleteSnackDList(int listNo);
+
 }

@@ -88,17 +88,17 @@
 					 
 					<form action="createList.sn" method="post" id="submitForm">
 						<input type="hidden" name="comCode" value="${s.comCode}">
-						<input type="hidden" name="listNo" value="${listNo}">
+						<input type="hidden" name="listNo" value="${s.listNo}">
 					</form> 
 					
                     <span class="company-name">${s.comName}</span>
                     <br><br>
                     <span class="">예산 : ${s.budget}원</span>&nbsp;&nbsp;&nbsp;
-                    <span class="">총 금액 : 500,000원</span>&nbsp;&nbsp;&nbsp;
+                    <span class="">총 금액 : ${s.totalPrice}원</span>&nbsp;&nbsp;&nbsp;
                  	<span class="">주문 마감일 : ${s.orderDeadline}</span>
 
                     <button type="button" class="btn btn-primary">위시리스트 조회</button>
-                  	<button type="button" class="btn btn-primary" onclick="$('#submitForm').submit();">리스트 생성</button>
+                  	<button type="button" class="btn btn-primary" id="createListBtn">리스트 생성</button>
                    
                     <hr>
                  
@@ -106,8 +106,9 @@
       
 						<!-- 검색 부분 -->
                         <div class="search-sub ">
-                            <form action="searchSnack.sn">    
+                            <form action="searchSnack.sn" method="post">    
                             	<input type="hidden" name="comCode" value="${s.comCode}">
+                            	<input type="hidden" name="listNo" value="${s.listNo}">
 	                            <select class="search-select category" name="category" id="category">
 	                                <option value="0">카테고리</option>
 	                                <option value="1">스낵</option>
@@ -137,6 +138,7 @@
                                     <th>공급가</th>
                                     <th>수량</th>
                                     <th>재고</th>
+                                    <th>금액</th>
                                     <th>리스트 추가</th>
                                 </tr>
                             </thead>
@@ -151,8 +153,9 @@
 	                                    <td></td>
 	                                    <td>${list.snackName}</td>
 	                                    <td>${list.releasePrice}원</td>
-	                                    <td><input type="number" class="amount" value=1 min=1></td>
+	                                    <td><input type="number" class="amount" value="${list.amount}" min=1></td>
 	                                    <td>${list.stock}</td>
+	                                    <td></td>
 	                                    <td><button type="button" class="addBtn" >추가</button></td>
                                 	</tr>
                             	</c:forEach>
@@ -177,7 +180,7 @@
                                 <th>공급가</th>
                                 <th>수량</th>
                                 <th>재고</th>
-                                
+                                <th>금액</th>
                             </tr>
                         </thead>
 
@@ -187,7 +190,7 @@
                             	<tr>
 	                            	<td>
 	                                    <div class="form-check form-check-inline" style='zoom:1.5;'>
-	                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="${dList.snackDNo }">
+	                                        <input class="form-check-input" type="checkbox" name="snackCheckbox" id="inlineCheckbox${dList.snackDNo}" value="${dList.snackDNo}">
 	                                    </div>
 	                                </td>
 	                            	<td>${dList.categoryName}</td>
@@ -195,8 +198,9 @@
 	                                <td></td>
 	                                <td>${dList.snackName}</td>
 	                                <td>${dList.releasePrice}원</td>
-	                                <td><input type="number" class="amount" value="${dList.amount}" min=1></td>
+	                                <td><input type="number" class="amount" value="${dList.amount}" min=1 max="${dList.stock}"></td>
 	                                <td>${dList.stock}</td>
+	                                <td>${dList.releasePrice * dList.amount}</td>
                                 </tr>
                             </c:forEach>
 
@@ -245,7 +249,6 @@
 						$('#subCategory').append($opt);
 					})
 					
-					
 				},error:function(){
 					console.log("댓글 작성 ajax 통신 실패");
 				}
@@ -254,10 +257,12 @@
 
 		})
 		
-		
-		
-		
-		
+		$('#createListBtn').on('click', function(){
+			
+			var result = confirm("이전 리스트가 있을 경우 삭제됩니다. 리스트를 생성하시겠습니까?");
+			if(result) $('#submitForm').submit();
+			
+		})
 	});
 
 </script>

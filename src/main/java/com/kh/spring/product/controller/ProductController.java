@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,8 +70,8 @@ public class ProductController {
 		//System.out.println("wishSnackNo : " + wishSnackNo);
 		
 		/*로그인하면 사원 session에서 회사코드 가져와서 같이 insert해주기*/
-		String comCode = "KAKAO";
-		//String comCode = "A211104";
+		//String comCode = "KAKAO";
+		String comCode = "KH01";
 		
 		/*마감날짜를 간식구독 테이블에서 가져오기*/
 		int deliveryDate =  Integer.parseInt(productService.selectDeliveryDate(comCode)); //8
@@ -141,8 +142,8 @@ public class ProductController {
 	public String wishListView(Model model, HttpSession session ) {
 		
 		/*로그인한 유저의 회사*/
-		String comCode = "KAKAO";
-		//String comCode = "A211104";
+		//String comCode = "KAKAO";
+		String comCode = "KH01";
 		
 		int companyChk = productService.chkWishList(comCode); //회사코드와 상태값이 'N' 이면  1 
 		
@@ -188,6 +189,28 @@ public class ProductController {
 		
 		return  "product/wishListMainView"; 
 	}
+	
+	
+	// 스케줄러 테스트
+	/*
+	 * 1. 현재 날짜를 가져와서 WISHLIST에 보내기
+	 * 2. 동일하면 WISHLIST STATUS를 'N'-> 'Y'로
+	 * */
+	//@Scheduled(cron = "*/10 * * * * *") --> 10초마다
+	//@Scheduled(cron = "0 50 17 1/1 * ?") --> 매일 5시 50분 마다 실행 (0시0분으로 바꿔서 다시해보기)
+//	public void updateClosingDate() {
+//		//테스트 
+//		
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+//		Calendar cal = Calendar.getInstance();
+//			
+//		String today = sdf.format(cal.getTime());
+//		System.out.println("today 오늘의 날짜? : " + today); 
+//		
+//		productService.updateClosingDate(today);
+//		
+//		
+//	}
 	
 	
 }

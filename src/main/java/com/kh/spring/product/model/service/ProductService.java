@@ -37,6 +37,11 @@ public interface ProductService {
 	int updatePlusCount(HashMap<String, Object> map);
 
 	int deleteSnack(HashMap<String, Object> map);
+	
+	
+	//스케줄러 테스트용
+//	void updateClosingDate(String today);
+
 
 	
 

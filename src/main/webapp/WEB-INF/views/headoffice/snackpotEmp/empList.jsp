@@ -86,30 +86,22 @@
         </tr>
     </thead>
     <tbody>
+    <c:forEach items="${list}" var="emp" varStatus="st">
         <tr>
-            <td>1</td>
-            <td>21110901</td>
-            <td>김효은</td>
-            <td>개발팀</td>
-            <td>사원</td>
-            <td>wgb1212@naver.com</td>
+            <td>${st.index +1}</td>
+            <td>${emp.sempNum}</td>
+            <td>${emp.sempName}</td>
+            <td>${emp.sempDept}</td>
+            <td>${emp.sempJob}</td>
+            <td>${emp.sempEmail}</td>
             <td><input type="button" class="empBtn" value="수정"></td>
             <td><input type="button" class="empBtn" value="삭제"></td>
         </tr>
-        <tr>
-            <td>2</td>
-            <td>21110902</td>
-            <td>유재석</td>
-            <td>개발팀</td>
-            <td>사원</td>
-            <td>wgb1234@naver.com</td>
-            <td><input type="button" class="empBtn" value="수정"></td>
-            <td><input type="button" class="empBtn" value="삭제"></td>
-        </tr>
+     </c:forEach>
     </tbody>
 </table>
 </div>
-<input type="button" id="enrollBtn" value="사원등록">
+<input type="button" id="enrollBtn" value="사원등록" onClick="location.href='enrollEmp.sn'">
 </div>
 </div>
 </div>

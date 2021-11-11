@@ -20,8 +20,7 @@
         }
         #inner{
             display: inline-block;
-            margin-left: 550px;
-            margin-top: 100px;
+            margin-top: 120px;
         }
         #title{
             color: rgb(245, 208, 66);
@@ -43,28 +42,12 @@
             font-size: 15px;
             font-weight: bold;
         }
-        #enrollBtn{
-            background-color: rgb(255, 255, 255);
-            border-color: rgb(245, 208, 66);
-            border-style: solid;
-            width: 300px;
-            height: 58px;
-            margin: 10px;
-            font-size: 15px;
-            font-weight: bold;
-        }
         a{
             font-size: 15px;
         }
 </style>
 </head>
 <body>
-
-	<div class="container-fluid">
-    	<div class="row flex-nowrap">
-
-		<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
-		
 		<div id="outer">
             <div id="inner">
             	<form id="loginForm" method="POST">
@@ -76,8 +59,5 @@
                 </form>
             </div>
         </div>
-        
-		</div>
-	</div>
 </body>
 </html>

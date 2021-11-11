@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.spring.snackpotEmp.model.service.SnackpotEmpService;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
@@ -17,7 +18,7 @@ import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 @SessionAttributes("loginEmp")
 @Controller
 public class SnackpotEmpController {
-
+	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -29,13 +30,17 @@ public class SnackpotEmpController {
 		return "headoffice/snackpotEmp/loginEmp";
 	}
 	
+	@RequestMapping("enrollEmp.sn")
+	public String enrollEmp() {
+		return "headoffice/snackpotEmp/enrollEmp";
+	}
+	
 	@RequestMapping("empList.sn")
 	public String empList(Model model) {
 		
 		ArrayList <SnackpotEmp> list = ses.selectEmpList();
+	
 		model.addAttribute("list", list);
-		
-		System.out.println("사원 리스트 : " + list);
 		
 		return "headoffice/snackpotEmp/empList";
 	}

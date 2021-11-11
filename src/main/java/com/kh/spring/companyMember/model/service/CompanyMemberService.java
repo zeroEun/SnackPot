@@ -15,7 +15,7 @@ public interface CompanyMemberService {
 
 	void insertCompanyMember(CompanyMember m);
 
-	void insertCompanyAdmin(CompanyMember m);
+	int insertCompanyAdmin(CompanyMember m);
 
 	CompanyMember loginMember(BCryptPasswordEncoder bCryptPasswordEncoder, CompanyMember m);
 

@@ -152,8 +152,11 @@ public class CompanyMemberController {
 	        
 	        m.setComCode(comCode);
 	        co.setComCode(comCode);
-			cms.insertCompany(co);
-			cms.insertCompanyAdmin(m);
+			int result = cms.insertCompanyAdmin(m);
+			if(result > 0) {
+				cms.insertCompany(co);
+			}
+			
 		}
 		
 		model.addAttribute("msg","회원가입이 완료되었습니다.");

@@ -188,11 +188,12 @@ public class HoSnackListController {
 		
 		while(total > 0) {
 			
+			if(list.isEmpty()) break; //예산 초과 시 해당 항목을 지워 무한루프에 빠지지 않도록, 재고가 간식 양보다 적을 경우는 삭제가 안되는데 어떻게 하지?
+			
+			//랜덤 범위 과자번호 MAX불러오기
 			System.out.println( "total: " +  total);
 			int r = (int)((Math.random())*151 + 1);
 			System.out.println(r);
-			
-			if(list.isEmpty()) break;
 				
 			Iterator<SnackDList> iter = list.iterator();
 			while(iter.hasNext()) {
@@ -210,18 +211,21 @@ public class HoSnackListController {
 							if(snackBudget > 0) {
 								snackBudget -= s.getReleasePrice()*amount;
 							}else{
+								iter.remove(); 
 								continue;
 							}break;
 						case 2: 
 							if(drinkBudget > 0) {
 								drinkBudget -= s.getReleasePrice()*amount;
 							}else{
+								iter.remove();
 								continue;
 							}break;
 						case 3: 
 							if(retortBudget > 0) {
 								retortBudget -= s.getReleasePrice()*amount;
 							}else{
+								iter.remove();
 								continue;
 							}break;	
 						}
@@ -254,7 +258,7 @@ public class HoSnackListController {
 	
 	//검색 결과 리스트 반환 메소드
 	@RequestMapping("searchSnack.sn")
-	public String searchSnack(String comCode, int listNo, SearchSnack search,  Model model) {
+	public String searchSnack(String comCode, int listNo, SearchSnack search, Model model) {
 		
 		System.out.println(search);
 		
@@ -274,6 +278,71 @@ public class HoSnackListController {
 		return "headoffice/snack/createSnackList";
 	}
 	
+	@RequestMapping("deleteSnackDNo.sn")
+	public String deleteSnackDNo(String comCode, int listNo, String snackDNoCheck, Model model) {
+		
+		System.out.println(snackDNoCheck);
+		hoSnackListService.deleteSnackDNo(snackDNoCheck);
+		
+		ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
+		ListSchedule schedule = companyInfo(comCode).get(0);
+		schedule.setTotalPrice(selectTotalPrice(listNo));
+		schedule.setComCode(comCode);
+		schedule.setListNo(listNo);
+		
+		model.addAttribute("dList", dList);
+		model.addAttribute("s", schedule);
+		
+		return "headoffice/snack/createSnackList";
+	}
 	
+	@RequestMapping("addDList.sn")
+	public String addSanckDList(String comCode, SnackDList snackD, Model model) {
+		
+		System.out.println("snackD" + snackD);
+		hoSnackListService.addSanckDList(snackD);
+		int listNo = snackD.getSnackListNo();
+		
+		ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
+		ListSchedule schedule = companyInfo(comCode).get(0);
+		schedule.setTotalPrice(selectTotalPrice(listNo));
+		schedule.setComCode(comCode);
+		schedule.setListNo(listNo);
+		
+		model.addAttribute("dList", dList);
+		model.addAttribute("s", schedule);
+		
+		return "headoffice/snack/createSnackList";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="checkSnackDup.sn", produces="application/json; charset=utf-8")
+	public int checkSnackDup(int listNo, int snackNo) {
+		
+		SnackDList sncakD = new SnackDList();
+		sncakD.setSnackListNo(listNo);
+		sncakD.setSnackNo(snackNo);
+		
+		return hoSnackListService.checkSnackDup(sncakD);
+	}
+	
+	
+	@RequestMapping("updateSnackAmount.sn")
+	public String updateSnackAmount(String comCode, int listNo, SnackDList snackD, Model model) {
+		
+		System.out.println(snackD);
+		
+		ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
+		ListSchedule schedule = companyInfo(comCode).get(0);
+		schedule.setTotalPrice(selectTotalPrice(listNo));
+		schedule.setComCode(comCode);
+		schedule.setListNo(listNo);
+		
+		model.addAttribute("dList", dList);
+		model.addAttribute("s", schedule);
+		
+		return "headoffice/snack/createSnackList";
+	}
 	
 }

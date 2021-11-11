@@ -111,7 +111,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE S.DETAIL_NO IN (${snackCategory},${drinkCategory},${retortCategory})
 		AND S.TASTE_NO IN (${preferTaste})
 		AND S.AROMA_NO NOT IN (${dislikeFlavour})
-		
 	</select>
 	
 	<update id="insertSnackDList" parameterType="java.util.List" >
@@ -123,11 +122,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				FROM SYS.DUAL
 			</foreach>
 		)S
-		
 	</update>
 	
 	<select id="selectTotalPrice" parameterType="_int" resultType="_int">
-		SELECT SUM(S.RELEASE_PRICE * L.AMOUNT)
+		SELECT NVL(SUM(S.RELEASE_PRICE * L.AMOUNT), 0)
 		FROM SNACK_D_LIST L
 		JOIN SNACK S ON (L.SNACK_NO = S.SNACK_NO)
 		WHERE L.SNACK_LIST_NO = #{listNo}
@@ -137,5 +135,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM SNACK_D_LIST
 		WHERE SNACK_LIST_NO = #{listNo}
 	</delete>
+	
+	<delete id="deleteSnackDNo" parameterType="String">
+		DELETE FROM SNACK_D_LIST
+		WHERE SNACK_D_NO IN (${snackDNoCheck})
+	</delete>
+	
+	<insert id="addSanckDList" parameterType="com.kh.spring.snack.snackList.model.vo.SnackDList">
+		INSERT INTO SNACK_D_LIST
+		VALUES(SNACK_D_LIST_SEQ.NEXTVAL, #{snackListNo}, #{snackNo}, #{amount} )
+	</insert>
+	
+	<select id="checkSnackDup" parameterType="com.kh.spring.snack.snackList.model.vo.SnackDList" resultType="_int">
+		SELECT COUNT(*)
+		FROM SNACK_D_LIST
+		WHERE SNACK_LIST_NO = #{snackListNo}
+		AND SNACK_NO = #{snackNo}
+	</select>
 
 </mapper>

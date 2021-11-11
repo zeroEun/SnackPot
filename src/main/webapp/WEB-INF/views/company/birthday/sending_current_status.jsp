@@ -15,19 +15,27 @@
 <title>Insert title here</title>
 </head>
 <style>
-    li>p {
+    #sendingTab>li>p {
         cursor: pointer;
+        margin-left: 0;
+        width: 100%;
     }
     #sendingTab{
         float: left;
+        width: 24%;
     }
-    .card-header button{
+    #sendingTab>li{
+    	width: 50%;
+    }
+    #tabArea button{
         float: right;
         margin-left: 2px;
         margin-right: 2px;
     }
-    </style>
-    <body>
+</style>
+<body>
+	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
+		<%-- 화면 로딩 시 발송 예정 리스트가 먼저 나타나도록 설정, 발송 완료 탭 클릭 시 서로 색 변경 --%>
         <script>
             window.onload = function() {
                 $("#sending_expected").css("background", "white")
@@ -35,6 +43,10 @@
     
                 $("#sending_expected_table").show();
                 $("#sending_complete_table").hide();
+                $("#updateBtn").show();
+                $("#insertBtn").show();
+                $("#deleteBtn").show();
+                $("#tabArea").css("padding-bottom", 4);
             }
     
             $(document).ready(function() {
@@ -44,6 +56,10 @@
     
                     $("#sending_expected_table").show();
                     $("#sending_complete_table").hide();
+                    $("#updateBtn").show();
+                    $("#insertBtn").show();
+                    $("#deleteBtn").show();
+                    $("#tabArea").css("padding-bottom", 4);
                 });
             });
             $(document).ready(function() {
@@ -53,12 +69,16 @@
     
                     $("#sending_expected_table").hide();
                     $("#sending_complete_table").show();
+                    $("#updateBtn").hide();
+                    $("#insertBtn").hide();
+                    $("#deleteBtn").hide();
+                    $("#tabArea").css("padding-bottom", 12);
                 });
             });
         </script>
     
         <div class="card text-center">
-            <div class="card-header">
+            <div class="card-header" id="tabArea">
                 <ul class="nav nav-tabs card-header-tabs" id="sendingTab">
                     <li class="nav-item" id="sending_expected">
                         <p class="nav-link">발송 예정</p>
@@ -68,221 +88,11 @@
                     </li>
                 </ul>
                 <button type="button" class="btn btn-dark" id="updateBtn" onclick="updateRow();">선택 수정</button>                
-                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#sending_insert">추가하기</button>
-                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#sending_delete" onclick="deleteRow();">선택 삭제</button>                
+                <button type="button" class="btn btn-dark" id="insertBtn" data-toggle="modal" data-target="#sending_insert">추가하기</button>
+                <button type="button" class="btn btn-dark" id="deleteBtn" onclick="deleteRow();">선택 삭제</button>                
             </div>
             
-            <div class="card-body">
-                <script>
-	                $(function(){
-	                	var chkRow = $("input[name='sendingChk']");
-	                	var rowCount = chkRow.length;
-		                $("#sendingChk").click(function(){
-		                    var chkList = $("input[name='sendingChk']");
-		                    for(var i=0; i<chkList.length; i++){
-		                        chkList[i].checked = this.checked;
-		                    }
-		                });
-		
-		                $("input[name='sendingChk']").click(function(){
-		                     if($("input[name='sendingChk']:checked").length == rowCount){ /*각각 체크해서 전체를 다 체크했을 때*/
-		                         $("#sendingChk")[0].checked = true;
-		                     }else{
-		                         $("#sendingChk")[0].checked = false;
-		                     }
-		                });
-	                });
-                	
-	            	function deleteRow(){
-	            		var chkArr = new Array();
-	            		var list = $("input[name='sendingChk']");
-	            		for(var i=0; i<list.length; i++){
-	            			if(list[i].checked){
-	            				chkArr.push(list[i].value);
-	            			}
-	            		}
-	            		
-	            		if(chkArr.length == 0){
-	            			alert("선택된 항목이 없습니다.");
-	            		}
-	            		else{
-	            			//console.log("chkArr : " + chkArr);
-	            			//console.log("chkArr 타입 : " + typeof(chkArr));
-	            			var chk = confirm("정말 삭제하시겠습니까?( 삭제 개수 : " + chkArr.length + " )");
-	            			if(chk == true){
-	            				$.ajax({
-		            				url : "delSendSts.birth",
-		            				dataType: "json",
-		            				type : 'POST',
-		            				traditional : true,
-		            				data : {
-		            					chkArr : chkArr
-		            				},
-		            				success : function(data){
-		            					//console.log("succes진입");
-		            					if(data == chkArr.length){
-		            						//console.log("if진입");
-		            						alert(chkArr.length + "개 삭제가 완료되었습니다.");
-		            						location.replace("sendingcursts.birth");
-		            					}else{
-		            						//console.log("else진입");
-		            						alert("삭제하는데 실패했습니다.")
-		            					}
-		            				},
-		            				error : function(error){
-		            					//console.log("error진입" + error);	            					
-		            					alert("에러발생 : " + error);
-		            				}
-		            			});
-	            			}
-	            		}
-	            	}
-	                
-	            	$(function(){
-	            		$("#insertSendStsBtn").click(function(){
-	            			
-	            			var cempDept = $("#cempDept").val();
-	            			var cempJob = $("#cempJob").val();
-	            			var cempName = $("#cempName").val();
-	            			var cempPhone = $("#cempPhone").val();
-	            			var cempEmail = $("#cempEmail").val();
-	            			var cempBirth = $("#cempBirth").val();
-	            			
-	            			if(cempDept == "" || cempJob == "" || cempName == "" || 
-	            					cempPhone == "" || cempEmail == "" || cempBirth == ""){
-	            				alert("모든 항목을 입력해주세요.");
-	            			}else{
-	            				$.ajax({		            				
-		            				url : "insSendSts.birth",
-		            				type : "POST",
-		            				data:{
-		            					cempDept : cempDept,
-		            					cempJob : cempJob,
-		            					cempName : cempName,
-		            					cempPhone : cempPhone,
-		            					cempEmail : cempEmail,
-		            					cempBirth : cempBirth
-		            				},
-		            				success : function(result){
-		            					if(result > 0){
-		        							//console.log("result : " + result);
-		        							//console.log("result타입 : " + typeof(result));
-		        							alert("발송 예정 항목 등록 성공!");
-		        							location.replace("sendingcursts.birth");
-		        							
-		        						}else{
-		        							alert("발송 예정 항목 등록 실패!");
-		        						}
-		            				},
-		            				error : function(error){
-		            					//console.log("error진입" + error);	            					
-		            					alert("에러발생 : " + error);
-		            				}
-		            				
-		            			});
-	            			}
-	            			
-	            		});
-	            	});
-	            	
-	            	function updateRow(){
-	            		var chkArr = new Array();
-	            		var list = $("input[name='sendingChk']");
-	            		var cempSeq;
-	            		
-	            		for(var i=0; i<list.length; i++){
-	            			if(list[i].checked){
-	            				chkArr.push(list[i].value);
-	            				cempSeq = list[i].value;
-	            			}
-	            		}
-	            		console.log("cempSeq : " + cempSeq);
-	            		//console.log("cempSeq[0] : " + cempSeq[0]);
-	            		console.log("chkArr길이 : " + chkArr.length);
-	            		<%-- 체크된 항목이 1개일 때만 modal 실행 --%>
-	            		if(chkArr.length == 1){
-	            			//$("#updateBtn").attr("data-toggle","modal").attr("data-target","#sending_update");
-	            			$("#updateBtn").attr("data-toggle","modal").attr("data-target","#sending_update");
-	            			$.ajax({
-	            				url : "selectEmpOne.birth",
-	            				type : "POST",
-	            				data:{
-	            					cempSeq : cempSeq
-	            				},
-	            				success : function(result){	            					
-	            					console.log("result : " + result);
-	            					console.log("result2 : " + cempSeq);
-	            					console.log("result3 : " + result.cempBirthSdf);
-	            					$("#cSeq").val(cempSeq);
-	            					$("#cDept").val(result.cempDept);
-	            					$("#cJob").val(result.cempJob);
-	            					$("#cName").val(result.cempName);
-	            					$("#cPhone").val(result.cempPhone);
-	            					$("#cEmail").val(result.cempEmail);
-	            					$("#cBirth").val(result.cempBirthSdf);	            					
-	            					
-	            				},
-	            				error : function(error){
-	            					//console.log("error진입" + error);	            					
-	            					alert("에러발생 : " + error);
-	            				}
-	            			})
-	            			
-	            			//location.href="selectEmpOne.birth?cempSeq="+cempSeq;
-	            		}
-	            		else if(chkArr.length == 0){
-	            			alert("수정할 항목을 체크한 후 다시 버튼을 클릭해주세요.");
-	            			$("#updateBtn").removeAttr("data-toggle").removeAttr("data-target");
-	            		}else{
-	            			alert("한 번에 한 개의 항목만 수정이 가능합니다.");
-	            			$("#updateBtn").removeAttr("data-toggle").removeAttr("data-target");
-	            		}
-	            	}
-	            	
-	            	$(function(){
-	            		$("#updateSendStsBtn").click(function(){
-	            			
-	            			var cempBirthSdf = new Date($("#cBirth").val());
-	            			var cempBirth_final = new Date(+cempBirthSdf + 3240 * 10000).toISOString().split("T")[0];
-	            			
-	            			$.ajax({
-	            				
-	            				url : "updSendSts.birth",
-	            				type : "POST",
-	            				data:{
-	            					cempSeq : $("#cSeq").val(),
-	            					cempDept : $("#cDept").val(),
-	            					cempJob : $("#cJob").val(),
-	            					cempName : $("#cName").val(),
-	            					cempPhone : $("#cPhone").val(),
-	            					cempEmail : $("#cEmail").val(),
-	            					cempBirth : cempBirth_final
-	            				},
-	            				success : function(result){
-	            					if(result > 0){
-	        							//console.log("result : " + result);
-	        							//console.log("result타입 : " + typeof(result));
-	        							alert("발송 예정 항목 수정 성공!");
-	        							location.replace("sendingcursts.birth");
-	        							
-	        						}else{
-	        							console.log("cempBirth : " + $("#cBirth").val());
-	        							console.log("cempBirth타입 : " + typeof($("#cBirth").val()));
-	        							console.log("cempBirth 변환 : " + cempBirthSdf)
-	        							console.log(new Date(+cempBirthSdf + 3240 * 10000).toISOString().split("T")[0])
-	        							alert("발송 예정 항목 수정 실패!");
-	        						}
-	            				},
-	            				error : function(error){
-	            					//console.log("error진입" + error);	            					
-	            					alert("에러발생 : " + error);
-	            				}
-	            				
-	            			});
-	            		});
-	            	});
-                </script>
-                
+            <div class="card-body">                
                 <%-- 발송 예정 테이블 --%>
                 <table class="table" id="sending_expected_table">
                     <thead class="thead-light">
@@ -456,27 +266,252 @@
                             <th scope="col">선택완료일</th>
                         </tr>
                     </thead>
-                    <tbody>    
-                        <c:forEach items="${ list }" var="sendingSts" varStatus="status">
-							<c:if test="${ sendingSts.selectDate != null }">
-								<c:set var="num2" value="${ num2+1 }" />
-									<tr>
-										<td>${ num2 }</td>
-										<td>${ sendingSts.cempDept }</td>
-										<td>${ sendingSts.cempJob }</td>
-										<td>${ sendingSts.cempName }</td>
-										<td>${ sendingSts.cempPhone }</td>
-										<td>${ sendingSts.cempBirth }</td>
-										<td>${ sendingSts.sendingMsgDate }</td>
-									</tr>
-							</c:if>
-						</c:forEach>
+                    <tbody>
+                    	<c:set var="sendListSts" value="${list }"/>
+                   		<c:choose>
+                   			<c:when test="${empty sendListSts }">
+                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
+                   			</c:when>
+                   			<c:when test="${!empty sendListSts }">
+                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
+									<c:if test="${ sendingSts.selectDate != null }">
+										<c:set var="num2" value="${ num2+1 }" />
+											<tr>
+												<td>${ num2 }</td>
+												<td>${ sendingSts.cempDept }</td>
+												<td>${ sendingSts.cempJob }</td>
+												<td>${ sendingSts.cempName }</td>
+												<td>${ sendingSts.cempPhone }</td>
+												<td>${ sendingSts.cempBirth }</td>
+												<td>${ sendingSts.sendingMsgDate }</td>
+											</tr>
+									</c:if>
+								</c:forEach>
+                   				<c:if test="${empty num1 }">
+                   					<tr><td colspan="8">발송 완료인 사원이 없습니다.</td></tr>
+                   				</c:if>
+                   				</c:when>
+                   		</c:choose>
                     </tbody>
                 </table>
             </div>
         </div>
-    
-    
+            
         <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
-  </body>
+        
+	<script>
+		<%-- 전체 체크 설정 --%>
+		$(function(){
+	    	var chkRow = $("input[name='sendingChk']");
+	    	var rowCount = chkRow.length;
+	        $("#sendingChk").click(function(){
+	            var chkList = $("input[name='sendingChk']");
+	            for(var i=0; i<chkList.length; i++){
+	                chkList[i].checked = this.checked;
+	            }
+	        });
+	
+	        $("input[name='sendingChk']").click(function(){
+	             if($("input[name='sendingChk']:checked").length == rowCount){ /*각각 체크해서 전체를 다 체크했을 때*/
+	                 $("#sendingChk")[0].checked = true;
+	             }else{
+	                 $("#sendingChk")[0].checked = false;
+	             }
+	        });
+	    });
+		
+		<%-- 선택 삭제 함수 설정 --%>
+		function deleteRow(){
+			var chkArr = new Array();
+			var list = $("input[name='sendingChk']");
+			for(var i=0; i<list.length; i++){
+				if(list[i].checked){
+					chkArr.push(list[i].value);
+				}
+			}
+			
+			if(chkArr.length == 0){
+				alert("선택된 항목이 없습니다.");
+			}
+			else{
+				//console.log("chkArr : " + chkArr);
+				//console.log("chkArr 타입 : " + typeof(chkArr));
+				var chk = confirm("정말 삭제하시겠습니까?( 삭제 개수 : " + chkArr.length + " )");
+				if(chk == true){
+					$.ajax({
+	    				url : "delSendSts.birth",
+	    				dataType: "json",
+	    				type : 'POST',
+	    				traditional : true,
+	    				data : {
+	    					chkArr : chkArr
+	    				},
+	    				success : function(data){
+	    					//console.log("succes진입");
+	    					if(data == chkArr.length){
+	    						//console.log("if진입");
+	    						alert(chkArr.length + "개 삭제가 완료되었습니다.");
+	    						location.replace("sendingcursts.birth");
+	    					}else{
+	    						//console.log("else진입");
+	    						alert("삭제하는데 실패했습니다.")
+	    					}
+	    				},
+	    				error : function(error){
+	    					//console.log("error진입" + error);	            					
+	    					alert("에러발생 : " + error);
+	    				}
+	    			});
+				}
+			}
+		}
+	    
+		<%-- 추가하기 함수 설정 --%>
+		$(function(){
+			$("#insertSendStsBtn").click(function(){
+				
+				var cempDept = $("#cempDept").val();
+				var cempJob = $("#cempJob").val();
+				var cempName = $("#cempName").val();
+				var cempPhone = $("#cempPhone").val();
+				var cempEmail = $("#cempEmail").val();
+				var cempBirth = $("#cempBirth").val();
+				
+				if(cempDept == "" || cempJob == "" || cempName == "" || 
+						cempPhone == "" || cempEmail == "" || cempBirth == ""){
+					alert("모든 항목을 입력해주세요.");
+				}else{
+					$.ajax({		            				
+	    				url : "insSendSts.birth",
+	    				type : "POST",
+	    				data:{
+	    					cempDept : cempDept,
+	    					cempJob : cempJob,
+	    					cempName : cempName,
+	    					cempPhone : cempPhone,
+	    					cempEmail : cempEmail,
+	    					cempBirth : cempBirth
+	    				},
+	    				success : function(result){
+	    					if(result > 0){
+								//console.log("result : " + result);
+								//console.log("result타입 : " + typeof(result));
+								alert("발송 예정 항목 등록 성공!");
+								location.replace("sendingcursts.birth");
+								
+							}else{
+								alert("발송 예정 항목 등록 실패!");
+							}
+	    				},
+	    				error : function(error){
+	    					//console.log("error진입" + error);	            					
+	    					alert("에러발생 : " + error);
+	    				}
+	    				
+	    			});
+				}
+				
+			});
+		});
+		
+		<%-- 선택 수정 버튼 클릭 시 해당 객체의 정보를 불러와서 modal에 출력 --%>
+		function updateRow(){
+			var chkArr = new Array();
+			var list = $("input[name='sendingChk']");
+			var cempSeq;
+			
+			for(var i=0; i<list.length; i++){
+				if(list[i].checked){
+					chkArr.push(list[i].value);
+					cempSeq = list[i].value;
+				}
+			}
+			console.log("cempSeq : " + cempSeq);
+			//console.log("cempSeq[0] : " + cempSeq[0]);
+			console.log("chkArr길이 : " + chkArr.length);
+			<%-- 체크된 항목이 1개일 때만 modal 실행 --%>
+			if(chkArr.length == 1){
+				//$("#updateBtn").attr("data-toggle","modal").attr("data-target","#sending_update");
+				$("#updateBtn").attr("data-toggle","modal").attr("data-target","#sending_update");
+				$.ajax({
+					url : "selectEmpOne.birth",
+					type : "POST",
+					data:{
+						cempSeq : cempSeq
+					},
+					success : function(result){	            					
+						console.log("result : " + result);
+						console.log("result2 : " + cempSeq);
+						console.log("result3 : " + result.cempBirthSdf);
+						$("#cSeq").val(cempSeq);
+						$("#cDept").val(result.cempDept);
+						$("#cJob").val(result.cempJob);
+						$("#cName").val(result.cempName);
+						$("#cPhone").val(result.cempPhone);
+						$("#cEmail").val(result.cempEmail);
+						$("#cBirth").val(result.cempBirthSdf);	            					
+						
+					},
+					error : function(error){
+						//console.log("error진입" + error);	            					
+						alert("에러발생 : " + error);
+					}
+				})
+				
+				//location.href="selectEmpOne.birth?cempSeq="+cempSeq;
+			}
+			else if(chkArr.length == 0){
+				alert("수정할 항목을 체크한 후 다시 버튼을 클릭해주세요.");
+				$("#updateBtn").removeAttr("data-toggle").removeAttr("data-target");
+			}else{
+				alert("한 번에 한 개의 항목만 수정이 가능합니다.");
+				$("#updateBtn").removeAttr("data-toggle").removeAttr("data-target");
+			}
+		}
+		
+		<%-- 선택 수정 버튼을 클릭해 나타나는 modal의 수정 버튼 클릭 시 호출되는 함수 설정 --%>
+		$(function(){
+			$("#updateSendStsBtn").click(function(){
+				
+				var cempBirthSdf = new Date($("#cBirth").val());
+				var cempBirth_final = new Date(+cempBirthSdf + 3240 * 10000).toISOString().split("T")[0];
+				
+				$.ajax({
+					
+					url : "updSendSts.birth",
+					type : "POST",
+					data:{
+						cempSeq : $("#cSeq").val(),
+						cempDept : $("#cDept").val(),
+						cempJob : $("#cJob").val(),
+						cempName : $("#cName").val(),
+						cempPhone : $("#cPhone").val(),
+						cempEmail : $("#cEmail").val(),
+						cempBirth : cempBirth_final
+					},
+					success : function(result){
+						if(result > 0){
+							//console.log("result : " + result);
+							//console.log("result타입 : " + typeof(result));
+							alert("발송 예정 항목 수정 성공!");
+							location.replace("sendingcursts.birth");
+							
+						}else{
+							console.log("cempBirth : " + $("#cBirth").val());
+							console.log("cempBirth타입 : " + typeof($("#cBirth").val()));
+							console.log("cempBirth 변환 : " + cempBirthSdf)
+							console.log(new Date(+cempBirthSdf + 3240 * 10000).toISOString().split("T")[0])
+							alert("발송 예정 항목 수정 실패!");
+						}
+					},
+					error : function(error){
+						//console.log("error진입" + error);	            					
+						alert("에러발생 : " + error);
+					}
+					
+				});
+			});
+		});
+	</script>
+</body>
 </html>

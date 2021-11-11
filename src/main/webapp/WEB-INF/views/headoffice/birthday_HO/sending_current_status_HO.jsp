@@ -15,11 +15,22 @@
 <title>Insert title here</title>
 </head>
 <style>
-li>p {
-	cursor: pointer;
-}
+    #sendingTab>li>p {
+        cursor: pointer;
+        margin-left: 0;
+        width: 100%;
+    }
+    #sendingTab{
+        float: left;
+        width: 24%;
+    }
+    #sendingTab>li{
+    	width: 50%;
+    }
 </style>
 <body>
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
+
 	<script>
 		window.onload = function() {
 			$("#sending_expected").css("background", "white")
@@ -50,8 +61,8 @@ li>p {
 	</script>
 
 	<div class="card text-center">
-		<div class="card-header">
-			<ul class="nav nav-tabs card-header-tabs">
+		<div class="card-header" id="tabArea">
+			<ul class="nav nav-tabs card-header-tabs" id="sendingTab">
 				<li class="nav-item" id="sending_expected">
 					<p class="nav-link">발송 예정</p>
 				</li>
@@ -74,20 +85,31 @@ li>p {
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${ list }" var="curSts" varStatus="status">
-						<c:if test="${ curSts.selectDate == null }">
-							<c:set var="num1" value="${ num1+1 }" />
-							<tr>
-								<td>${ num1 }</td>
-								<td>${ curSts.cempDept }</td>
-								<td>${ curSts.cempJob }</td>
-								<td>${ curSts.cempName }</td>
-								<td>${ curSts.cempPhone }</td>
-								<td>${ curSts.cempBirth }</td>
-								<td>${ curSts.sendingMsgDate }</td>
-							</tr>
-						</c:if>
-					</c:forEach>
+                   		<c:set var="sendListSts" value="${list }"/>
+                   		<c:choose>
+                   			<c:when test="${empty sendListSts }">
+                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
+                   			</c:when>
+                   			<c:when test="${!empty sendListSts }">
+                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
+                   					<c:if test="${ sendingSts.selectDate == null }">                  		
+									<c:set var="num1" value="${ num1+1 }" />
+			                        <tr>
+			                           	<td>${ num1 }</td>
+										<td>${ sendingSts.cempDept }</td>
+										<td>${ sendingSts.cempJob }</td>
+										<td>${ sendingSts.cempName }</td>
+										<td>${ sendingSts.cempPhone }</td>
+										<td>${ sendingSts.cempBirth }</td>
+										<td>${ sendingSts.sendingMsgDate }</td>
+			                        </tr>			                        
+			                    	</c:if>			                    	
+                   				</c:forEach>
+                   				<c:if test="${empty num1 }">
+                   					<tr><td colspan="8">발송 예정인 사원이 없습니다.</td></tr>
+                   				</c:if>
+                   				</c:when>
+                   		</c:choose>
 				</tbody>
 			</table>
 
@@ -105,20 +127,31 @@ li>p {
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${ list }" var="curSts" varStatus="status">
-						<c:if test="${ curSts.selectDate != null }">
-							<c:set var="num2" value="${ num2+1 }" />
-							<tr>
-								<td>${ num2 }</td>
-								<td>${ curSts.cempDept }</td>
-								<td>${ curSts.cempJob }</td>
-								<td>${ curSts.cempName }</td>
-								<td>${ curSts.cempPhone }</td>
-								<td>${ curSts.cempBirth }</td>
-								<td>${ curSts.sendingMsgDate }</td>
-							</tr>
-						</c:if>
-					</c:forEach>
+                    	<c:set var="sendListSts" value="${list }"/>
+                   		<c:choose>
+                   			<c:when test="${empty sendListSts }">
+                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
+                   			</c:when>
+                   			<c:when test="${!empty sendListSts }">
+                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
+									<c:if test="${ sendingSts.selectDate != null }">
+										<c:set var="num2" value="${ num2+1 }" />
+											<tr>
+												<td>${ num2 }</td>
+												<td>${ sendingSts.cempDept }</td>
+												<td>${ sendingSts.cempJob }</td>
+												<td>${ sendingSts.cempName }</td>
+												<td>${ sendingSts.cempPhone }</td>
+												<td>${ sendingSts.cempBirth }</td>
+												<td>${ sendingSts.sendingMsgDate }</td>
+											</tr>
+									</c:if>
+								</c:forEach>
+                   				<c:if test="${empty num1 }">
+                   					<tr><td colspan="8">발송 완료인 사원이 없습니다.</td></tr>
+                   				</c:if>
+                   				</c:when>
+                   		</c:choose>
 				</tbody>
 			</table>
 		</div>

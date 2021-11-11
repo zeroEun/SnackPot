@@ -240,7 +240,7 @@ text-align: center;
         <li><a>높은가격순</a></li>
         <li><a>낮은가격순</a></li>
       </ul>
-
+      
   <br><br>
  <!-- 상품정렬 -->
  <div class="container-fluid">
@@ -264,6 +264,7 @@ text-align: center;
 </div>
 </body>
 <script type="text/javascript">
+
  function wishAdd(val){
    var wishSnackNo = val;
    alert(wishSnackNo)

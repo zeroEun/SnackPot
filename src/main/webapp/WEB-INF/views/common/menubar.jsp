@@ -74,7 +74,7 @@
                 <!-- 로그인 후 (구독회사 직원)-->
                 <c:if test="${ !empty sessionScope.loginUser && loginUser.admin == 'N' }">
                     <li class="nav-item dropdown login-nav" >
-                        <a class="nav-link" data-toggle="dropdown" ><label class="name">${ sessionScope.loginUser.memName}</label> </a>
+                        <a class="nav-link" data-toggle="dropdown" ><label class="name">${ sessionScope.loginUser.memName}님</label> </a>
                             
                         <div class="dropdown-menu "> 
                             <a class="dropdown-item" href="modifyMember.co">회원정보 수정</a> 

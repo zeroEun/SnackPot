@@ -91,6 +91,13 @@ public class ProductDao {
 	
 		return sqlSession.delete("productMapper.deleteSnack" , map);
 	}
+	
+	
+	//스케줄러 테스트용
+//	public void updateClosingDate(SqlSessionTemplate sqlSession, String today) {
+//		
+//		sqlSession.update("productMapper.updateClosingDate" , today);
+//	}
 
 
 	

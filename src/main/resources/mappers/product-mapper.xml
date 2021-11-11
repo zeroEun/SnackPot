@@ -140,4 +140,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	AND SNACK_NO = #{snackNo}
 </delete>
 
+<!-- 스케줄러 테스트 
+<update id="updateClosingDate">
+	UPDATE WISHLIST SET STATUS = 'Y' 
+	WHERE WISH_END_DATE = #{today}
+</update>-->
+
 </mapper>

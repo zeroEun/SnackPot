@@ -7,33 +7,43 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias type="com.kh.spring.product.model.vo.Product" alias="Product"/>
-		<typeAlias type="com.kh.spring.companyMember.model.vo.CompanyMember" alias="CompanyMember"/>
+		<!-- birthday -->
 		<typeAlias type="com.kh.spring.birthday.subscribe.model.vo.Birthday" alias="Birthday"/>
+		<typeAlias type="com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus" alias="SendingStatus"/>
+		<typeAlias type="com.kh.spring.birthday.sendList.model.vo.SendList" alias="SendList"/>
+		<typeAlias type="com.kh.spring.birthday_HO.sendingStatus_HO.model.vo.HO_SendingStatus" alias="HO_SendingStatus"/>
+		<typeAlias type="com.kh.spring.birthday_HO.sendList_HO.model.vo.HO_SendList" alias="HO_SendList"/>
+		<typeAlias type="com.kh.spring.birthday_HO.giftList_HO.model.vo.HO_GiftList" alias="HO_GiftList"/>
+		
+		<!-- company -->
+		<typeAlias type="com.kh.spring.companyMember.model.vo.CompanyMember" alias="CompanyMember"/>
+		<typeAlias type="com.kh.spring.company.model.vo.Company" alias="Company"/>
+		
+		<!-- product -->
+		<typeAlias type="com.kh.spring.product.model.vo.Product" alias="Product"/>
 		<typeAlias type="com.kh.spring.product.model.vo.SnackSubCategory" alias="SnackSubCategory"/>
 		<typeAlias type="com.kh.spring.product.model.vo.Aroma" alias="Aroma"/>
 		<typeAlias type="com.kh.spring.product.model.vo.Taste" alias="Taste"/>
-		<typeAlias type="com.kh.spring.snack.snackSubs.model.vo.SnackSubs" alias="SnackSubs"/>
-		<typeAlias type="com.kh.spring.birthday_HO.currentStatus.model.vo.CurStatus" alias="CurStatus"/>
-		<typeAlias type="com.kh.spring.company.model.vo.Company" alias="Company"/>
-		<typeAlias type="com.kh.spring.birthday_HO.sendingList.model.vo.SendingList" alias="SendingList"/>
-		<typeAlias type="com.kh.spring.birthday_HO.giftList.model.vo.GiftList" alias="GiftList"/>
-		<typeAlias type="com.kh.spring.snack.snackList.model.vo.ListSchedule" alias="ListSchedule"/>
 		<typeAlias type="com.kh.spring.product.model.vo.ProductAttachment" alias="ProductAttachment"/>
 		<typeAlias type="com.kh.spring.product.arrival.model.vo.Arrival" alias="Arrival"/>
 		<typeAlias type="com.kh.spring.product.release.model.vo.Release" alias="Release"/>
 		<typeAlias type="com.kh.spring.product.model.vo.WishListDtail" alias="WishListDtail"/>
-		<typeAlias type="com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus" alias="SendingStatus"/>
+		
+		<!-- snack -->
+		<typeAlias type="com.kh.spring.snack.snackSubs.model.vo.SnackSubs" alias="SnackSubs"/>
+		<typeAlias type="com.kh.spring.snack.snackList.model.vo.ListSchedule" alias="ListSchedule"/>
 		<typeAlias type="com.kh.spring.snackpotEmp.model.vo.SnackpotEmp" alias="SnackpotEmp"/>
+		
+		<!-- qna -->
 		<typeAlias type="com.kh.spring.qna.model.vo.qna" alias="Qna"/>
 		<typeAlias type="com.kh.spring.qna.model.vo.qnaAttachment" alias="QnaAttachment"/>
-		<typeAlias type="com.kh.spring.birthday.sendList.model.vo.SendList" alias="SendList"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="/mappers/product-mapper.xml"/> 
 		<mapper resource="/mappers/companyMember-mapper.xml"/>
 		<mapper resource="/mappers/birthday-mapper.xml"/>
+		<mapper resource="/mappers/birthday-mapper_HO.xml"/>
 		<mapper resource="/mappers/snackCategory-mapper.xml"/>
 		<mapper resource="/mappers/snackSubs-mapper.xml"/>
 		<mapper resource="/mappers/company-mapper.xml"/>

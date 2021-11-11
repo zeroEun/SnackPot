@@ -8,7 +8,7 @@ public interface SendingStatusService {
 
 	ArrayList<SendingStatus> selectsList();
 
-	int deleteSendStatus(int i);
+	int deleteSendStatus(int cempSeq);
 
 	int insertSendStatus(SendingStatus s);
 

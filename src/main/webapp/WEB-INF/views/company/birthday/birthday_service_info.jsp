@@ -19,6 +19,7 @@
     }
 </style>
 <script>
+	<%-- 구독 정보 조회 시 불러온 객체의 정보를 바탕으로 radio태그 체크 설정 --%>
 	$(function(){
 		
 		var perAmount = ${b.per_amount};
@@ -57,6 +58,9 @@
 	});
 </script>
 <body>
+
+<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
+
     <h3>생일 구독 정보</h3>
     <form class="" action="updateSubscribe.birth">
         <label for="">1인당 최대 금액</label><!--데이터와 일치하는 값 속성 checked-->
@@ -107,65 +111,6 @@
             </select>
             <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요." disabled>${b.notification_msg}</textarea>
         </div>
-        <script>
-            $(function(){
-                $("#sendMsg").on('change', function(){
-                    //console.log($("#sendMsg").val());
-                    var sendMsgNum = $("#sendMsg").val();
-                    var sendMsg = $("#sendMsg option:checked").text();
-                    
-                    switch(sendMsgNum){
-                    case "0" :
-                        $("#sendMsgArea").attr("disabled", true);
-                        $("#sendMsgArea").attr("readonly", false);
-                        $("#sendMsgArea").attr("placeholder", "선택하세요.");
-                        $("#sendMsgArea").val("");                        
-                        break;
-                    case "1" :
-                        $("#sendMsgArea").attr("disabled",false);
-                        $("#sendMsgArea").attr("readonly",true);
-                        $("#sendMsgArea").val(sendMsg);
-                        break;
-                    case "2" :
-                        $("#sendMsgArea").attr("disabled",false);
-                        $("#sendMsgArea").attr("readonly",true);
-                        $("#sendMsgArea").val(sendMsg);                       
-                        break;
-                    case "3" :
-                        $("#sendMsgArea").attr("disabled", false);
-                        $("#sendMsgArea").attr("readonly", false);
-                        $("#sendMsgArea").attr("placeholder", "이곳에 메시지를 입력하세요.");
-                        $("#sendMsgArea").val("");                        
-                        break;
-                    
-                    }
-                });
-            });
-            
-            $(function(){
-                $("#subscribe").click(function(){
-                	var perAmount = $("input[name='per_amount']:checked").val();
-                    var sendingTime = $("input[name='sending_time']:checked").val();
-                    var notificationMsg = $("textarea[name='notification_msg']").val();
-
-                    if(perAmount == null){
-                        alert("1인당 최대 금액을 설정해주세요.")
-                        return false;            
-                    }else{
-                        if(sendingTime == null){
-                            alert("발송 시점을 선택해주세요.")
-                            return false;
-                        }else{
-                            if(notificationMsg == "" || notificationMsg == null){
-                                alert("선물 선택 알림 메시지를 설정해주세요.")
-                                return false;
-                            }
-                        }
-                    }
-                })
-                
-            })
-        </script>
         <hr>
         <label for="">결제일</label><span> <b>매월 1일</b></span>
         
@@ -175,5 +120,69 @@
         
         <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button><button type="submit" class="btn btn-outline-primary">구독 수정하기</button>
     </form>
+	<script>
+		<%-- 선물 선택 알림 메시지 옵션에 따른 태그 속성 설정 --%>
+		$(function(){
+		    $("#sendMsg").on('change', function(){
+		        //console.log($("#sendMsg").val());
+		        var sendMsgNum = $("#sendMsg").val();
+		        var sendMsg = $("#sendMsg option:checked").text();
+		        
+		        switch(sendMsgNum){
+		        case "0" :
+		            $("#sendMsgArea").attr("disabled", true);
+		            $("#sendMsgArea").attr("readonly", false);
+		            $("#sendMsgArea").attr("placeholder", "선택하세요.");
+		            $("#sendMsgArea").val("");                        
+		            break;
+		        case "1" :
+		            $("#sendMsgArea").attr("disabled",false);
+		            $("#sendMsgArea").attr("readonly",true);
+		            $("#sendMsgArea").val(sendMsg);
+		            break;
+		        case "2" :
+		            $("#sendMsgArea").attr("disabled",false);
+		            $("#sendMsgArea").attr("readonly",true);
+		            $("#sendMsgArea").val(sendMsg);                       
+		            break;
+		        case "3" :
+		            $("#sendMsgArea").attr("disabled", false);
+		            $("#sendMsgArea").attr("readonly", false);
+		            $("#sendMsgArea").attr("placeholder", "이곳에 메시지를 입력하세요.");
+		            $("#sendMsgArea").val("");                        
+		            break;
+		        
+		        }
+		    });
+		});
+		
+		<%-- 구독 수정하기 버튼 클릭 시 모두 입력되어야 수정되도록 설정 --%>
+		$(function(){
+		    $("#subscribe").click(function(){
+		    	var perAmount = $("input[name='per_amount']:checked").val();
+		        var sendingTime = $("input[name='sending_time']:checked").val();
+		        var notificationMsg = $("textarea[name='notification_msg']").val();
+		
+		        if(perAmount == null){
+		            alert("1인당 최대 금액을 설정해주세요.")
+		            return false;            
+		        }else{
+		            if(sendingTime == null){
+		                alert("발송 시점을 선택해주세요.")
+		                return false;
+		            }else{
+		                if(notificationMsg == "" || notificationMsg == null){
+		                    alert("선물 선택 알림 메시지를 설정해주세요.")
+		                    return false;
+		                }
+		            }
+		        }
+		    });
+		    
+		});
+		
+		<%-- 구독 취소 -> 추후 작성 --%>
+		
+	</script>
 </body>
 </html>

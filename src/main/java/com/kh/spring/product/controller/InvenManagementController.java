@@ -54,10 +54,13 @@ public class InvenManagementController {
 		invenManagementService.insertSnack(p);
 		invenManagementService.insertSnackAttach(pa);
 
-		session.setAttribute("msg", "상품 등록 성공");
-		return "redirect:/snackEnrollForm.pm";
+		model.addAttribute("msg","상품 등록이 완료되었습니다.");
+        model.addAttribute("url","/");
+        
+        return "common/alert";	
 	}
 
+	//상품 등록 첨부파일
 	private ProductAttachment saveFile(MultipartFile file, HttpServletRequest request, int snackNo) {
 
 		ProductAttachment pa = new ProductAttachment();
@@ -93,28 +96,33 @@ public class InvenManagementController {
 		return pa;
 	}
 
+	//출고 리스트로 이동
 	@RequestMapping("releaseList.im")
 	private String ReleaseList() {
 
 		return "headoffice/invenManagement/snackReleaseList";
 	}
-
+	//입고 리스트로 이동
 	@RequestMapping("arrivalList.im")
 	private String ArrivalList() {
 
 		return "headoffice/invenManagement/snackArrivalList";
 	}
 
+	//출고 등록
 	@RequestMapping("releaseEnrollFrom.im")
 	private String ReleaseEnrollForm() {
 
 		return "headoffice/invenManagement/releaseEnrollForm";
 	}
 
+	//입고 등록
 	@RequestMapping("arrivalEnrollFrom.im")
 	private String ArrivalEnrollForm() {
 
 		return "headoffice/invenManagement/arrivalEnrollForm";
 	}
+	
+	
 
 }

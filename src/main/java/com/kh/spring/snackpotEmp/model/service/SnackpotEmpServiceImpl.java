@@ -30,9 +30,9 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 			throw new CommException("회원정보가 존재하지 않습니다"); 
 		}
 		
-		if(!bCryptPasswordEncoder.matches(se.getSempPw(), loginEmp.getSempPw())) {
-			throw new CommException("암호 불일치");
-		}
+//		if(!bCryptPasswordEncoder.matches(se.getSempPw(), loginEmp.getSempPw())) {
+//			throw new CommException("암호 불일치");
+//		}
 		
 		return loginEmp;
 	}

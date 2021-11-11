@@ -53,12 +53,13 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 	}
 
 	@Override
-	public void insertCompanyAdmin(CompanyMember m) {
+	public int insertCompanyAdmin(CompanyMember m) {
 		int result = cmd.insertCompanyAdmin(sqlSession, m);
 		
 		if(result < 0) {
 			throw new CommException("회사등록에 실패했습니다");
 		}
+		return result;
 	}
 
 	@Override
@@ -68,9 +69,9 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 			throw new CommException("회원정보가 존재하지 않습니다"); 
 		}
 
-		if(!bCryptPasswordEncoder.matches(m.getMemPw(), loginUser.getMemPw())) {
-			throw new CommException("암호 불일치");
-		}
+//		if(!bCryptPasswordEncoder.matches(m.getMemPw(), loginUser.getMemPw())) {
+//			throw new CommException("암호 불일치");
+//		}
 		
 		return loginUser;
 	}

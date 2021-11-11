@@ -69,7 +69,6 @@
 	                        	<form action="createListForm.sn" method="post"  class="postForm" id="postForm${s.subsNo}">
 	                        		
 	                        		<input type="hidden" name="comCode" value="${s.comCode}">
-	                        		 
 	                        		<input type="hidden" name="subsNo" value="${s.subsNo}">
 	                        		<input type="hidden" name="comName" value="${s.comName}">
 	                        		<input type="hidden" name="orderDeadline" value="${s.orderDeadline}">

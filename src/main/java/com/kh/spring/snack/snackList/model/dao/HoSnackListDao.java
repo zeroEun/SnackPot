@@ -52,7 +52,19 @@ public class HoSnackListDao {
 	}
 
 	public int deleteSnackDList(SqlSessionTemplate sqlSession, int listNo) {
-		return sqlSession.insert("snackListMapper.deleteSnackDList", listNo);
+		return sqlSession.delete("snackListMapper.deleteSnackDList", listNo);
+	}
+
+	public int deleteSnackDNo(SqlSessionTemplate sqlSession, String snackDNoCheck) {
+		return sqlSession.delete("snackListMapper.deleteSnackDNo", snackDNoCheck);
+	}
+
+	public int addSanckDList(SqlSessionTemplate sqlSession, SnackDList snackD) {
+		return sqlSession.insert("snackListMapper.addSanckDList", snackD);
+	}
+
+	public int checkSnackDup(SqlSessionTemplate sqlSession, SnackDList snackD) {
+		return sqlSession.selectOne("snackListMapper.checkSnackDup", snackD);
 	}
 
 }

@@ -31,4 +31,10 @@ public interface HoSnackListService {
 
 	void deleteSnackDList(int listNo);
 
+	void deleteSnackDNo(String snackDNoCheck);
+
+	void addSanckDList(SnackDList snackD);
+
+	int checkSnackDup(SnackDList sncakD);
+
 }

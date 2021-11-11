@@ -100,4 +100,32 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 		}
 	}
 
+
+	@Override
+	public void deleteSnackDNo(String snackDNoCheck) {
+		
+		int result = hoSnackListDao.deleteSnackDNo(sqlSession, snackDNoCheck);
+		
+		if(result < 0) {
+			throw new CommException("deleteSnackDNo 실패");
+		}
+	}
+
+
+	@Override
+	public void addSanckDList(SnackDList snackD) {
+		
+		int result = hoSnackListDao.addSanckDList(sqlSession, snackD);
+		
+		if(result < 0) {
+			throw new CommException("addSanckDList 실패");
+		}
+	}
+
+
+	@Override
+	public int checkSnackDup(SnackDList snackD) {
+		return hoSnackListDao.checkSnackDup(sqlSession, snackD);
+	}
+
 }

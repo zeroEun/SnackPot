@@ -7,6 +7,7 @@ import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.snack.snackList.model.vo.ListSchedule;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
+import com.kh.spring.snack.snackList.model.vo.SnackList;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
 public interface HoSnackListService {
@@ -36,5 +37,17 @@ public interface HoSnackListService {
 	void addSanckDList(SnackDList snackD);
 
 	int checkSnackDup(SnackDList sncakD);
+
+	void updateSnackAmount(SnackDList snackD);
+
+	int selectSnackMaxNum();
+
+	void insertOrder(ListSchedule schedule);
+
+	void insertOrderDetail(int listNo);
+
+	void updateTransStatus(int listNo);
+
+	ArrayList<SnackList> selectSendingList(HashMap map);
 
 }

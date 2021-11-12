@@ -18,4 +18,5 @@ public class SnackList {
 	private String comName;
 	private String transStatus;
 	private String transDate;
+	private String content;
 }

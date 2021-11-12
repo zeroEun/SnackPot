@@ -13,6 +13,7 @@ import com.kh.spring.snack.snackList.model.dao.HoSnackListDao;
 import com.kh.spring.snack.snackList.model.vo.ListSchedule;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
+import com.kh.spring.snack.snackList.model.vo.SnackList;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
 @Service
@@ -126,6 +127,63 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 	@Override
 	public int checkSnackDup(SnackDList snackD) {
 		return hoSnackListDao.checkSnackDup(sqlSession, snackD);
+	}
+
+
+	@Override
+	public void updateSnackAmount(SnackDList snackD) {
+		
+		int result = hoSnackListDao.updateSnackAmount(sqlSession, snackD);
+		
+		if(result < 0) {
+			throw new CommException("updateSnackAmount 실패");
+		}
+	}
+
+
+	@Override
+	public int selectSnackMaxNum() {
+		return  hoSnackListDao.selectSnackMaxNum(sqlSession);
+	}
+
+
+	@Override
+	public void insertOrder(ListSchedule schedule) {
+		
+		int result = hoSnackListDao.insertOrder(sqlSession, schedule);
+		
+		if(result < 0) {
+			throw new CommException("insertOrder 실패");
+		}
+	}
+
+
+	@Override
+	public void insertOrderDetail(int listNo) {
+		
+		int result = hoSnackListDao.insertOrderDetail(sqlSession, listNo);
+		
+		if(result < 0) {
+			throw new CommException("insertOrderDetail 실패");
+		}
+	}
+
+
+	@Override
+	public void updateTransStatus(int listNo) {
+		
+		int result = hoSnackListDao.updateTransStatus(sqlSession, listNo);
+		
+		if(result < 0) {
+			throw new CommException("updateTransStatus 실패");
+		}
+	}
+
+
+	@Override
+	public ArrayList<SnackList> selectSendingList(HashMap map) {
+		
+		return hoSnackListDao.selectSendingList(sqlSession, map);
 	}
 
 }

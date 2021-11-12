@@ -4,6 +4,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="invenMapper">
 
+<resultMap id="releaseResultSet" type="Arrival">
+		<id column="arrival_no" property="arrivalNo"/>
+		<result column="amount" property="amount"/>
+		<result column="unit" property="unit"/>
+		<result column="remark" property="remark"/>
+		<result column="arrival_date" property="arrivalDate"/>
+		<result column="snack_no" property="snackNo"/>
+	</resultMap>
+	
+
 <insert id="insertSnack"  parameterType="Product">
 
 
@@ -24,6 +34,35 @@ ${snackNo}
 )
 
 </insert>
+
+<insert id="arrivalInsert"  parameterType="Arrival">
+
+
+INSERT INTO ARRIVAL 
+VALUES ( 
+RELEASE_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}
+)
+
+</insert>
+
+<select id="todayArrivalCount" resultType="_int">
+
+	
+		SELECT COUNT(*)
+		FROM ARRIVAL
+		WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+		
+
+</select>
+
+	<select id="todayArrivalList" resultMap="releaseResultSet">
+
+	SELECT * 
+	FROM ARRIVAL
+	WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+	ORDER BY ARRIVAL_NO DESC
+	
+	</select>
 
 
 </mapper>

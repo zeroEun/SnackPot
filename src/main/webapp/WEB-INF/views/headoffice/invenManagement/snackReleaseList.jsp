@@ -25,8 +25,7 @@
         border: 1px solid rgba(255, 255, 255, 0.18);
     }
     #modal .modal-window {
-        background: rgba( 69, 139, 197, 0.70 );
-        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        background: lightgray;
         backdrop-filter: blur( 13.5px );
         -webkit-backdrop-filter: blur( 13.5px );
         border-radius: 10px;
@@ -40,8 +39,8 @@
     #modal .title {
         padding-left: 10px;
         display: inline;
-        text-shadow: 1px 1px 2px gray;
-        color: white;
+       
+        color: rgb(10, 23, 78);
         
     }
     #modal .title h2 {
@@ -52,14 +51,14 @@
         float: right;
         padding-right: 10px;
         cursor: pointer;
-        text-shadow: 1px 1px 2px gray;
-        color: white;
+       
+        color: rgb(10, 23, 78);
     }
     
     #modal .content {
         margin-top: 20px;
         padding: 0px 10px;
-        text-shadow: 1px 1px 2px gray;
+       
         color: white;
     }
 
@@ -69,8 +68,13 @@
         display: flex;
 
     }
-</style>
 
+    .btn{
+        width: 50px;
+        background-color: rgb(245, 208, 66);
+        color: rgb(10, 23, 78);
+    }
+</style>
 
   <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -93,13 +97,13 @@
                     <h2>출고등록</h2>
                 </div>
                 <div class="close-area">X</div>
-                <form>
+                <form  id="releaseEnroll" action="releaseInsert.im" method="post">
                 <div class="content">
-                    <p><label class="inputLabel">제품코드</label> <input type="number"></p>
-                    <p><label class="inputLabel">수량</label> <input type="number"></p>
-                    <p><label class="inputLabel">비고</label> <input type="text"></p>
+                    <p><label class="inputLabel">제품코드</label> <input type="number" name="snackNo"></p>
+                    <p><label class="inputLabel">수량</label> <input type="number" name="amount"></p>
+                    <p><label class="inputLabel">비고</label> <input type="text" name="remark"></p>
                     <br><br>
-                    <input type="submit">
+                    <input type="submit" value="등록하기" class="btn">
                 </div>
             </form>
             </div>

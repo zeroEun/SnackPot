@@ -28,6 +28,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="imageName" column="CHANGE_NAME"/>
 	</resultMap>
 	
+	<resultMap type="com.kh.spring.snack.snackList.model.vo.SnackList" id="snackListResultSet">
+		<id property="snackListNo" column="SNACK_LIST_NO"/>
+		<result property="comCode" column="COM_CODE"/>
+		<result property="comName" column="COM_NAME"/>
+		<result property="transStatus" column="TRANS_STATUS"/>
+		<result property="transDate" column="TRANS_DATE"/>
+	</resultMap>
+	
 	<select id="selectSubsInfo" parameterType="java.util.HashMap" resultMap="listScheduleResultSet">
 		
 			SELECT A.SUBS_NO, A.COM_CODE, B.COM_NAME, A.DELIVERY_DATE, A.SETTLEMENT_DATE, A.BUDGET
@@ -151,6 +159,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM SNACK_D_LIST
 		WHERE SNACK_LIST_NO = #{snackListNo}
 		AND SNACK_NO = #{snackNo}
+	</select>
+	
+	<update id="updateSnackAmount" parameterType="com.kh.spring.snack.snackList.model.vo.SnackDList">
+		UPDATE SNACK_D_LIST
+		SET AMOUNT = ${amount}
+		WHERE SNACK_D_NO = ${snackDNo}
+	</update>
+	
+	<select id="selectSnackMaxNum" resultType="_int">
+		SELECT MAX(SNACK_NO)
+		FROM SNACK
+	</select>
+	
+	<insert id="insertOrder" parameterType="ListSchedule">
+		INSERT INTO ORDERS
+		VALUES(#{listNo}, #{comCode}, #{orderDeadline}, NULL, NULL, NULL, DEFAULT)
+	</insert>
+	
+	<insert id="insertOrderDetail" parameterType="_int">
+		INSERT INTO ORDER_DETAIL (ORDER_DETAIL_NO, ORDER_NO, SNACK_NO, AMOUNT)
+		SELECT ORDER_D_NO_SEQ.NEXTVAL, SNACK_LIST_NO, SNACK_NO, AMOUNT
+		FROM SNACK_D_LIST
+		WHERE SNACK_LIST_NO = #{listNo}
+	</insert>
+	
+	<update id="updateTransStatus" parameterType="_int">
+		UPDATE SNACK_LIST
+		SET TRANS_STATUS = 'Y', TRANS_DATE = SYSDATE
+		WHERE SNACK_LIST_NO = #{listNo}
+	</update>
+	
+	<select id="selectSendingList" parameterType="java.util.HashMap" resultMap="snackListResultSet">
+		SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, A.TRANS_DATE
+		FROM SNACK_LIST A
+		JOIN COMPANY B ON A.COM_CODE = B.COM_CODE
+		WHERE A.COM_CODE IN(
+			<foreach collection="comArr" item="item" separator=",">
+				#{item}
+			</foreach>)
+		AND A.TRANS_STATUS = 'Y'
 	</select>
 
 </mapper>

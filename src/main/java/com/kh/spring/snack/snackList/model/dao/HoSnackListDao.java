@@ -10,6 +10,7 @@ import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.snack.snackList.model.vo.ListSchedule;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
+import com.kh.spring.snack.snackList.model.vo.SnackList;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
 @Repository
@@ -65,6 +66,30 @@ public class HoSnackListDao {
 
 	public int checkSnackDup(SqlSessionTemplate sqlSession, SnackDList snackD) {
 		return sqlSession.selectOne("snackListMapper.checkSnackDup", snackD);
+	}
+
+	public int updateSnackAmount(SqlSessionTemplate sqlSession, SnackDList snackD) {
+		return sqlSession.update("snackListMapper.updateSnackAmount", snackD);
+	}
+
+	public int selectSnackMaxNum(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("snackListMapper.selectSnackMaxNum");
+	}
+
+	public int insertOrder(SqlSessionTemplate sqlSession, ListSchedule schedule) {
+		return sqlSession.insert("snackListMapper.insertOrder", schedule);
+	}
+
+	public int insertOrderDetail(SqlSessionTemplate sqlSession, int listNo) {
+		return sqlSession.insert("snackListMapper.insertOrderDetail", listNo);
+	}
+
+	public int updateTransStatus(SqlSessionTemplate sqlSession, int listNo) {
+		return sqlSession.update("snackListMapper.updateTransStatus", listNo);
+	}
+
+	public ArrayList<SnackList> selectSendingList(SqlSessionTemplate sqlSession, HashMap map) {
+		return (ArrayList)sqlSession.selectList("snackListMapper.selectSendingList", map);
 	}
 
 }

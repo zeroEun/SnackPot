@@ -91,7 +91,7 @@
 
                     <div id="user">
                         <h5>UserName</h5>
-                        <a href="#">logout</a>
+                        <a href="logout.sn">logout</a>
                     </div>
                 </div>
 
@@ -107,7 +107,7 @@
                         <ul class="nav flex-column sub-menu">
                         	<!-- 본사 마스터 계정으로 로그인시에만 보여주기-->
                             <li class="nav-item"> <a class="nav-link" href="empList.sn ">사원 계정 관리</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">담당 거래처 관리</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="empCompanyList.sn">담당 거래처 관리</a></li>
                             <!-- 사원으로 로그인 했을 경우에만 보이기 -->
                             <li class="nav-item"> <a class="nav-link" href="#">비밀번호 변경</a></li>
                         </ul>
@@ -150,7 +150,7 @@
                         <div class="collapse" id="order-management">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item"> <a class="nav-link" href="listSchedule.sn">리스트 발송</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">리스트 발송 내역</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="sendingList.sn">리스트 발송 내역</a></li>
                             <li class="nav-item"> <a class="nav-link" href="#">주문 내역</a></li>
                         </ul>
                         </div>

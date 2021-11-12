@@ -19,6 +19,7 @@ import com.kh.spring.snack.snackList.model.service.HoSnackListService;
 import com.kh.spring.snack.snackList.model.vo.ListSchedule;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
+import com.kh.spring.snack.snackList.model.vo.SnackList;
 import com.kh.spring.snack.snackSubs.model.service.SnackSubsService;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
@@ -143,10 +144,10 @@ public class HoSnackListController {
 	
 	
 	@RequestMapping("createList.sn")
-	public String createList(String comCode, int listNo, Model model){
+	public String createList(String comCode, int listNo, int defaultAmount, Model model){
 		
 		deleteSnackDList(listNo);
-		insertSnackDList(comCode, listNo);
+		insertSnackDList(comCode, listNo, defaultAmount);
 		ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
 		
 		ListSchedule schedule = companyInfo(comCode).get(0);
@@ -166,13 +167,16 @@ public class HoSnackListController {
 	}
 	
 	//리스트 생성 버튼 클릭시 간식 리스트 생성 후 간식 상세 리스트 insert하는 메소드
-	public void insertSnackDList(String comCode, int listNo) {
+	public void insertSnackDList(String comCode, int listNo, int defaultAmount) {
 		
 		SnackSubs subs = snackSubsService.selectSubsInfo(comCode);
 		ArrayList<SnackDList> list =  hoSnackListService.selectSnack(subs);
-		
 		ArrayList<SnackDList> dList = new ArrayList<SnackDList>();
 
+		int maxNum = hoSnackListService.selectSnackMaxNum()-1;
+		System.out.println("maxNum" + maxNum);
+		
+		
 		int budget = subs.getBudget();
 		int snackBudget = budget * subs.getSnackRatio()/100;
 		int drinkBudget = budget * subs.getDrinkRatio()/100;
@@ -184,15 +188,15 @@ public class HoSnackListController {
 		//insert되면 해당 객체는 리스트에서 삭제(중복 값 피하기 위해)
 		
 		int total = snackBudget + drinkBudget + retortBudget;
-		int amount = 20;
+		int amount = defaultAmount;
 		
 		while(total > 0) {
 			
-			if(list.isEmpty()) break; //예산 초과 시 해당 항목을 지워 무한루프에 빠지지 않도록, 재고가 간식 양보다 적을 경우는 삭제가 안되는데 어떻게 하지?
+			if(list.isEmpty()) break; //예산 초과 시 해당 항목을 지워 무한루프 방지, 재고가 간식 양보다 적을 경우는 삭제가 안되는데 어떻게 하지?
 			
 			//랜덤 범위 과자번호 MAX불러오기
 			System.out.println( "total: " +  total);
-			int r = (int)((Math.random())*151 + 1);
+			int r = (int)((Math.random())*maxNum + 1);
 			System.out.println(r);
 				
 			Iterator<SnackDList> iter = list.iterator();
@@ -331,7 +335,7 @@ public class HoSnackListController {
 	@RequestMapping("updateSnackAmount.sn")
 	public String updateSnackAmount(String comCode, int listNo, SnackDList snackD, Model model) {
 		
-		System.out.println(snackD);
+		hoSnackListService.updateSnackAmount(snackD);
 		
 		ArrayList<SnackDList> dList =  hoSnackListService.selectSnackDList(listNo);
 		ListSchedule schedule = companyInfo(comCode).get(0);
@@ -345,4 +349,51 @@ public class HoSnackListController {
 		return "headoffice/snack/createSnackList";
 	}
 	
+	@RequestMapping("sendSnackList.sn")
+	public String sendSnackList(ListSchedule schedule, Model model) {
+		
+		System.out.println(schedule);
+		int listNo = schedule.getListNo();
+		
+		insertOrder(schedule);
+		insertOrderDetail(listNo);
+		updateTransStatus(listNo);
+		
+		return "redirect:/listSchedule.sn";
+	}
+	
+	
+	public void insertOrder(ListSchedule schedule) {
+		
+		hoSnackListService.insertOrder(schedule);
+	}
+	
+	public void insertOrderDetail(int listNo) {
+		
+		hoSnackListService.insertOrderDetail(listNo);
+	}
+	
+	public void updateTransStatus(int listNo) {
+		
+		hoSnackListService.updateTransStatus(listNo);
+	}
+	
+	@RequestMapping("sendingList.sn")
+	public String snackSendingList(Model model) {
+		
+		String comCode = "k2111021928,k2111042028";
+		
+		model.addAttribute("sendingList", selectSendingList(comCode));
+		
+		return "headoffice/snack/snackSendingList";
+	}
+	
+	public ArrayList<SnackList> selectSendingList(String comCode){
+		
+		HashMap map = new HashMap();
+		String[] comArr = comCode.split(",");
+		map.put("comArr", comArr);
+		
+		return hoSnackListService.selectSendingList(map);
+	}
 }

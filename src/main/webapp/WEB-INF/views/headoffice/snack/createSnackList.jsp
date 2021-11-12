@@ -63,7 +63,7 @@
             margin-right: 10px;
         }
 
-        .amount{
+        .amount, .searchAmount{
             width: 50px;
         }
 
@@ -89,6 +89,7 @@
 					<form action="createList.sn" method="post" id="submitForm">
 						<input type="hidden" name="comCode" value="${s.comCode}">
 						<input type="hidden" name="listNo" value="${s.listNo}">
+						<input type="hidden" name="defaultAmount" id="defaultAmount">
 					</form> 
 					
                     <span class="company-name">${s.comName}</span>
@@ -161,8 +162,10 @@
 	                                    <td></td>
 	                                    <td>${list.snackName}</td>
 	                                    <td class="searchPrice" id="searchPrice${list.snackNo}">${list.releasePrice}</td>
-	                                    <td><input type="number" class="amount searchAmount" id="${list.snackNo}" min=1 max="${list.stock}"></td>
-	                                    <td>${list.stock}</td>
+	                                    <td><input type="number" class="searchAmount" id="${list.snackNo}" min=1 max="${list.stock}" required></td>
+	                                    <td>${list.stock}
+	                                    	<input type="hidden" >
+	                                    </td>
 	                                    <td class="searchTotalPrice" id="searchTotalPrice${list.snackNo}">${list.releasePrice * list.amount}</td>
 	                                    <td><button type="button" class="addBtn" value="${list.snackNo}">추가</button></td>
                                 	</tr>
@@ -222,23 +225,26 @@
 	                    </table>
                     </form>
                     
-                    <form action="updateSnackAmount.sn" method="get" id="updateSnackAmount">
+                    <form action="updateSnackAmount.sn" method="post" id="updateSnackAmount">
 		             	<input type="hidden" name="comCode" value="${s.comCode}">
 		                <input type="hidden" name="listNo" value="${s.listNo}">
 		                <input type="hidden" name="amount" id="snackAmount">
 		                <input type="hidden" name="snackDNo" id="snackDNo">
 		            </form>
 		            
+		             <form action="sendSnackList.sn" method="post" id="sendSnackList">
+		             	<input type="hidden" name="comCode" value="${s.comCode}">
+		                <input type="hidden" name="listNo" value="${s.listNo}">
+		                <input type="hidden" name="orderDeadline" value="${s.orderDeadline}">
+		            </form>
+		            
 		            
                     <!-- list end-->
 
-                    <button type="button" class="btn btn-primary">리스트 발송</button>
+                    <button type="button" class="btn btn-primary" id="sendBtn">리스트 발송</button>
                     <button type="button" class="btn btn-primary" id="deleteBtn" >선택 항목 삭제</button>
 
                 </div>
-
-               
-
 
             </div>
         </div>
@@ -279,13 +285,20 @@
 
 		})
 		
+		<%-- 리스트 생성 버튼 클릭 시--%>
 		$('#createListBtn').on('click', function(){
 			
 			var result = confirm("이전 리스트가 있을 경우 삭제됩니다. 리스트를 생성하시겠습니까?");
-			if(result) $('#submitForm').submit();
+			if(result){
+				
+				var defaultAmount = prompt("기본 수량을 입력하세요.");
+				$('#defaultAmount').attr('value', Number(defaultAmount));
+				$('#submitForm').submit();
+			}
 			
 		})
 		
+		<%-- 선택항목 삭제 버튼 클릭 시--%>
 		$('#deleteBtn').on('click', function(){
 			
 			var result = confirm("정말로 삭제하시겠습니까?");
@@ -297,56 +310,76 @@
 		$('.searchAmount').on('change', function(){
 			var amount = $(this).val();
 			var snackNo = $(this).attr('id');
-			
 			var price = $('#searchPrice' + snackNo).text();
-			$('#searchTotalPrice' + snackNo).text(amount*price);
+			
+			if(amount < 1){
+				alert("최소 수량은 1입니다.");
+				$(this).val(1);
+			}
+			
+			$('#searchTotalPrice' + snackNo).text($(this).val()*price);
 			
 		})
 		
+		<%-- 추가 버튼 클릭 시--%>
 		$('.addBtn').on('click', function(){
 			
 			var listNo = ${s.listNo};
 			var snackNo = $(this).val();
-			$('#addDListAmount' + snackNo).attr('value', $('#' + snackNo).val());
+			var amount = $('#' + snackNo).val();
 			
-			<%-- snack중복 체크 --%>
-			$.ajax({
-				url:'checkSnackDup.sn',
-				data:{
-					listNo : listNo,
-					snackNo : snackNo
-				},
-				success: function(result){
-					
-					if(result > 0){
-						alert("이미 리스트에 해당 항목이 존재합니다.");
-					}else{
-						$('#searchSubmitForm' + snackNo).submit();
-						alert("추가되었습니다.");
-					}
-				},error:function(){
-					console.log("댓글 작성 ajax 통신 실패");
-				}
+			if(amount < 1){
+				alert("수량을 입력해 주세요.")
+				$('#' + snackNo).focus();
+			}else{
+				$('#addDListAmount' + snackNo).attr('value', amount);
 				
-			});
-			
+				<%-- snack중복 체크 --%>
+				$.ajax({
+					url:'checkSnackDup.sn',
+					data:{
+						listNo : listNo,
+						snackNo : snackNo
+					},
+					success: function(result){
+						
+						if(result > 0){
+							alert("이미 리스트에 해당 항목이 존재합니다.");
+						}else{
+							$('#searchSubmitForm' + snackNo).submit();
+							alert("추가되었습니다.");
+						}
+					},error:function(){
+						console.log("댓글 작성 ajax 통신 실패");
+					}
+				});
+			}
 		})
 		
+		<%-- 리스트에 있는 수량  변경 시--%>
 		$('.amount').on('change', function(){
 			
 			var amount = $(this).val();
 			var snackDNo = $(this).attr('id');
 			
-			$('#snackAmount').val(amount);
+			if(amount < 1){
+				alert("최소 수량은 1입니다.")
+				$(this).val(1);
+			}
+			$('#snackAmount').val($(this).val());
 			$('#snackDNo').val(snackDNo);
-			
+				
 			$('#updateSnackAmount').submit();
 			
 		})
 		
-		
-		
-		
+		<%-- 리스트 발송 버튼 클릭 시--%>
+		$('#sendBtn').on('click', function(){
+			
+			var result = confirm("리스트를 전송하시겠습니까?");
+			if(result) $('#sendSnackList').submit();
+			
+		})
 	});
 
 </script>

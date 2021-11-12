@@ -23,5 +23,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectEmpList" resultMap="snackpotEmpResultSet">
 		SELECT * FROM SNACKPOT_EMP
 		WHERE SEMP_NAME NOT IN ('관리자')
+		AND SEMP_STATUS='Y'
 	</select>
+	
+	<insert id="insertEmp" parameterType="SnackpotEmp">
+		INSERT INTO SNACKPOT_EMP
+		VALUES(#{sempNum}, DEFAULT, #{sempPw}, #{sempName}, #{sempDept}, #{sempJob}, #{sempEmail}, #{sempStatus})
+	</insert>
+	
+	<select id="checkNum" parameterType="string" resultType="_int">
+		SELECT COUNT (*)
+		FROM SNACKPOT_EMP
+		WHERE SEMP_NUM=#{sempNum}
+	</select>
+	
+	<select id="selectEmp" parameterType="string" resultMap="snackpotEmpResultSet">
+		SELECT * FROM SNACKPOT_EMP
+		WHERE SEMP_NUM=#{sempNum} 	
+	</select>
+	
+	<update id="updateEmp" parameterType="SnackpotEmp">
+		UPDATE SNACKPOT_EMP
+		SET SEMP_NAME=#{sempName}, SEMP_DEPT=#{sempDept}, SEMP_JOB=#{sempJob}, SEMP_EMAIL=#{sempEmail}
+		WHERE SEMP_NUM=#{sempNum}
+	</update>
+	
+	<update id="deleteEmp" parameterType="string">
+		UPDATE SNACKPOT_EMP
+		SET SEMP_STATUS='N'
+		WHERE SEMP_NUM=#{sempNum}
+	</update>
+
 </mapper>

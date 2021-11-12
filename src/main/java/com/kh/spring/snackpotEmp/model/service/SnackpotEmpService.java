@@ -12,4 +12,16 @@ public interface SnackpotEmpService {
 
 	ArrayList<SnackpotEmp> selectEmpList();
 
+	void insertEmp(SnackpotEmp se);
+
+	int checkNum(String sempNum);
+
+	SnackpotEmp selectEmp(String sempNum);
+
+	void updateEmp(SnackpotEmp se);
+
+	int deleteEmp(String sempNum);
+
+	String searchComCode(String string);
+
 }

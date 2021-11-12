@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사원 계정 등록</title>
- 	<!-- Latest compiled and minified CSS -->
+<title>사원 계정 변경</title>
+<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <!-- jQuery library -->
@@ -13,7 +14,7 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<style>
+    <style>
 	#outer{
         margin-top: 70px;
     }
@@ -87,20 +88,18 @@
 
 <div class="container" id="outer">
 
-<h5 id="title">사원 계정 등록</h5><br>
-<form id="insertEmpForm" action="insertEmp.sn">
+<h5 id="title">사원 계정 변경</h5><br>
+<form id="modifyEmpForm" action="updateEmp.sn">
 <div id="outline">
-<div id="content">&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;
-<label>사원번호</label>&emsp;&emsp;&emsp;<input type="text" name="sempNum" placeholder="내용을 입력해주세요.">&emsp;
-<button type="button" id="checkNumBtn" onclick="checkNum();">중복확인</button><br>
-<label>사원이름</label>&emsp;&emsp;&emsp;<input type="text" name="sempName" placeholder="내용을 입력해주세요."><br>
-<label class="l1">부서</label>&emsp;&emsp;&emsp;<input class="i1" type="text" name="sempDept" placeholder="내용을 입력해주세요."><br>
-<label class="l1">직급</label>&emsp;&emsp;&emsp;<input class="i1" type="text" name="sempJob" placeholder="내용을 입력해주세요."><br>
-<label class="l2">이메일</label>&emsp;&emsp;&emsp;<input class="i2" type="email" name="sempEmail" placeholder="내용을 입력해주세요."><br>
-<label>비밀번호</label>&emsp;&emsp;&emsp;<input type="text" name="sempPw" value="0000"><br>
+<div id="content">
+<label>사원번호</label>&emsp;&emsp;&emsp;<input type="text" name="sempNum" value="${semp.sempNum }" readonly><br>
+<label>사원이름</label>&emsp;&emsp;&emsp;<input type="text" name="sempName" value="${semp.sempName }"><br>
+<label class="l1">부서</label>&emsp;&emsp;&emsp;<input class="i1" type="text" name="sempDept" value="${semp.sempDept }"><br>
+<label class="l1">직급</label>&emsp;&emsp;&emsp;<input class="i1" type="text" name="sempJob" value="${semp.sempJob }"><br>
+<label class="l2">이메일</label>&emsp;&emsp;&emsp;<input class="i2" type="email" name="sempEmail" value="${semp.sempEmail }"><br>
 <div id="btnDiv">
 <input class="eBtn" id="cancel" type="button" value="취소" onclick="location='<%=request.getContextPath()%>/empList.sn'">&emsp;&emsp;&emsp;
-<input class="eBtn" id="enter" type="button" disabled="disabled" value="등록" onclick="enroll();">
+<input class="eBtn" id="enter" type="button" value="수정" onclick="modify();">
 </div>
 </div>
 </div>
@@ -112,17 +111,12 @@
 </div>
 </div>
 <script>
-function enroll(){
-	var sempNum = $("input[name='sempNum']");
+function modify(){
 	var sempName = $("input[name='sempName']");
 	var sempDept = $("input[name='sempDept']");
 	var sempJob = $("input[name='sempJob']");
 	var sempEmail = $("input[name='sempEmail']");
-	var sempPw = $("input[name='sempPw']");
-	if(sempNum.val().trim() == ""){
-		alert("사원번호를 입력하세요");
-		return false;
-	}else if(sempName.val().trim() == ""){
+	if(sempName.val().trim() == ""){
 		alert("사원이름을 입력하세요");
 		return false;
 	}else if(sempDept.val().trim() == ""){
@@ -134,45 +128,13 @@ function enroll(){
 	}else if(sempEmail.val().trim() == ""){
 		alert("이메일을 입력하세요");
 		return false;
-	}else if(sempPw.val().trim() == ""){
-		alert("비밀번호를 입력하세요");
-		return false;
 	}else{
-		$("#insertEmpForm").submit();
+		$("#modifyEmpForm").submit();
 		return true;
 	}
 	
 }
 
-//사원번호 중복체크
-function checkNum(){
-	var sempNum = $("#insertEmpForm input[name=sempNum]");
-	if(sempNum.val()==""){
-		alert("사원번호를 입력하세요");
-		return false;
-	}
-	$.ajax({
-		url: "checkNum.sn",
-		type:"post",
-		data:{sempNum : sempNum.val()},
-		success:function(result){
-			if(result > 0){
-				alert("이미 존재하는 사원입니다.");
-				sempNum.focus();
-			}else{
-				if(confirm("사용가능한 번호입니다. 등록하시겠습니까?")){
-					sempNum.attr("readonly","true");
-					$("#enter").removeAttr("disabled");
-				}else{
-					sempNum.focus();
-				}
-			}
-		},
-		error:function(){
-			console.log("서버통신실패");
-		}
-	})
-}
 </script>
 </body>
 </html>

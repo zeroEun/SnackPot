@@ -3,12 +3,14 @@ package com.kh.spring.product.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,9 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.common.exception.CommException;
+import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.service.InvenManagementService;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
+import com.kh.spring.qna.model.vo.PageInfo;
+import com.kh.spring.qna.model.vo.Pagination;
+import com.kh.spring.qna.model.vo.qna;
 
 @Controller
 public class InvenManagementController {
@@ -104,23 +110,44 @@ public class InvenManagementController {
 	}
 	//입고 리스트로 이동
 	@RequestMapping("arrivalList.im")
-	private String ArrivalList() {
+	private String todayArrivalList(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
+	
+		int listCount = invenManagementService.todayArrivalCount();
+		System.out.println(listCount);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
+		
+		System.out.println(list);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+
 
 		return "headoffice/invenManagement/snackArrivalList";
 	}
 
 	//출고 등록
-	@RequestMapping("releaseEnrollFrom.im")
+	@RequestMapping("releaseInsert.im")
 	private String ReleaseEnrollForm() {
 
 		return "headoffice/invenManagement/releaseEnrollForm";
 	}
 
 	//입고 등록
-	@RequestMapping("arrivalEnrollFrom.im")
-	private String ArrivalEnrollForm() {
+	@RequestMapping("arrivalInsert.im")
+	private String ArrivalEnrollForm(Arrival a, Model model) {
+			//@RequestParam(name = "remark", required = false) String remark) {
+		
+		System.out.println(a);
+		
+		invenManagementService.arrivalInsert(a);
 
-		return "headoffice/invenManagement/arrivalEnrollForm";
+		model.addAttribute("msg","상품 등록이 완료되었습니다.");
+        model.addAttribute("url","/arrivalList.im");
+
+		return "common/alert";	
 	}
 	
 	

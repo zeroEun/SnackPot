@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,8 +26,7 @@
         border: 1px solid rgba(255, 255, 255, 0.18);
     }
     #modal .modal-window {
-        background: rgba( 69, 139, 197, 0.70 );
-        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        background: lightgray;
         backdrop-filter: blur( 13.5px );
         -webkit-backdrop-filter: blur( 13.5px );
         border-radius: 10px;
@@ -40,8 +40,8 @@
     #modal .title {
         padding-left: 10px;
         display: inline;
-        text-shadow: 1px 1px 2px gray;
-        color: white;
+       
+        color: rgb(10, 23, 78);
         
     }
     #modal .title h2 {
@@ -52,14 +52,14 @@
         float: right;
         padding-right: 10px;
         cursor: pointer;
-        text-shadow: 1px 1px 2px gray;
-        color: white;
+       
+        color: rgb(10, 23, 78);
     }
     
     #modal .content {
         margin-top: 20px;
         padding: 0px 10px;
-        text-shadow: 1px 1px 2px gray;
+       
         color: white;
     }
 
@@ -69,8 +69,13 @@
         display: flex;
 
     }
-</style>
 
+    .btn{
+        width: 50px;
+        background-color: rgb(245, 208, 66);
+        color: rgb(10, 23, 78);
+    }
+</style>
 
   <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -93,13 +98,13 @@
                     <h2>입고등록</h2>
                 </div>
                 <div class="close-area">X</div>
-                <form>
+                <form id="arrivalEnroll" action="arrivalInsert.im" method="post">
                 <div class="content">
-                    <p><label class="inputLabel">제품코드</label> <input type="number"></p>
-                    <p><label class="inputLabel">수량</label> <input type="number"></p>
-                    <p><label class="inputLabel">비고</label> <input type="text"></p>
+                    <p><label class="inputLabel">제품코드</label> <input type="number" name="snackNo"></p>
+                    <p><label class="inputLabel">수량</label> <input type="number" name="amount"></p>
+                    <p><label class="inputLabel">비고</label> <input type="text" name="remark"></p>
                     <br><br>
-                    <input type="submit">
+                      <input type="submit" value="등록하기" class="btn">
                 </div>
             </form>
             </div>
@@ -134,13 +139,62 @@
                 <th>단위</th>   
                 <th>비고</th>   
             </tr>
+            
+            <c:forEach items="${ list }" var="a">
+	                    <tr>
+	                        <td>${ a.arrivalNo }</td>
+	                        <td>${ a.snackNo }</td>
+	                        <td>스낵이름</td>
+	                        <td>${ a.amount }</td>
+	                         <td>재고량</td>
+	                         <td>${ a.unit} </td>
+	                        <td>${ a.remark }</td>
+	                    </tr>
+                    </c:forEach>
 
         </table>
         
-        <button id="addBtn">입고 등록</button>
+  <div id="pagingArea">
+                <ul class="pagination">
+                	<c:choose>
+                		<c:when test="${ pi.currentPage ne 1 }">
+                			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+                		</c:when>
+                		<c:otherwise>
+                			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+                		</c:otherwise>
+                	</c:choose>
+                	
+                    <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+                    	<c:choose>
+	                		<c:when test="${ pi.currentPage ne p }">
+                    			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">${ p }</a></li>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
+	                		</c:otherwise>
+	                	</c:choose>
+                    </c:forEach>
+                    
+                    
+                    <c:choose>
+                		<c:when test="${ pi.currentPage ne pi.maxPage }">
+                			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                		</c:when>
+                		<c:otherwise>
+                			<li class="page-item disabled"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                		</c:otherwise>
+                	</c:choose>
+                </ul>
+            </div>
+             <button id="addBtn">입고 등록</button>
 
     </div>
+    
+    
       </div>
+      
+        
         </div>
 
         <script>

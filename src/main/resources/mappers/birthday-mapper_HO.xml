@@ -36,6 +36,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="changeName" column="CHANGE_NAME"></result>
 	</resultMap>
 	
+	<resultMap type="GiftAttachment" id="AttachmentResultSet">
+		<id property="fileNo" column="FILE_NO"></id>
+		<result property="originName" column="ORIGIN_NAME"></result>
+		<result property="changeName" column="CHANGE_NAME"></result>
+		<result property="filePath" column="FILE_PATH"></result>
+		<result property="giftRefNo" column="GIFT_REF_NO"></result>
+	</resultMap>
+	
 	<!-- 본사용 -->
 	<select id="selectStatusList" resultMap="curStsResultSet">
 		SELECT 
@@ -75,4 +83,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE GIFT_STATUS='Y'
 		AND GIFT_NO=#{giftNo}
 	</select>
+	
+	<!-- 선물 상품 정보 입력 -->
+	<insert id="insertGift" parameterType="HO_GiftList">
+		INSERT INTO BIRTHDAY_GIFT VALUES
+		('BGIFT'||B_GIFT_SEQ.NEXTVAL, #{giftBrand}, #{giftName}, #{giftPrice}, DEFAULT)
+	</insert>
+	
+	<!-- 선물 상품 사진 입력 -->
+	<insert id="insertAttachment" parameterType="GiftAttachment">
+		INSERT INTO GIFT_ATTACHMENT VALUES
+		(GIFT_ATTACHMENT_SEQ.NEXTVAL, #{originName}, #{changeName}, #{filePath}, 'BGIFT'||B_GIFT_SEQ.CURRVAL)
+	</insert>
 </mapper>

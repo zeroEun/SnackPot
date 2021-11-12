@@ -20,6 +20,9 @@
 #giftListBody{
 	overflow: scroll;
 }
+#giftCount{
+	color: red;
+}
 .giftListTop {
 	display: inline-block;
 }
@@ -51,7 +54,7 @@
 	display: inline-block;
 	width:25%;
 }
-#updateGiftBtn{
+.updateGiftBtn{
 	clear: both;
 	width:100%;
 }
@@ -86,7 +89,7 @@
 		</div>
 		&nbsp;|&nbsp;
 		<div class="giftListTop">
-			<span>총 OOO개</span>&nbsp;|&nbsp; <span>추천상품순</span>&nbsp;|&nbsp; <span>높은가격순</span>&nbsp;|&nbsp;
+			<span>검색결과 <b id="giftCount"></b>개</span>&nbsp;|&nbsp; <span>추천상품순</span>&nbsp;|&nbsp; <span>높은가격순</span>&nbsp;|&nbsp;
 			<span>낮은가격순</span>
 		</div>
 		 &emsp;&emsp;
@@ -151,7 +154,7 @@
 					    <div class="input-group-prepend">
 					      <span class="input-group-text">상품명</span>
 					    </div>
-					    <input type="text" class="form-control" id="giftTitle" required>
+					    <input type="text" class="form-control" id="giftName" required>
 					  </div>
 					</div>
 					<div class="mb-3">
@@ -181,45 +184,47 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="card h-100">
-                        <div id="insertGiftImgDiv">
-                            <img class="card-img-top" id="insertGiftImg" alt="이미지를 등록하세요">
-                        </div>
-                        <div id="insertFileArea">
-                            <input type="file" name="insertImgFile" id="insertImgFile" accept="image/*" onchange="loadImg(this);">
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="mb-3">
-					  <div class="input-group is-invalid">
-					    <div class="input-group-prepend">
-					      <span class="input-group-text">브랜드명</span>
-					    </div>
-					    <input type="text" class="form-control" id="giftBrand" required>
-					  </div>
-					</div>
-					<div class="mb-3">
-					  <div class="input-group is-invalid">
-					    <div class="input-group-prepend">
-					      <span class="input-group-text">상품명</span>
-					    </div>
-					    <input type="text" class="form-control" id="giftTitle" required>
-					  </div>
-					</div>
-					<div class="mb-3">
-					  <div class="input-group is-invalid">
-					    <div class="input-group-prepend">
-					      <span class="input-group-text">가격</span>
-					    </div>
-					    <input type="text" class="form-control" id="giftPrice" required onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
-					  </div>
-					</div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary">추가</button>
-                </div>
+                <form id="insertGiftForm" method="post" action="insertGift.ho" enctype="multipart/form-data">
+	                <div class="modal-body">
+	                    <div class="card h-100">
+	                        <div id="insertGiftImgDiv">
+	                            <img class="card-img-top" id="insertGiftImg" alt="이미지를 등록하세요">
+	                        </div>
+	                        <div id="insertFileArea">
+	                            <input type="file" name="insertImgFile" id="insertImgFile" accept="image/*" onchange="loadImg(this);">
+	                        </div>
+	                    </div>
+	                    <hr>
+	                    <div class="mb-3">
+						  <div class="input-group is-invalid">
+						    <div class="input-group-prepend">
+						      <span class="input-group-text">브랜드명</span>
+						    </div>
+						    <input type="text" class="form-control" id="giftBrand" name="giftBrand" required>
+						  </div>
+						</div>
+						<div class="mb-3">
+						  <div class="input-group is-invalid">
+						    <div class="input-group-prepend">
+						      <span class="input-group-text">상품명</span>
+						    </div>
+						    <input type="text" class="form-control" id="giftName" name="giftName" required>
+						  </div>
+						</div>
+						<div class="mb-3">
+						  <div class="input-group is-invalid">
+						    <div class="input-group-prepend">
+						      <span class="input-group-text">가격</span>
+						    </div>
+						    <input type="text" class="form-control" id="giftPrice" name="giftPrice" required onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+						  </div>
+						</div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	                    <button type="submit" class="btn btn-primary" id="insertGiftBtn">추가</button>
+	                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -250,11 +255,10 @@
 						<input type="checkbox" class="form-check-input" name="giftChk" value="${giftList.giftNo }">
 					</div>
 					<div class="updateGiftBtnDiv">
-						<button type="button" class="btn btn-primary updateGiftBtn" id="updateGiftBtn" data-toggle="modal" data-target="#updateGift">수정</button>
+						<button type="button" class="btn btn-primary updateGiftBtn" data-toggle="modal" data-target="#updateGift">수정</button>
 					</div>
 					</div>
-					<img src="${ pageContext.request.contextPath }/resources/images/${giftList.changeName}.jpg"
-						class="card-img-top" alt="...">
+					<img src="${ pageContext.servletContext.contextPath }/resources/images/${giftList.changeName}" class="card-img-top" alt="...">
 					<div class="card-body">
 						<h5 class="card-title">${giftList.giftBrand }</h5>
 						<p class="card-text">${giftList.giftName }</p>
@@ -265,6 +269,15 @@
 		</c:forEach>
 	</div>
 	<script>
+	
+		$(function(){
+			$(".updateGiftBtnDiv>button").click(function(){
+				
+				var giftNo = $("input[name='giftChk']")[0].value;
+				console.log("giftNo : "+giftNo);
+				
+			});
+		});
 	<%--
 	<div class="form-check giftListTop">
 			<input type="checkbox" class="form-check-input" id="wholeChk" name="wholeChk">
@@ -279,6 +292,12 @@
 		$(function(){
 	    	var chkRow = $("input[name='giftChk']");
 	    	var rowCount = chkRow.length;
+	    	console.log(rowCount);
+	    	
+	    	<%-- 상품 총 개수 출력용 --%>
+	    	$("#giftCount").html(rowCount);
+	    	
+	    	<%-- 전체 선택하면 모든 체크박스가 checked --%>
 	        $("#giftChk").click(function(){
 	            var chkList = $("input[name='giftChk']");
 	            for(var i=0; i<chkList.length; i++){
@@ -353,9 +372,48 @@
 			<%-- input 히든으로 준 거 가져와볼 것!!! --%>
 		}
 		
+		<%-- modal 데이터를 바탕으로 선물 상품 추가하기 --%>
+		<%-- 
+		$("#insertGiftBtn").on('click', function(event){
+			//event.preventDefault(); //기존 form태그 submit을 막음
+			
+			var form = $("#insertImgFile")[0].files[0];
+			console.log("form : ");
+			console.log(form);
+			
+			var formData = new FormData();
+			formData.append('files', form);
+			console.log("formData : ");
+			console.log(formData);
+			
+			$("#insertGiftBtn").prop("disabled", true);
+			
+			$.ajax({
+				type: "POST",
+				enctype : 'multipart/form-data',
+				url : "insertGift.ho",
+				data : formData,
+				processData : false,
+				contentType : false,
+				success : function(data){
+					console.log("data");
+					console.log(data);
+					alert("선물 추가 성공!");
+					$("#insertGiftBtn").prop("disabled", false);
+				},
+				error : function(e){
+					console.log(e);
+					alert("선물 추가 실패!");
+					$("#insertGiftBtn").prop("disabled", false);
+				}
+			});
+		});
 		
-		
-		
+		insertImgFile : formData,
+					giftBrand : giftBrand,
+					giftName : giftName,
+					giftPrice : giftPrice
+		--%>
 		
 		<%-- 선물 사진 관련 --%>
 	    $(function(){
@@ -395,11 +453,11 @@
 	            var searchText = $(this).val();
 	            
 	            var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
-	            var giftTitle = $(".card-body>p:contains('"+searchText+"')");
+	            var giftName = $(".card-body>p:contains('"+searchText+"')");
 	            var giftPrice = $(".card-body>h6:contains('"+searchText+"')");
 	
 	            $(giftBrand).parent().parent().parent().show();
-	            $(giftTitle).parent().parent().parent().show();
+	            $(giftName).parent().parent().parent().show();
 	            $(giftPrice).parent().parent().parent().show();
 	
 	        })

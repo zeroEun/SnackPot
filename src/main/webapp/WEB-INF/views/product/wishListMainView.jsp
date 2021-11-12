@@ -213,8 +213,10 @@
 				</c:if>
 			</c:forEach>
 		</div>
+	<c:if test="${loginUser.admin eq 'Y' }">
+	<button type="submit" class="endBtn" value="${list[0].wishNo}"  onclick="endBtn(this.value)" >마감</button>
+	</c:if>
 	</div>
-	<button type="submit" class="endBtn">마감</button>
 </body>
 <script>
 
@@ -306,6 +308,15 @@
 		}
 	})
 	
+	
+	//관리자가 마감버튼 클릭
+	function endBtn(val){
+		const endWish = val;
+		
+		location.href="end.wish?wishNo=" + endWish;
+		
+	}
+	
 
 	//d-day
 	$(function(){
@@ -329,6 +340,7 @@
 		
 		})
 	},1000);
+	
 	
 	</script>
 </html>

@@ -79,12 +79,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <select id="chkSnackNo" resultType="_int">
 	SELECT COUNT(SNACK_NO)
 	FROM WISHLIST_DETAIL
-	WHERE SNACK_NO = #{wishSnackNo}
+	WHERE WISH_NO = #{SubWishNo}
+	AND SNACK_NO = #{wishSnackNo}
 </select>
 
 <update id="updateSnackCount" parameterType="hashMap">
 	UPDATE WISHLIST_DETAIL SET COUNT = COUNT + 1
-	WHERE SNACK_NO = #{wishSnackNo} 
+	WHERE WISH_NO = #{SubWishNo}
+	AND SNACK_NO = #{wishSnackNo} 
 </update>
 
  <select id="selectDrinkList" resultMap="productResultSet">
@@ -139,6 +141,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE WISH_NO = #{wishNo}
 	AND SNACK_NO = #{snackNo}
 </delete>
+
+<update id="endWishList">
+	UPDATE WISHLIST SET STATUS ='Y'
+	WHERE WISH_NO=#{wishNo}
+</update>
+
 
 <!-- 스케줄러 테스트 
 <update id="updateClosingDate">

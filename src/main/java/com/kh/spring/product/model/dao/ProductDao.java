@@ -53,21 +53,21 @@ public class ProductDao {
 	}
 
 
-	public int insertWishDetail(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+	public void insertWishDetail(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		
-		return sqlSession.insert("productMapper.insertWishDetail" , map);
+		sqlSession.insert("productMapper.insertWishDetail" , map);
 	}
 	
 
-	public int chkSnackNo(SqlSessionTemplate sqlSession, String wishSnackNo) {
+	public int chkSnackNo(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		
-		return sqlSession.selectOne("productMapper.chkSnackNo" , wishSnackNo);
+		return sqlSession.selectOne("productMapper.chkSnackNo" , map);
 	}
 	
 
-	public int updateSnackCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+	public void updateSnackCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		
-		return sqlSession.update("productMapper.updateSnackCount" , map);
+		sqlSession.update("productMapper.updateSnackCount" , map);
 	}
 
 	public ArrayList<Product> selectWishDetailList(SqlSessionTemplate sqlSession, String comCode) {
@@ -90,6 +90,11 @@ public class ProductDao {
 	public int deleteSnack(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 	
 		return sqlSession.delete("productMapper.deleteSnack" , map);
+	}
+
+	public int endWishList(SqlSessionTemplate sqlSession, String wishNo) {
+	
+		return sqlSession.update("productMapper.endWishList" , wishNo);
 	}
 	
 	

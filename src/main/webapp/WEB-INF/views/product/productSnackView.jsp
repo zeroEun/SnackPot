@@ -32,7 +32,7 @@
 }
 /*스낵류 ,음료 , 간편식 드롭다운 메뉴바*/
 .nav-item>label{
-	margin-left: 130px;	
+	margin-left: 150px;	
 }
 /*스낵류 ,음료 , 간편식 드롭다운 메뉴바 색*/
 .nav-item>label>.wish-nav-link{
@@ -264,7 +264,6 @@ text-align: center;
 </div>
 </body>
 <script type="text/javascript">
-
  function wishAdd(val){
    var wishSnackNo = val;
    alert(wishSnackNo)

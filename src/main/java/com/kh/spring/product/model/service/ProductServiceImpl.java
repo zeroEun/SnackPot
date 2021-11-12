@@ -66,24 +66,22 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public int insertWishDetail(HashMap<String, Object> map) {
-		int result1 = productDao.insertWishDetail(sqlSession , map);
+	public void insertWishDetail(HashMap<String, Object> map) {
+		productDao.insertWishDetail(sqlSession , map);
 		
-		return result1;
 	}
 
 	@Override
-	public int chkSnackNo(String wishSnackNo) {
+	public int chkSnackNo(HashMap<String, Object> map) {
 		
-		return productDao.chkSnackNo(sqlSession , wishSnackNo);
+		return productDao.chkSnackNo(sqlSession , map);
 	}
-
+	
 	@Override
-	public int updateSnackCount(HashMap<String, Object> map) {
+	public void updateSnackCount(HashMap<String, Object> map) {
 		
-		int result = productDao.updateSnackCount(sqlSession , map);
+	 productDao.updateSnackCount(sqlSession , map);
 		
-		return result;
 	}
 
 	@Override
@@ -115,6 +113,15 @@ public class ProductServiceImpl implements ProductService {
 		int result = productDao.deleteSnack(sqlSession , map);
 		return result;
 	}
+
+	@Override
+	public int endWishList(String wishNo) {
+		
+		int result = productDao.endWishList(sqlSession, wishNo);
+		return result;
+	}
+
+
 
 	//스케줄러 테스트용
 //	@Override

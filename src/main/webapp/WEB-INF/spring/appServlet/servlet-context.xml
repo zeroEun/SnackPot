@@ -38,7 +38,7 @@
 			<beans:bean id="testInterceptor" class="com.kh.spring.common.interceptor.TestInterceptor" />
 		</interceptor>
 	
-		<!-- login.me 컨트롤러 호출 시 타는 로직-->
+		<!-- login.me 컨트롤러 호출 시 타는 로직
 		<interceptor>
 			<mapping path="/login.me"/>
 			<beans:bean id="loginInterceptor" class="com.kh.spring.common.interceptor.LoginInterceptor" />
@@ -47,7 +47,7 @@
 		<interceptor>
 			<mapping path="/list.bo"/>
 			<beans:bean id="blistInterceptor" class="com.kh.spring.common.interceptor.BlistInterceptor"/>
-		</interceptor>
+		</interceptor>-->
 		
 	</interceptors>
 	

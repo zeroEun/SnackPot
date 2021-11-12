@@ -24,11 +24,11 @@ public interface ProductService {
 	
 	int selectSubWishNo(String comCode);
 	
-	int insertWishDetail(HashMap<String, Object> map);
+	void insertWishDetail(HashMap<String, Object> map);
 	
-	int chkSnackNo(String wishSnackNo);
+	int chkSnackNo(HashMap<String, Object> map);
 
-	int updateSnackCount(HashMap<String, Object> map);
+	void updateSnackCount(HashMap<String, Object> map);
 
 	ArrayList<Product> selectWishDetailList(String comCode);
 
@@ -37,6 +37,10 @@ public interface ProductService {
 	int updatePlusCount(HashMap<String, Object> map);
 
 	int deleteSnack(HashMap<String, Object> map);
+
+	int endWishList(String wishNo);
+
+
 	
 	
 	//스케줄러 테스트용

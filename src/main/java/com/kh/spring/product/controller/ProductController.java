@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.spring.companyMember.model.vo.CompanyMember;
 import com.kh.spring.product.model.service.ProductService;
 import com.kh.spring.product.model.vo.Product;
 
@@ -66,15 +67,16 @@ public class ProductController {
 	
 	
 	@RequestMapping("insert.wish")
-	public String insertWishList(@RequestParam("wishSnackNo") String wishSnackNo , Product p) {
-		//System.out.println("wishSnackNo : " + wishSnackNo);
+	public String insertWishList(@RequestParam("wishSnackNo") String wishSnackNo , Product p ,HttpSession session) {
 		
 		/*로그인하면 사원 session에서 회사코드 가져와서 같이 insert해주기*/
-		//String comCode = "KAKAO";
-		String comCode = "KH01";
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		
+		String comCode = loginUser.getComCode();
+//		System.out.println("회사코드 ? : " + comCode);
 		
 		/*마감날짜를 간식구독 테이블에서 가져오기*/
-		int deliveryDate =  Integer.parseInt(productService.selectDeliveryDate(comCode)); //8
+		int deliveryDate =  Integer.parseInt(productService.selectDeliveryDate(comCode)); //11
 		System.out.println("deliveryDate : " + deliveryDate);
 		
 		
@@ -106,28 +108,31 @@ public class ProductController {
 				System.out.println("SubWishNo : " + SubWishNo);
 				map.put("SubWishNo", SubWishNo);
 		
-				int result1 = productService.insertWishDetail(map); //구독번호를 통해서 상세테이블에 상품 담기
+				productService.insertWishDetail(map); //구독번호를 통해서 상세테이블에 상품 담기
 			
 			}
 			
-		}else if(wishListChk == 1) {//이미 위시리스트가 생성되어있다
+		}else {//이미 위시리스트가 생성되어있다 if(wishListChk == 1) 
 			//간식이 중복되어있는지 확인해야한다
-			int count = productService.chkSnackNo(wishSnackNo);
+			
+			int SubWishNo = productService.selectSubWishNo(comCode);
+			map.put("SubWishNo", SubWishNo);
+			int count = productService.chkSnackNo(map);
+			System.out.println("SubWishNo : " + SubWishNo);
 			System.out.println("count : " + count);
 			
 			if(count == 0) { //간식중복이 아니라면
 				
-				int SubWishNo = productService.selectSubWishNo(comCode);
-				System.out.println("SubWishNo : " + SubWishNo);
-				map.put("SubWishNo", SubWishNo);
-				
 				int result2 = productService.updateWishEndDate(map); //배송예정일이 바뀔수도 있기때문에 update
-				int result = productService.insertWishDetail(map);
-			}else {
-				int result2 = productService.updateWishEndDate(map);
-				int result = productService.updateSnackCount(map);
+					if(result2 > 0) {
+						productService.insertWishDetail(map);
+					}
+			}else{
 				
-			}
+				productService.updateSnackCount(map);
+				int result2 = productService.updateWishEndDate(map);
+					
+				}
 			
 		}
 	
@@ -142,8 +147,8 @@ public class ProductController {
 	public String wishListView(Model model, HttpSession session ) {
 		
 		/*로그인한 유저의 회사*/
-		//String comCode = "KAKAO";
-		String comCode = "KH01";
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		String comCode = loginUser.getComCode();
 		
 		int companyChk = productService.chkWishList(comCode); //회사코드와 상태값이 'N' 이면  1 
 		
@@ -190,6 +195,21 @@ public class ProductController {
 		return  "product/wishListMainView"; 
 	}
 	
+	//위시리스트 마감
+	@RequestMapping("end.wish")
+	public String endWishList(@RequestParam("wishNo") String wishNo , HttpSession session) {
+		
+		System.out.println("마감할 wishNo는?? : " + wishNo);
+		
+		int result = productService.endWishList(wishNo);
+		
+		if(result > 0) {
+			session.setAttribute("msg", "위시리스트를 마감했습니다.");
+		}
+		
+		
+		return "redirect:/"; 
+	}
 	
 	// 스케줄러 테스트
 	/*

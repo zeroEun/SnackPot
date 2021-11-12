@@ -33,7 +33,7 @@
         <input type="text" class="input" name="comAddress" placeholder=" 회사주소"><br>
         </div>
         <input type="checkbox" id="ck"><label id="ck" for="ck">개인정보 수집 및 이용에 동의합니다.</label><br>
-        <input type="button" id="joinBtn" disabled="disabled" onclick="enroll();" value="회원가입 하기">
+        <input type="button" id="joinBtn" disabled="disabled" onclick="enroll();" value="회원가입 하기" style="cursor:pointer;">
         </div>
         </div>
     </form>

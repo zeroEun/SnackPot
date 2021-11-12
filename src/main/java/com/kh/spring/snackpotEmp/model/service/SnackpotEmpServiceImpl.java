@@ -43,4 +43,53 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 		return sed.selectEmpList(sqlSession);
 	}
 
+	@Override
+	public void insertEmp(SnackpotEmp se) {
+		int result = sed.insertEmp(sqlSession, se);
+		
+		if(result < 0) {
+			throw new CommException("사원등록에 실패했습니다");
+		}
+	}
+
+	@Override
+	public int checkNum(String sempNum) {
+		int result = sed.checkNum(sqlSession, sempNum);
+		
+		return result;
+	}
+
+	@Override
+	public SnackpotEmp selectEmp(String sempNum) {
+		SnackpotEmp se = sed.selectEmp(sqlSession, sempNum);
+		
+		return se;
+	}
+
+	@Override
+	public void updateEmp(SnackpotEmp se) {
+		int result = sed.updateEmp(sqlSession, se);
+		
+		if(result < 0) {
+			throw new CommException("사원정보 변경에 실패했습니다");
+		}
+		
+	}
+
+	@Override
+	public int deleteEmp(String sempNum) {
+		int result = sed.deleteEmp(sqlSession, sempNum);
+		
+		if(result < 0) {
+			throw new CommException("사원 삭제에 실패했습니다");
+		}
+		return result;
+	}
+
+	@Override
+	public String searchComCode(String string) {
+		
+		return sed.searchComCode(sqlSession, string);
+	}
+
 }

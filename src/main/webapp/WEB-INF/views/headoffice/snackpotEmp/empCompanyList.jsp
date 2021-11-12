@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>본사 사원 계정 현황</title>
-    <!-- Latest compiled and minified CSS -->
+<title>담당 거래처 관리</title>
+<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <!-- jQuery library -->
@@ -14,7 +14,7 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<style>
+   <style>
     th{
         text-align: center;
         background-color: lightgray
@@ -69,6 +69,12 @@
     	color: white;
     	border-radius: 5px;
     }
+    #bth{
+    	width: 120px;
+    }
+    #comth{
+    	width: 500px;
+    }
 </style>
 </head>
 <body>
@@ -77,7 +83,7 @@
 <jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 
 <div class="container" id="outer">
-<h5 id="title">사원 계정 현황</h5><br>
+<h5 id="title">담당 거래처 관리</h5><br>
 <div id="searchdiv">
 <input type="text" placeholder="검색어 입력"><button type="button" id="search"><img id="icon" src="${ pageContext.servletContext.contextPath }/resources/images/search.png"></button>
 </div>
@@ -86,93 +92,27 @@
     <thead>
         <tr>
             <th>No.</th>
-            <th>사원번호</th>
             <th>이름</th>
-            <th>부서</th>
-            <th>직급</th>
-            <th>이메일</th>
-            <th colspan="2"></th>
+            <th>사원번호</th>
+            <th id="comth">담당거래처</th>
+            <th id="bth"></th>
         </tr>
     </thead>
     <tbody>
     <c:forEach items="${list}" var="emp" varStatus="st">
         <tr>
             <td>${st.index +1}</td>
-            <td>${emp.sempNum}</td>
             <td>${emp.sempName}</td>
-            <td>${emp.sempDept}</td>
-            <td>${emp.sempJob}</td>
-            <td>${emp.sempEmail}</td>
+            <td>${emp.sempNum}</td>
+            <td>${emp.sempComCode}</td>
             <td><input type="button" class="modifyBtn" value="수정"></td>
-            <td><input type="button" class="deleteBtn" value="삭제"></td>
         </tr>
      </c:forEach>
     </tbody>
 </table>
 </div>
-<input type="button" id="enrollBtn" value="사원등록" onclick="location.href='enrollEmp.sn'">
 </div>
 </div>
 </div>
-<script>
-//클릭한 행의 사원번호 가져오기
-$(".modifyBtn").click(function(){ 
-	  var str = ""
-      var tdArr = new Array();   
-      var modifyBtn = $(this);
-       
-      var tr = modifyBtn.parent().parent();
-      var td = tr.children();
-       
-      var sempNum = td.eq(1).text();
-      
-      $.ajax({
-  		url: "modifyEmp.sn",
-  		type:"post",
-  		data:{sempNum : sempNum},
-  		success:function(result){
-  			if(result == "ok"){
-  				location.href="<%=request.getContextPath()%>/modify.sn"
-  			}
-  		},
-  		error:function(){
-  			console.log("서버통신실패");
-  		}
-  	})
-      
-});
-
-$(".deleteBtn").click(function(){ 
-	var str = ""
-    var tdArr = new Array();   
-    var modifyBtn = $(this);
-     
-    var tr = modifyBtn.parent().parent();
-    var td = tr.children();
-     
-    var sempNum = td.eq(1).text();
-    
-    if(confirm('정말 삭제하시겠습니까?')){
-    	$.ajax({
-		url: "deleteEmp.sn",
-		type:"post",
-		data:{sempNum : sempNum},
-		success:function(result){
-			if(result > 0){
-				alert("삭제되었습니다.")
-				location.reload();
-			}else{
-				alert("삭제에 실패하였습니다.")
-			}
-		},
-		error:function(){
-			console.log("서버통신실패");
-		}
-	})
-	  }else{
-		 return; 
-	  } 
-});
-</script>
 </body>
 </html>

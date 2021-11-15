@@ -15,4 +15,12 @@ public interface HO_GiftListService {
 
 	void insertAttachment(GiftAttachment at);
 
+	HO_GiftList selectGiftOne(String giftNo);
+
+	void updateGift(HO_GiftList gl);
+
+	void updateAttachment(GiftAttachment at);
+
+	int deleteGift(String[] delArr);
+
 }

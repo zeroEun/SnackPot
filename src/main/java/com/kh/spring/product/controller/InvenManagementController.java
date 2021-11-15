@@ -23,6 +23,7 @@ import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.service.InvenManagementService;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
+import com.kh.spring.product.release.model.vo.Release;
 import com.kh.spring.qna.model.vo.PageInfo;
 import com.kh.spring.qna.model.vo.Pagination;
 import com.kh.spring.qna.model.vo.qna;
@@ -104,7 +105,20 @@ public class InvenManagementController {
 
 	//출고 리스트로 이동
 	@RequestMapping("releaseList.im")
-	private String ReleaseList() {
+	private String ReleaseList(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
+
+		int listCount = invenManagementService.todayReleaseCount();
+		System.out.println(listCount);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Release> list = invenManagementService.todayReleaseList(pi);
+		
+		System.out.println(list);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+
 
 		return "headoffice/invenManagement/snackReleaseList";
 	}
@@ -130,9 +144,17 @@ public class InvenManagementController {
 
 	//출고 등록
 	@RequestMapping("releaseInsert.im")
-	private String ReleaseEnrollForm() {
+	private String ReleaseEnrollForm(Release r, Model model) {
 
-		return "headoffice/invenManagement/releaseEnrollForm";
+
+		System.out.println(r);
+		
+		invenManagementService.releaseInsert(r);
+
+		model.addAttribute("msg","출고 등록이 완료되었습니다.");
+        model.addAttribute("url","/releaseList.im");
+
+		return "common/alert";	
 	}
 
 	//입고 등록
@@ -144,7 +166,7 @@ public class InvenManagementController {
 		
 		invenManagementService.arrivalInsert(a);
 
-		model.addAttribute("msg","상품 등록이 완료되었습니다.");
+		model.addAttribute("msg","입고 등록이 완료되었습니다.");
         model.addAttribute("url","/arrivalList.im");
 
 		return "common/alert";	

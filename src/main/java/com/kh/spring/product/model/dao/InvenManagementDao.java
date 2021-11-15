@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
+import com.kh.spring.product.release.model.vo.Release;
 import com.kh.spring.qna.model.vo.PageInfo;
 
 @Repository
@@ -40,6 +41,24 @@ public class InvenManagementDao {
 		
 		
 		return (ArrayList)sqlSession.selectList("invenMapper.todayArrivalList", null, rowBounds);
+	}
+
+	public int todayReleaseCount(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.todayReleaseCount");
+	}
+
+	public ArrayList<Release> todayReleaseList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("invenMapper.todayReleaseList", null, rowBounds);
+	}
+
+	public int releaseInsert(SqlSessionTemplate sqlSession, Release r) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("invenMapper.releaseInsert", r);
 	}
 	
 	

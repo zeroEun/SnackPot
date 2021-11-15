@@ -11,6 +11,7 @@ import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.dao.InvenManagementDao;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
+import com.kh.spring.product.release.model.vo.Release;
 import com.kh.spring.qna.model.vo.PageInfo;
 
 @Service
@@ -63,6 +64,29 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 	public ArrayList<Arrival> todayArrivalList(PageInfo pi) {
 		// TODO Auto-generated method stub
 		return invenManagementDao.todayArrivalList(sqlSession, pi);
+	}
+
+	@Override
+	public int todayReleaseCount() {
+		// TODO Auto-generated method stub
+		return invenManagementDao.todayReleaseCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Release> todayReleaseList(PageInfo pi) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.todayReleaseList(sqlSession, pi);
+	}
+
+	@Override
+	public void releaseInsert(Release r) {
+		int result = invenManagementDao.releaseInsert(sqlSession, r);
+		
+		if(result < 0) {
+			throw new CommException("입고 등록에 실패했습니다.");
+		}
+		
+		
 	}
 
 }

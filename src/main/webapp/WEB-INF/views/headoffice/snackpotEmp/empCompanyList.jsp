@@ -114,5 +114,37 @@
 </div>
 </div>
 </div>
+<script>
+//클릭한 행의 사원번호 가져오기
+$(".modifyBtn").click(function(){ 
+	  var str = ""
+      var tdArr = new Array();   
+      var modifyBtn = $(this);
+       
+      var tr = modifyBtn.parent().parent();
+      var td = tr.children();
+       
+      var sempNum = td.eq(2).text();
+      var sempComName = td.eq(3).text();
+      
+      $.ajax({
+  		url: "modifyCom.sn",
+  		type:"post",
+  		data:{
+  			sempNum : sempNum,
+  			sempComName : sempComName
+  			},
+  		success:function(result){
+  			if(result == "ok"){
+  				location.href="<%=request.getContextPath()%>/modifyCompany.sn"
+  			}
+  		},
+  		error:function(){
+  			console.log("서버통신실패");
+  		}
+  	})
+      
+});
+</script>
 </body>
 </html>

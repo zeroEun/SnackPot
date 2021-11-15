@@ -1,7 +1,5 @@
 package com.kh.spring.snack.snackSubs.controller;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.spring.product.model.vo.SnackSubCategory;
+import com.kh.spring.companyMember.model.vo.CompanyMember;
 import com.kh.spring.snack.snackSubs.model.service.SnackSubsService;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
@@ -35,6 +33,13 @@ public class SnackSubsController {
 		return "company/snack/snackSubsForm";
 	}
 	
+	@ResponseBody
+	@RequestMapping("checkSubsDup.sn")
+	public int checkSubsDup(String comCode) {
+		
+		return snackSubsService.checkSubsDup(comCode);
+	}
+	
 	@RequestMapping("insertSubs.sn")
 	public String insertSnackSubs(SnackSubs snackSubs, HttpSession session) {
 		
@@ -43,15 +48,15 @@ public class SnackSubsController {
 		snackSubsService.insertSnackSubs(snackSubs);
 		
 		//session.setAttribute("msg", "간식 구독이 성공적으로 완료되었습니다.");
-		return "redirect:/";
+		return "redirect:subsInfo.sn";
 	}
 	
 	@RequestMapping("subsInfo.sn")
 	public String snackSubsInfo(Model model, HttpSession session) {
 		
-		//String comCode = session.getAttribute("loginUser").getComCode();
+		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
 		
-		String comCode = "k2111021928";
+		//String comCode = "k2111021928";
 		
 		model.addAttribute("snackCategory", snackSubsService.selectSubCategory(1));
 		model.addAttribute("drinkCategory", snackSubsService.selectSubCategory(2));

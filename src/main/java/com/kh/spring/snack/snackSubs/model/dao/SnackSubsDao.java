@@ -41,6 +41,10 @@ public class SnackSubsDao {
 		return sqlSession.update("snackSubsMapper.cancelSnackSubs", subsNo);
 	}
 
+	public int checkSubsDup(SqlSessionTemplate sqlSession, String comCode) {
+		return sqlSession.selectOne("snackSubsMapper.checkSubsDup", comCode);
+	}
+
 
 
 	

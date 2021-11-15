@@ -48,5 +48,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET CANCEL_DATE = SYSDATE, SUBS_STATUS = 'N'
 		WHERE SUBS_NO = #{subsNo}
 	</update>
+	
+	<select id="checkSubsDup" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM SNACK_SUBS
+		WHERE COM_CODE = #{comCode}
+		AND SUBS_STATUS = 'Y'
+	</select>
 
 </mapper>

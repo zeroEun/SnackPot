@@ -75,5 +75,11 @@ public class SnackSubsServiceImpl implements SnackSubsService {
 		}
 	}
 
+	@Override
+	public int checkSubsDup(String comCode) {
+		
+		return snackSubsDao.checkSubsDup(sqlSession, comCode);
+	}
+
 
 }

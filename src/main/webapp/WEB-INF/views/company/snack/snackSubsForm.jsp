@@ -51,7 +51,7 @@
                     <hr>
 
                     <form id="subsEnroll" method="post" action="insertSubs.sn">
-                    	<input type="hidden" name="comCode" value="k2111042028"><!-- ${loginUser.comCode } -->
+                    	<input type="hidden" name="comCode" value="${loginUser.comCode}">
 
                         <div class="form-group row" id="snack-budget">
 
@@ -195,7 +195,7 @@
                         </div>
                         
 
-                        <button type="submit" class="btn btn-warning mr-2 float-right">구독 신청하기</button>
+                        <button type="button" class="btn btn-warning mr-2 float-right"  id="subsBtn">구독 신청하기</button>
 
 
                     </form>
@@ -215,6 +215,28 @@
 		var date = today.getDate();
 		console.log(date);
 		$('#settlement-date').attr('value', date);
+		
+		$('#subsBtn').on('click', function(){
+			
+			$.ajax({
+				
+				url:'checkSubsDup.sn',
+				data:{comCode : '${loginUser.comCode}'},
+				success: function(result){
+					
+					if(result > 0){
+						alert("이미 구독중 입니다.")				
+					}else{
+						$('#subsEnroll').submit();
+					}
+					
+				},error:function(){
+					console.log("댓글 작성 ajax 통신 실패");
+				}
+				
+			});
+			
+		})
 	});
 </script>
 

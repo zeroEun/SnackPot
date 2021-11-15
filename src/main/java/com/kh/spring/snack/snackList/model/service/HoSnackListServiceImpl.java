@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.snack.snackList.model.dao.HoSnackListDao;
-import com.kh.spring.snack.snackList.model.vo.ListSchedule;
+import com.kh.spring.snack.snackList.model.vo.ComListInfo;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackList.model.vo.SnackList;
@@ -33,7 +33,7 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 
 
 	@Override
-	public ArrayList<ListSchedule> selectSubsInfo(HashMap map) {
+	public ArrayList<ComListInfo> selectSubsInfo(HashMap map) {
 		return hoSnackListDao.selectSubsInfo(sqlSession, map);
 	}
 
@@ -148,42 +148,46 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 
 
 	@Override
-	public void insertOrder(ListSchedule schedule) {
+	public void insertOrder(ComListInfo info) {
 		
-		int result = hoSnackListDao.insertOrder(sqlSession, schedule);
+		int result1 = hoSnackListDao.insertOrder(sqlSession, info);
 		
-		if(result < 0) {
+		if(result1 > 0) {
+			int result2 = hoSnackListDao.insertOrderDetail(sqlSession, info);
+			
+			if(result2 > 0) {
+				int result3 = hoSnackListDao.updateTransStatus(sqlSession, info);
+				
+				if(result3 < 0) {
+					throw new CommException("updateTransStatus 실패");
+				}
+				
+			}else {
+				throw new CommException("insertOrderDetail 실패");
+			}
+			
+		}else {
 			throw new CommException("insertOrder 실패");
 		}
+		
 	}
-
-
-	@Override
-	public void insertOrderDetail(int listNo) {
-		
-		int result = hoSnackListDao.insertOrderDetail(sqlSession, listNo);
-		
-		if(result < 0) {
-			throw new CommException("insertOrderDetail 실패");
-		}
-	}
-
-
-	@Override
-	public void updateTransStatus(int listNo) {
-		
-		int result = hoSnackListDao.updateTransStatus(sqlSession, listNo);
-		
-		if(result < 0) {
-			throw new CommException("updateTransStatus 실패");
-		}
-	}
-
 
 	@Override
 	public ArrayList<SnackList> selectSendingList(HashMap map) {
 		
 		return hoSnackListDao.selectSendingList(sqlSession, map);
+	}
+
+
+	@Override
+	public SnackList selectSnackList(int snackListNo) {
+		return hoSnackListDao.selectSnackList(sqlSession, snackListNo);
+	}
+
+
+	@Override
+	public int selectOrderNo() {
+		return hoSnackListDao.selectOrderNo(sqlSession);
 	}
 
 }

@@ -7,7 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring.product.model.vo.Product;
-import com.kh.spring.snack.snackList.model.vo.ListSchedule;
+import com.kh.spring.snack.snackList.model.vo.ComListInfo;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackList.model.vo.SnackList;
@@ -16,7 +16,7 @@ import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 @Repository
 public class HoSnackListDao {
 
-	public ArrayList<ListSchedule> selectSubsInfo(SqlSessionTemplate sqlSession, HashMap map) {
+	public ArrayList<ComListInfo> selectSubsInfo(SqlSessionTemplate sqlSession, HashMap map) {
 		return (ArrayList)sqlSession.selectList("snackListMapper.selectSubsInfo", map);
 	}
 
@@ -76,20 +76,28 @@ public class HoSnackListDao {
 		return sqlSession.selectOne("snackListMapper.selectSnackMaxNum");
 	}
 
-	public int insertOrder(SqlSessionTemplate sqlSession, ListSchedule schedule) {
-		return sqlSession.insert("snackListMapper.insertOrder", schedule);
+	public int insertOrder(SqlSessionTemplate sqlSession, ComListInfo info) {
+		return sqlSession.insert("snackListMapper.insertOrder", info);
 	}
 
-	public int insertOrderDetail(SqlSessionTemplate sqlSession, int listNo) {
-		return sqlSession.insert("snackListMapper.insertOrderDetail", listNo);
+	public int insertOrderDetail(SqlSessionTemplate sqlSession, ComListInfo info) {
+		return sqlSession.insert("snackListMapper.insertOrderDetail", info);
 	}
 
-	public int updateTransStatus(SqlSessionTemplate sqlSession, int listNo) {
-		return sqlSession.update("snackListMapper.updateTransStatus", listNo);
+	public int updateTransStatus(SqlSessionTemplate sqlSession, ComListInfo info) {
+		return sqlSession.update("snackListMapper.updateTransStatus", info);
 	}
 
 	public ArrayList<SnackList> selectSendingList(SqlSessionTemplate sqlSession, HashMap map) {
 		return (ArrayList)sqlSession.selectList("snackListMapper.selectSendingList", map);
+	}
+
+	public SnackList selectSnackList(SqlSessionTemplate sqlSession, int snackListNo) {
+		return sqlSession.selectOne("snackListMapper.selectSnackList", snackListNo);
+	}
+
+	public int selectOrderNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("snackListMapper.selectOrderNo");
 	}
 
 }

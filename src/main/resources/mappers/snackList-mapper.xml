@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="snackListMapper">
 
-	<resultMap type="ListSchedule" id="listScheduleResultSet">
+	<resultMap type="ComListInfo" id="comListInfoResultSet">
 		<id property="subsNo" column="SUBS_NO"/>
 		<result property="comCode" column="COM_CODE"/>
 		<result property="comName" column="COM_NAME"/>
@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="budget" column="BUDGET"/>
 	</resultMap>
 	
-	<resultMap type="com.kh.spring.snack.snackList.model.vo.SnackDList" id="snackDListResultSet">
+	<resultMap type="SnackDList" id="snackDListResultSet">
 	 	<id property="snackDNo" column="SNACK_D_NO"/>
 		<result property="snackListNo" column="SNACK_LIST_NO"/>
 		<result property="categoryNo" column="CATEGORY_NO"/>
@@ -28,15 +28,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="imageName" column="CHANGE_NAME"/>
 	</resultMap>
 	
-	<resultMap type="com.kh.spring.snack.snackList.model.vo.SnackList" id="snackListResultSet">
+	<resultMap type="SnackList" id="snackListResultSet">
 		<id property="snackListNo" column="SNACK_LIST_NO"/>
 		<result property="comCode" column="COM_CODE"/>
 		<result property="comName" column="COM_NAME"/>
 		<result property="transStatus" column="TRANS_STATUS"/>
+		<result property="budget" column="BUDGET"/>
+		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<result property="transDate" column="TRANS_DATE"/>
+		<result property="content" column="SNACK_NAME"/>
 	</resultMap>
 	
-	<select id="selectSubsInfo" parameterType="java.util.HashMap" resultMap="listScheduleResultSet">
+	<select id="selectSubsInfo" parameterType="java.util.HashMap" resultMap="comListInfoResultSet">
 		
 			SELECT A.SUBS_NO, A.COM_CODE, B.COM_NAME, A.DELIVERY_DATE, A.SETTLEMENT_DATE, A.BUDGET
 			FROM SNACK_SUBS A
@@ -62,25 +65,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</select>
 	
-	<select id="searchSnack" parameterType="com.kh.spring.snack.snackList.model.vo.SearchSnack"  resultMap="snackDListResultSet">
+	<select id="searchSnack" parameterType="SearchSnack"  resultMap="snackDListResultSet">
 	
-		SELECT S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
-			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
-		FROM SNACK S
-		LEFT JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
-		JOIN SNACK_CATEGORY C ON (S.CATEGORY_NO = C.CATEGORY_NO)
-		JOIN SNACK_CATEGORY_DETAIL D ON (S.DETAIL_NO = D.DETAIL_NO)
+		SELECT A.SNACK_NO, A.SNACK_NAME, A.PURCHASE_PRICE, A.CATEGORY_NO, C.CATEGORY,  A.DETAIL_NO, D.DETAIL,
+			   A.RELEASE_PRICE, A.STOCK, B.CHANGE_NAME
+		FROM SNACK A
+		LEFT JOIN SNACK_ATTACHMENT B ON (A.SNACK_NO = B.SNACK_NO)
+		JOIN SNACK_CATEGORY C ON (A.CATEGORY_NO = C.CATEGORY_NO)
+		JOIN SNACK_CATEGORY_DETAIL D ON (A.DETAIL_NO = D.DETAIL_NO)
 		WHERE STATUS = 'Y' 
 	  	<if test="category != 0">
-			AND S.CATEGORY_NO = #{category}
+			AND A.CATEGORY_NO = #{category}
 		</if>
 		<if test="subCategory != 0">
-			AND S.DETAIL_NO = #{subCategory}
+			AND A.DETAIL_NO = #{subCategory}
 		</if>
 		<if test="search != ''">
-			AND S.SNACK_NAME LIKE '%'||#{search}||'%'
+			AND A.SNACK_NAME LIKE '%'||#{search}||'%'
 		</if>
-		ORDER BY S.CATEGORY_NO ASC, S.DETAIL_NO ASC, S.SNACK_NAME ASC
+		ORDER BY A.CATEGORY_NO ASC, A.DETAIL_NO ASC, A.SNACK_NAME ASC
 	</select>
 	
 	<select id="selectSnackListNo" parameterType="String" resultType="_int">
@@ -93,32 +96,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectSnackDList" parameterType="_int" resultMap="snackDListResultSet">
-		SELECT L.SNACK_D_NO, L.SNACK_LIST_NO, L.AMOUNT, S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
-			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
-		FROM SNACK_D_LIST L 
-		JOIN SNACK S ON (L.SNACK_NO = S.SNACK_NO)
-		LEFT JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
-		JOIN SNACK_CATEGORY C ON (S.CATEGORY_NO = C.CATEGORY_NO)
-		JOIN SNACK_CATEGORY_DETAIL D ON (S.DETAIL_NO = D.DETAIL_NO)
-		WHERE L.SNACK_LIST_NO = #{listNo} 
-		ORDER BY S.CATEGORY_NO ASC, S.DETAIL_NO ASC, S.SNACK_NAME ASC
+		SELECT A.SNACK_D_NO, A.SNACK_LIST_NO, A.AMOUNT, B.SNACK_NO, B.SNACK_NAME, B.RELEASE_PRICE, B.CATEGORY_NO, D.CATEGORY,  B.DETAIL_NO, E.DETAIL,
+			   B.STOCK, C.CHANGE_NAME
+		FROM SNACK_D_LIST A 
+		JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
+		LEFT JOIN SNACK_ATTACHMENT C ON (B.SNACK_NO = C.SNACK_NO)
+		JOIN SNACK_CATEGORY D ON (B.CATEGORY_NO = D.CATEGORY_NO)
+		JOIN SNACK_CATEGORY_DETAIL E ON (B.DETAIL_NO = E.DETAIL_NO)
+		WHERE A.SNACK_LIST_NO = #{listNo} 
+		ORDER BY B.CATEGORY_NO ASC, B.DETAIL_NO ASC, B.SNACK_NAME ASC
 	</select>
 	
 	<insert id="insertSanckList" parameterType="String">
 		INSERT INTO SNACK_LIST
-		VALUES(SNACK_LIST_SEQ.NEXTVAL, #{comCode}, DEFAULT, NULL)
+		VALUES(SNACK_LIST_SEQ.NEXTVAL, #{comCode}, DEFAULT, NULL, NULL, NULL)
 	</insert>
 
 	<select id="selectSnack" parameterType="SnackSubs" resultMap="snackDListResultSet">
-		SELECT S.SNACK_NO, S.SNACK_NAME, S.PURCHASE_PRICE, S.CATEGORY_NO, C.CATEGORY,  S.DETAIL_NO, D.DETAIL,
-			   S.RELEASE_PRICE, S.STOCK, A.CHANGE_NAME
-		FROM SNACK S 
-		LEFT JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
-		JOIN SNACK_CATEGORY C ON (S.CATEGORY_NO = C.CATEGORY_NO)
-		JOIN SNACK_CATEGORY_DETAIL D ON (S.DETAIL_NO = D.DETAIL_NO)
-		WHERE S.DETAIL_NO IN (${snackCategory},${drinkCategory},${retortCategory})
-		AND S.TASTE_NO IN (${preferTaste})
-		AND S.AROMA_NO NOT IN (${dislikeFlavour})
+		SELECT A.SNACK_NO, A.SNACK_NAME, A.RELEASE_PRICE, A.CATEGORY_NO, C.CATEGORY,  A.DETAIL_NO, D.DETAIL,
+			   A.STOCK, B.CHANGE_NAME
+		FROM SNACK A 
+		LEFT JOIN SNACK_ATTACHMENT B ON (A.SNACK_NO = B.SNACK_NO)
+		JOIN SNACK_CATEGORY C ON (A.CATEGORY_NO = C.CATEGORY_NO)
+		JOIN SNACK_CATEGORY_DETAIL D ON (A.DETAIL_NO = D.DETAIL_NO)
+		WHERE A.DETAIL_NO IN (${snackCategory},${drinkCategory},${retortCategory})
+		AND A.TASTE_NO IN (${preferTaste})
+		AND A.AROMA_NO NOT IN (${dislikeFlavour})
 	</select>
 	
 	<update id="insertSnackDList" parameterType="java.util.List" >
@@ -133,10 +136,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<select id="selectTotalPrice" parameterType="_int" resultType="_int">
-		SELECT NVL(SUM(S.RELEASE_PRICE * L.AMOUNT), 0)
-		FROM SNACK_D_LIST L
-		JOIN SNACK S ON (L.SNACK_NO = S.SNACK_NO)
-		WHERE L.SNACK_LIST_NO = #{listNo}
+		SELECT NVL(SUM(B.RELEASE_PRICE * A.AMOUNT), 0)
+		FROM SNACK_D_LIST A
+		JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
+		WHERE A.SNACK_LIST_NO = #{listNo}
 	</select>
 	
 	<delete id="deleteSnackDList" parameterType="_int">
@@ -149,19 +152,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE SNACK_D_NO IN (${snackDNoCheck})
 	</delete>
 	
-	<insert id="addSanckDList" parameterType="com.kh.spring.snack.snackList.model.vo.SnackDList">
+	<insert id="addSanckDList" parameterType="SnackDList">
 		INSERT INTO SNACK_D_LIST
 		VALUES(SNACK_D_LIST_SEQ.NEXTVAL, #{snackListNo}, #{snackNo}, #{amount} )
 	</insert>
 	
-	<select id="checkSnackDup" parameterType="com.kh.spring.snack.snackList.model.vo.SnackDList" resultType="_int">
+	<select id="checkSnackDup" parameterType="SnackDList" resultType="_int">
 		SELECT COUNT(*)
 		FROM SNACK_D_LIST
 		WHERE SNACK_LIST_NO = #{snackListNo}
 		AND SNACK_NO = #{snackNo}
 	</select>
 	
-	<update id="updateSnackAmount" parameterType="com.kh.spring.snack.snackList.model.vo.SnackDList">
+	<update id="updateSnackAmount" parameterType="SnackDList">
 		UPDATE SNACK_D_LIST
 		SET AMOUNT = ${amount}
 		WHERE SNACK_D_NO = ${snackDNo}
@@ -172,33 +175,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM SNACK
 	</select>
 	
-	<insert id="insertOrder" parameterType="ListSchedule">
+	<select id="selectOrderNo" resultType="_int">
+		SELECT ORDER_NO_SEQ.NEXTVAL FROM DUAL
+	</select>
+	
+	<insert id="insertOrder" parameterType="ComListInfo">
 		INSERT INTO ORDERS
-		VALUES(#{listNo}, #{comCode}, #{orderDeadline}, NULL, NULL, NULL, DEFAULT)
+		VALUES(#{orderNo}, #{comCode}, DEFAULT, #{budget}, NULL, #{orderDeadline}, NULL, NULL)
 	</insert>
 	
-	<insert id="insertOrderDetail" parameterType="_int">
-		INSERT INTO ORDER_DETAIL (ORDER_DETAIL_NO, ORDER_NO, SNACK_NO, AMOUNT)
-		SELECT ORDER_D_NO_SEQ.NEXTVAL, SNACK_LIST_NO, SNACK_NO, AMOUNT
+	<insert id="insertOrderDetail" parameterType="ComListInfo">
+		INSERT INTO ORDER_DETAIL (ORDER_D_NO, ORDER_NO, SNACK_NO, AMOUNT)
+		SELECT ORDER_D_NO_SEQ.NEXTVAL, #{orderNo} , SNACK_NO, AMOUNT
 		FROM SNACK_D_LIST
 		WHERE SNACK_LIST_NO = #{listNo}
 	</insert>
 	
-	<update id="updateTransStatus" parameterType="_int">
+	<update id="updateTransStatus" parameterType="ComListInfo">
 		UPDATE SNACK_LIST
-		SET TRANS_STATUS = 'Y', TRANS_DATE = SYSDATE
+		SET TRANS_STATUS = 'Y', TRANS_DATE = SYSDATE, TOTAL_PRICE = #{totalPrice}, BUDGET = #{budget}
 		WHERE SNACK_LIST_NO = #{listNo}
 	</update>
 	
 	<select id="selectSendingList" parameterType="java.util.HashMap" resultMap="snackListResultSet">
-		SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, A.TRANS_DATE
+		SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, A.TRANS_DATE, D.SNACK_NAME
 		FROM SNACK_LIST A
-		JOIN COMPANY B ON A.COM_CODE = B.COM_CODE
+		JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		JOIN SNACK_D_LIST C ON (A.SNACK_LIST_NO = C.SNACK_LIST_NO)
+		JOIN SNACK D ON (C.SNACK_NO = D.SNACK_NO)
 		WHERE A.COM_CODE IN(
 			<foreach collection="comArr" item="item" separator=",">
 				#{item}
 			</foreach>)
 		AND A.TRANS_STATUS = 'Y'
+		AND (A.SNACK_LIST_NO, C.SNACK_NO) IN (SELECT A.SNACK_LIST_NO, MIN(B.SNACK_NO)
+												FROM SNACK_LIST A
+												JOIN SNACK_D_LIST B ON (A.SNACK_LIST_NO = B.SNACK_LIST_NO)
+										        GROUP BY A.SNACK_LIST_NO)
+	</select>
+
+	<select id="selectSnackList" parameterType="_int" resultMap="snackListResultSet">
+		SELECT *
+		FROM SNACK_LIST
+		WHERE SNACK_LIST_NO = #{snackListNo}
 	</select>
 
 </mapper>

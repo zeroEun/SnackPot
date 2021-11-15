@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ <mapper namespace="cmntMapper">
+	<resultMap type="Community" id="communityResultSet">
+	 	<id property="communityNo" column="COMMUNITY_NO"/>
+		<result property="content" column="CONTENT"/>
+		<result property="views" column="VIEWS"/>
+		<result property="recommend" column="RECOMMEND"/>
+		<result property="nRecommend" column="N_RECOMMEND"/>
+		<result property="writerDate" column="WRITER_DATE"/>
+		<result property="status" column="STATUS"/>
+		<result property="writer" column="WRITER"/>
+		<result property="title" column="TITLE"/>
+	</resultMap> 
+	
+<select id="selectListCount" resultType="_int">
+	SELECT COUNT(*)
+	FROM COMMUNITY
+	WHERE STATUS = 'Y'
+</select>
+
+
+<select id="selectList" resultMap="communityResultSet">
+	SELECT *
+	FROM COMMUNITY 
+	WHERE STATUS='Y'
+	ORDER BY COMMUNITY_NO DESC
+</select>
+
+
+<insert id="insertCommunity" parameterType="hashMap">
+	INSERT INTO COMMUNITY
+	VALUES (CMNT_SEQ.NEXTVAL , #{seContent} , 0 , 0, 0 , SYSDATE , 'Y' , #{memId} , #{title})
+</insert>
+
+<select id="selectDetailCmnt" parameterType="_int" resultMap="communityResultSet">
+	SELECT *
+	FROM COMMUNITY
+	WHERE COMMUNITY_NO = #{cno}
+	AND STATUS = 'Y'
+</select>
+
+<update id="updateCmnt" parameterType="hashMap">
+	UPDATE COMMUNITY
+	SET CONTENT=#{seContent} , TITLE=#{title}
+	WHERE COMMUNITY_NO= #{cno}
+</update>
+
+<update id="updateViews">
+	UPDATE COMMUNITY SET VIEWS = VIEWS +1 
+	WHERE COMMUNITY_NO = #{cno}
+</update>
+</mapper>

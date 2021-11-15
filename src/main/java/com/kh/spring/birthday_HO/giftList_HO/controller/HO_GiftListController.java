@@ -75,6 +75,7 @@ public class HO_GiftListController {
 			if(changeName != null) {
 				at.setOriginName(file.getOriginalFilename());
 				at.setChangeName(changeName);
+				at.setFilePath(savePath);
 			}
 			
 			giftListService.insertGift(gl);
@@ -109,6 +110,89 @@ public class HO_GiftListController {
 		return changeName;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="selectGiftOne.ho")
+	public HO_GiftList selectGiftOne(String giftNo) {
+		
+		HO_GiftList gl = giftListService.selectGiftOne(giftNo);
+		
+		return gl;
+		
+	}
 	
+	@RequestMapping(value="updateGift.ho")
+	public String updateGift(HttpServletRequest request, HO_GiftList gl, GiftAttachment at,
+							@RequestParam(name="updateImgFile") MultipartFile file) {
+		
+		System.out.println("file : " + file.getOriginalFilename());
+		System.out.println(file.isEmpty());
+		String savePath = request.getSession().getServletContext().getRealPath("/resources/images");
+		//수정할 때 기존 이미지를 변경하지 않고 그대로 유지하는 경우
+		if(file.isEmpty()) {
+			giftListService.updateGift(gl);
+		//수정할 때 이미지도 함께 변경하는 경우
+		}else {
+			
+			if(!file.getOriginalFilename().equals("")) {
+				
+				String changeName = saveFile(file, request);
+				
+				if(changeName != null) {
+					at.setOriginName(file.getOriginalFilename());
+					at.setChangeName(changeName);
+					at.setGiftRefNo(gl.getGiftNo());
+					at.setFilePath(savePath);
+				}
+				
+				giftListService.updateGift(gl);
+				giftListService.updateAttachment(at);
+			}
+		}
+
+		return "redirect:giftList.ho";
+	}
 	
+	@ResponseBody
+	@RequestMapping(value="deleteGift.ho")
+	public String deleteGift(HttpServletRequest request) {
+		
+		String[] delArr = request.getParameterValues("delArr");
+		/*
+		String giftNums = "";
+		for(int i=0; i<delArr.length; i++) {
+			giftNums += delArr[i] + ", ";
+		}
+		System.out.println("giftNums: "+giftNums);
+		//마지막 쉼표를 제거하기 위해 substring 활용
+		giftNums = giftNums.substring(0, giftNums.lastIndexOf(","));
+		System.out.println("수정 giftNums : " + giftNums);
+		
+		int result = giftListService.deleteGift(giftNums);
+		*/
+		int result = giftListService.deleteGift(delArr);
+		
+		return String.valueOf(result);
+		
+	}
+	/*
+	 * public ArrayList<HO_GiftList> checkedGiftList(HttpServletRequest request){
+		
+		String[] chkArr = request.getParameterValues("chkArr");
+		//System.out.println("chkArr : " + chkArr);
+		ArrayList<HO_GiftList> list = new ArrayList<HO_GiftList>();
+		HO_GiftList giftOne = new HO_GiftList();
+		
+		for(int i=0; i<chkArr.length; i++) {
+			
+			giftOne = giftListService.checkedGiftList(chkArr[i]);
+			//System.out.println("giftOne : " + giftOne);
+			
+			list.add(giftOne);
+		}
+
+		//System.out.println("gglist : " + list);
+		
+		return list;
+	}
+	 * */
 }

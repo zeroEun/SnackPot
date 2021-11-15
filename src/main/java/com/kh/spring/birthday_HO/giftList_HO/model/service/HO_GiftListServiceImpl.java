@@ -40,7 +40,6 @@ public class HO_GiftListServiceImpl implements HO_GiftListService {
 		if(result < 0) {
 			throw new CommException("선물 상품 등록 실패!");
 		}
-		
 	}
 
 	@Override
@@ -52,6 +51,44 @@ public class HO_GiftListServiceImpl implements HO_GiftListService {
 			throw new CommException("선물 사진 등록 실패!");
 		}
 		
+	}
+
+	@Override
+	public HO_GiftList selectGiftOne(String giftNo) {
+		// TODO Auto-generated method stub
+		return giftListDao.selectGiftOne(sqlSession, giftNo);
+	}
+
+	@Override
+	public void updateGift(HO_GiftList gl) {
+		
+		int result = giftListDao.updateGift(sqlSession, gl);
+		
+		if(result < 0) {
+			throw new CommException("선물 상품 수정 실패!");
+		}
+	}
+
+	@Override
+	public void updateAttachment(GiftAttachment at) {
+
+		int result = giftListDao.updateAttachment(sqlSession, at);
+		
+		if(result < 0) {
+			throw new CommException("선물 사진 수정 실패!");
+		}
+	}
+
+	@Override
+	public int deleteGift(String[] delArr) {
+		
+		int result = giftListDao.deleteGift(sqlSession, delArr);
+		
+		if(result<0) {
+			throw new CommException("선물 상품 삭제 실패");
+		}
+		
+		return result;
 	}
 
 }

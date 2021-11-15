@@ -31,4 +31,24 @@ public class HO_GiftListDao {
 		return sqlSession.insert("birthdayMapper_HO.insertAttachment", at);
 	}
 
+	public HO_GiftList selectGiftOne(SqlSessionTemplate sqlSession, String giftNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("birthdayMapper_HO.selectGiftOne", giftNo);
+	}
+
+	public int updateGift(SqlSessionTemplate sqlSession, HO_GiftList gl) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("birthdayMapper_HO.updateGift", gl);
+	}
+
+	public int updateAttachment(SqlSessionTemplate sqlSession, GiftAttachment at) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("birthdayMapper_HO.updateAttachment", at);
+	}
+
+	public int deleteGift(SqlSessionTemplate sqlSession, String[] delArr) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("birthdayMapper_HO.deleteGift", delArr);
+	}
+
 }

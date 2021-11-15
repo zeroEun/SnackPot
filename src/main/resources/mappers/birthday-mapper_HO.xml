@@ -95,4 +95,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO GIFT_ATTACHMENT VALUES
 		(GIFT_ATTACHMENT_SEQ.NEXTVAL, #{originName}, #{changeName}, #{filePath}, 'BGIFT'||B_GIFT_SEQ.CURRVAL)
 	</insert>
+	
+	<!-- 수정하기용 선물 객체 정보 가져오기 -->
+	<select id="selectGiftOne" parameterType="String" resultMap="giftListResultSet">
+		SELECT A.GIFT_NO, A.GIFT_BRAND, A.GIFT_NAME, A.GIFT_PRICE, B.CHANGE_NAME
+		FROM BIRTHDAY_GIFT A
+		JOIN GIFT_ATTACHMENT B ON A.GIFT_NO = B.GIFT_REF_NO
+		WHERE GIFT_STATUS='Y'
+		AND GIFT_NO=#{giftNo}
+	</select>
+	
+	<!-- 선물 상품 정보 수정 -->
+	<update id="updateGift" parameterType="HO_GiftList">
+		UPDATE BIRTHDAY_GIFT SET
+		GIFT_BRAND=#{giftBrand}, GIFT_NAME=#{giftName}, GIFT_PRICE=#{giftPrice}
+		WHERE GIFT_NO=#{giftNo} AND GIFT_STATUS='Y'
+	</update>
+	
+	<!-- 선물 상품 사진 수정 -->
+	<update id="updateAttachment" parameterType="GiftAttachment">
+		UPDATE GIFT_ATTACHMENT SET
+		ORIGIN_NAME=#{originName}, CHANGE_NAME=#{changeName}, FILE_PATH=#{filePath}
+		WHERE GIFT_REF_NO=#{giftRefNo}
+	</update>
+	
+	<!-- 선물 상품 삭제(상태 'N'으로 변경) -->
+	<update id="deleteGift" parameterType="map">
+		UPDATE BIRTHDAY_GIFT SET
+		GIFT_STATUS='N'
+		WHERE GIFT_NO IN
+		<foreach collection="array" item="delArr" open="(" close=")" separator=",">
+			#{delArr}
+		</foreach>
+	</update>
 </mapper>

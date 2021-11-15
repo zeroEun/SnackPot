@@ -98,12 +98,14 @@ ul>h2{
             <a class="dropdown nav-menu" data-toggle="dropdown">스낵팟</a>
             <div class="dropdown-menu"> 
                 <a class="dropdown-item" href="subsForm.sn">간식 구독하기</a> 
+                <c:if test="${ !empty sessionScope.loginUser}">
                 <a class="dropdown-item" href="list.pro?dtc=1">간식 담기</a> 
                 <a class="dropdown-item" href="wishList">간식 조회</a> 
+                </c:if>
                 <!--구독 회사 담당자-->
                 <c:if test="${ !empty sessionScope.loginUser && loginUser.admin == 'Y' }">
                 <a class="dropdown-item" href="subsInfo.sn">구독 정보</a> 
-                <a class="dropdown-item" href="#">리스트 조회</a>
+                <a class="dropdown-item" href="comSnackList.sn">리스트 조회</a>
                 <a class="dropdown-item" href="#">주문내역</a>
                 </c:if>
             </div>
@@ -113,14 +115,16 @@ ul>h2{
           <a class="dropdown nav-menu" data-toggle="dropdown">생일팟</a> 
             <div class="dropdown-menu"> 
                 <a class="dropdown-item" href="subscribeForm.birth">선물 구독하기</a> 
+                <c:if test="${ !empty sessionScope.loginUser && loginUser.admin == 'Y' }">
                 <a class="dropdown-item" href="#">리스트 조회</a> 
                 <a class="dropdown-item" href="subscribeInfo.birth">구독 정보</a> 
                 <a class="dropdown-item" href="sendingcursts.birth">발송 및 진행</a>
                 <a class="dropdown-item" href="#">주문내역</a>
+                </c:if>
             </div>
         </li>
            <!--소통 , 랭킹 ,문의-->
-           <li class="nav-item "><a class="nav-link nav-menu" href="#">소통팟</a></li>
+           <li class="nav-item "><a class="nav-link nav-menu" href="list.cm">소통팟</a></li>
            <li class="nav-item "><a class="nav-link nav-menu" href="#">랭킹팟</a></li>
            <li class="nav-item "><a class="nav-link nav-menu" href="#">문의</a></li>
     </ul>  

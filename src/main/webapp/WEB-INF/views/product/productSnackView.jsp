@@ -247,7 +247,7 @@ text-align: center;
   <div class="row row-cols-xl-5">
    <c:forEach items="${list}" var="p">
       <div class="col">
-        <div class="card">
+        <div class="card border-0">
           <img class="card-img-top" src="${ pageContext.servletContext.contextPath }/resources/images/${p.changeName}">
           <div class="card-body">
             <P class="card-title">${p.snackName }</P>

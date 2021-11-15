@@ -207,7 +207,12 @@
             
                         </div>
                         
-
+                        <hr>
+                        
+						<div>
+							<p>※ 간식 리스트가 발송 된 후에는 수정된 내용이 반영되지 않습니다.</p>
+						</div>
+						
                         <button type="submit" class="btn btn-warning mr-2 float-right" id="updateBtn">내용 수정하기</button>
 						<button type="button" class="btn btn-secondary mr-2 float-right" id="cancelBtn">구독 취소하기</button>
 

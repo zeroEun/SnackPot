@@ -1,5 +1,7 @@
 package com.kh.spring.snack.snackList.model.vo;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,14 +13,19 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SnackList {
+public class ComListInfo {
 	
-	private int snackListNo;
+	private int subsNo;
 	private String comCode;
 	private String comName;
-	private String transStatus;
+	private String listTransDate;
+	private String orderDeadline;
+	private String deliveryDate;
+	private Date settleDate;
+	private String status;
 	private int budget;
 	private int totalPrice;
-	private String transDate;
-	private String content;
+	private int listNo;
+	private int orderNo;
+	
 }

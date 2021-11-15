@@ -23,5 +23,7 @@ public interface SnackSubsService {
 
 	void cancelSnackSubs(int subsNo);
 
+	int checkSubsDup(String comCode);
+
 
 }

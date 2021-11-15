@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.spring.product.model.vo.Product;
-import com.kh.spring.snack.snackList.model.vo.ListSchedule;
+import com.kh.spring.snack.snackList.model.vo.ComListInfo;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackList.model.vo.SnackList;
@@ -12,7 +12,7 @@ import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
 public interface HoSnackListService {
 
-	ArrayList<ListSchedule> selectSubsInfo(HashMap map);
+	ArrayList<ComListInfo> selectSubsInfo(HashMap map);
 
 	int listCheck(String comCode);
 
@@ -42,12 +42,12 @@ public interface HoSnackListService {
 
 	int selectSnackMaxNum();
 
-	void insertOrder(ListSchedule schedule);
-
-	void insertOrderDetail(int listNo);
-
-	void updateTransStatus(int listNo);
+	void insertOrder(ComListInfo schedule);
 
 	ArrayList<SnackList> selectSendingList(HashMap map);
+
+	SnackList selectSnackList(int snackListNo);
+
+	int selectOrderNo();
 
 }

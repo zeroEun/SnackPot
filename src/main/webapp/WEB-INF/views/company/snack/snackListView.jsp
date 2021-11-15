@@ -70,36 +70,34 @@
 </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 
-    <section class="list-trans">
+
+    <section class="snacklist-view">
     
         <div class="container-fluid">
             <div class="row flex-nowrap">
 
-				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
-				
-                <div class="content col-8">
-                    <h5>간식 리스트 발송</h5>
+                <div class="content col-10">
+                    <h5>간식 리스트 조회</h5>
                     <hr>
 
 					<!--  화면에 항상 있어야 할 정보 
 						    회사명, 예산, 주문 마감일, 리스트 번호      
 					 -->
 					 
-					<form action="createList.sn" method="post" id="submitForm">
-						<input type="hidden" name="comCode" value="${i.comCode}">
-						<input type="hidden" name="listNo" value="${i.listNo}">
-						<input type="hidden" name="defaultAmount" id="defaultAmount">
+					<form action="" method="post" id="submitForm">
+						<input type="hidden" name="comCode" value="${o.comCode}">
+						<input type="hidden" name="orderNo" value="${o.orderNo}">
 					</form> 
 					
-                    <span class="company-name">${i.comName}</span>
+                    <span class="company-name">${o.comName}</span>
                     <br><br>
-                    <span class="">예산 : ${i.budget}원</span>&nbsp;&nbsp;&nbsp;
-                    <span class="">총 금액 : ${i.totalPrice}원</span>&nbsp;&nbsp;&nbsp;
-                 	<span class="">주문 마감일 : ${i.orderDeadline}</span>
+                    <span class="">예산 : ${o.budget}원</span>&nbsp;&nbsp;&nbsp;
+                    <span class="" id="totalPrice"></span>&nbsp;&nbsp;&nbsp;
+                 	<span class="">주문 마감일 : ${o.orderDeadline}</span>
 
                     <button type="button" class="btn btn-primary">위시리스트 조회</button>
-                  	<button type="button" class="btn btn-primary" id="createListBtn">리스트 생성</button>
                    
                     <hr>
                  
@@ -108,9 +106,8 @@
 						<!-- 검색 부분 -->
                         <div class="search-sub ">
                             <form action="searchSnack.sn" method="post">    
-                            	<input type="hidden" name="comCode" value="${i.comCode}">
-                            	<input type="hidden" name="listNo" value="${i.listNo}">
-                            	
+                            	<input type="hidden" name="comCode" value="${o.comCode}">
+                            	<input type="hidden" name="orderNo" value="${o.orderNo}">
 	                            <select class="search-select category" name="category" id="category">
 	                                <option value="0">카테고리</option>
 	                                <option value="1">스낵</option>
@@ -150,9 +147,9 @@
                             	<!-- 추가 버튼 클릭 시 회사 코드, 리스트번호, 해당 스낵 번호, 수량 넘기기 -->
                             	<c:forEach items="${searchList}" var="list">
                             		
-                            		<form action="addDList.sn" method="post" id="searchSubmitForm${list.snackNo}">
-                            			<input type="hidden" name="comCode" value="${i.comCode}">
-										<input type="hidden" name="snackListNo" value="${i.listNo}">
+                            		<form action="" method="post" id="searchSubmitForm${list.snackNo}">
+                            			<input type="hidden" name="comCode" value="${o.comCode}">
+										<input type="hidden" name="orderNo" value="${o.orderNo}">
 										<input type="hidden" name="snackNo" value="${list.snackNo}">
 										<input type="hidden" name="amount" id="addDListAmount${list.snackNo}">
                             		</form>
@@ -183,9 +180,9 @@
                     <hr>
                     
                     <!-- 간식 리스트 부분 -->
-                    <form action="deleteSnackDNo.sn" method="post" id="dListForm">
-	                    <input type="hidden" name="comCode" value="${i.comCode}">
-	                    <input type="hidden" name="listNo" value="${i.listNo}">
+                    <form action="" method="post" id="dListForm">
+	                    <input type="hidden" name="comCode" value="${o.comCode}">
+	                   <input type="hidden" name="orderNo" value="${o.orderNo}">
 	                    
 	                    <table class="table table-bordered list-table">
 	                        <thead class="thead-light">
@@ -208,7 +205,7 @@
 	                            	<tr>
 		                            	<td>
 		                                    <div class="form-check form-check-inline" style='zoom:1.5;'>
-		                                        <input class="form-check-input" type="checkbox" name="snackDNoCheck" id="inlineCheckbox${dList.snackDNo}" value="${dList.snackDNo}">
+		                                        <input class="form-check-input" type="checkbox" name="snackDNoCheck" id="inlineCheckbox${dList.snackNo}" value="${dList.snackNo}">
 		                                    </div>
 		                                </td>
 		                            	<td>${dList.categoryName}</td>
@@ -216,7 +213,7 @@
 		                                <td></td>
 		                                <td>${dList.snackName}</td>
 		                                <td>${dList.releasePrice}원</td>
-		                                <td><input type="number" class="amount" id="${dList.snackDNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>
+		                                <td><input type="number" class="amount" id="${dList.snackNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>
 		                                <td>${dList.stock}</td>
 		                                <td>${dList.releasePrice * dList.amount}</td>
 	                                </tr>
@@ -226,25 +223,22 @@
 	                    </table>
                     </form>
                     
-                    <form action="updateSnackAmount.sn" method="post" id="updateSnackAmount">
-		             	<input type="hidden" name="comCode" value="${i.comCode}">
-		                <input type="hidden" name="listNo" value="${i.listNo}">
+                    <form action="" method="post" id="updateSnackAmount">
+		             	<input type="hidden" name="comCode" value="${o.comCode}">
+		                <input type="hidden" name="orderNo" value="${o.orderNo}">
 		                <input type="hidden" name="amount" id="snackAmount">
-		                <input type="hidden" name="snackDNo" id="snackDNo">
+		                <input type="hidden" name="snackNo" id="snackNo">
 		            </form>
 		            
-		             <form action="sendSnackList.sn" method="post" id="sendSnackList">
-		             	<input type="hidden" name="comCode" value="${i.comCode}">
-		                <input type="hidden" name="listNo" value="${i.listNo}">
-		                <input type="hidden" name="orderDeadline" value="${i.orderDeadline}">
-		                <input type="hidden" name="budget" value="${i.budget}">
-		                <input type="hidden" name="totalPrice" value="${i.totalPrice}">
+		             <form action="" method="post" id="sendSnackList">
+		             	<input type="hidden" name="comCode" value="${o.comCode}">
+		                <input type="hidden" name="orderNo" value="${o.orderNo}">
 		            </form>
 		            
 		            
                     <!-- list end-->
 
-                    <button type="button" class="btn btn-primary" id="sendBtn">리스트 발송</button>
+                    <button type="button" class="btn btn-primary" id="orderBtn">주문 하기</button>
                     <button type="button" class="btn btn-primary" id="deleteBtn" >선택 항목 삭제</button>
 
                 </div>
@@ -257,6 +251,8 @@
 <script type="text/javascript">
 
 	$(function(){
+		
+		selectTotalPrice();
 		
 		<%-- select option 값 선택시 이벤트 : on change  --%>
 		$('#category').on('change', function(){
@@ -288,18 +284,6 @@
 
 		})
 		
-		<%-- 리스트 생성 버튼 클릭 시--%>
-		$('#createListBtn').on('click', function(){
-			
-			var result = confirm("이전 리스트가 있을 경우 삭제됩니다. 리스트를 생성하시겠습니까?");
-			if(result){
-				
-				var defaultAmount = prompt("기본 수량을 입력하세요.");
-				$('#defaultAmount').attr('value', Number(defaultAmount));
-				$('#submitForm').submit();
-			}
-			
-		})
 		
 		<%-- 선택항목 삭제 버튼 클릭 시--%>
 		$('#deleteBtn').on('click', function(){
@@ -327,7 +311,7 @@
 		<%-- 추가 버튼 클릭 시--%>
 		$('.addBtn').on('click', function(){
 			
-			var listNo = ${i.listNo};
+			var listNo = ${o.orderNo};
 			var snackNo = $(this).val();
 			var amount = $('#' + snackNo).val();
 			
@@ -384,6 +368,23 @@
 			
 		})
 	});
+	
+	function selectTotalPrice(){
+		
+		$.ajax({
+			
+			url:'totalPrice.sn',
+			data:{orderNo : ${o.orderNo}},
+			success: function(totalPrice){
+				
+				$('#totalPrice').text('총 금액 : ' + totalPrice + '원');
+				
+			},error:function(){
+				console.log("댓글 작성 ajax 통신 실패");
+			}
+		});
+		
+	}
 
 </script>
 

@@ -15,7 +15,7 @@
     
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+        
 <style>
 
         /*본문 부분*/
@@ -27,19 +27,22 @@
             overflow-y: auto;
         }
 
-        .search{
+        .company{
+            background-color: seashell;
             margin: 15px 0px;
+            padding: 15px;
         }
 
-</style>
 
+</style>
 </head>
 <body>
 
-    <section class="snack-list">
+    <section class="snack-d-list">
     
         <div class="container-fluid">
             <div class="row flex-nowrap">
+
 
                 <!-- Sidebar -->
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
@@ -48,61 +51,54 @@
                     <h5>간식 리스트 발송 내역</h5>
                     <hr>
 
-                    <div class="search">
-                        <select class="search-select" id="sel1">
-                            <option>카테고리</option>
-                            <option>리스트 번호</option>
-                            <option>회사명</option>
-                            <option>발송 내역</option>
-                        </select>
+                    <div class="company">
+                       
+                        <div class="company-name">카카오</div>
 
-                        <input type="text" class="" placeholder="검색어 입력">
+                        <span class="">리스트 발송일: ${sList.transDate}</span>
+                        <span class="">예산: ${sList.budget} </span>
+                        <span class="">총 금액: ${sList.totalPrice}</span>
 
-                        <input type="date" >
-                        <input type="date" >
 
-                        <button class="" type="button">검색</button>
                     </div>
 
-                    <table class="table table-bordered" id="snackList">
+                    <table class="table table-bordered ">
                         <thead class="thead-light">
                             <tr>
-                            	<th>리스트 번호</th>
-                                <th>회사명</th>
-                                <th>리스트 발송일</th>
-                                <th>발송 내역</th>
+                                <th>이미지</th>
+                                <th>카테고리</th>
+                                <th>상세 카테고리</th>
+                                <th>품목명</th>
+                                <th>공급가</th>
+                                <th>수량</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                        	<c:forEach items="${sendingList}" var="s">
-                        	
+                        	<c:forEach items="${dList}" var="d">
                         		<tr>
-                        			<td>${s.snackListNo}</td>
-	                                <td>${s.comName}</td>
-	                                <td>${s.transDate}</td>
-	                                <td>${s.content}외...</td>
-                            	</tr>
-                        	
+	                                <td></td>
+	                                <td>${d.categoryName}</td>
+	                                <td>${d.subCategoryName}</td>
+	                                <td>${d.snackName}</td>
+	                                <td>${d.releasePrice}</td>
+	                                <td>${d.amount}</td>
+                           		</tr>
                         	</c:forEach>
+
                         </tbody>
 
                     </table>
+
+                    <button type="button" class="btn btn-primary" onclick="location.href='sendingList.sn'">목록으로</button>
 
                 </div>
             </div>
         </div>
     
     </section>
-    
-<script>
-	$(function(){
-		$("#snackList tbody tr").click(function(){
-			location.href="sendingDetail.sn?snackListNo=" + $(this).children().eq(0).text();
-		});
-	});
 
-</script>
+
 
 </body>
 </html>

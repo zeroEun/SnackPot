@@ -32,12 +32,22 @@
 		
 		<!-- snack -->
 		<typeAlias type="com.kh.spring.snack.snackSubs.model.vo.SnackSubs" alias="SnackSubs"/>
-		<typeAlias type="com.kh.spring.snack.snackList.model.vo.ListSchedule" alias="ListSchedule"/>
+		<typeAlias type="com.kh.spring.snack.snackList.model.vo.SnackList" alias="SnackList"/>
+		<typeAlias type="com.kh.spring.snack.snackList.model.vo.SnackDList" alias="SnackDList"/>
+		<typeAlias type="com.kh.spring.snack.snackList.model.vo.SearchSnack" alias="SearchSnack"/>
+		<typeAlias type="com.kh.spring.snack.snackOrder.model.vo.Orders" alias="Orders"/>
+		<typeAlias type="com.kh.spring.snack.snackOrder.model.vo.OrderDetail" alias="OrderDetail"/>
+		<typeAlias type="com.kh.spring.snack.snackList.model.vo.ComListInfo" alias="ComListInfo"/>
 		<typeAlias type="com.kh.spring.snackpotEmp.model.vo.SnackpotEmp" alias="SnackpotEmp"/>
 		
 		<!-- qna -->
 		<typeAlias type="com.kh.spring.qna.model.vo.qna" alias="Qna"/>
 		<typeAlias type="com.kh.spring.qna.model.vo.qnaAttachment" alias="QnaAttachment"/>
+		
+		<!-- community -->
+		<typeAlias type="com.kh.spring.community.model.vo.Community" alias="Community"/>
+		
+		
 	</typeAliases>
 
 	<mappers>
@@ -52,6 +62,8 @@
 		<mapper resource="/mappers/snackList-mapper.xml"/>
 		<mapper resource="/mappers/snackpotEmp-mapper.xml"/>
 		<mapper resource="/mappers/qna-mapper.xml"/>
+		<mapper resource="/mappers/snackOrder-mapper.xml"/>
+		<mapper resource="/mappers/cmnt-mapper.xml"/>
 	</mappers>
 
 

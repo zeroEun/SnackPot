@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="invenMapper">
 
-<resultMap id="releaseResultSet" type="Arrival">
+<resultMap id="arrivalResultSet" type="Arrival">
 		<id column="arrival_no" property="arrivalNo"/>
 		<result column="amount" property="amount"/>
 		<result column="unit" property="unit"/>
@@ -12,6 +12,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="arrival_date" property="arrivalDate"/>
 		<result column="snack_no" property="snackNo"/>
 	</resultMap>
+	
+	
+<resultMap id="releaseResultSet" type="Release">
+		<id column="release_no" property="releaseNo"/>
+		<result column="amount" property="amount"/>
+		<result column="unit" property="unit"/>
+		<result column="remark" property="remark"/>
+		<result column="release_date" property="releaseDate"/>
+		<result column="snack_no" property="snackNo"/>
+	</resultMap>
+	
 	
 
 <insert id="insertSnack"  parameterType="Product">
@@ -40,7 +51,7 @@ ${snackNo}
 
 INSERT INTO ARRIVAL 
 VALUES ( 
-RELEASE_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}
+ARRIVAL_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}
 )
 
 </insert>
@@ -55,12 +66,42 @@ RELEASE_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}
 
 </select>
 
-	<select id="todayArrivalList" resultMap="releaseResultSet">
+	<select id="todayArrivalList" resultMap="arrivalResultSet">
 
 	SELECT * 
 	FROM ARRIVAL
 	WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
 	ORDER BY ARRIVAL_NO DESC
+	
+	</select>
+	
+	
+	<insert id="releaseInsert"  parameterType="Release">
+
+
+INSERT INTO RELEASE
+VALUES ( 
+RELEASE_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}, '1'
+)
+
+</insert>
+
+<select id="todayReleaseCount" resultType="_int">
+
+	
+		SELECT COUNT(*)
+		FROM RELEASE
+		WHERE TO_CHAR(RELEASE_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+		
+
+</select>
+
+	<select id="todayReleaseList" resultMap="releaseResultSet">
+
+	SELECT * 
+	FROM RELEASE
+	WHERE TO_CHAR(RELEASE_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+	ORDER BY RELEASE_NO DESC
 	
 	</select>
 

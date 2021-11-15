@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,7 +71,7 @@
     }
 
     .btn{
-        width: 50px;
+        width: 100px;
         background-color: rgb(245, 208, 66);
         color: rgb(10, 23, 78);
     }
@@ -97,36 +98,36 @@
                     <h2>출고등록</h2>
                 </div>
                 <div class="close-area">X</div>
-                <form  id="releaseEnroll" action="releaseInsert.im" method="post">
+                <form id="arrivalEnroll" action="releaseInsert.im" method="post">
                 <div class="content">
                     <p><label class="inputLabel">제품코드</label> <input type="number" name="snackNo"></p>
                     <p><label class="inputLabel">수량</label> <input type="number" name="amount"></p>
                     <p><label class="inputLabel">비고</label> <input type="text" name="remark"></p>
                     <br><br>
-                    <input type="submit" value="등록하기" class="btn">
+                      <input type="submit" value="등록하기" class="btn">
                 </div>
             </form>
             </div>
         </div>
 	
-    <div id="arrivalWrap">
+    <div id="releaseWrap">
 
         <h3>출고목록</h3>
 
-        <input type="date">
+        <input type="date" id='currentDate'>
         <br>
         <form name="search">
         <select name="searchType">
             <option value="1">상품코드</option>
             <option value="2">상품명</option>
-            <option value="3">입고번호</option>
+            <option value="3">출고번호</option>
         </select>
         <input type="text" name="searchInput">
         <input type="submit" name="searchBtn">
         </form>
         <br>
         <br>
-        <table id="arrivalList" border="1">
+        <table id="releaseList" border="1">
 
 
             <tr>
@@ -138,35 +139,86 @@
                 <th>단위</th>   
                 <th>비고</th>   
             </tr>
+            
+            <c:forEach items="${ list }" var="r">
+	                    <tr>
+	                        <td>${ r.releaseNo }</td>
+	                        <td>${ r.snackNo }</td>
+	                        <td>스낵이름</td>
+	                        <td>${ r.amount }</td>
+	                         <td>재고량</td>
+	                         <td>${ r.unit} </td>
+	                        <td>${ r.remark }</td>
+	                    </tr>
+                    </c:forEach>
 
         </table>
         
-        <button id="addBtn">출고 등록</button>
+  <div id="pagingArea">
+                <ul class="pagination">
+                	<c:choose>
+                		<c:when test="${ pi.currentPage ne 1 }">
+                			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+                		</c:when>
+                		<c:otherwise>
+                			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+                		</c:otherwise>
+                	</c:choose>
+                	
+                    <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+                    	<c:choose>
+	                		<c:when test="${ pi.currentPage ne p }">
+                    			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">${ p }</a></li>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
+	                		</c:otherwise>
+	                	</c:choose>
+                    </c:forEach>
+                    
+                    
+                    <c:choose>
+                		<c:when test="${ pi.currentPage ne pi.maxPage }">
+                			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                		</c:when>
+                		<c:otherwise>
+                			<li class="page-item disabled"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                		</c:otherwise>
+                	</c:choose>
+                </ul>
+            </div>
+             <button id="addBtn">출고 등록</button>
 
     </div>
+    
+    
       </div>
+      
+        
         </div>
 
         <script>
+       
+    
+                const modal = document.getElementById("modal")
+    const btnModal = document.getElementById("addBtn")
+    btnModal.addEventListener("click", e => {
+        modal.style.display = "flex"
+    })
+    
+    const closeBtn = modal.querySelector(".close-area")
+    closeBtn.addEventListener("click", e => {
+        modal.style.display = "none"
+    })
 
-        
-        const modal = document.getElementById("modal")
-const btnModal = document.getElementById("addBtn")
-btnModal.addEventListener("click", e => {
-modal.style.display = "flex"
+    window.addEventListener("keyup", e => {
+    if(modal.style.display === "flex" && e.key === "Escape") {
+        modal.style.display = "none"
+    }
 })
 
-const closeBtn = modal.querySelector(".close-area")
-closeBtn.addEventListener("click", e => {
-modal.style.display = "none"
-})
-
-window.addEventListener("keyup", e => {
-if(modal.style.display === "flex" && e.key === "Escape") {
-modal.style.display = "none"
-}
-})
-</script>
+ document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);;
+        </script>
 </body>
 
 

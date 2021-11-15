@@ -114,7 +114,7 @@
 
         <h3>입고목록</h3>
 
-        <input type="date">
+        <input type="date" id='currentDate'>
         <br>
         <form name="search">
         <select name="searchType">
@@ -216,6 +216,8 @@
         modal.style.display = "none"
     }
 })
+
+ document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);;
         </script>
 </body>
 

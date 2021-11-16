@@ -53,5 +53,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET SEMP_STATUS='N'
 		WHERE SEMP_NUM=#{sempNum}
 	</update>
+	
+	<select id="searchSempName" parameterType="string" resultType="string">
+		SELECT SEMP_NAME
+		FROM SNACKPOT_EMP
+		WHERE SEMP_NUM=#{sempNum} 	
+	</select>
 
 </mapper>

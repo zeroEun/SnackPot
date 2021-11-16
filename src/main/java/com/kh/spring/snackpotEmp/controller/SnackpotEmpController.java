@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.kh.spring.company.model.vo.Company;
 import com.kh.spring.snackpotEmp.model.service.SnackpotEmpService;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
@@ -24,7 +25,11 @@ public class SnackpotEmpController {
 	@Autowired
 	private SnackpotEmpService ses;
 	
+	@Autowired
+	private Company co;
+	
 	private String sempNum;
+	private String sempComName;
 	
 	@RequestMapping("login.sn")
 	public String modifyAdmin() {
@@ -187,5 +192,75 @@ public class SnackpotEmpController {
 		model.addAttribute("list", empComList);
 		
 		return "headoffice/snackpotEmp/empCompanyList";
+	}
+	
+	@ResponseBody
+	@RequestMapping("modifyCom.sn")
+	public String modifyCom(String sempNum, String sempComName) {
+		
+		this.sempNum = sempNum;
+		this.sempComName = sempComName;
+		
+		String result = "ok";
+		return result;
+	}
+	
+	@RequestMapping("modifyCompany.sn")
+	public String modifyCompany(Model model) {
+		
+		//구독이 활성화된 모든 회사 
+		ArrayList <Company> list = ses.selectCompanyList();
+		SnackpotEmp se = ses.selectEmp(sempNum);
+		ArrayList <Company> comList = new ArrayList<Company>();
+		
+		//사원번호를 이름으로 바꿔서 넘겨주기
+		String[] sempNum = new String[list.size()];
+		String num = "";
+		String sempName = "";
+		
+		for(int i=0; i<list.size(); i++) {
+			
+			Company co = list.get(i);
+			
+			sempNum[i] = co.getSempNum();
+			
+			num = sempNum[i];
+			
+			sempName = ses.searchSempName(num);
+			
+			co.setSempNum(sempName);
+			
+			comList.add(co);
+		}
+		
+		model.addAttribute("list", list);
+		model.addAttribute("semp", se);
+		model.addAttribute("sempComName", sempComName);
+		
+		return "headoffice/snackpotEmp/modifyCompany";
+	}
+	
+	@ResponseBody
+	@RequestMapping("updateCompany.sn")
+	public String updateCompany(String comName) {
+		
+		String comNameYn = "";
+		
+		//회사명 찾기 (여러 개일 경우 자르기)
+		if(comName.contains(",")) {
+			
+			//"," 구분자로 회사명을 새로운 배열에 담기
+			String name[] = comName.split(", ");
+			for(int i=0; i<name.length; i++) {
+				//회사가 존재하는지 서치 
+//				comNameYn = ses.searchcomName(name[i]);
+				
+				
+			}
+			
+		}
+		
+		
+		return null;
 	}
 }

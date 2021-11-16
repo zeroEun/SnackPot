@@ -20,4 +20,21 @@ public class Company {
 	private String comName;
 	private String comAddress;
 	private String comAdmin;
+	private String sempNum;
+	private String snackStatus;
+	private String birthStatus;
+	
+	public Company(String comCode, String comName, String comAddress, String comAdmin, String sempNum) {
+		super();
+		this.comCode = comCode;
+		this.comName = comName;
+		this.comAddress = comAddress;
+		this.comAdmin = comAdmin;
+		this.sempNum = sempNum;
+	}
+	
+	
+
 }
+
+

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring.company.model.vo.Company;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
 @Repository
@@ -53,6 +54,16 @@ public class SnackpotEmpDao {
 	public String searchComCode(SqlSessionTemplate sqlSession, String comCode) {
 		
 		return sqlSession.selectOne("companyMapper.searchComCode", comCode);
+	}
+
+	public ArrayList<Company> selectCompanyList(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("companyMapper.selectCompanyList");
+	}
+
+	public String searchSempName(SqlSessionTemplate sqlSession, String sempNum) {
+
+		return sqlSession.selectOne("snackpotEmpMapper.searchSempName", sempNum);
 	}
 
 }

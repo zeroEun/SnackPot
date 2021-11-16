@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kh.spring.common.exception.CommException;
+import com.kh.spring.company.model.vo.Company;
 import com.kh.spring.snackpotEmp.model.dao.SnackpotEmpDao;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
@@ -90,6 +91,18 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 	public String searchComCode(String string) {
 		
 		return sed.searchComCode(sqlSession, string);
+	}
+
+	@Override
+	public ArrayList<Company> selectCompanyList() {
+		
+		return sed.selectCompanyList(sqlSession);
+	}
+
+	@Override
+	public String searchSempName(String num) {
+		
+		return sed.searchSempName(sqlSession, num);
 	}
 
 }

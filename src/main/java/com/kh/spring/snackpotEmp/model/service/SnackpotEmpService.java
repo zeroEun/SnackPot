@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.kh.spring.company.model.vo.Company;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
 public interface SnackpotEmpService {
@@ -23,5 +24,9 @@ public interface SnackpotEmpService {
 	int deleteEmp(String sempNum);
 
 	String searchComCode(String string);
+
+	ArrayList<Company> selectCompanyList();
+
+	String searchSempName(String num);
 
 }

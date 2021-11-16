@@ -19,7 +19,7 @@ public class Community {
 	private String content;
 	private int views;
 	private int recommend;
-	private int nRecommend;
+	private int n_recommend;
 	private Date writerDate;
 	private String status;
 	private String writer;

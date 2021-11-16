@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.spring.community.model.dao.CommunityDao;
 import com.kh.spring.community.model.vo.Community;
+import com.kh.spring.community.model.vo.Reply;
 import com.kh.spring.qna.model.vo.PageInfo;
 
 @Service
@@ -58,6 +59,27 @@ public class CommunityServiceImpl implements CommunityService {
 		return cmntDao.updateViews(sqlSession , cno);
 		
 	}
+
+	@Override
+	public void updateRecommend(String cno) {
+		
+		cmntDao.updateRecommend(sqlSession , cno);
+	}
+
+	@Override
+	public void updateNrecommend(String cno) {
+		
+		cmntDao.updateNrecommend(sqlSession , cno);
+		
+	}
+
+	/*댓글===========================================================*/
+//	@Override
+//	public ArrayList<Reply> selectReplyList(String cmntNo) {
+//		
+//		return cmntDao.selectReplyList(sqlSession , cmntNo);
+//		
+//	}
 
 
 

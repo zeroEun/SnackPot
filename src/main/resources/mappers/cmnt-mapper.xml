@@ -8,12 +8,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="content" column="CONTENT"/>
 		<result property="views" column="VIEWS"/>
 		<result property="recommend" column="RECOMMEND"/>
-		<result property="nRecommend" column="N_RECOMMEND"/>
+		<result property="n_recommend" column="N_RECOMMEND"/>
 		<result property="writerDate" column="WRITER_DATE"/>
 		<result property="status" column="STATUS"/>
 		<result property="writer" column="WRITER"/>
 		<result property="title" column="TITLE"/>
 	</resultMap> 
+
+<!-- <resultMap type="Reply" id="communityResultSet">
+	 	<id property="reNo" column="RE_NO"/>
+		<result property="communityNo" column="COMMUNITY_NO"/>
+		<result property="reGroup" column="RE_GROUP"/>
+		<result property="reGroups" column="RE_GROUPS"/>
+		<result property="reGroupDept" column="RE_GROUPDEPT"/>
+		<result property="reWriter" column="RE_WRITER"/>
+		<result property="reContent" column="RE_CONTENT"/>
+		<result property="reDate" column="RE_DATE"/>
+	</resultMap> -->	
 	
 <select id="selectListCount" resultType="_int">
 	SELECT COUNT(*)
@@ -32,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <insert id="insertCommunity" parameterType="hashMap">
 	INSERT INTO COMMUNITY
-	VALUES (CMNT_SEQ.NEXTVAL , #{seContent} , 0 , 0, 0 , SYSDATE , 'Y' , #{memId} , #{title})
+	VALUES (CMNT_SEQ.NEXTVAL , #{seContent} , 0 , 0 , 0 , SYSDATE , 'Y' , #{memId} , #{title})
 </insert>
 
 <select id="selectDetailCmnt" parameterType="_int" resultMap="communityResultSet">
@@ -52,4 +63,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	UPDATE COMMUNITY SET VIEWS = VIEWS +1 
 	WHERE COMMUNITY_NO = #{cno}
 </update>
+
+<update id="updateRecommend">
+	UPDATE COMMUNITY SET RECOMMEND = RECOMMEND +1 
+	WHERE COMMUNITY_NO = #{cno}
+</update>
+
+<update id="updateNrecommend">
+	UPDATE COMMUNITY SET N_RECOMMEND = N_RECOMMEND +1 
+	WHERE COMMUNITY_NO = #{cno}
+</update>
+
+<!-- 댓글 
+<select id="selectReplyList" parameterType="_int" resultMap="communityResultSet">
+	
+
+</select>-->
 </mapper>

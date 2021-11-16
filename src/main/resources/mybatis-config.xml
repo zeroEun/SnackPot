@@ -11,6 +11,7 @@
 		<typeAlias type="com.kh.spring.birthday.subscribe.model.vo.Birthday" alias="Birthday"/>
 		<typeAlias type="com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus" alias="SendingStatus"/>
 		<typeAlias type="com.kh.spring.birthday.sendList.model.vo.SendList" alias="SendList"/>
+		<typeAlias type="com.kh.spring.birthday.giftList.model.vo.GiftList" alias="GiftList"/>
 		<typeAlias type="com.kh.spring.birthday_HO.sendingStatus_HO.model.vo.HO_SendingStatus" alias="HO_SendingStatus"/>
 		<typeAlias type="com.kh.spring.birthday_HO.sendList_HO.model.vo.HO_SendList" alias="HO_SendList"/>
 		<typeAlias type="com.kh.spring.birthday_HO.giftList_HO.model.vo.HO_GiftList" alias="HO_GiftList"/>

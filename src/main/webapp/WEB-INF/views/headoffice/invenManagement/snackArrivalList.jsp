@@ -111,6 +111,7 @@
         </div>
 	
     <div id="arrivalWrap">
+    
 
         <h3>입고목록</h3>
 

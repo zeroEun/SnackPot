@@ -174,4 +174,11 @@ public class InvenManagementController {
 	
 	
 
+	private String arrivalDate() {
+		
+		
+		return "";
+	}
+	
+	
 }

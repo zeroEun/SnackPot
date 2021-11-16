@@ -71,6 +71,16 @@
 #insertGiftImgDiv, #updateGiftImgDiv{
 	cursor: pointer;
 }
+#giftCategory a:link, #giftCategory a:visited{
+	text-decoration: none;
+	color: black;
+}
+#giftCategory a{
+	cursor: pointer;
+}
+.updateGiftBtn{
+	
+}
 </style>
 <body id="giftListBody">
 	<section class="">
@@ -94,9 +104,11 @@
 						<label class="form-check-label"	for="giftChk">전체 선택</label>
 					</div>
 					&nbsp;|&nbsp;
-					<div class="giftListTop">
-						<span>검색결과 <b id="giftCount"></b>개</span>&nbsp;|&nbsp; <span>추천상품순</span>&nbsp;|&nbsp; <span>높은가격순</span>&nbsp;|&nbsp;
-						<span>낮은가격순</span>
+					<div class="giftListTop" id="giftCategory">
+						<span>검색결과 <b id="giftCount"></b>개	</span>&nbsp;|&nbsp;
+						<span><a id="giftCtgry1">추천상품순</a></span>&nbsp;|&nbsp;
+						<span><a id="giftCtgry2">높은가격순</a></span>&nbsp;|&nbsp;
+						<span><a id="giftCtgry3">낮은가격순</a></span>
 					</div>
 					 &emsp;&emsp;
 				    <div class="giftListTop" id="searchGiftArea">
@@ -247,6 +259,8 @@
 							$(this).hover(function(){
 								$(this).children(index).children(index).eq(1).children().css("opacity", "1.0");
 								$(this).children(index).children(index).eq(1).children().attr("disabled", false);
+								//console.log($(this).children(index).children(index).eq(1).children());
+								
 								
 							}, function(){
 								$(this).children(index).children(index).eq(1).children().css("opacity", "0");
@@ -255,7 +269,7 @@
 						});
 					});
 				</script>
-				<div class="row row-cols-1 row-cols-md-5">
+				<div class="row row-cols-1 row-cols-md-5" id="giftListArea">
 					<c:forEach items="${list }" var="giftList">
 						<div class="col mb-4 gift">
 							<div class="card h-100 cardWholeArea">
@@ -281,16 +295,12 @@
 			</div>
 		</div>
 	</section>
-	    
-	        
-			
-			
-	
-	
+
 	<script type="text/javascript">
 		<%-- 각 상품에 존재하는 수정 버튼 클릭 시 나타나는 modal에 출력할 정보 가져오기 --%>
 		$(function(){
-			$(".updateGiftBtn").on('click', (e)=>{
+		<%--$(".updateGiftBtn").on('click', function(e){--%>
+			$(document).on('click','.updateGiftBtn', function(e){
 				console.log(e.target.value);
 				
 				var clickVal = e.target.value;
@@ -320,24 +330,12 @@
 				});
 			});
 		});
-	<%--
-	<div class="form-check giftListTop">
-			<input type="checkbox" class="form-check-input" id="wholeChk" name="wholeChk">
-			<label class="form-check-label"	for="wholeChk">전체 선택</label>
-		</div>
-		
-		<div class="form-check checkArea">
-						<input type="checkbox" class="form-check-input" name="giftChk">
-					</div>
-	 --%>
+
 		<%-- 전체 체크 설정 --%>
 		$(function(){
 	    	var chkRow = $("input[name='giftChk']");
 	    	var rowCount = chkRow.length;
 	    	console.log(rowCount);
-	    	
-	    	<%-- 상품 총 개수 출력용 --%>
-	    	$("#giftCount").html(rowCount);
 	    	
 	    	<%-- 전체 선택하면 모든 체크박스가 checked --%>
 	        $("#giftChk").click(function(){
@@ -355,13 +353,11 @@
 	             }
 	        });
 	    });
+		
 		var delArr = new Array();
 		<%-- 선택 삭제한 항목 데이터list modal에 불러오기 --%>
 		function deleteGift(){
-			<%-- 
-			$("#delGiftBtn").attr("data-toggle","modal").attr("data-target","#deleteGift");
-			$("#delGiftBtn").removeAttr("data-toggle").removeAttr("data-target");
-			--%>
+
 			var chkArr = new Array();
 			var chkCount = $("input[name='giftChk']");
 
@@ -393,6 +389,7 @@
 						result += '<h5>총 <span id="checkedGiftNum">' + data.length + '</span>개 상품을 선택하셨습니다. 해당 상품들을 삭제하시겠습니까?</h5>';
 						$.each(data, function(index, item){
 							delArr.push(item.giftNo);
+							
 							result += '<input type="hidden" name="delGiftNo" value="' + item.giftNo + '"/>';
 							result += '<div>';
 							result += '<div class="card-body">';
@@ -435,49 +432,6 @@
 			
 		}
 		
-		<%-- modal 데이터를 바탕으로 선물 상품 추가하기 --%>
-		<%-- 
-		$("#insertGiftBtn").on('click', function(event){
-			//event.preventDefault(); //기존 form태그 submit을 막음
-			
-			var form = $("#insertImgFile")[0].files[0];
-			console.log("form : ");
-			console.log(form);
-			
-			var formData = new FormData();
-			formData.append('files', form);
-			console.log("formData : ");
-			console.log(formData);
-			
-			$("#insertGiftBtn").prop("disabled", true);
-			
-			$.ajax({
-				type: "POST",
-				enctype : 'multipart/form-data',
-				url : "insertGift.ho",
-				data : formData,
-				processData : false,
-				contentType : false,
-				success : function(data){
-					console.log("data");
-					console.log(data);
-					alert("선물 추가 성공!");
-					$("#insertGiftBtn").prop("disabled", false);
-				},
-				error : function(e){
-					console.log(e);
-					alert("선물 추가 실패!");
-					$("#insertGiftBtn").prop("disabled", false);
-				}
-			});
-		});
-		
-		insertImgFile : formData,
-					giftBrand : giftBrand,
-					giftName : giftName,
-					giftPrice : giftPrice
-		--%>
-		
 		<%-- 선물 사진 관련 --%>
 	    $(function(){
 	        $("#updateFileArea").hide();
@@ -510,11 +464,16 @@
 	    <%-- 선물 검색 관련 --%>
 	    $(function(){       
 	
+	    	<%-- 상품 총 개수 출력용 --%>
+			var rowCount = $("#giftListArea").children().length;
+			$("#giftCount").html(rowCount);
+	    	
 	        $("#search").keyup(function(){
 	
 	            $(".gift").hide();
 	
 	            var searchText = $(this).val();
+	            searchText = searchText.toUpperCase();
 	            
 	            var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
 	            var giftName = $(".card-body>p:contains('"+searchText+"')");
@@ -524,8 +483,236 @@
 	            $(giftName).parent().parent().parent().show();
 	            $(giftPrice).parent().parent().parent().show();
 	
-	        })
+				var newCount = 0;
+	            
+	            for(var i=0; i<rowCount; i++){
+					visibleYN = $("#giftListArea").children().eq(i).is(":visible");
+					
+					if(visibleYN == true){
+						newCount += 1;
+					}
+				}
+		    	
+		    	$("#giftCount").html(newCount);
+	        });
 	    });
+	    
+	    <%-- 상품 정렬 --%>
+		$(function(){
+			
+			$("#giftCtgry1").css("font-weight", "bolder");
+			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
+			$("#giftCtgry2").css("font-weight", "normal");
+			$("#giftCtgry2").html('높은가격순');
+			$("#giftCtgry3").css("font-weight", "normal");
+			$("#giftCtgry3").html('낮은가격순');
+			
+			var ctgryNum;
+			
+			$("#giftCtgry1").on('click', function(){
+				
+				$("#giftCtgry1").css("font-weight", "bolder");
+				$("#giftCtgry2").css("font-weight", "normal");
+				$("#giftCtgry3").css("font-weight", "normal");
+				
+				$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
+				$("#giftCtgry2").html('높은가격순');
+				$("#giftCtgry3").html('낮은가격순');
+				
+				$("#giftListArea").children().hide();
+				ctgryNum = 1;
+				
+				console.log($("#giftListArea").children());
+				console.log(typeof(ctgryNum));
+				
+				$.ajax({
+					url: "selectCtgry.birth",
+					type: "POST",
+					data: {
+						ctgryNum : ctgryNum
+					},
+					success: function(data){
+
+						var result = '';
+
+						$.each(data, function(index, item){
+							result += '<div class="col mb-4 gift">';
+							result += '<div class="card h-100 cardWholeArea">';
+							
+							result += '<div class="card-header giftCardHeader">';
+							result += '<div class="form-check checkArea">';
+							result += '<input type="checkbox" class="form-check-input" name="giftChk" value="' + item.giftNo + '">';
+							result += '</div>';
+							result += '<div class="updateGiftBtnDiv">';
+							result += '<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정</button>';
+							result += '</div>';
+							result += '</div>';
+							
+							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
+							result += '<div class="card-body">';
+							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
+							result += '<p class="card-text">' + item.giftName + '</p>';
+							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
+							result += '</div>';
+							result += '</div>';
+							result += '</div>';
+						});
+						$("#giftListArea").html(result);
+						
+						$(".updateGiftBtn").css("opacity", "0");
+						
+						$(".cardWholeArea").each(function(index){
+							$(this).hover(function(){
+								$(this).children(index).children(index).eq(1).children().css("opacity", "1.0");
+								$(this).children(index).children(index).eq(1).children().attr("disabled", false);
+							}, function(){
+								$(this).children(index).children(index).eq(1).children().css("opacity", "0");
+								$(this).children(index).children(index).eq(1).children().attr("disabled", true);
+							});
+						});	
+					},
+					error: function(error){
+						alert(error);
+					}
+				});
+			});
+
+			$("#giftCtgry2").on('click', function(){
+				
+				$("#giftCtgry1").css("font-weight", "normal");
+				$("#giftCtgry2").css("font-weight", "bolder");
+				$("#giftCtgry3").css("font-weight", "normal");
+				
+				$("#giftCtgry1").html('추천상품순');
+				$("#giftCtgry2").html('<i class="fas fa-check"></i>&nbsp;높은가격순');
+				$("#giftCtgry3").html('낮은가격순');
+				
+				$("#giftListArea").children().hide();
+				ctgryNum = 2;
+				
+				console.log($("#giftListArea").children());
+				console.log(typeof(ctgryNum));
+				
+				$.ajax({
+					url: "selectCtgry.birth",
+					type: "POST",
+					data: {
+						ctgryNum : ctgryNum
+					},
+					success: function(data){
+						var result = '';
+						
+						$.each(data, function(index, item){
+							result += '<div class="col mb-4 gift">';
+							result += '<div class="card h-100 cardWholeArea">';
+							
+							result += '<div class="card-header giftCardHeader">';
+							result += '<div class="form-check checkArea">';
+							result += '<input type="checkbox" class="form-check-input" name="giftChk" value="' + item.giftNo + '">';
+							result += '</div>';
+							result += '<div class="updateGiftBtnDiv">';
+							result += '<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정</button>';
+							result += '</div>';
+							result += '</div>';
+							
+							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
+							result += '<div class="card-body">';
+							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
+							result += '<p class="card-text">' + item.giftName + '</p>';
+							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
+							result += '</div>';
+							result += '</div>';
+							result += '</div>';
+						});
+						$("#giftListArea").html(result);
+						
+						$(".updateGiftBtn").css("opacity", "0");
+						
+						$(".cardWholeArea").each(function(index){
+							$(this).hover(function(){
+								$(this).children(index).children(index).eq(1).children().css("opacity", "1.0");
+								$(this).children(index).children(index).eq(1).children().attr("disabled", false);
+								
+							}, function(){
+								$(this).children(index).children(index).eq(1).children().css("opacity", "0");
+								$(this).children(index).children(index).eq(1).children().attr("disabled", true);
+							});
+						});	
+					},
+					error: function(error){
+						alert(error);
+					}
+				});
+			});
+			
+			$("#giftCtgry3").on('click', function(){
+				
+				$("#giftCtgry1").css("font-weight", "normal");
+				$("#giftCtgry2").css("font-weight", "normal");
+				$("#giftCtgry3").css("font-weight", "bolder");
+				
+				$("#giftCtgry1").html('추천상품순');
+				$("#giftCtgry2").html('높은가격순');
+				$("#giftCtgry3").html('<i class="fas fa-check"></i>&nbsp;낮은가격순');
+				
+				$("#giftListArea").children().hide();
+				ctgryNum = 3;
+				
+				console.log($("#giftListArea").children());
+				console.log(typeof(ctgryNum));
+				
+				$.ajax({
+					url: "selectCtgry.birth",
+					type: "POST",
+					data: {
+						ctgryNum : ctgryNum
+					},
+					success: function(data){
+						var result = '';
+						
+						$.each(data, function(index, item){
+							result += '<div class="col mb-4 gift">';
+							result += '<div class="card h-100 cardWholeArea">';
+							
+							result += '<div class="card-header giftCardHeader">';
+							result += '<div class="form-check checkArea">';
+							result += '<input type="checkbox" class="form-check-input" name="giftChk" value="' + item.giftNo + '">';
+							result += '</div>';
+							result += '<div class="updateGiftBtnDiv">';
+							result += '<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정</button>';
+							result += '</div>';
+							result += '</div>';
+							
+							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
+							result += '<div class="card-body">';
+							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
+							result += '<p class="card-text">' + item.giftName + '</p>';
+							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
+							result += '</div>';
+							result += '</div>';
+							result += '</div>';
+						});
+						$("#giftListArea").html(result);
+						
+						$(".updateGiftBtn").css("opacity", "0");
+						
+						$(".cardWholeArea").each(function(index){
+							$(this).hover(function(){
+								$(this).children(index).children(index).eq(1).children().css("opacity", "1.0");
+								$(this).children(index).children(index).eq(1).children().attr("disabled", false);
+								
+							}, function(){
+								$(this).children(index).children(index).eq(1).children().css("opacity", "0");
+								$(this).children(index).children(index).eq(1).children().attr("disabled", true);
+							});
+						});	
+					},
+					error: function(error){
+						alert(error);
+					}
+				});
+			});
+		});
 	</script>
 </body>
 </html>

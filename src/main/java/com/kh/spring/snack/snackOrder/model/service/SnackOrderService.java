@@ -13,4 +13,12 @@ public interface SnackOrderService {
 
 	int selectTotalPrice(int orderNo);
 
+	int checkOrderSnackDup(OrderDetail orderD);
+
+	void addOrderDList(OrderDetail orderD);
+
+	void deleteOrderDNo(String orderDNoCheck);
+
+	void updateOrderAmount(OrderDetail orderD);
+
 }

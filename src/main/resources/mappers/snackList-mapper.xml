@@ -219,5 +219,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM SNACK_LIST
 		WHERE SNACK_LIST_NO = #{snackListNo}
 	</select>
+	
+	<select id="searchSendingList" parameterType="com.kh.spring.snack.snackList.model.vo.SearchList" resultMap="snackListResultSet">
+	 	SELECT *
+	 	FROM
+	 	(
+		 	SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, A.TRANS_DATE, D.SNACK_NO, D.SNACK_NAME
+			FROM SNACK_LIST A
+			JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+			JOIN SNACK_D_LIST C ON (A.SNACK_LIST_NO = C.SNACK_LIST_NO)
+			JOIN SNACK D ON (C.SNACK_NO = D.SNACK_NO)
+			WHERE A.COM_CODE IN(
+				<foreach collection="comArr" item="item" separator=",">
+					#{item}
+				</foreach>)
+			AND A.TRANS_STATUS = 'Y'
+	 	)
+	 	WHERE 1=1
+	 	<if test="category == 1">
+	 		AND SNACK_LIST_NO = #{search}
+	 	</if>
+	 	<if test="category == 2">
+	 		AND COM_NAME LIKE '%'|| #{search} ||'%'
+	 	</if>
+	 	<if test="category == 3">
+	 		AND SNACK_NAME LIKE '%'|| #{search} ||'%'
+	 	</if>
+	 	<if test="startDate != 0">
+	 		<![CDATA[
+	 		AND TRANS_DATE >= ${startDate}
+	 		]]>
+	 	</if>
+	 	<if test="endDate != 0">
+	 		<![CDATA[
+	 		AND TRANS_DATE <= ${endDate}
+	 		]]>
+	 	</if>
+	 	AND (SNACK_LIST_NO, SNACK_NO) IN (SELECT A.SNACK_LIST_NO, MIN(B.SNACK_NO)
+												FROM SNACK_LIST A
+												JOIN SNACK_D_LIST B ON (A.SNACK_LIST_NO = B.SNACK_LIST_NO)
+										        GROUP BY A.SNACK_LIST_NO)
+	
+	</select>
 
 </mapper>

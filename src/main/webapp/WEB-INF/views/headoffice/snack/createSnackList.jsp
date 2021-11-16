@@ -48,7 +48,6 @@
         }
 
         .search-sub{
-            display: inline-flex;
             margin-bottom: 10px;
             padding: 0px;
         }
@@ -106,26 +105,25 @@
                     <div class="search-list">
       
 						<!-- 검색 부분 -->
-                        <div class="search-sub ">
+                        <div class="search-sub form-inline">
                             <form action="searchSnack.sn" method="post">    
                             	<input type="hidden" name="comCode" value="${i.comCode}">
                             	<input type="hidden" name="listNo" value="${i.listNo}">
                             	
-	                            <select class="search-select category" name="category" id="category">
+	                            <select class="search-select category form-control" name="category" id="category">
 	                                <option value="0">카테고리</option>
 	                                <option value="1">스낵</option>
 	                                <option value="2">음료</option>
 	                                <option value="3">간편식</option>
 	                            </select>
 	
-	                            <select class="search-select subCategory" name="subCategory" id="subCategory">
+	                            <select class="search-select subCategory form-control" name="subCategory" id="subCategory">
 	                                <option value="0">상세 카테고리</option>
 	                            </select>
+	                            
+	                            <input type="text" class="form-control" placeholder="검색어 입력" name="search" aria-describedby="searchBtn">
+	                            <button class="btn btn-warning" type="submit" id="searchBtn">검색</button>
 	
-	                            <div class="input-group search-input">
-	                                <input type="text" class="" placeholder="검색어 입력" name="search" aria-describedby="searchBtn">
-	                                <button class="btn btn-warning" type="submit" id="searchBtn">검색</button>
-	                            </div>
 							</form>
                         </div>
                         
@@ -164,9 +162,7 @@
 	                                    <td>${list.snackName}</td>
 	                                    <td class="searchPrice" id="searchPrice${list.snackNo}">${list.releasePrice}</td>
 	                                    <td><input type="number" class="searchAmount" id="${list.snackNo}" min=1 max="${list.stock}" required></td>
-	                                    <td>${list.stock}
-	                                    	<input type="hidden" >
-	                                    </td>
+	                                    <td>${list.stock}<input type="hidden" id="searchStock${list.snackNo}" value="${list.stock}"></td>
 	                                    <td class="searchTotalPrice" id="searchTotalPrice${list.snackNo}">${list.releasePrice * list.amount}</td>
 	                                    <td><button type="button" class="addBtn" value="${list.snackNo}">추가</button></td>
                                 	</tr>
@@ -217,7 +213,7 @@
 		                                <td>${dList.snackName}</td>
 		                                <td>${dList.releasePrice}원</td>
 		                                <td><input type="number" class="amount" id="${dList.snackDNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>
-		                                <td>${dList.stock}</td>
+		                                <td>${dList.stock}<input type="hidden" id="dListStock" value="${dList.stock}"></td>
 		                                <td>${dList.releasePrice * dList.amount}</td>
 	                                </tr>
 	                                
@@ -313,11 +309,17 @@
 		$('.searchAmount').on('change', function(){
 			var amount = $(this).val();
 			var snackNo = $(this).attr('id');
+			var stock = Number($('#searchStock' + snackNo).val());
 			var price = $('#searchPrice' + snackNo).text();
 			
 			if(amount < 1){
 				alert("최소 수량은 1입니다.");
 				$(this).val(1);
+			}
+			
+			if(amount > stock){
+				alert("재고를 초과하였습니다.");
+				$(this).val(stock);
 			}
 			
 			$('#searchTotalPrice' + snackNo).text($(this).val()*price);
@@ -363,17 +365,23 @@
 		$('.amount').on('change', function(){
 			
 			var amount = $(this).val();
+			var stock = Number($('#dListStock').val());
 			var snackDNo = $(this).attr('id');
 			
 			if(amount < 1){
 				alert("최소 수량은 1입니다.")
 				$(this).val(1);
 			}
+			
+			if(amount > stock){
+				alert("재고를 초과하였습니다.");
+				$(this).val(stock);
+			}
+			
 			$('#snackAmount').val($(this).val());
 			$('#snackDNo').val(snackDNo);
 				
 			$('#updateSnackAmount').submit();
-			
 		})
 		
 		<%-- 리스트 발송 버튼 클릭 시--%>

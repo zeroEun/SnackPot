@@ -23,4 +23,20 @@ public class SnackOrderDao {
 		return sqlSession.selectOne("snackOrderMapper.selectTotalPrice", orderNo);
 	}
 
+	public int checkOrderSnackDup(SqlSessionTemplate sqlSession, OrderDetail orderD) {
+		return sqlSession.selectOne("snackOrderMapper.checkOrderSnackDup", orderD);
+	}
+
+	public int addOrderDList(SqlSessionTemplate sqlSession, OrderDetail orderD) {
+		return sqlSession.insert("snackOrderMapper.addOrderDList", orderD);
+	}
+
+	public int deleteOrderDNo(SqlSessionTemplate sqlSession, String orderDNoCheck) {
+		return sqlSession.delete("snackOrderMapper.deleteOrderDNo", orderDNoCheck);
+	}
+
+	public int updateOrderAmount(SqlSessionTemplate sqlSession, OrderDetail orderD) {
+		return sqlSession.update("snackOrderMapper.updateOrderAmount", orderD);
+	}
+
 }

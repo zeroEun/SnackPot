@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring.community.model.vo.Community;
+import com.kh.spring.community.model.vo.Reply;
 import com.kh.spring.qna.model.vo.PageInfo;
 
 @Repository
@@ -49,6 +50,21 @@ public class CommunityDao {
 		return sqlSession.update("cmntMapper.updateViews" , cno);
 		
 	}
+
+	public void updateRecommend(SqlSession sqlSession, String cno) {
+		
+		sqlSession.update("cmntMapper.updateRecommend" , cno);
+		
+	}
+
+	public void updateNrecommend(SqlSession sqlSession, String cno) {
+		sqlSession.update("cmntMapper.updateNrecommend" , cno);
+	}
+
+//	public ArrayList<Reply> selectReplyList(SqlSession sqlSession, String cmntNo) {
+//		
+//		return (ArrayList)sqlSession.selectList("productMapper.selectReplyList", cmntNo);
+//	}
 
 
 }

@@ -17,6 +17,7 @@ import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.SnackSubCategory;
 import com.kh.spring.snack.snackList.model.service.HoSnackListService;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
+import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackList.model.vo.SnackList;
@@ -208,6 +209,34 @@ public class HoSnackListController {
 		model.addAttribute("dList", selectSnackDList(snackListNo));
 		
 		return "headoffice/snack/snackSendingDetail";
+	}
+	
+	@RequestMapping("searchList.sn")
+	public String searchSendingList(SearchList searchList, Model model) {
+		
+		String comCode = "k2111151557,k2111151730";
+		
+		String[] arr = comCode.split(",");
+		HashMap<String, String> comArr = new HashMap<String, String>();
+		
+		for(int i=0; i < arr.length; i++) {
+			comArr.put("arr"+i, arr[i]);
+		}
+		
+		searchList.setComArr(comArr);
+		
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		//searchList.setStartDate(sdf.format(searchList.getStartDate()));
+		//searchList.setEndDate(sdf.format(searchList.getEndDate()));
+		
+		
+		System.out.println(searchList);
+		ArrayList<SnackList> sendingList = hoSnackListService.searchSendingList(searchList);
+
+		model.addAttribute("sendingList", sendingList);
+		
+		return "headoffice/snack/snackSendingList";
 	}
 	
 	//구독 회사의 리스트 정보(스케줄)를 생성하는 메소드 comListInfo

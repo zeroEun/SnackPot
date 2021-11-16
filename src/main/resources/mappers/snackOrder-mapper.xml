@@ -57,5 +57,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
 		WHERE A.ORDER_NO = #{orderNo} 
 	</select>
+	
+	<select id="checkOrderSnackDup" parameterType="OrderDetail" resultType="_int">
+		SELECT COUNT(*)
+		FROM ORDER_DETAIL
+		WHERE ORDER_NO = #{orderNo}
+		AND SNACK_NO = #{snackNo}
+	</select>
+	
+	<insert id="addOrderDList" parameterType="OrderDetail">
+		INSERT INTO ORDER_DETAIL
+		VALUES(ORDER_D_NO_SEQ.NEXTVAL, #{orderNo} , #{snackNo} , #{amount})
+	</insert>
+	
+	<delete id="deleteOrderDNo" parameterType="String">
+		DELETE FROM ORDER_DETAIL
+		WHERE ORDER_D_NO IN (${snackDNoCheck})
+	</delete>
+	
+	<update id="updateOrderAmount" parameterType="OrderDetail">
+		UPDATE ORDER_DETAIL
+		SET AMOUNT = #{amount}
+		WHERE ORDER_D_NO = #{orderDNo}
+	</update>
 
 </mapper>

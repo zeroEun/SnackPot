@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
+import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackList.model.vo.SnackList;
@@ -98,6 +99,10 @@ public class HoSnackListDao {
 
 	public int selectOrderNo(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("snackListMapper.selectOrderNo");
+	}
+
+	public ArrayList<SnackList> searchSendingList(SqlSessionTemplate sqlSession, SearchList searchList) {
+		return (ArrayList)sqlSession.selectList("snackListMapper.searchSendingList", searchList);
 	}
 
 }

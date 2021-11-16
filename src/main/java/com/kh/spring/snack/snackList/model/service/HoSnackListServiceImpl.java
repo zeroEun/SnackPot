@@ -11,6 +11,7 @@ import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.snack.snackList.model.dao.HoSnackListDao;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
+import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackList.model.vo.SnackList;
@@ -189,5 +190,13 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 	public int selectOrderNo() {
 		return hoSnackListDao.selectOrderNo(sqlSession);
 	}
+
+
+	@Override
+	public ArrayList<SnackList> searchSendingList(SearchList searchList) {
+		return  hoSnackListDao.searchSendingList(sqlSession, searchList);
+	}
+
+
 
 }

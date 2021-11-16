@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
+import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackList.model.vo.SnackList;
@@ -49,5 +50,8 @@ public interface HoSnackListService {
 	SnackList selectSnackList(int snackListNo);
 
 	int selectOrderNo();
+
+	ArrayList<SnackList> searchSendingList(SearchList searchList);
+
 
 }

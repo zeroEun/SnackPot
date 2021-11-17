@@ -22,6 +22,9 @@ public class Arrival {
 	private String remark;
 	private Date arrivalDate;
 	private int snackNo;
+	private String snackName;
+	private int stock;
+	
 	
 
 }

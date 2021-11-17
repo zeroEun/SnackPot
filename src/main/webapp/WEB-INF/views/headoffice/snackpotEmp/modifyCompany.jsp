@@ -141,6 +141,7 @@
 <div id="outline">
 <div id="content">
 <label>${semp.sempName} 사원의 담당 거래처</label>&emsp;<input type="text" name="comName" value="${sempComName}"><br>
+<input type="hidden" name="sempNum" value="${semp.sempNum}">
 <div id="btnDiv">
 <input class="eBtn" id="cancel" type="button" value="취소" onclick="location='<%=request.getContextPath()%>/empCompanyList.sn'">&emsp;&emsp;&emsp;
 <input class="eBtn" id="enter" type="button" value="수정" onclick="modify();">
@@ -155,6 +156,7 @@
 <script>
 function modify(){
 	var comName = $("input[name='comName']");
+	var sempNum = $("input[name='sempNum']");
 	if(comName.val().trim() == ""){
 		alert("수정할 회사명을 입력하세요");
 		return false;
@@ -163,7 +165,8 @@ function modify(){
 			url: "updateCompany.sn",
 			type:"post",
 			data:{
-				comName : comName.val()
+				comName : comName.val(),
+				sempNum : sempNum.val()
 			},
 			success:function(result){
 				if(result == "Y"){

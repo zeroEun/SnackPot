@@ -258,8 +258,8 @@ public class CompanyMemberController {
 	        model.addAttribute("url","/");
 	        
 		}else {
-		model.addAttribute("msg","비밀번호가 일치하지 않아 변경에 실패했습니다.");
-        model.addAttribute("url","/modifyPw.co");
+			model.addAttribute("msg","비밀번호가 일치하지 않아 변경에 실패했습니다.");
+	        model.addAttribute("url","/modifyPw.co");
 		}
 		return "common/alert";	
 	}

@@ -29,4 +29,20 @@ public interface SnackpotEmpService {
 
 	String searchSempName(String num);
 
+	Company searchComName(String string);
+
+	int updateCompany(String comCode, String sempNum);
+
+	void updateSempNum(String string, String sempNum);
+
+	ArrayList<Company> selectOriginCom(String sempNum);
+
+	void updateComNull(String comCode);
+
+	void updatePw(SnackpotEmp se);
+
+	Company selectSempCompany(String string);
+
+	SnackpotEmp selectComCodeCheck(String check);
+
 }

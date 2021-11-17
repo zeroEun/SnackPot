@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring.product.model.vo.Product;
+import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
 import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
@@ -73,6 +74,10 @@ public class HoSnackListDao {
 		return sqlSession.update("snackListMapper.updateSnackAmount", snackD);
 	}
 
+	public ArrayList<WishListDtail> selectWishList(SqlSessionTemplate sqlSession, ComListInfo info) {
+		return (ArrayList)sqlSession.selectList("snackListMapper.selectWishList", info);
+	}
+	
 	public int selectSnackMaxNum(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("snackListMapper.selectSnackMaxNum");
 	}
@@ -104,5 +109,7 @@ public class HoSnackListDao {
 	public ArrayList<SnackList> searchSendingList(SqlSessionTemplate sqlSession, SearchList searchList) {
 		return (ArrayList)sqlSession.selectList("snackListMapper.searchSendingList", searchList);
 	}
+
+
 
 }

@@ -58,10 +58,6 @@
             
         }
 
-        .search-select{
-            margin-right: 10px;
-        }
-
         .amount, .searchAmount{
             width: 50px;
         }
@@ -97,8 +93,67 @@
                     <span class="">총 금액 : ${i.totalPrice}원</span>&nbsp;&nbsp;&nbsp;
                  	<span class="">주문 마감일 : ${i.orderDeadline}</span>
 
-                    <button type="button" class="btn btn-primary">위시리스트 조회</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wishModal">위시리스트 조회</button>
                   	<button type="button" class="btn btn-primary" id="createListBtn">리스트 생성</button>
+                   
+					<!-- The Modal -->
+					<div class="modal" id="wishModal">
+					  <div class="modal-dialog modal-lg">
+					    <div class="modal-content">
+					
+					      <!-- Modal Header -->
+					      <div class="modal-header">
+					        <h4 class="modal-title">위시 리스트</h4>
+					        <button type="button" class="close" data-dismiss="modal">&times;</button>
+					      </div>
+					
+					      <!-- Modal body -->
+					      <div class="modal-body">
+					      
+					        <table class="table table-bordered wish-table">
+	                            <thead class="thead-light">
+	                                <tr>
+	                                    <th>카테고리</th>
+	                                    <th>상세 카테고리</th>
+	                                    <th>이미지</th>
+	                                    <th>품목명</th>
+	                                    <th>공급가</th>
+	                                    <th>수량</th>
+	                                    <th>재고</th>
+	                                    <th>금액</th>
+	                                </tr>
+	                            </thead>
+	                            
+	                            <tbody>
+	                            
+	                            	<c:forEach items="${wishList}" var="w">
+	                            	
+	                            	<tr>
+	                                	<td>${w.categoryName}</td>
+	                                    <td>${w.subCategoryName}</td>
+	                                    <td></td>
+	                                    <td>${w.snackName}</td>
+	                                    <td>${w.releasePrice}</td>
+	                                    <td></td>
+	                                    <td></td>
+	                                    <td></td>
+                                	</tr>
+                                	
+                                	</c:forEach>
+	                            </tbody>
+					        
+					        </table>
+					        
+					      </div>
+					
+					      <!-- Modal footer -->
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					      </div>
+					
+					    </div>
+					  </div>
+					</div>
                    
                     <hr>
                  

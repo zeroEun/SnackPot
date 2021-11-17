@@ -109,7 +109,7 @@
                             <li class="nav-item"> <a class="nav-link" href="empList.sn ">사원 계정 관리</a></li>
                             <li class="nav-item"> <a class="nav-link" href="empCompanyList.sn">담당 거래처 관리</a></li>
                             <!-- 사원으로 로그인 했을 경우에만 보이기 -->
-                            <li class="nav-item"> <a class="nav-link" href="#">비밀번호 변경</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="modifyPw.sn">비밀번호 변경</a></li>
                         </ul>
                         </div>
                     </li>
@@ -121,8 +121,7 @@
                         </a>
                         <div class="collapse" id="com-management">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">구독정보 조회</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">사원 조회</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="companyList.sn ">구독정보 조회</a></li>
                         </ul>
                         </div>
                     </li>

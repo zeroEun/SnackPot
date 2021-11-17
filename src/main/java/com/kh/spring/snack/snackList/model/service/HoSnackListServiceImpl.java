@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.vo.Product;
+import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.dao.HoSnackListDao;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
 import com.kh.spring.snack.snackList.model.vo.SearchList;
@@ -140,6 +141,11 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 			throw new CommException("updateSnackAmount 실패");
 		}
 	}
+	
+	@Override
+	public ArrayList<WishListDtail> selectWishList(ComListInfo info) {
+		return hoSnackListDao.selectWishList(sqlSession, info);
+	}
 
 
 	@Override
@@ -196,6 +202,9 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 	public ArrayList<SnackList> searchSendingList(SearchList searchList) {
 		return  hoSnackListDao.searchSendingList(sqlSession, searchList);
 	}
+
+
+
 
 
 

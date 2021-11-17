@@ -23,9 +23,12 @@ public class WishListDtail {
 	private int snackNo;
 	private String snackName;
 	private int count;
-	private int purchasePrice;
+	private int releasePrice; 
 	private Date wishEndDate;
 	private String changeName;
-	
+	private String categoryName;
+	private int subCategoryNo;
+	private String subCategoryName;
+	private int stock;
 	
 }

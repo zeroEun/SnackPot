@@ -73,13 +73,13 @@ public class CommunityServiceImpl implements CommunityService {
 		
 	}
 
-	/*댓글===========================================================*/
-//	@Override
-//	public ArrayList<Reply> selectReplyList(String cmntNo) {
-//		
-//		return cmntDao.selectReplyList(sqlSession , cmntNo);
-//		
-//	}
+	/*댓글===========================================================================================*/
+	@Override
+	public ArrayList<Reply> selectReplyList(int cmntNo) {
+		
+		return cmntDao.selectReplyList(sqlSession , cmntNo);
+		
+	}
 
 
 

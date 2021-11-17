@@ -87,7 +87,7 @@ ul>h2{
 }
 
 </style>
-<body >
+<body>
 <!--메뉴바("navbar navbar-expand-xl bg-light justify-content-center" : 가운데 정렬)-->
 <header>
 <nav class="navbar navbar-expand-xl ">
@@ -171,4 +171,5 @@ ul>h2{
 </header>
 <br clear="both">
 </body>
+
 </html>

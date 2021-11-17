@@ -132,47 +132,38 @@
 	<br>
 	<br>
 	<!--댓글 창 -->
-<div class="container">
-   <i class="far fa-comment-dots" data-toggle="collapse" data-target="#demo" onclick="replyList(${dlist.communityNo})"></i>
-   <label data-toggle="collapse" data-target="#demo">댓글</label>
-    <div id="demo" class="collapse">
-        <div class="replyList">
-         	   댓글 리스트 보이는곳
-        </div>
-        <div class="rplyContainer">
-            <div class=input_replyDiv>
-                <input type="text" placeholder="댓글을 입력해주세요." style="float: left; width: 800px; margin-right: 20px;">
-            </div>
-            <div>
-                <button>입력</button>
-            </div>
-        </div>
-    </div>
-  </div>
-  <br><br><br><br>
+	<div class="container">
+		<i class="far fa-comment-dots" data-toggle="collapse" data-target="#demo" onclick="getReplyList(${dlist.communityNo})"></i>
+		<label data-toggle="collapse" data-target="#demo" onclick="getReplyList(${dlist.communityNo})">댓글</label>
+
+		<!--구현할 댓글 class="replyBox"-->
+		<div class="collapse" id="demo">
+			<div  id="replyBox" class="replyBox" style="background-color: pink; border-color: red;" >
+		
+			</div>
+			
+			<!-- 댓글 작성 부분 -->
+			<div class="replyWrite">
+				<table>
+					<tr>
+						<td class="write_td">
+						<textarea class="write_content" id="write_content" placeholder="댓글을 입력해주세요"></textarea>
+						</td>
+						<td class="write_btn_td">
+						<button class="reply_write_btn"onclick="insertReply();">등록</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<br><br><br><br>
 
 </body>
 <script>
-	//댓글리스트 불러오기
-/*	function replyList(val){
-		const cmntNo = val;
-		
-		$.ajax({
-			url : "list.reply",
-			type : 'get',
-			data : {
-				cmntNo : cmntNo
-			},
-			success : function(data){
-				console.log("댓글 리스트 가져오기 성공")
-				
-			}
-		})
-		
-	
-	}*/
-	
+	//댓글 리스트 가져오기
 
+	
 	/*게시글 조회수 , 추천수*/
 	function update(val) {
 		const cno = val;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.spring.birthday.giftList.model.dao.GiftListDao;
+import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
 import com.kh.spring.birthday.giftList.model.vo.GiftList;
 
 @Service
@@ -25,14 +26,15 @@ public class GiftListServiceImpl implements GiftListService {
 	}
 
 	@Override
+	public ArrayList<GiftFolder> selectFolderArr() {
+		// TODO Auto-generated method stub
+		return giftListDao.selectFolderArr(sqlSession);
+	}
+	
+	@Override
 	public ArrayList<GiftList> selectCtgry(int ctgryNum) {
 		// TODO Auto-generated method stub
 		return giftListDao.selectCtgry(sqlSession, ctgryNum);
 	}
-
-	@Override
-	public ArrayList<GiftList> giftSortList() {
-		// TODO Auto-generated method stub
-		return giftListDao.giftSortList(sqlSession);
-	}
+	
 }

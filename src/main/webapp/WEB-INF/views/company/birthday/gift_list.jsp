@@ -5,15 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet"
-	href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+<script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+<link rel="shortcut icon" href="#">
 <title>Insert title here</title>
 </head>
 <style>
@@ -101,8 +99,8 @@
 </style>
 <body id="giftListBody">
 
-	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
-	
+	<%-- <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>--%>
+
 	<section>
 		<div class="container" id="giftContainer">
 			<br><br>
@@ -144,7 +142,7 @@
 							<div class="cardOuter" id="cardOuter">
 								<div id="cardInner">
 									<div>
-										<button type="button" class="addGift" value="${giftList.giftNo }">
+										<button type="button" class="addGift" value="${giftList.giftNo }" data-toggle="modal" data-target="#addGiftModal">
 											<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>
 										</button>
 									</div>
@@ -155,7 +153,153 @@
 				</c:forEach>
 			</div>
 		</div>
+		
+		<div class="modal fade" id="addGiftModal" tabindex="-1" aria-hidden="true">
+		    <div class="modal-dialog modal-dialog-scrollable">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <div class="modal-title">선물 담기</div><!--텍스트 가운데로-->
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <div class="input-group" id="addGiftFolder">
+		                    <input type="text" class="form-control" size="12" maxlength="10" placeholder="새 폴더"/>
+		                    <div class="input-group-append"><!-- 왼쪽 div pointer로 바꾸고 클릭 이벤트 설정-->
+		                        <span class="input-group-text" id="addFolder" style="cursor: pointer;">&emsp;생 성&emsp;</span>
+		                    </div>
+		                </div><hr>
+		
+		                <div class="accordion" id="giftAccordion">
+		                    <ul class="list-group" style="list-style: none;">
+		                    
+		                    	<c:forEach items="${folder }" var="folders" varStatus="status">
+		                    	<c:set var="index" value="${status.count }"/>
+		                        <li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">
+		                            <div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">
+		                                <button type="button" value="GIFT1" style="outline: none; border: none; cursor: default; background: white;">
+		                                    <i class="fas fa-folder" id="GIFT1" style="color: gold; cursor: pointer;" data-toggle="collapse" data-target="#giftCollapse${index }" aria-expanded="false"></i>
+		                                </button>
+		                                <span>&ensp;${folders.glistName }</span>
+		                            </div>
+		                            <div>
+		                                <span class="badge badge-primary badge-pill" style="cursor: pointer;">14</span>
+		                                &ensp;
+		                                <i class="fas fa-times" style="cursor: pointer;"></i>
+		                            </div>
+		                        </li>
+		                        <li id="giftCollapse${index }" class="collapse" data-parent="#giftAccordion" style="border: 1px solid black;">
+		                            <table>
+		                            	<tr>
+		                            		<th>브랜드명</th>
+		                            		<th>상품명</th>
+		                            		<th>가격</th>
+		                            	</tr>
+		                            </table>
+		                        </li>
+								</c:forEach>
+			
+			
+			<%-- 
+		                        <li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">
+		                            <div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">
+		                                <button type="button" value="GIFT2" style="outline: none; border: none; cursor: default; background: white;">
+		                                    <i class="fas fa-folder" id="GIFT2" style="color: gold; cursor: pointer;" data-toggle="collapse" data-target="#giftCollapse2" aria-expanded="false"></i>
+		                                    
+		                                </button>
+		                                <span>&ensp;기본2</span>
+		                            </div>
+		                            <div>
+		                                <span class="badge badge-primary badge-pill" style="cursor: pointer;">14</span>
+		                                &ensp;
+		                                <i class="fas fa-times" style="cursor: pointer;"></i>
+		                            </div>
+		                        </li>
+		                        <li id="giftCollapse2" class="collapse" data-parent="#giftAccordion" style="border: 1px solid black;">
+		                            <div class="card-body">
+		                                Some placeholder content for the second accordion panel. This panel is hidden by default.
+		                            </div>
+		                        </li>
+		
+		                        <li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">
+		                            <div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">
+		                                <button type="button" value="GIFT3" style="outline: none; border: none; cursor: default; background: white;">
+		                                    <i class="fas fa-folder" id="GIFT3" style="color: gold; cursor: pointer;" data-toggle="collapse" data-target="#giftCollapse3" aria-expanded="false"></i>
+		                                    
+		                                </button>
+		                                <span>&ensp;기본3</span>
+		                            </div>
+		                            <div>
+		                                <span class="badge badge-primary badge-pill" style="cursor: pointer;">14</span>
+		                                &ensp;
+		                                <i class="fas fa-times" style="cursor: pointer;"></i>
+		                            </div>
+		                        </li>
+		                        <li id="giftCollapse3" class="collapse" data-parent="#giftAccordion" style="border: 1px solid black;">
+		                            <div class="card-body">
+		                                Some placeholder content for the second accordion panel. This panel is hidden by default.
+		                            </div>
+		                        </li>
+		      --%>
+		                    </ul>
+		                </div><hr>   
+		            </div>
+		        </div>
+		    </div>
+		</div>
 	</section>
+
+	<script>
+	    $(function(){
+	        $(document).on('click', '.giftListFolder>button', function(e){
+	            
+	        	<%-- 
+	        	e.currentTarget : button 태그 -> value값 추출 가능
+	        	e.target : i 태그
+	        	--%>
+	        	console.log(e.target);
+	        	console.log(e.currentTarget);
+	        	
+	            var targetVal = e.currentTarget.value;
+	            var targetId = e.target.id;
+
+	            console.log(targetVal);
+	            console.log(targetId);	            
+	            
+	            var iconClickYN = $(this).children().attr("aria-expanded");
+	            console.log(iconClickYN);
+
+	            <%-- i태그가 아닌 button 클릭 시 함수이므로 button 범위를 클릭했을 때 targetId 값이 비는 경우를 조건으로 처리 --%>
+	            if(targetId != ""){
+	            	if(iconClickYN == "false"){
+		                $("#" + targetId).removeClass('fa-folder-open').addClass('fa-folder');
+		            }else{
+		                $("#" + targetId).removeClass('fa-folder').addClass('fa-folder-open');
+		            }
+	            }
+	        })
+	    });
+	    
+	    $(function(){
+	    	$("#addFolder").click(function(){
+	    		console.log("확인!");
+	    		
+	    		$.ajax({
+	    			url: "addGiftFolder.birth",
+	    			type: "POST",
+	    			data: "",
+	    			success: function(data){
+	    				console.log("성공!!!");
+	    			},
+	    			error: function(e){
+	    				console.log("에러!!!");
+	    			}
+	    		});
+	    		
+	    	});
+	    });
+	</script>
 
 	<script type="text/javascript">
 		<%-- 상품 정렬 --%>
@@ -198,7 +342,9 @@
 						<div class="cardOuter" id="cardOuter">
 								<div id="cardInner">
 									<div>
-										<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>
+										<button type="button" class="addGift" value="${giftList.giftNo }">
+											<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>
+										</button>
 									</div>
 								</div>
 							</div>
@@ -215,7 +361,9 @@
 							
 							result += '<div class="cardOuter" id="cardOuter">';
 							result += '<div id="cardInner">';
-							result += '<div><i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i></div>';
+							result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
+							result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
+							result += '</button></div>';
 							result += '</div></div>';
 							
 							result += '</div>';
@@ -276,7 +424,9 @@
 							
 							result += '<div class="cardOuter" id="cardOuter">';
 							result += '<div id="cardInner">';
-							result += '<div><i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i></div>';
+							result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
+							result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
+							result += '</button></div>';
 							result += '</div></div>';
 							
 							result += '</div>';
@@ -339,7 +489,9 @@
 							
 							result += '<div class="cardOuter" id="cardOuter">';
 							result += '<div id="cardInner">';
-							result += '<div><i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i></div>';
+							result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
+							result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
+							result += '</button></div>';
 							result += '</div></div>';
 							
 							result += '</div>';
@@ -391,7 +543,7 @@
 	            $(giftBrand).parent().parent().parent().show();
 	            $(giftName).parent().parent().parent().show();
 	            $(giftPrice).parent().parent().parent().show();
-	
+
 	            var newCount = 0;
 	            
 	            for(var i=0; i<rowCount; i++){
@@ -419,10 +571,16 @@
 			});
 		});
 	    
+	    <%-- 각 제품 영역에 나타나는 아이콘 클릭 시 실행되는 함수 - giftNo를 가져오므로 BIRTHDAY_GIFT 테이블에서 해당 정보를 SELECT --%>
 	    $(function(){
 	    	$(document).on('click', '.addGift', function(e){
 	    		console.log(e.currentTarget);
                 console.log(e.currentTarget.value);
+                
+                
+                
+                
+                
 	    	});
 	    });
 	</script>

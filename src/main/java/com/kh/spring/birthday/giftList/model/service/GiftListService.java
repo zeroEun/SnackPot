@@ -2,6 +2,7 @@ package com.kh.spring.birthday.giftList.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
 import com.kh.spring.birthday.giftList.model.vo.GiftList;
 
 public interface GiftListService {
@@ -10,6 +11,6 @@ public interface GiftListService {
 
 	ArrayList<GiftList> selectCtgry(int ctgryNum);
 
-	ArrayList<GiftList> giftSortList();
+	ArrayList<GiftFolder> selectFolderArr();
 
 }

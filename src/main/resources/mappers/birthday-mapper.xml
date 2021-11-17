@@ -159,11 +159,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</choose>
 	</select>
 	
-	<select id="giftSortList" resultMap="giftResultSet">
-		SELECT A.GIFT_NO, A.GIFT_BRAND, A.GIFT_NAME, A.GIFT_PRICE, B.CHANGE_NAME
-		FROM BIRTHDAY_GIFT A
-		JOIN GIFT_ATTACHMENT B ON A.GIFT_NO = B.GIFT_REF_NO
-		WHERE GIFT_STATUS='Y'
-		ORDER BY GIFT_PRICE ASC
+	<resultMap type="GiftFolder" id="giftFolderMap">
+		<result property="glistNo" column="GLIST_NO"></result>
+		<result property="glistName" column="GLIST_NAME"></result>
+	</resultMap>
+	
+	<select id="selectFolderArr" resultMap="giftFolderMap">
+		SELECT DISTINCT * FROM GIFT_LIST
 	</select>
+	
+	
 </mapper>

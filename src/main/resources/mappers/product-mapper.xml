@@ -29,13 +29,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="snackNo" column="SNACK_NO"/>
 		<result property="snackName" column="SNACK_NAME"/>
 		<result property="count" column="COUNT"/>
-		<result property="purchasePrice" column="PURCHASE_PRICE"/>
+		<result property="releasePrice" column="RELEASE_PRICE"/>
 		<result property="wishEndDate" column="WISH_END_DATE"/>
 		<result property="changeName" column="CHANGE_NAME"/>
 	</resultMap>
 
  <select id="selectList" resultMap="productResultSet">
-		SELECT S.SNACK_NO , S.SNACK_NAME , S.PURCHASE_PRICE , S.CATEGORY_NO
+		SELECT S.SNACK_NO , S.SNACK_NAME , S.RELEASE_PRICE , S.CATEGORY_NO
 				 , S.DETAIL_NO ,S.TASTE_NO , S.AROMA_NO , A.CHANGE_NAME
 		FROM SNACK S
 		LEFT OUTER JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
@@ -90,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </update>
 
  <select id="selectDrinkList" resultMap="productResultSet">
-		SELECT S.SNACK_NO , S.SNACK_NAME , S.PURCHASE_PRICE , S.CATEGORY_NO
+		SELECT S.SNACK_NO , S.SNACK_NAME , S.RELEASE_PRICE , S.CATEGORY_NO
 				 , S.DETAIL_NO ,S.TASTE_NO , S.AROMA_NO , A.CHANGE_NAME
 		FROM SNACK S
 		LEFT OUTER JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
@@ -100,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </select>
 
  <select id="selectFoodList" resultMap="productResultSet">
-		SELECT S.SNACK_NO , S.SNACK_NAME , S.PURCHASE_PRICE , S.CATEGORY_NO
+		SELECT S.SNACK_NO , S.SNACK_NAME , S.RELEASE_PRICE , S.CATEGORY_NO
 				 , S.DETAIL_NO ,S.TASTE_NO , S.AROMA_NO , A.CHANGE_NAME
 		FROM SNACK S
 		LEFT OUTER JOIN SNACK_ATTACHMENT A ON (S.SNACK_NO = A.SNACK_NO)
@@ -112,7 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <select id="selectWishDetailList"  resultMap="WishListDtailResult">
 	SELECT 	C.COM_CODE , D.COM_NAME 
 		,A.WISH_NO, B.CATEGORY_NO, A.SNACK_NO ,
-         B.SNACK_NAME  , A.COUNT , B.PURCHASE_PRICE , C.WISH_END_DATE , E.CHANGE_NAME
+         B.SNACK_NAME  , A.COUNT , B.RELEASE_PRICE , C.WISH_END_DATE , E.CHANGE_NAME
 	FROM WISHLIST_DETAIL A
 	JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
     LEFT OUTER JOIN SNACK_ATTACHMENT E ON (B.SNACK_NO = E.SNACK_NO)

@@ -25,7 +25,9 @@ public interface CommunityService {
 
 	void updateNrecommend(String cno);
 
-//	ArrayList<Reply> selectReplyList(String cmntNo);
+	/*댓글===========================================================================================*/
+	ArrayList<Reply> selectReplyList(int cmntNo);
 
+	
 
 }

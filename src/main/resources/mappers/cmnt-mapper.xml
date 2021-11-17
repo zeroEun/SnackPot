@@ -13,9 +13,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="status" column="STATUS"/>
 		<result property="writer" column="WRITER"/>
 		<result property="title" column="TITLE"/>
+		<result property="comCode" column="COM_CODE" />
 	</resultMap> 
 
-<!-- <resultMap type="Reply" id="communityResultSet">
+	<resultMap type="Reply" id="ReplyResultSet">
 	 	<id property="reNo" column="RE_NO"/>
 		<result property="communityNo" column="COMMUNITY_NO"/>
 		<result property="reGroup" column="RE_GROUP"/>
@@ -24,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="reWriter" column="RE_WRITER"/>
 		<result property="reContent" column="RE_CONTENT"/>
 		<result property="reDate" column="RE_DATE"/>
-	</resultMap> -->	
+	</resultMap> 	
 	
 <select id="selectListCount" resultType="_int">
 	SELECT COUNT(*)
@@ -34,9 +35,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <select id="selectList" resultMap="communityResultSet">
-	SELECT *
-	FROM COMMUNITY 
-	WHERE STATUS='Y'
+	SELECT A.COMMUNITY_NO , A.CONTENT , A.VIEWS , A.RECOMMEND , A.N_RECOMMEND, A.WRITER_DATE, A.STATUS 
+			, A.WRITER , A.TITLE , B.COM_CODE
+	FROM COMMUNITY A 
+	JOIN COMPANY_MEMBER B ON (A.WRITER = B.MEM_ID)
+	WHERE A.STATUS='Y'
 	ORDER BY COMMUNITY_NO DESC
 </select>
 
@@ -74,9 +77,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE COMMUNITY_NO = #{cno}
 </update>
 
-<!-- 댓글 
-<select id="selectReplyList" parameterType="_int" resultMap="communityResultSet">
-	
+<!-- 댓글 -->
 
-</select>-->
+<select id="selectReplyList" parameterType="_int" resultMap="ReplyResultSet">
+	SELECT *
+	FROM REPLY
+	WHERE COMMUNITY_NO = #{cmntNo}
+	ORDER BY RE_GROUP ASC , RE_GROUPDEPT
+</select>
 </mapper>

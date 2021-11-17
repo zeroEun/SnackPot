@@ -18,6 +18,7 @@ import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.spring.community.model.service.CommunityService;
 import com.kh.spring.community.model.vo.Community;
+import com.kh.spring.community.model.vo.ComtyAttachment;
 import com.kh.spring.community.model.vo.Reply;
 import com.kh.spring.companyMember.model.vo.CompanyMember;
 import com.kh.spring.product.model.vo.Product;
@@ -41,8 +43,8 @@ public class communityController {
 	private CommunityService cmntService;
 	
 	@RequestMapping("list.cm") // 회원 아이디를 같이 넣어줘야한다 (회사코드 join)
-	public String selectCommunityList(Model model ,@RequestParam(value="currentPage" ,required=false , defaultValue="1") int currentPage) {
-		
+	public String selectCommunityList(Model model ,@RequestParam(value="currentPage" ,required=false , defaultValue="1") int currentPage , HttpSession session) {
+	
 		int listCount = cmntService.selectListCount();
 		//System.out.println("listCount : " + listCount);
 		
@@ -55,6 +57,7 @@ public class communityController {
 		model.addAttribute("pi" , pi);
 		
 		return "company/community/communityMainView";
+		
 	}
 	
 	@RequestMapping("enrollForm.cm")
@@ -63,30 +66,39 @@ public class communityController {
 	}
 	
 	@RequestMapping("insert.cm")// 
-	public String insertContent( Community cmnt,  String title , String seContent ,Model model, HttpSession session,
+	public String insertContent( Community cmnt,  String title , String seContent ,HttpSession session, ComtyAttachment cmntAtt,
 			@RequestParam(name="uploadFile", required = false) MultipartFile file , HttpServletRequest request) {
 		
-		System.out.println("파일 이름  : " +  file.getOriginalFilename());
+		System.out.println("파일 이름  : " +  file.getOriginalFilename()); //첨부파일을 받아옴
+		System.out.println("커뮤니티 : " + cmnt);
 		
-		if(!file.getOriginalFilename().equals("")) {
+		String resources = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = resources + "\\upload_files\\";
+		
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		String memId = loginUser.getMemId();
+		
+		if(!file.getOriginalFilename().equals("")) { 				  
 
-			String changeName = saveFile(file, request);
+			String changeName = saveFile(file, request);			//이름 바꿔서 changeName에 담기
 			System.out.println(changeName);
 			
 			if(changeName != null) {
+				
+				
 				HashMap<String, Object> map = new HashMap<String, Object>();
-				
-				
-				cmnt.setOriginName(file.getOriginalFilename());
-				cmnt.setChangeName(changeName);
-				
+				map.put("originName", file.getOriginalFilename());
+				map.put("changeName", changeName);
+				map.put("savePath", savePath);
+				System.out.println("map!! : " + map);
+	
 			}
+			
+				cmnt.setContent(seContent);
+				cmnt.setTitle(title);
+				cmnt.setWriter(memId);
 		}
-		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
-		String memId = loginUser.getMemId();
-		cmnt.setContent(seContent);
-		cmnt.setTitle(title);
-		cmnt.setWriter(memId);
+	
 		
 	//	cmntService.insertCommunity(cmnt);
 		
@@ -101,7 +113,7 @@ public class communityController {
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		String ext = originName.substring(originName.lastIndexOf("."));
 		
-		String changeName = currentTime + ext;
+		String changeName = currentTime + ext;					
 		
 		try {
 			file.transferTo(new File(savePath + changeName));
@@ -163,16 +175,21 @@ public class communityController {
 		cmntService.updateNrecommend(cno);
 	}
 	
-	/*=================댓글===============================================================================*/
+	/*=================댓글===============================================================================*/	
+	
 	//댓글 리스트 
-//	@ResponseBody
-//	@RequestMapping("list.reply")
-//	public ArrayList<Reply> selectReplyList(@RequestParam("cmntNo") String cmntNo , HttpSession session) {
-//		
-//		ArrayList<Reply> list = cmntService.selectReplyList(cmntNo);
-//		
-//		return list;
-//	}
+	@ResponseBody
+	@RequestMapping(value="list.reply" , produces = "application/json; charset=utf-8")
+	public ArrayList<Reply> selectReplyList(@RequestParam int cmntNo , HttpSession session) {
+		
+		System.out.println("cmntNo =====>" +  cmntNo);
+		ArrayList<Reply> list = cmntService.selectReplyList(cmntNo);
+		
+		System.out.println("댓글 리스트? : " + list);
+		return list;
+	}
+	
+	
 	
 	
 }

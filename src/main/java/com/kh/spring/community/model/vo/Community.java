@@ -26,6 +26,6 @@ public class Community {
 	private String title;
 	private String originName;
 	private String changeName;
-	
+	private String comCode;
 	
 }

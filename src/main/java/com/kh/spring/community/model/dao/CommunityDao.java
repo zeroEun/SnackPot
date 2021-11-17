@@ -60,11 +60,13 @@ public class CommunityDao {
 	public void updateNrecommend(SqlSession sqlSession, String cno) {
 		sqlSession.update("cmntMapper.updateNrecommend" , cno);
 	}
+	
+	/*댓글===========================================================================================*/
 
-//	public ArrayList<Reply> selectReplyList(SqlSession sqlSession, String cmntNo) {
-//		
-//		return (ArrayList)sqlSession.selectList("productMapper.selectReplyList", cmntNo);
-//	}
+	public ArrayList<Reply> selectReplyList(SqlSession sqlSession, int cmntNo) {
+		
+		return (ArrayList)sqlSession.selectList("cmntMapper.selectReplyList", cmntNo);
+	}
 
 
 }

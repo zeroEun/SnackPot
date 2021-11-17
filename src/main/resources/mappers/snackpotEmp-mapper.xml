@@ -59,5 +59,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM SNACKPOT_EMP
 		WHERE SEMP_NUM=#{sempNum} 	
 	</select>
-
+	
+	<update id="updateCompany" parameterType="hashMap">
+		UPDATE SNACKPOT_EMP
+		SET SEMP_COMCODE=#{comCode}
+		WHERE SEMP_NUM=#{sempNum}
+	</update>
+	
+	<update id="updatePw" parameterType="SnackpotEmp">
+		UPDATE SNACKPOT_EMP
+		SET SEMP_PW=#{sempPw}
+		WHERE SEMP_NUM=#{sempNum}
+	</update>
+	
+	<select id="selectComCodeCheck" parameterType="string" resultMap="snackpotEmpResultSet">
+		SELECT *
+		FROM SNACKPOT_EMP
+		WHERE SEMP_COMCODE LIKE #{comCode}
+	</select>
+	
 </mapper>

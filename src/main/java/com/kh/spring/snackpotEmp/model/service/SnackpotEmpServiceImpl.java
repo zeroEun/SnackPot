@@ -62,9 +62,8 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 
 	@Override
 	public SnackpotEmp selectEmp(String sempNum) {
-		SnackpotEmp se = sed.selectEmp(sqlSession, sempNum);
 		
-		return se;
+		return sed.selectEmp(sqlSession, sempNum);
 	}
 
 	@Override
@@ -103,6 +102,73 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 	public String searchSempName(String num) {
 		
 		return sed.searchSempName(sqlSession, num);
+	}
+
+	@Override
+	public Company searchComName(String string) {
+		
+		return sed.searchComName(sqlSession, string);
+	}
+
+	@Override
+	public int updateCompany(String comCode, String sempNum) {
+		
+		int result = sed.updateCompany(sqlSession, comCode, sempNum);
+		
+		if(result < 0) {
+			throw new CommException("사원 거래처 변경에 실패했습니다");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public void updateSempNum(String string, String sempNum) {
+		
+		int result = sed.updateSempNum(sqlSession, string, sempNum);
+		
+		if(result < 0) {
+			throw new CommException("사원 번호 변경에 실패했습니다");
+		}
+	}
+
+	@Override
+	public ArrayList<Company> selectOriginCom(String sempNum) {
+		
+		return sed.selectOriginCom(sqlSession, sempNum);
+	}
+
+	@Override
+	public void updateComNull(String comCode) {
+		
+		int result = sed.updateComNull(sqlSession, comCode);
+		
+		if(result < 0) {
+			throw new CommException("사원 번호 삭제에 실패했습니다");
+		}
+	}
+
+	@Override
+	public void updatePw(SnackpotEmp se) {
+		
+		int result = sed.updatePw(sqlSession, se);
+		
+		if(result < 0) {
+			throw new CommException("비밀번호 변경에 실패했습니다");
+		}
+		
+	}
+
+	@Override
+	public Company selectSempCompany(String string) {
+		
+		return sed.selectSempCompany(sqlSession, string);
+	}
+
+	@Override
+	public SnackpotEmp selectComCodeCheck(String check) {
+		
+		return sed.selectComCodeCheck(sqlSession, check);
 	}
 
 }

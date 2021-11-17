@@ -1,6 +1,8 @@
 package com.kh.spring.snackpotEmp.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -64,6 +66,60 @@ public class SnackpotEmpDao {
 	public String searchSempName(SqlSessionTemplate sqlSession, String sempNum) {
 
 		return sqlSession.selectOne("snackpotEmpMapper.searchSempName", sempNum);
+	}
+
+	public Company searchComName(SqlSessionTemplate sqlSession, String comName) {
+
+		return sqlSession.selectOne("companyMapper.searchComName", comName);
+	}
+
+	public int updateCompany(SqlSessionTemplate sqlSession, String comCode, String sempNum) {
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("comCode", comCode);
+		parameters.put("sempNum", sempNum);
+		
+		return sqlSession.update("snackpotEmpMapper.updateCompany", parameters);
+	}
+
+	public int updateSempNum(SqlSessionTemplate sqlSession, String comName, String sempNum) {
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("comName", comName);
+		parameters.put("sempNum", sempNum);
+		
+		return sqlSession.update("companyMapper.updateSempNum", parameters);
+	}
+
+	public ArrayList<Company> selectOriginCom(SqlSessionTemplate sqlSession, String sempNum) {
+		
+		return (ArrayList)sqlSession.selectList("companyMapper.selectOriginCom", sempNum);
+	}
+
+	public int updateComNull(SqlSessionTemplate sqlSession, String comCode) {
+		
+		String empty = "미정";
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("empty", empty);
+		parameters.put("comCode", comCode);
+		
+		return sqlSession.update("companyMapper.updateComNull", parameters);
+	}
+
+	public int updatePw(SqlSessionTemplate sqlSession, SnackpotEmp se) {
+		
+		return sqlSession.update("snackpotEmpMapper.updatePw", se);
+	}
+
+	public Company selectSempCompany(SqlSessionTemplate sqlSession, String comCode) {
+		
+		return sqlSession.selectOne("companyMapper.selectSempCompany", comCode);
+	}
+
+	public SnackpotEmp selectComCodeCheck(SqlSessionTemplate sqlSession, String comCode) {
+		
+		return sqlSession.selectOne("snackpotEmpMapper.selectComCodeCheck", comCode);
 	}
 
 }

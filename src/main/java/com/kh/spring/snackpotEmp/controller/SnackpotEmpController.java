@@ -1,6 +1,10 @@
 package com.kh.spring.snackpotEmp.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -222,7 +226,9 @@ public class SnackpotEmpController {
 			
 			Company co = list.get(i);
 			
-			sempNum[i] = co.getSempNum();
+			if(!co.getSempNum().equals("미정")) {
+				sempNum[i] = co.getSempNum();
+			}
 			
 			num = sempNum[i];
 			
@@ -242,25 +248,170 @@ public class SnackpotEmpController {
 	
 	@ResponseBody
 	@RequestMapping("updateCompany.sn")
-	public String updateCompany(String comName) {
+	public String updateCompany(String comName, String sempNum) {
 		
-		String comNameYn = "";
+		//검색결과
+		String searchYn = "";
+		String comCode = "";
+		//코드 중복 체크용 변수
+		String check = "";
 		
-		//회사명 찾기 (여러 개일 경우 자르기)
+		//회사명으로 회사 존재 여부 찾기 (여러 개일 경우 자르기)
 		if(comName.contains(",")) {
 			
 			//"," 구분자로 회사명을 새로운 배열에 담기
 			String name[] = comName.split(", ");
 			for(int i=0; i<name.length; i++) {
 				//회사가 존재하는지 서치 
-//				comNameYn = ses.searchcomName(name[i]);
+				Company co = ses.searchComName(name[i]);
 				
+				//존재한다면 comCode 변수에 구분자를 넣어 담아주기
+				if(co != null) {
+					
+					//업데이트 해주기 전에, 먼저 업데이트할 코드를 갖고 있는 직원이 있는지 체크
+					check = "%" + co.getComCode() + "%";
+					SnackpotEmp se = ses.selectComCodeCheck(check);
+					
+					//조회한 직원의 사번이 바꿀 직원이랑 같으면 패스, 같지 않으면 지워줘야함
+					if(se.getSempNum() != Integer.parseInt(sempNum)) {
+						System.out.println("사원정보 겹침!!");
+					}
+					
+					if(i == name.length-1) {
+					comCode += co.getComCode();
+					}else if(i == 0){
+						comCode = co.getComCode() + "/";
+					}else {
+						comCode += co.getComCode() + "/";
+					}
+					
+				}else {
+					//둘 중 하나라도 없으면 null
+					comCode = null;
+				}
 				
 			}
 			
+			//회사가 존재한다면
+			if(comCode != null) {
+				
+				//해당 직원의 sempComCode에 추가 
+				int result = ses.updateCompany(comCode, sempNum);
+				
+				//구독회사 테이블 업데이트
+				if(result > 0) {
+					
+					//기존 회사는 null로 업데이트를 먼저 해줘야함
+						//sempNum으로 해당 사원이 맡고있던 기존 회사들 찾기 (여러 개일수도 있으니 리스트 사용)
+						ArrayList <Company> comList = ses.selectOriginCom(sempNum);
+						
+						//null로 업데이트
+						for(int x=0; x<comList.size(); x++) {
+							System.out.println("널업데이트 : " + comList.get(x).getComCode());
+							ses.updateComNull(comList.get(x).getComCode());
+						}
+					
+					for(int i=0; i<name.length; i++) {
+						
+						//이제 새로 입력한 회사로 추가
+						ses.updateSempNum(name[i], sempNum);
+						
+					}
+					
+					searchYn = "Y";
+				}
+			
+			}
+			
+			
+		}else {
+			Company co = ses.searchComName(comName);
+			if(co != null) {
+			int result = ses.updateCompany(co.getComCode(), sempNum);
+			
+				//구독회사 테이블 업데이트 
+				if(result > 0) {
+					
+					ArrayList <Company> comList = ses.selectOriginCom(sempNum);
+					
+					//null로 업데이트
+					for(int x=0; x<comList.size(); x++) {
+						ses.updateComNull(comList.get(x).getComCode());
+					}
+					
+					//새로 입력한 회사 추가 
+					ses.updateSempNum(co.getComName(), sempNum);
+					
+					searchYn = "Y";
+				}
+
+			}
 		}
 		
+		return searchYn;
+	}
+	
+	@RequestMapping("modifyPw.sn")
+	public String modifyPw() {
+		return "headoffice/snackpotEmp/modifyPw";
+	}
+	
+	@RequestMapping("updatePw.sn")
+	public String updatePw(String originPw, String sempPw, String sempPwcheck, HttpSession session, Model model) {
 		
-		return null;
+		SnackpotEmp se = new SnackpotEmp(); 
+		SnackpotEmp loginEmp = (SnackpotEmp) session.getAttribute("loginEmp");
+		
+		if(bCryptPasswordEncoder.matches(originPw, loginEmp.getSempPw())) {
+			String encPw = bCryptPasswordEncoder.encode(sempPw);
+			se.setSempNum(loginEmp.getSempNum());
+			se.setSempPw(encPw);
+			ses.updatePw(se);
+			
+			loginEmp.setSempPw(encPw);
+			
+			model.addAttribute("msg","비밀번호 변경에 성공하였습니다.");
+	        model.addAttribute("url","/mainPage.ho");
+	        
+		}else {
+			model.addAttribute("msg","비밀번호가 일치하지 않아 변경에 실패했습니다.");
+	        model.addAttribute("url","/modifyPw.co");	
+			
+		}
+		
+		return "common/alert";
+	}
+	
+	@RequestMapping("companyList.sn")
+	public String companyList(HttpSession session, Model model) {
+		
+		SnackpotEmp loginEmp = (SnackpotEmp) session.getAttribute("loginEmp");
+		String comCode = loginEmp.getSempComCode();
+		ArrayList <Company> list = new ArrayList<Company>();
+		
+		//"/" 문자 포함이면 여러 회사를 담당하고 있는 사원
+		if(comCode.contains("/")) {
+			
+			//"/" 구분자로 코드들을 새로운 배열에 담기
+			String codes[] = comCode.split("/");
+			for(int i=0; i<codes.length; i++) {
+				//회사코드로 company 정보 가져오기
+				Company co = ses.selectSempCompany(codes[i]);
+				list.add(co);
+			}
+			
+		//미정이라면 아무 회사도 담당하고 있지 않은 사원	
+		}else if(comCode.equals("미정")){
+			
+			
+		//그 외 -> 한 회사만 담당하고 있는 사원	
+		}else {
+			Company co = ses.selectSempCompany(comCode);
+			list.add(co);
+		}
+		
+		model.addAttribute("list", list);
+		
+		return "headoffice/snackpotEmp/companyList";
 	}
 }

@@ -51,20 +51,20 @@
                     <hr>
 
                     <div class="search form-inline"><!-- form-inline : 한줄에 배치 -->
-                    	<form action="searchList.sn" method="post">
+                    	<form action="searchList.sn" method="get" id="searchList">
 	                        <select class="search-select form-control" id="category" name="category">
 	                            <option value="0">카테고리</option>
 	                            <option value="1">리스트 번호</option>
 	                            <option value="2">회사명</option>
-	                            <option value="3">발송 내역</option>
+	                            <option value="3">발송 상품</option>
 	                        </select>
 	
-	                        <input type="text" class="form-control" name="search" placeholder="검색어 입력">
+							<input hidden="hidden"><!-- enter 눌렀을 때 submit 방지 -->
+	                        <input type="text" class="form-control" name="search" id="searchInput" placeholder="검색어 입력">
+	                        <input type="date" class="form-control" name="startDate" id="startDate">
+	                        <input type="date" class="form-control" name="endDate" id="endDate">
 	
-	                        <input type="date" class="form-control" name="startDate" value="0">
-	                        <input type="date" class="form-control" name="endDate" value="0">
-	
-	                        <button class="btn btn-primary" type="submit" id="searchBtn">검색</button>
+	                        <button class="btn btn-primary" type="button" id="searchBtn">검색</button>
                         </form>
                     </div>
 
@@ -104,6 +104,50 @@
 		$("#snackList tbody tr").click(function(){
 			location.href="sendingDetail.sn?snackListNo=" + $(this).children().eq(0).text();
 		});
+		
+		
+		<%--날짜 값을 설정하지 않으면 형변환 에러가 발생하므로 disabled속성 주기, disabled는  객체 전송 안됨--%>
+		$('#searchBtn').click(function(){
+			
+			var startDate = $('#startDate').val();
+			var endDate = $('#endDate').val();
+			
+			if(startDate == ''){
+				$('#startDate').attr('disabled', true);
+			}
+			
+			if(endDate == ''){
+				$('#endDate').attr('disabled', true);
+			}
+			
+			<%--카테고리 리스트번호 선택 후 검색어 입력하지 않았을 경우 --%>
+			var c = $('select[name=category]').val();
+			var text = $('#searchInput').val();
+			
+			if(c == 1 && text == ''){
+				$('select[name=category]').val(0);
+			}
+			
+			$('#searchList').submit();
+			
+		});
+		
+		$('#category').on('change', function(){
+			
+			var c = $('select[name=category]').val();
+			
+			if(c == 1){
+				$('#searchInput').val('');
+				$('#searchInput').attr('placeholder', '숫자만 입력해 주세요');
+				$('#searchInput').attr('onKeyup', 'this.value=this.value.replace(/[^0-9]/g,"");');
+			}else{
+				$('#searchInput').removeAttr('onKeyup');
+				$('#searchInput').attr('placeholder', '검색어 입력');
+			}
+			
+		});
+		
+		
 	});
 
 </script>

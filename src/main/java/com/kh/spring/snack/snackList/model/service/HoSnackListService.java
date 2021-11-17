@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.spring.product.model.vo.Product;
+import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
 import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
@@ -41,6 +42,8 @@ public interface HoSnackListService {
 
 	void updateSnackAmount(SnackDList snackD);
 
+	ArrayList<WishListDtail> selectWishList(ComListInfo info);
+	
 	int selectSnackMaxNum();
 
 	void insertOrder(ComListInfo schedule);

@@ -21,6 +21,7 @@ public class ComListInfo {
 	private String listTransDate;
 	private String orderDeadline;
 	private String deliveryDate;
+	private String wishEndDate;
 	private Date settleDate;
 	private String status;
 	private int budget;

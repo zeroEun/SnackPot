@@ -39,6 +39,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="content" column="SNACK_NAME"/>
 	</resultMap>
 	
+	<resultMap type="WishListDtail" id="WishListDtailResult">
+	 	<id property="wishDetailNo" column="WISHDETAIL_NO"/>
+		<result property="comCode" column="COM_CODE"/>
+		<result property="comName" column="COM_NAME"/>
+		<result property="wishNo" column="WISH_NO"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="snackNo" column="SNACK_NO"/>
+		<result property="snackName" column="SNACK_NAME"/>
+		<result property="count" column="COUNT"/>
+		<result property="purchasePrice" column="PURCHASE_PRICE"/>
+		<result property="wishEndDate" column="WISH_END_DATE"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+	</resultMap>
+	
 	<select id="selectSubsInfo" parameterType="java.util.HashMap" resultMap="comListInfoResultSet">
 		
 			SELECT A.SUBS_NO, A.COM_CODE, B.COM_NAME, A.DELIVERY_DATE, A.SETTLEMENT_DATE, A.BUDGET
@@ -170,6 +184,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE SNACK_D_NO = ${snackDNo}
 	</update>
 	
+	<select id="selectWishList" parameterType="ComListInfo" resultMap="WishListDtailResult">
+		<!-- 
+		SELECT A.WISHDETAIL_NO, A.WISH_NO, A.SNACK_NO, B.SNACK_NAME, 
+        	   B.CATEGORY_NO, C.CATEGORY, B.DETAIL_NO, D.DETAIL, A.COUNT, B.STOCK, E.CHANGE_NAME
+		FROM WISHLIST_DETAIL A
+		JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
+		JOIN SNACK_CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO)
+		JOIN SNACK_CATEGORY_DETAIL D ON (B.DETAIL_NO = D.DETAIL_NO)
+		LEFT JOIN SNACK_ATTACHMENT E ON (B.SNACK_NO = E.SNACK_NO)
+		WHERE A.WISH_NO = (SELECT WISH_NO
+		                   FROM WISHLIST
+		                   WHERE STATUS = 'Y' 
+		                   AND COM_CODE = 'k2111151730'
+		                   AND WISH_END_DATE = '2021-11-23')
+		--> 
+	</select>
+	
 	<select id="selectSnackMaxNum" resultType="_int">
 		SELECT MAX(SNACK_NO)
 		FROM SNACK
@@ -198,7 +229,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<select id="selectSendingList" parameterType="java.util.HashMap" resultMap="snackListResultSet">
-		SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, A.TRANS_DATE, D.SNACK_NAME
+		SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, TO_CHAR(A.TRANS_DATE, 'yyyy-MM-dd') AS TRANS_DATE, D.SNACK_NAME
 		FROM SNACK_LIST A
 		JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
 		JOIN SNACK_D_LIST C ON (A.SNACK_LIST_NO = C.SNACK_LIST_NO)
@@ -215,8 +246,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectSnackList" parameterType="_int" resultMap="snackListResultSet">
-		SELECT *
-		FROM SNACK_LIST
+		SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, TO_CHAR(A.TRANS_DATE, 'yyyy-MM-dd') AS TRANS_DATE,
+		       A.BUDGET, A.TOTAL_PRICE
+		FROM SNACK_LIST A
+		JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
 		WHERE SNACK_LIST_NO = #{snackListNo}
 	</select>
 	
@@ -224,7 +257,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	SELECT *
 	 	FROM
 	 	(
-		 	SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, A.TRANS_DATE, D.SNACK_NO, D.SNACK_NAME
+		 	SELECT A.SNACK_LIST_NO, A.COM_CODE, B.COM_NAME, A.TRANS_STATUS, TO_CHAR(A.TRANS_DATE, 'yyyy-MM-dd') AS TRANS_DATE, D.SNACK_NO, D.SNACK_NAME
 			FROM SNACK_LIST A
 			JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
 			JOIN SNACK_D_LIST C ON (A.SNACK_LIST_NO = C.SNACK_LIST_NO)
@@ -234,31 +267,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					#{item}
 				</foreach>)
 			AND A.TRANS_STATUS = 'Y'
+			<if test="category == 1">
+	 			AND A.SNACK_LIST_NO = #{search}
+		 	</if>
+		 	<if test="category == 2">
+		 		AND B.COM_NAME LIKE '%'|| #{search} ||'%'
+		 	</if>
+			<if test="category == 3">
+		 		AND A.SNACK_LIST_NO IN (SELECT A.SNACK_LIST_NO
+		 						        FROM SNACK_D_LIST A 
+								        JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
+								        WHERE B.SNACK_NAME LIKE '%'|| #{search} ||'%'
+		 								)
+		 	</if>
+		 	<if test="startDate != null">
+		 		<![CDATA[
+		 		AND A.TRANS_DATE >= #{startDate}
+		 		]]>
+		 	</if>
+		 	<if test="endDate != null">
+		 		<![CDATA[
+		 		AND A.TRANS_DATE < #{endDate}+1
+		 		]]>
+		 	</if>
 	 	)
-	 	WHERE 1=1
-	 	<if test="category == 1">
-	 		AND SNACK_LIST_NO = #{search}
-	 	</if>
-	 	<if test="category == 2">
-	 		AND COM_NAME LIKE '%'|| #{search} ||'%'
-	 	</if>
-	 	<if test="category == 3">
-	 		AND SNACK_NAME LIKE '%'|| #{search} ||'%'
-	 	</if>
-	 	<if test="startDate != 0">
-	 		<![CDATA[
-	 		AND TRANS_DATE >= ${startDate}
-	 		]]>
-	 	</if>
-	 	<if test="endDate != 0">
-	 		<![CDATA[
-	 		AND TRANS_DATE <= ${endDate}
-	 		]]>
-	 	</if>
-	 	AND (SNACK_LIST_NO, SNACK_NO) IN (SELECT A.SNACK_LIST_NO, MIN(B.SNACK_NO)
-												FROM SNACK_LIST A
-												JOIN SNACK_D_LIST B ON (A.SNACK_LIST_NO = B.SNACK_LIST_NO)
-										        GROUP BY A.SNACK_LIST_NO)
+	 	WHERE (SNACK_LIST_NO, SNACK_NO) IN (SELECT A.SNACK_LIST_NO, MIN(B.SNACK_NO)
+											FROM SNACK_LIST A
+											JOIN SNACK_D_LIST B ON (A.SNACK_LIST_NO = B.SNACK_LIST_NO)
+										    GROUP BY A.SNACK_LIST_NO)
 	
 	</select>
 

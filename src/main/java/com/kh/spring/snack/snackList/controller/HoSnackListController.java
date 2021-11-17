@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.SnackSubCategory;
+import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.service.HoSnackListService;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
 import com.kh.spring.snack.snackList.model.vo.SearchList;
@@ -178,6 +179,23 @@ public class HoSnackListController {
 		return "headoffice/snack/createSnackList";
 	}
 	
+	@RequestMapping("selectWishList.sn")
+	public String selectWishList(String comCode, int listNo, Model model) {
+		
+		ComListInfo info = companyInfo(comCode).get(0);
+		
+		ArrayList<WishListDtail> wishList = hoSnackListService.selectWishList(info);
+		
+		info.setTotalPrice(selectTotalPrice(listNo));
+		info.setListNo(listNo);
+		
+		model.addAttribute("wishList", wishList);
+		model.addAttribute("dList", selectSnackDList(listNo));
+		model.addAttribute("i", info);
+		
+		return "headoffice/snack/createSnackList";
+	}
+	
 	@RequestMapping("sendSnackList.sn")
 	public String sendSnackList(ComListInfo info, Model model) {
 		
@@ -205,6 +223,7 @@ public class HoSnackListController {
 		
 		SnackList sList = hoSnackListService.selectSnackList(snackListNo);
 		
+		
 		model.addAttribute("sList", sList);
 		model.addAttribute("dList", selectSnackDList(snackListNo));
 		
@@ -224,12 +243,6 @@ public class HoSnackListController {
 		}
 		
 		searchList.setComArr(comArr);
-		
-		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		//searchList.setStartDate(sdf.format(searchList.getStartDate()));
-		//searchList.setEndDate(sdf.format(searchList.getEndDate()));
-		
 		
 		System.out.println(searchList);
 		ArrayList<SnackList> sendingList = hoSnackListService.searchSendingList(searchList);
@@ -282,6 +295,10 @@ public class HoSnackListController {
 			// 리스트 발송일 : 배송예정일 -5
 			cal.add(Calendar.DATE, -5);
 			i.setListTransDate(sdf.format(cal.getTime()));
+			
+			//위시 리시트 마감일
+			cal.add(Calendar.DATE, -1);
+			i.setWishEndDate(sdf.format(cal.getTime()));
 
 			// 해당 월 리스트 발송 여부 확인
 			// 리스트가 존재해도 transStatus 상태값이 N이면 set 'N'
@@ -329,7 +346,6 @@ public class HoSnackListController {
 		ArrayList<SnackDList> list =  hoSnackListService.selectSnack(subs);
 		ArrayList<SnackDList> dList = new ArrayList<SnackDList>();
 		
-		
 		int amount = defaultAmount;
 		int maxNum = hoSnackListService.selectSnackMaxNum()-1;
 		System.out.println("maxNum" + maxNum);
@@ -338,6 +354,10 @@ public class HoSnackListController {
 		int snackBudget = budget * subs.getSnackRatio()/100;
 		int drinkBudget = budget * subs.getDrinkRatio()/100;
 		int retortBudget = budget * subs.getRetortRatio()/100;
+		
+		
+		
+		
 		
 		//랜덤으로 상품번호 가져와서 list에 번호가 있는지 확인
 		//있으면 수량 체크(재고 있는지)확인

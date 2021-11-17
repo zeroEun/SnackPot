@@ -53,7 +53,7 @@
 
                     <div class="company">
                        
-                        <div class="company-name">카카오</div>
+                        <div class="company-name">${sList.comName}</div>
 
                         <span class="">리스트 발송일: ${sList.transDate}</span>
                         <span class="">예산: ${sList.budget} </span>

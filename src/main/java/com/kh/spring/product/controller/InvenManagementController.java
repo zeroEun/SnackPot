@@ -174,11 +174,11 @@ public class InvenManagementController {
 	
 	
 
-	private String arrivalDate() {
+	/*private String arrivalDate() {
 		
 		
 		return "";
-	}
+	}*/
 	
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.spring.birthday.giftList.model.dao.GiftListDao;
 import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
 import com.kh.spring.birthday.giftList.model.vo.GiftList;
+import com.kh.spring.common.exception.CommException;
 
 @Service
 public class GiftListServiceImpl implements GiftListService {
@@ -35,6 +36,24 @@ public class GiftListServiceImpl implements GiftListService {
 	public ArrayList<GiftList> selectCtgry(int ctgryNum) {
 		// TODO Auto-generated method stub
 		return giftListDao.selectCtgry(sqlSession, ctgryNum);
+	}
+
+	@Override
+	public int addGiftFolder(String folderName) {
+
+		int result = giftListDao.addGiftFolder(sqlSession, folderName);
+		
+		if(result < 0) {
+			throw new CommException("폴더 추가 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<GiftList> seletFolderInfo(int rowNum) {
+		// TODO Auto-generated method stub
+		return giftListDao.seletFolderInfo(sqlSession, rowNum);
 	}
 	
 }

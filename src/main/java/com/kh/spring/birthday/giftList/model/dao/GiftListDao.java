@@ -27,4 +27,14 @@ public class GiftListDao {
 		return (ArrayList)sqlSession.selectList("birthdayMapper.selectCtgry", ctgryNum);
 	}
 
+	public int addGiftFolder(SqlSessionTemplate sqlSession, String folderName) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("birthdayMapper.addGiftFolder", folderName);
+	}
+
+	public ArrayList<GiftList> seletFolderInfo(SqlSessionTemplate sqlSession, int rowNum) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("birthdayMapper.seletFolderInfo", rowNum);
+	}
+
 }

@@ -13,4 +13,8 @@ public interface GiftListService {
 
 	ArrayList<GiftFolder> selectFolderArr();
 
+	int addGiftFolder(String folderName);
+
+	ArrayList<GiftList> seletFolderInfo(int rowNum);
+
 }

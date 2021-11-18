@@ -16,8 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.GsonBuilder;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.service.InvenManagementService;
@@ -73,7 +75,7 @@ public class InvenManagementController {
 		ProductAttachment pa = new ProductAttachment();
 
 		String resources = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = resources + "/upload_files/";
+		String savePath = resources + "/images/";
 
 		System.out.println("savePath : " + savePath);
 
@@ -172,6 +174,35 @@ public class InvenManagementController {
 		return "common/alert";	
 	}
 	
+	
+	//입고 목록 Ajax
+	@ResponseBody
+	@RequestMapping(value="arrivalListAjax.im", produces="application/json; charset=utf-8")
+	private String arrivalListajax(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage) {
+		
+		int listCount = invenManagementService.todayArrivalCount();
+		System.out.println(listCount);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
+		
+		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
+	}
+	
+	/*@ResponseBody
+	@RequestMapping(value="arrivalListAjax.im", produces="application/json; charset=utf-8")
+	private String arrivalListajax2(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage) {
+		
+		int listCount = invenManagementService.todayArrivalCount();
+		System.out.println(listCount);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
+		
+		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
+	}*/
 	
 
 	/*private String arrivalDate() {

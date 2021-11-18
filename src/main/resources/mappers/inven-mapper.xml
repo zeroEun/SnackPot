@@ -4,105 +4,131 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="invenMapper">
 
-<resultMap id="arrivalResultSet" type="Arrival">
-		<id column="arrival_no" property="arrivalNo"/>
-		<result column="amount" property="amount"/>
-		<result column="unit" property="unit"/>
-		<result column="remark" property="remark"/>
-		<result column="arrival_date" property="arrivalDate"/>
-		<result column="snack_no" property="snackNo"/>
+	<resultMap id="arrivalResultSet" type="Arrival">
+		<id column="arrival_no" property="arrivalNo" />
+		<result column="amount" property="amount" />
+		<result column="unit" property="unit" />
+		<result column="remark" property="remark" />
+		<result column="arrival_date" property="arrivalDate" />
+		<result column="snack_no" property="snackNo" />
+		<result column="snack_name" property="snackName" />
+		<result column="stock" property="stock" />
+
 	</resultMap>
-	
-	
-<resultMap id="releaseResultSet" type="Release">
-		<id column="release_no" property="releaseNo"/>
-		<result column="amount" property="amount"/>
-		<result column="unit" property="unit"/>
-		<result column="remark" property="remark"/>
-		<result column="release_date" property="releaseDate"/>
-		<result column="snack_no" property="snackNo"/>
+
+
+	<resultMap id="releaseResultSet" type="Release">
+		<id column="release_no" property="releaseNo" />
+		<result column="amount" property="amount" />
+		<result column="unit" property="unit" />
+		<result column="remark" property="remark" />
+		<result column="release_date" property="releaseDate" />
+		<result column="snack_no" property="snackNo" />
 	</resultMap>
-	
-	
-
-<insert id="insertSnack"  parameterType="Product">
 
 
-INSERT INTO SNACK 
-VALUES (${snackNo}, '${snackName}', ${purchasePrice},
-${releasePrice}, sysdate, 'Y', 0, '${unit}', ${categoryNo}, ${detailNo},
-${tasteNo}, ${aromaNo}
-)
 
-</insert>
-
-<insert id="insertSnackAttach" parameterType="ProductAttachment">
-
-INSERT INTO SNACK_ATTACHMENT
-VALUES (
-SNACKATTACH_SEQ.NEXTVAL, '${originName}', '${changeName}', '${filePath}', 
-${snackNo}
-)
-
-</insert>
-
-<insert id="arrivalInsert"  parameterType="Arrival">
+	<insert id="insertSnack" parameterType="Product">
 
 
-INSERT INTO ARRIVAL 
-VALUES ( 
-ARRIVAL_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}
-)
+		INSERT INTO SNACK
+		VALUES (${snackNo}, '${snackName}', ${purchasePrice},
+		${releasePrice}, sysdate, 'Y', 0, '${unit}', ${categoryNo}, ${detailNo},
+		${tasteNo}, ${aromaNo}
+		)
 
-</insert>
+	</insert>
 
-<select id="todayArrivalCount" resultType="_int">
+	<insert id="insertSnackAttach" parameterType="ProductAttachment">
 
-	
+		INSERT INTO SNACK_ATTACHMENT
+		VALUES (
+		SNACKATTACH_SEQ.NEXTVAL, '${originName}', '${changeName}', '${filePath}',
+		${snackNo}
+		)
+
+	</insert>
+
+	<insert id="arrivalInsert" parameterType="Arrival">
+
+
+		INSERT INTO ARRIVAL
+		VALUES (
+		ARRIVAL_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}
+		)
+
+	</insert>
+
+	<select id="todayArrivalCount" resultType="_int">
+
+
 		SELECT COUNT(*)
 		FROM ARRIVAL
-		WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
-		
+		WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') =
+		TO_CHAR(SYSDATE,'YYYYMMDD')
 
-</select>
+
+	</select>
 
 	<select id="todayArrivalList" resultMap="arrivalResultSet">
 
-	SELECT * 
-	FROM ARRIVAL
-	WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
-	ORDER BY ARRIVAL_NO DESC
-	
+		SELECT
+		A.ARRIVAL_NO,
+		A.AMOUNT,
+		A.UNIT,
+		A.REMARK,
+		A.ARRIVAL_DATE,
+		A.SNACK_NO,
+		B.SNACK_NAME,
+		B.STOCK
+		FROM ARRIVAL A
+		JOIN SNACK B
+		ON A.SNACK_NO = B.SNACK_NO
+		WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+		ORDER BY ARRIVAL_NO DESC
+
+
 	</select>
-	
-	
-	<insert id="releaseInsert"  parameterType="Release">
 
 
-INSERT INTO RELEASE
-VALUES ( 
-RELEASE_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}, '1'
-)
+	<insert id="releaseInsert" parameterType="Release">
 
-</insert>
 
-<select id="todayReleaseCount" resultType="_int">
+		INSERT INTO RELEASE
+		VALUES (
+		RELEASE_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}, '1'
+		)
 
-	
+	</insert>
+
+	<select id="todayReleaseCount" resultType="_int">
+
+
 		SELECT COUNT(*)
 		FROM RELEASE
-		WHERE TO_CHAR(RELEASE_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
-		
+		WHERE TO_CHAR(RELEASE_DATE,'YYYYMMDD') =
+		TO_CHAR(SYSDATE,'YYYYMMDD')
 
-</select>
+
+	</select>
 
 	<select id="todayReleaseList" resultMap="releaseResultSet">
 
-	SELECT * 
-	FROM RELEASE
-	WHERE TO_CHAR(RELEASE_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
-	ORDER BY RELEASE_NO DESC
-	
+		SELECT
+		A.RELEASE_NO,
+		A.AMOUNT,
+		A.UNIT,
+		A.REMARK,
+		A.RELEASE_DATE,
+		A.SNACK_NO,
+		B.SNACK_NAME,
+		B.STOCK
+		FROM RELEASE A
+		JOIN SNACK B
+		ON A.SNACK_NO = B.SNACK_NO
+		WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+		ORDER BY RELEASE_NO DESC
+
 	</select>
 
 

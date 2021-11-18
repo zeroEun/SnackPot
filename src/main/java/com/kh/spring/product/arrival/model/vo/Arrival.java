@@ -24,7 +24,7 @@ public class Arrival {
 	private int snackNo;
 	private String snackName;
 	private int stock;
-	
+
 	
 
 }

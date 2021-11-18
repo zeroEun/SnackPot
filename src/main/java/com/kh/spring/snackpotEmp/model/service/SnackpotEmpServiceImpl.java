@@ -166,9 +166,19 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 	}
 
 	@Override
-	public SnackpotEmp selectComCodeCheck(String check) {
+	public ArrayList<SnackpotEmp> selectComCodeCheck(String check) {
 		
 		return sed.selectComCodeCheck(sqlSession, check);
+	}
+
+	@Override
+	public void deleteSempComCode(SnackpotEmp se) {
+		int result = sed.deleteSempComCode(sqlSession, se);
+		
+		if(result < 0) {
+			throw new CommException("기존 사원 담당 회사 삭제에 실패했습니다");
+		}
+		
 	}
 
 }

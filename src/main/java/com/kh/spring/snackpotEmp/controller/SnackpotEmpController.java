@@ -1,7 +1,6 @@
 package com.kh.spring.snackpotEmp.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpSession;
 
@@ -255,8 +254,12 @@ public class SnackpotEmpController {
 		String comCode = "";
 		//코드 중복 체크용 변수
 		String check = "";
+		//중복 코드 제거용 변수
+		String newCode = "";
+		
 		
 		//회사명으로 회사 존재 여부 찾기 (여러 개일 경우 자르기)
+		//1. 회사가 여러 개일 경우
 		if(comName.contains(",")) {
 			
 			//"," 구분자로 회사명을 새로운 배열에 담기
@@ -270,12 +273,55 @@ public class SnackpotEmpController {
 					
 					//업데이트 해주기 전에, 먼저 업데이트할 코드를 갖고 있는 직원이 있는지 체크
 					check = "%" + co.getComCode() + "%";
-					SnackpotEmp se = ses.selectComCodeCheck(check);
+					ArrayList <SnackpotEmp> sempList = ses.selectComCodeCheck(check);
 					
+					for(int y=0; y<sempList.size(); y++) {
+
 					//조회한 직원의 사번이 바꿀 직원이랑 같으면 패스, 같지 않으면 지워줘야함
-					if(se.getSempNum() != Integer.parseInt(sempNum)) {
-						System.out.println("사원정보 겹침!!");
+					if(sempList.get(y).getSempNum() != Integer.parseInt(sempNum)) {
+						
+						String sempComCode = sempList.get(y).getSempComCode();
+						
+						//코드가 있을 4가지의 경우
+						String code1 = co.getComCode();
+						String code2 = co.getComCode() + "/";
+						String code3 = "/" + co.getComCode();
+						String code4 = "/" + co.getComCode() + "/";
+						
+						//코드가 여러개인 경우
+						if(sempComCode.contains("/")) {
+							
+							//사이에 있는 경우
+							if(sempComCode.contains(code4)) {
+								newCode = sempComCode.replace(code2, "");
+							}else {
+								//맨 앞에 있는 경우
+								if(sempComCode.contains(code2)) {
+									newCode = sempComCode.replace(code2, "");
+								//맨 뒤에 있는 경우	
+								}else if(sempComCode.contains(code3)) {
+									newCode = sempComCode.replace(code3, "");
+								}	
+							}
+							
+							//없애준 코드 넣어주기
+							sempList.get(y).setSempComCode(newCode);
+							
+							//기존 직원의 회사 지워주기
+							ses.deleteSempComCode(sempList.get(y));
+							
+							//코드가 1개인 경우
+							}else if(!sempComCode.contains("/")){
+							
+								sempList.get(y).setSempComCode("미정");
+								
+								//기존 직원의 회사 지워주기
+								ses.deleteSempComCode(sempList.get(y));
+							
+							}
+						
 					}
+				}
 					
 					if(i == name.length-1) {
 					comCode += co.getComCode();
@@ -292,8 +338,12 @@ public class SnackpotEmpController {
 				
 			}
 			
+			System.out.println("수정할 회사값 찍기(값이 여러 개일 때) : " + comCode);
+			
 			//회사가 존재한다면
 			if(comCode != null) {
+				
+				System.out.println("수정할 회사값 (값이 여러개일 때) : " + comCode);
 				
 				//해당 직원의 sempComCode에 추가 
 				int result = ses.updateCompany(comCode, sempNum);
@@ -323,12 +373,18 @@ public class SnackpotEmpController {
 			
 			}
 			
-			
+		// 2. 회사가 1개일 경우 	
 		}else {
 			Company co = ses.searchComName(comName);
-			if(co != null) {
-			int result = ses.updateCompany(co.getComCode(), sempNum);
 			
+			System.out.println("수정할 회사값 찍기(값이 1개일 때) : " + co.getComCode());
+			
+			//회사가 존재한다면
+			if(co != null) {
+				
+				//직원 테이블에 수정한 회사 업데이트
+				int result = ses.updateCompany(co.getComCode(), sempNum);
+				
 				//구독회사 테이블 업데이트 
 				if(result > 0) {
 					
@@ -344,7 +400,60 @@ public class SnackpotEmpController {
 					
 					searchYn = "Y";
 				}
+				
+				//기존 직원 테이블 회사는 지우기
+				//수정할 회사를 담당하고 있는 직원이 있는지 조회
+				check = "%" + co.getComCode() + "%";
+				ArrayList <SnackpotEmp> sempList = ses.selectComCodeCheck(check);
+				
+				for(int y=0; y<sempList.size(); y++) {
 
+				//조회한 직원의 사번이 바꿀 직원이랑 같으면 패스, 같지 않으면 지워줘야함
+				if(sempList.get(y).getSempNum() != Integer.parseInt(sempNum)) {
+					
+					String sempComCode = sempList.get(y).getSempComCode();
+					
+					//코드가 있을 4가지의 경우
+					String code1 = co.getComCode();
+					String code2 = co.getComCode() + "/";
+					String code3 = "/" + co.getComCode();
+					String code4 = "/" + co.getComCode() + "/";
+					
+					//코드가 여러개인 경우
+					if(sempComCode.contains("/")) {
+						
+						//사이에 있는 경우
+						if(sempComCode.contains(code4)) {
+							newCode = sempComCode.replace(code2, "");
+						}else {
+							//맨 앞에 있는 경우
+							if(sempComCode.contains(code2)) {
+								newCode = sempComCode.replace(code2, "");
+							//맨 뒤에 있는 경우	
+							}else if(sempComCode.contains(code3)) {
+								newCode = sempComCode.replace(code3, "");
+							}	
+						}
+						
+						//없애준 코드 넣어주기
+						sempList.get(y).setSempComCode(newCode);
+						
+						//기존 직원의 회사 지워주기
+						ses.deleteSempComCode(sempList.get(y));
+						
+						//코드가 1개인 경우
+						}else if(!sempComCode.contains("/")){
+						
+							sempList.get(y).setSempComCode("미정");
+							
+							//기존 직원의 회사 지워주기
+							ses.deleteSempComCode(sempList.get(y));
+						
+						}
+					
+					}
+				}
+			
 			}
 		}
 		

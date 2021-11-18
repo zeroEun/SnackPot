@@ -78,4 +78,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE SEMP_COMCODE LIKE #{comCode}
 	</select>
 	
+	<update id="deleteSempComCode" parameterType="SnackpotEmp">
+		UPDATE SNACKPOT_EMP
+		SET SEMP_COMCODE=#{sempComCode}
+		WHERE SEMP_NUM=#{sempNum}
+	</update>
+	
 </mapper>

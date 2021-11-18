@@ -117,9 +117,14 @@ public class SnackpotEmpDao {
 		return sqlSession.selectOne("companyMapper.selectSempCompany", comCode);
 	}
 
-	public SnackpotEmp selectComCodeCheck(SqlSessionTemplate sqlSession, String comCode) {
+	public ArrayList<SnackpotEmp> selectComCodeCheck(SqlSessionTemplate sqlSession, String comCode) {
 		
-		return sqlSession.selectOne("snackpotEmpMapper.selectComCodeCheck", comCode);
+		return (ArrayList)sqlSession.selectList("snackpotEmpMapper.selectComCodeCheck", comCode);
+	}
+
+	public int deleteSempComCode(SqlSessionTemplate sqlSession, SnackpotEmp se) {
+		
+		return sqlSession.update("snackpotEmpMapper.deleteSempComCode", se);
 	}
 
 }

@@ -42,15 +42,19 @@ public class communityController {
 	@Autowired
 	private CommunityService cmntService;
 	
-	@RequestMapping("list.cm") // 회원 아이디를 같이 넣어줘야한다 (회사코드 join)
+	@RequestMapping("list.cm") 
 	public String selectCommunityList(Model model ,@RequestParam(value="currentPage" ,required=false , defaultValue="1") int currentPage , HttpSession session) {
-	
-		int listCount = cmntService.selectListCount();
-		//System.out.println("listCount : " + listCount);
 		
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		String comCode = loginUser.getComCode();
+	
+		int listCount = cmntService.selectListCount(comCode);
+		
+		System.out.println("listCount : " + listCount);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		
 		ArrayList<Community> list = cmntService.selectList(pi);
+
 		System.out.println("list====> " + list);
 		
 		model.addAttribute("list" , list);
@@ -66,49 +70,54 @@ public class communityController {
 	}
 	
 	@RequestMapping("insert.cm")// 
-	public String insertContent( Community cmnt,  String title , String seContent ,HttpSession session, ComtyAttachment cmntAtt,
+	public String insertContent( Community cmnt,  String title , String seContent ,HttpSession session, ComtyAttachment att,
 			@RequestParam(name="uploadFile", required = false) MultipartFile file , HttpServletRequest request) {
-		
-		System.out.println("파일 이름  : " +  file.getOriginalFilename()); //첨부파일을 받아옴
-		System.out.println("커뮤니티 : " + cmnt);
-		
-		String resources = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = resources + "\\upload_files\\";
+				
+	
+		String savePath = request.getSession().getServletContext().getRealPath("/resources/upload_files/cmntAttachment/");
 		
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		String memId = loginUser.getMemId();
+		String comCode = loginUser.getComCode();
+		cmnt.setContent(seContent);
+		cmnt.setTitle(title);
+		cmnt.setWriter(memId);
+		cmnt.setComCode(comCode);
 		
-		if(!file.getOriginalFilename().equals("")) { 				  
+		if(!file.getOriginalFilename().equals("")) { //첨부파일이 있으면 				  
 
-			String changeName = saveFile(file, request);			//이름 바꿔서 changeName에 담기
-			System.out.println(changeName);
+			String changeName = saveFile(file, request);			
 			
 			if(changeName != null) {
-				
-				
-				HashMap<String, Object> map = new HashMap<String, Object>();
-				map.put("originName", file.getOriginalFilename());
-				map.put("changeName", changeName);
-				map.put("savePath", savePath);
-				System.out.println("map!! : " + map);
-	
-			}
+				att.setOriginName(file.getOriginalFilename());
+				att.setChangeName(changeName);
+				att.setFilePath(savePath);
+			}	
+				cmntService.insertCommunity(cmnt);
+				int cmntNo = cmntService.selectCmntNo(memId);
+				att.setCommunityNo(cmntNo);
+				cmntService.insertCommunityAttachment(att);
+		}else {// 첨부파일이 없다면
+		
+			cmntService.insertCommunity(cmnt);
 			
-				cmnt.setContent(seContent);
-				cmnt.setTitle(title);
-				cmnt.setWriter(memId);
 		}
-	
 		
-	//	cmntService.insertCommunity(cmnt);
-		
+//		System.out.println("=============커뮤니티 insert확인===============");
+//		System.out.println("*****확인*****" + cmnt.getContent());
+//		System.out.println("*****확인*****" + cmnt.getTitle());
+//		System.out.println("*****확인*****" + cmnt.getWriter());
+//		System.out.println("*****사진확인*****" + att.getOriginName());
+//		System.out.println("*****사진확인*****" + att.getChangeName());
+//		System.out.println("*****사진확인*****" + att.getFilePath());
+
 		return "redirect:list.cm";
 	}
 	
 	private String saveFile(MultipartFile file, HttpServletRequest request) {
 	
-		String resources = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = resources + "\\upload_files\\";
+		String savePath = request.getSession().getServletContext().getRealPath("/resources/upload_files/cmntAttachment/");
+		
 		String originName = file.getOriginalFilename();
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		String ext = originName.substring(originName.lastIndexOf("."));
@@ -136,39 +145,55 @@ public class communityController {
 		return "company/community/communityDetailView";
 	}
 	
+	//수정폼으로
 	@RequestMapping("updateForm.cm")
 	public String updateCmntForm(int cno , Model model) {
 		System.out.println("커뮤니티 업데이트할 번호 : " + cno);
 		
-		Community dlist = cmntService.selectDetailCmnt(cno); 
-		model.addAttribute("dlist" , dlist );
+		Community ulist = cmntService.selectDetailCmnt(cno); 
+		model.addAttribute("ulist" , ulist );
+		System.out.println("ulist======================>" + ulist);
 		
 		return "company/community/communityUpdateForm";
+		
 	}
-	
+	//게시글 수정
 	@RequestMapping("update.cm")
-	public String updateCmnt(int cno ,String title , String seContent , RedirectAttributes ra ) {
+	public String updateCmnt(Community cmnt , String cno ,String title , String seContent,
+			String changeName , String originName , @RequestParam(name="uploadFile", required = false) MultipartFile file) {
+		System.out.println("========업데이트 확인============");
+		System.out.println("cmnt : " + cmnt);
+		System.out.println("cno : " + cno);
+		System.out.println("title : " + title);
+		System.out.println("seContent : " + seContent);
+		System.out.println("changeName : " + changeName);
+		System.out.println("originName : " + originName);
+		System.out.println("file : " + file);
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("title", title);
-		map.put("seContent", seContent);
-		map.put("cno", cno);
 		
-		int result = cmntService.updateCmnt(map);
-		System.out.println("cno.......>"  + cno);
 		
-		ra.addAttribute("cno" ,cno);
+		
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("title", title);
+//		map.put("seContent", seContent);
+//		map.put("cno", cno);
+//		
+//		int result = cmntService.updateCmnt(map);
+//		System.out.println("cno.......>"  + cno);
+//		
+//		ra.addAttribute("cno" ,cno);
 		
 		return "redirect:detail.cm";
 	}
 	 
+	//추천
 	@RequestMapping("plusCount.recommend")
 	 public void updateRecommend(@RequestParam("cno") String cno ) {
 		//System.out.println("추천할 게시글 번호는?? : " + cno);
 		
 		cmntService.updateRecommend(cno);
 	}
-	
+	//비추천
 	@RequestMapping("plusCount.n_recommend")
 	 public void updateNrecommend(@RequestParam("cno") String cno ) {
 		

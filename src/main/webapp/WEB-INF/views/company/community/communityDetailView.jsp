@@ -18,21 +18,16 @@
   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>-->
 </head>
 <style>
-    .title{
-        width:1250px;
-        height : 30px;
-        margin : 20px 0px 10px 0px;
-    }
     #smarteditor{
          border : 1px solid;
          height:450px;
          width: 1250px; 
          margin: 0 auto;
     }
-    .title{
-        width:1250px;
+     .title{
+        width:900px;
         height : 30px;
-        margin : 20px 0px 10px 0px;
+        margin : 20px 90px 10px 0px;
     }
     ::placeholder{
         padding-left: 20px;
@@ -48,7 +43,7 @@
     }
     hr{
         width: 1250px;
-        margin-bottom: -10px;
+        margin-bottom: -20px;
         height: 0.1px;
         background-color: black;
     }
@@ -64,9 +59,10 @@
     /*조회수*/
     .views{
         margin-top: 15px;
-        margin-bottom: -30px;
+        margin-bottom: -20px;
         text-align: right;
         margin-right: 180px;
+
     }
      /*추천,비추천 버튼*/
     .recommendBtn{
@@ -86,45 +82,68 @@
         border-style: none;
         font-size: 20px;
     }
+     /*첨부파일*/
+    .attachmentfile{
+       margin-left: 10px;
+       width: 200px;
+
+    }
+     /*댓글*/
+    .replyIcon{
+        margin-left: 130px;
+        background-color: lightgreen;
+    }
+    .fa-comment-dots{
+        font-size: 20px;
+        padding-right: 5px;
+      
+    }
     
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 	<br>
 
-	<form action="insert.cm" method="post" id="frm"
-		style="text-align: center;" enctype="multipart/form-data">
-		<div class="topLine">
-			<button class="back" onclick="back()">취소</button>
-		</div>
-		<hr>
-		<div class="views">
+	<form action="insert.cm" method="post" id="frm" style="text-align: center;" enctype="multipart/form-data">
+	
+		<div class="views" >
 			<label>조회</label>&nbsp;&nbsp;<label>${dlist.views}</label>
 		</div>
-		<input type="text" class="title" name="title" value="${dlist.title}">
+		<hr>
+		<div>
+			<input type="text" class="title" name="title" value="${dlist.title}">
+			 	<c:if test="${ !empty dlist.originName }">
+                    <label class="attachmentfile">
+                     <lable>[파일]</lable>
+                     <a href="${ pageContext.servletContext.contextPath }/resources/upload_files/cmntAttachment/${dlist.changeName}" download="${ dlist.originName }" class="attachmentfile">${ dlist.originName }</a>
+                  </label> 
+                 </c:if>
+		<!-- <input type="file" name="uploadFile" class="attachmentfile"> -->	
+		</div>
 		<div class="tarea">
 			<div name="seContent" id="smarteditor">${dlist.content}</div>
 		</div>
+		</form>
 		<div>
-			<input type="file" name="uploadFile">
 			<c:if test="${ loginUser.memId eq dlist.writer }">
-				<div class="btn">
-					<button class="update" value="${dlist.communityNo }"
-						onclick="update(this.value)">수정</button>
+				<div class="btn"><!-- form에다 넣으면 안된다 inser.cm탐 -->
+					<button class="update" value="${dlist.communityNo }" onclick="update(this.value)">수정</button>
+					<button class="deleteCmnt" value="${dlist.communityNo }" onclick="deleteCmnt(this.value)">삭제</button>
 				</div>
 			</c:if>
+				<div class="topLine">
+					<button class="back" onclick="back()">취소</button>
+				</div>
 		</div>
-	</form>
+	
 	<br>
 	<!--추천 비추천 버튼-->
 	<div class="recommendBtn">
 		<label>${dlist.recommend}</label>
-		<button class="reBtn" onclick="recommend(this.value)"
-			value="${dlist.communityNo}">
+		<button class="reBtn" onclick="recommend(this.value)" value="${dlist.communityNo}">
 			<i class="far fa-thumbs-up"></i>
 		</button>
-		<button class="nreBtn" onclick="n_recommend(this.value)"
-			value="${dlist.communityNo}">
+		<button class="nreBtn" onclick="n_recommend(this.value)" value="${dlist.communityNo}">
 			<i class="far fa-thumbs-down"></i>
 		</button>
 		<label>${dlist.n_recommend}</label>
@@ -164,13 +183,15 @@
 	//댓글 리스트 가져오기
 
 	
-	/*게시글 조회수 , 추천수*/
+
+	/*수정폼으로*/
 	function update(val) {
 		const cno = val;
 		//alert(cno)
 		location.href = "updateForm.cm?cno=" + cno;
 	}
-
+	
+	/*게시글 조회수 , 추천수*/
 	function recommend(val) {
 		const cno = val;
 		console.log(cno)

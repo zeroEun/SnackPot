@@ -128,9 +128,16 @@
 			</thead>
 			<tbody>
 			<c:forEach items="${list}" var="c">
+		<!-- <c:if test="${c.comCode eq loginUser.comCode }">	</c:if> -->	
 				<tr>
 					<td>${c.communityNo }</td>
-					<td>${c.title}<label>[댓글수]</label><i class="far fa-image"></i></td>
+					<c:if  test="${ !empty c.originName }">
+					<td>${c.title}<label>[댓글수]</label>&nbsp;&nbsp;<i class="far fa-image"></i></td>
+					</c:if>
+					
+					<c:if  test="${ empty c.originName }">
+					<td>${c.title}<label>[댓글수]</label></td>
+					</c:if>		
 					<td>${c.writerDate }</td>
 					<td>${c.recommend }</td>
 					<td>${c.views }</td>

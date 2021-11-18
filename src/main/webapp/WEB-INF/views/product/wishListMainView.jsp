@@ -140,7 +140,7 @@
 							<div class="card-body">
 								<p class="card-text">${w.snackName}</p>
 								<div class="countBtn">
-									  <input type="text" class="price" value="${w.purchasePrice * w.count}">원&nbsp;&nbsp;
+									  <input type="text" class="price" value="${w.releasePrice * w.count}">원&nbsp;&nbsp;
 									<button class="minus" id="minusId" value="${w.snackNo}" onclick="minusCount( this.value , ${w.wishNo})">
 										<span> − </span>
 									</button>

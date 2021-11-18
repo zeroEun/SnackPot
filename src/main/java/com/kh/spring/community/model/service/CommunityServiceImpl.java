@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.spring.community.model.dao.CommunityDao;
 import com.kh.spring.community.model.vo.Community;
+import com.kh.spring.community.model.vo.ComtyAttachment;
 import com.kh.spring.community.model.vo.Reply;
 import com.kh.spring.qna.model.vo.PageInfo;
 
@@ -21,11 +22,16 @@ public class CommunityServiceImpl implements CommunityService {
 	@Autowired
 	private CommunityDao cmntDao;
 	
+//	@Override
+//	public int selectListCount() {
+//			
+//		return cmntDao.selectListCount(sqlSession);
+//	}
 	@Override
-	public int selectListCount() {
-			
-		return cmntDao.selectListCount(sqlSession);
+	public int selectListCount(String comCode) {
+		return cmntDao.selectListCount(sqlSession , comCode);
 	}
+
 
 	@Override
 	public ArrayList<Community> selectList(PageInfo pi) {
@@ -33,12 +39,20 @@ public class CommunityServiceImpl implements CommunityService {
 		return cmntDao.selectList(sqlSession , pi); 
 	}
 
+//	@Override
+//	public void insertCommunity(HashMap<String, Object> map) {
+//		
+//		cmntDao.insertCommunity(sqlSession , map);
+//		
+//	}
+	
 	@Override
-	public void insertCommunity(HashMap<String, Object> map) {
+	public void insertCommunity(Community cmnt) {
 		
-		cmntDao.insertCommunity(sqlSession , map);
+		cmntDao.insertCommunity(sqlSession , cmnt);
 		
 	}
+	
 
 	@Override
 	public Community selectDetailCmnt(int cno) {
@@ -80,6 +94,23 @@ public class CommunityServiceImpl implements CommunityService {
 		return cmntDao.selectReplyList(sqlSession , cmntNo);
 		
 	}
+
+
+	@Override
+	public int selectCmntNo(String memId) {
+	
+		return cmntDao.selectCmntNo(sqlSession, memId);
+	}
+
+
+	@Override
+	public void insertCommunityAttachment(ComtyAttachment att) {
+	
+		cmntDao.insertCommunityAttachment(sqlSession , att);
+		
+	}
+
+
 
 
 

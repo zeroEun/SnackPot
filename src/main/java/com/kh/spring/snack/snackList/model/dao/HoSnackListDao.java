@@ -110,6 +110,10 @@ public class HoSnackListDao {
 		return (ArrayList)sqlSession.selectList("snackListMapper.searchSendingList", searchList);
 	}
 
+	public ArrayList<SnackDList> selectWish(SqlSessionTemplate sqlSession, ComListInfo info) {
+		return (ArrayList)sqlSession.selectList("snackListMapper.selectWish", info);
+	}
+
 
 
 }

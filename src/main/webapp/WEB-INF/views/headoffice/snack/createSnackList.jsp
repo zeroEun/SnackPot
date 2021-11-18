@@ -93,7 +93,7 @@
                     <span class="">총 금액 : ${i.totalPrice}원</span>&nbsp;&nbsp;&nbsp;
                  	<span class="">주문 마감일 : ${i.orderDeadline}</span>
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wishModal">위시리스트 조회</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wishModal" id="wishBtn">위시리스트 조회</button>
                   	<button type="button" class="btn btn-primary" id="createListBtn">리스트 생성</button>
                    
 					<!-- The Modal -->
@@ -110,7 +110,7 @@
 					      <!-- Modal body -->
 					      <div class="modal-body">
 					      
-					        <table class="table table-bordered wish-table">
+					        <table class="table table-bordered wish-table" id="wish-table">
 	                            <thead class="thead-light">
 	                                <tr>
 	                                    <th>카테고리</th>
@@ -125,23 +125,7 @@
 	                            </thead>
 	                            
 	                            <tbody>
-	                            
-	                            	<c:forEach items="${wishList}" var="w">
-	                            	
-	                            	<tr>
-	                                	<td>${w.categoryName}</td>
-	                                    <td>${w.subCategoryName}</td>
-	                                    <td></td>
-	                                    <td>${w.snackName}</td>
-	                                    <td>${w.releasePrice}</td>
-	                                    <td></td>
-	                                    <td></td>
-	                                    <td></td>
-                                	</tr>
-                                	
-                                	</c:forEach>
 	                            </tbody>
-					        
 					        </table>
 					        
 					      </div>
@@ -154,6 +138,7 @@
 					    </div>
 					  </div>
 					</div>
+                   <!-- Modal end -->
                    
                     <hr>
                  
@@ -266,7 +251,7 @@
 		                                <td>${dList.subCategoryName}</td>
 		                                <td></td>
 		                                <td>${dList.snackName}</td>
-		                                <td>${dList.releasePrice}원</td>
+		                                <td>${dList.releasePrice}</td>
 		                                <td><input type="number" class="amount" id="${dList.snackDNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>
 		                                <td>${dList.stock}<input type="hidden" id="dListStock" value="${dList.stock}"></td>
 		                                <td>${dList.releasePrice * dList.amount}</td>
@@ -288,6 +273,7 @@
 		             	<input type="hidden" name="comCode" value="${i.comCode}">
 		                <input type="hidden" name="listNo" value="${i.listNo}">
 		                <input type="hidden" name="orderDeadline" value="${i.orderDeadline}">
+		                <input type="hidden" name="wishEndDate" value="${i.wishEndDate}">
 		                <input type="hidden" name="budget" value="${i.budget}">
 		                <input type="hidden" name="totalPrice" value="${i.totalPrice}">
 		            </form>
@@ -318,6 +304,7 @@
 			$.ajax({
 				
 				url:'selectSubCate.sn',
+				type:'POST',
 				data: {cNo : c},
 				success: function(category){
 					
@@ -397,6 +384,7 @@
 				<%-- snack중복 체크 --%>
 				$.ajax({
 					url:'checkSnackDup.sn',
+					type:'POST',
 					data:{
 						listNo : listNo,
 						snackNo : snackNo
@@ -445,7 +433,51 @@
 			var result = confirm("리스트를 전송하시겠습니까?");
 			if(result) $('#sendSnackList').submit();
 			
+			
 		})
+		
+		$('#wishBtn').on('click', function(){
+			$('#wish-table tbody').empty();
+			
+			var comCode = '${i.comCode}';
+			
+			$.ajax({
+				
+				url:'selectWishList.sn',
+				type:'POST',
+				data: {comCode:comCode},
+				success: function(wishList){
+					
+					console.log(wishList);
+					
+					$.each(wishList, function(index, obj){
+						
+						console.log(obj);
+						
+						var category = $("<td>").text(obj.categoryName);
+						var subCategory = $("<td>").text(obj.subCategoryName);
+						var image = $("<td>").text(obj.changeName);
+						var name = $("<td>").text(obj.snackName);
+						var price = $("<td>").text(obj.releasePrice);
+						var count = $("<td>").text(obj.count);
+						var stock = $("<td>").text(obj.stock);
+						var totalPrice = $("<td>").text(obj.releasePrice*obj.count);
+						var tr = $("<tr>").append(category, subCategory, image, name, price, count, stock, totalPrice);
+						
+						$('#wish-table tbody').append(tr);
+					})
+					
+					
+				},error:function(){
+					console.log("댓글 작성 ajax 통신 실패");
+				}
+				
+			});
+			
+		})
+		
+		
+		
 	});
 
 </script>

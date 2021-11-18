@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.kh.spring.companyMember.model.vo.CompanyMember;
 import com.kh.spring.product.model.vo.Product;
+import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.service.HoSnackListService;
+import com.kh.spring.snack.snackList.model.vo.ComListInfo;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
 import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackOrder.model.service.SnackOrderService;
@@ -104,6 +106,14 @@ public class SnackOrderController {
 		snackOrderService.updateOrderAmount(orderD);
 		
 		return "redirect:comSnackList.sn";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="selectComWishList.sn", produces="application/json; charset=utf-8")
+	public ArrayList<WishListDtail> selecComtWishList(int wishNo) {
+		
+		
+		return snackOrderService.selecComtWishList(wishNo);
 	}
 	
 }

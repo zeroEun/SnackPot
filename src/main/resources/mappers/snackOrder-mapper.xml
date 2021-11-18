@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="orderDeadline" column="ORDER_DEADLINE"/>
 		<result property="orderDate" column="ORDER_DATE"/>
 		<result property="releaseDate" column="RELEASE_DATE"/>
+		<result property="wishNo" column="WISH_NO"/>
 	</resultMap>
 	
 	<resultMap type="OrderDetail" id="orderDetailResultSet">
@@ -30,9 +31,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="stock" column="STOCK"/>
 		<result property="imageName" column="CHANGE_NAME"/>
 	</resultMap>
+	
+	<resultMap type="WishListDtail" id="WishDListResult">
+	 	<id property="wishDetailNo" column="WISHDETAIL_NO"/>
+		<result property="wishNo" column="WISH_NO"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="categoryName" column="CATEGORY"/>
+		<result property="subCategoryNo" column="DETAIL_NO"/>
+		<result property="subCategoryName" column="DETAIL"/>
+		<result property="snackNo" column="SNACK_NO"/>
+		<result property="snackName" column="SNACK_NAME"/>
+		<result property="count" column="COUNT"/>
+		<result property="releasePrice" column="RELEASE_PRICE"/>
+		<result property="stock" column="STOCK"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+	</resultMap>
 
 	<select id="selectOrder" parameterType="String" resultMap="ordersResultSet">
-		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.BUDGET
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.BUDGET, A.WISH_NO
 		FROM ORDERS A
 		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
 		WHERE A.COM_CODE = #{comCode}
@@ -80,5 +96,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET AMOUNT = #{amount}
 		WHERE ORDER_D_NO = #{orderDNo}
 	</update>
+	
+	<select id="selecComtWishList" parameterType="_int" resultMap="WishDListResult">
+		SELECT A.WISHDETAIL_NO, A.WISH_NO, A.SNACK_NO, B.SNACK_NAME, 
+        	   B.CATEGORY_NO, C.CATEGORY, B.DETAIL_NO, D.DETAIL, A.COUNT, B.RELEASE_PRICE, B.STOCK, E.CHANGE_NAME
+		FROM WISHLIST_DETAIL A
+		JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
+		JOIN SNACK_CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO)
+		JOIN SNACK_CATEGORY_DETAIL D ON (B.DETAIL_NO = D.DETAIL_NO)
+		LEFT JOIN SNACK_ATTACHMENT E ON (B.SNACK_NO = E.SNACK_NO)
+		WHERE A.WISH_NO = #{wishNo}
+		ORDER BY B.CATEGORY_NO, B.DETAIL_NO, B.SNACK_NAME
+	</select>
 
 </mapper>

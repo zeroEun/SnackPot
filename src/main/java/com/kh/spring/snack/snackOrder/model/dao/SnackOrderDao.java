@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackOrder.model.vo.OrderDetail;
 import com.kh.spring.snack.snackOrder.model.vo.Orders;
 
@@ -37,6 +38,10 @@ public class SnackOrderDao {
 
 	public int updateOrderAmount(SqlSessionTemplate sqlSession, OrderDetail orderD) {
 		return sqlSession.update("snackOrderMapper.updateOrderAmount", orderD);
+	}
+
+	public ArrayList<WishListDtail> selecComtWishList(SqlSessionTemplate sqlSession, int wishNo) {
+		return (ArrayList)sqlSession.selectList("snackOrderMapper.selecComtWishList", wishNo);
 	}
 
 }

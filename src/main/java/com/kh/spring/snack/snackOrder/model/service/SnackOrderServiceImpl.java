@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.spring.common.exception.CommException;
+import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackOrder.model.dao.SnackOrderDao;
 import com.kh.spring.snack.snackOrder.model.vo.OrderDetail;
 import com.kh.spring.snack.snackOrder.model.vo.Orders;
@@ -69,6 +70,11 @@ public class SnackOrderServiceImpl implements SnackOrderService {
 		if(result < 0) {
 			throw new CommException("updateOrderAmount 실패");
 		}
+	}
+
+	@Override
+	public ArrayList<WishListDtail> selecComtWishList(int wishNo) {
+		return snackOrderDao.selecComtWishList(sqlSession, wishNo);
 	}
 
 }

@@ -97,8 +97,52 @@
                     <span class="" id="totalPrice"></span>&nbsp;&nbsp;&nbsp;
                  	<span class="">주문 마감일 : ${o.orderDeadline}</span>
 
-                    <button type="button" class="btn btn-primary">위시리스트 조회</button>
-                   
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wishModal" id="wishBtn">위시리스트 조회</button>
+                    
+					<!-- The Modal -->
+					<div class="modal" id="wishModal">
+					  <div class="modal-dialog modal-lg">
+					    <div class="modal-content">
+					
+					      <!-- Modal Header -->
+					      <div class="modal-header">
+					        <h4 class="modal-title">위시 리스트</h4>
+					        <button type="button" class="close" data-dismiss="modal">&times;</button>
+					      </div>
+					
+					      <!-- Modal body -->
+					      <div class="modal-body">
+					      
+					        <table class="table table-bordered wish-table" id="wish-table">
+	                            <thead class="thead-light">
+	                                <tr>
+	                                    <th>카테고리</th>
+	                                    <th>상세 카테고리</th>
+	                                    <th>이미지</th>
+	                                    <th>품목명</th>
+	                                    <th>공급가</th>
+	                                    <th>수량</th>
+	                                    <th>재고</th>
+	                                    <th>금액</th>
+	                                </tr>
+	                            </thead>
+	                            
+	                            <tbody>
+	                            </tbody>
+					        </table>
+					        
+					      </div>
+					
+					      <!-- Modal footer -->
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					      </div>
+					
+					    </div>
+					  </div>
+					</div>
+                   <!-- Modal end -->      
+                                
                     <hr>
                  
                     <div class="search-list">
@@ -207,7 +251,7 @@
 		                                <td>${dList.subCategoryName}</td>
 		                                <td></td>
 		                                <td>${dList.snackName}</td>
-		                                <td>${dList.releasePrice}원</td>
+		                                <td>${dList.releasePrice}</td>
 		                                <td><input type="number" class="amount" id="${dList.orderDNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>
 		                                <td>${dList.releasePrice * dList.amount}</td>
 	                                </tr>
@@ -366,13 +410,70 @@
 		})
 		
 		<%-- 리스트 발송 버튼 클릭 시--%>
-		$('#sendBtn').on('click', function(){
+		$('#orderBtn').on('click', function(){
 			
 			var result = confirm("리스트를 전송하시겠습니까?");
-			if(result) $('#sendSnackList').submit();
+			if(result){
+				
+				$.ajax({
+					
+					url:'totalPrice.sn',
+					data:{orderNo:orderNo},
+					success: function(totalPrice){
+						
+						$('#totalPrice').text('총 금액 : ' + totalPrice + '원');
+						
+					},error:function(){
+						console.log("댓글 작성 ajax 통신 실패");
+					}
+				});
+				
+				<%-- $('#sendSnackList').submit();--%>
+			}
+			
+		});
+	
+		$('#wishBtn').on('click', function(){
+			$('#wish-table tbody').empty();
+			
+			var wishNo = '${o.wishNo}';
+			
+			$.ajax({
+				
+				url:'selectComWishList.sn',
+				type:'POST',
+				data: {wishNo : wishNo},
+				success: function(wishList){
+					
+					console.log(wishList);
+					
+					$.each(wishList, function(index, obj){
+						
+						console.log(obj);
+						
+						var category = $("<td>").text(obj.categoryName);
+						var subCategory = $("<td>").text(obj.subCategoryName);
+						var image = $("<td>").text(obj.changeName);
+						var name = $("<td>").text(obj.snackName);
+						var price = $("<td>").text(obj.releasePrice);
+						var count = $("<td>").text(obj.count);
+						var stock = $("<td>").text(obj.stock);
+						var totalPrice = $("<td>").text(obj.releasePrice*obj.count);
+						var tr = $("<tr>").append(category, subCategory, image, name, price, count, stock, totalPrice);
+						
+						$('#wish-table tbody').append(tr);
+					})
+					
+					
+				},error:function(){
+					console.log("댓글 작성 ajax 통신 실패");
+				}
+				
+			});
 			
 		})
-	});
+	
+	})
 	
 	function selectTotalPrice(){
 		var orderNo =  ${o.orderNo};
@@ -389,8 +490,9 @@
 				console.log("댓글 작성 ajax 통신 실패");
 			}
 		});
-		
-	}
+			
+	}	
+	
 
 </script>
 

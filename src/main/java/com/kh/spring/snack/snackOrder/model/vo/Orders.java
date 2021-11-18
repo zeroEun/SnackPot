@@ -24,5 +24,6 @@ public class Orders {
 	private Date orderDeadline;
 	private Date orderDate;
 	private Date releaseDate;
+	private int wishNo;
 	
 }

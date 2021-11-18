@@ -51,7 +51,7 @@
                     <hr>
 
                     <div class="search form-inline"><!-- form-inline : 한줄에 배치 -->
-                    	<form action="searchList.sn" method="get" id="searchList">
+                    	<form action="searchList.sn" method="post" id="searchList">
 	                        <select class="search-select form-control" id="category" name="category">
 	                            <option value="0">카테고리</option>
 	                            <option value="1">리스트 번호</option>

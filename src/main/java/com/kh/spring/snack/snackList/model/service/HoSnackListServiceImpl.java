@@ -204,6 +204,12 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 	}
 
 
+	@Override
+	public ArrayList<SnackDList> selectWish(ComListInfo info) {
+		return hoSnackListDao.selectWish(sqlSession, info);
+	}
+
+
 
 
 

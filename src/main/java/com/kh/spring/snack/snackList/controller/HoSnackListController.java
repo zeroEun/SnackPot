@@ -179,21 +179,15 @@ public class HoSnackListController {
 		return "headoffice/snack/createSnackList";
 	}
 	
-	@RequestMapping("selectWishList.sn")
-	public String selectWishList(String comCode, int listNo, Model model) {
+	@ResponseBody
+	@RequestMapping(value="selectWishList.sn", produces="application/json; charset=utf-8")
+	public ArrayList<WishListDtail> selectWishList(String comCode) {
 		
 		ComListInfo info = companyInfo(comCode).get(0);
 		
 		ArrayList<WishListDtail> wishList = hoSnackListService.selectWishList(info);
 		
-		info.setTotalPrice(selectTotalPrice(listNo));
-		info.setListNo(listNo);
-		
-		model.addAttribute("wishList", wishList);
-		model.addAttribute("dList", selectSnackDList(listNo));
-		model.addAttribute("i", info);
-		
-		return "headoffice/snack/createSnackList";
+		return wishList;
 	}
 	
 	@RequestMapping("sendSnackList.sn")
@@ -356,7 +350,34 @@ public class HoSnackListController {
 		int retortBudget = budget * subs.getRetortRatio()/100;
 		
 		
+		//위시 리스트에 있는 상품을 list에서는 삭제, dList에는 추가, 추가된 항목 budget에서 금액 빼기
+		ComListInfo info = companyInfo(comCode).get(0);
+		ArrayList<SnackDList> wList = hoSnackListService.selectWish(info);
 		
+		if(!wList.isEmpty()) {
+			for(SnackDList w : wList) {
+				
+				Iterator<SnackDList> iter = list.iterator();
+				while(iter.hasNext()) {
+					
+					SnackDList l = iter.next();
+					if(w.getSnackNo() == l.getSnackNo()) {
+						iter.remove();
+					}
+				}
+				
+				w.setSnackListNo(listNo);
+				dList.add(w);
+				
+				switch(w.getCategoryNo()) {
+				case 1: snackBudget -= w.getReleasePrice()*w.getAmount(); break;
+				case 2: drinkBudget -= w.getReleasePrice()*w.getAmount(); break;
+				case 3: retortBudget -= w.getReleasePrice()*w.getAmount(); break;
+				}
+			}
+			
+			budget = snackBudget + drinkBudget + retortBudget;
+		}
 		
 		
 		//랜덤으로 상품번호 가져와서 list에 번호가 있는지 확인
@@ -372,7 +393,7 @@ public class HoSnackListController {
 			System.out.println( "budget: " +  budget);
 			int r = (int)((Math.random())*maxNum + 1);
 			System.out.println(r);
-				
+			
 			Iterator<SnackDList> iter = list.iterator();
 			while(iter.hasNext()) {
 				
@@ -388,6 +409,7 @@ public class HoSnackListController {
 						case 1: 
 							if(snackBudget > 0) {
 								snackBudget -= s.getReleasePrice()*amount;
+								System.out.println("snackBudget" + snackBudget);
 							}else{
 								iter.remove(); 
 								continue;
@@ -395,6 +417,7 @@ public class HoSnackListController {
 						case 2: 
 							if(drinkBudget > 0) {
 								drinkBudget -= s.getReleasePrice()*amount;
+								System.out.println("drinkBudget" + drinkBudget);
 							}else{
 								iter.remove();
 								continue;
@@ -402,6 +425,7 @@ public class HoSnackListController {
 						case 3: 
 							if(retortBudget > 0) {
 								retortBudget -= s.getReleasePrice()*amount;
+								System.out.println("retortBudget" + retortBudget);
 							}else{
 								iter.remove();
 								continue;

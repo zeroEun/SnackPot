@@ -56,5 +56,7 @@ public interface HoSnackListService {
 
 	ArrayList<SnackList> searchSendingList(SearchList searchList);
 
+	ArrayList<SnackDList> selectWish(ComListInfo info);
+
 
 }

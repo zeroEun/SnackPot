@@ -120,12 +120,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- 선물 상품 삭제(상태 'N'으로 변경) -->
-	<update id="deleteGift" parameterType="map">
-		UPDATE BIRTHDAY_GIFT SET
-		GIFT_STATUS='N'
+	<delete id="deleteGift" parameterType="map">
+		DELETE FROM BIRTHDAY_GIFT
 		WHERE GIFT_NO IN
 		<foreach collection="array" item="delArr" open="(" close=")" separator=",">
 			#{delArr}
 		</foreach>
-	</update>
+	</delete>
 </mapper>

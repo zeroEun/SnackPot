@@ -96,6 +96,12 @@
     border: none;
     background-color: whitesmoke;
 }
+.folderRight{
+	
+}
+.folderTable{
+	text-align: center;
+}
 </style>
 <body id="giftListBody">
 
@@ -153,9 +159,11 @@
 				</c:forEach>
 			</div>
 		</div>
-		
+		<script>
+			
+		</script>
 		<div class="modal fade" id="addGiftModal" tabindex="-1" aria-hidden="true">
-		    <div class="modal-dialog modal-dialog-scrollable">
+		    <div class="modal-dialog modal-dialog-scrollable modal-lg">
 		        <div class="modal-content">
 		            <div class="modal-header">
 		                <div class="modal-title">선물 담기</div><!--텍스트 가운데로-->
@@ -165,83 +173,51 @@
 		            </div>
 		            <div class="modal-body">
 		                <div class="input-group" id="addGiftFolder">
-		                    <input type="text" class="form-control" size="12" maxlength="10" placeholder="새 폴더"/>
+			                <input type="text" class="form-control" name="folderName" size="12" maxlength="10" placeholder="새 폴더" required/>
+		                    
 		                    <div class="input-group-append"><!-- 왼쪽 div pointer로 바꾸고 클릭 이벤트 설정-->
 		                        <span class="input-group-text" id="addFolder" style="cursor: pointer;">&emsp;생 성&emsp;</span>
 		                    </div>
 		                </div><hr>
 		
 		                <div class="accordion" id="giftAccordion">
-		                    <ul class="list-group" style="list-style: none;">
+		                    <ul class="list-group" id="folderUlTag" style="list-style: none;">
 		                    
 		                    	<c:forEach items="${folder }" var="folders" varStatus="status">
 		                    	<c:set var="index" value="${status.count }"/>
 		                        <li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">
 		                            <div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">
-		                                <button type="button" value="GIFT1" style="outline: none; border: none; cursor: default; background: white;">
-		                                    <i class="fas fa-folder" id="GIFT1" style="color: gold; cursor: pointer;" data-toggle="collapse" data-target="#giftCollapse${index }" aria-expanded="false"></i>
+		                                <button class="giftIcon" type="button" value="${index }" data-toggle="collapse" data-target="#giftCollapse${index }" aria-expanded="false" style="outline: none; border: none; background: white;">
+		                                    <i class="fas fa-folder" id="GIFT${index }" style="color: gold; cursor: pointer;"></i>
 		                                </button>
 		                                <span>&ensp;${folders.glistName }</span>
 		                            </div>
-		                            <div>
-		                                <span class="badge badge-primary badge-pill" style="cursor: pointer;">14</span>
-		                                &ensp;
+		                            <div class="folderRight">
+		                                <span class="badge badge-primary badge-pill folderBadge" style="cursor: pointer; width: 28px; margin-right: 7px;">${folders.folderGiftCount }</span>
 		                                <i class="fas fa-times" style="cursor: pointer;"></i>
 		                            </div>
 		                        </li>
-		                        <li id="giftCollapse${index }" class="collapse" data-parent="#giftAccordion" style="border: 1px solid black;">
-		                            <table>
-		                            	<tr>
-		                            		<th>브랜드명</th>
-		                            		<th>상품명</th>
-		                            		<th>가격</th>
-		                            	</tr>
-		                            </table>
+		                        <li id="giftCollapse${index }" class="collapse" data-parent="#giftAccordion">
+		                            <div style="padding: 1.5rem;">
+			                            <table class="table folderTable">
+			                            	<thead class="thead-dark">
+				                            	<tr>
+				                            		<th scope="col" style="width: 10%;">번호</th>
+				                            		<th scope="col" style="width: 20%;">이미지</th>
+				                            		<th scope="col" style="width: 18%;">브랜드명</th>
+				                            		<th scope="col" style="width: 40%;">상품명</th>
+				                            		<th scope="col" style="width: 12%;">가격(원)</th>
+				                            	</tr>
+			                            	</thead>
+			                            	<tbody class="folderInfoBody" id="folderInfoBody${index }">
+			                            	
+			                            	<%-- ajax에서 불러온 데이터 출력 --%>
+			                            	
+			                            	</tbody>
+			                            </table>
+		                            </div>
 		                        </li>
 								</c:forEach>
-			
-			
-			<%-- 
-		                        <li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">
-		                            <div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">
-		                                <button type="button" value="GIFT2" style="outline: none; border: none; cursor: default; background: white;">
-		                                    <i class="fas fa-folder" id="GIFT2" style="color: gold; cursor: pointer;" data-toggle="collapse" data-target="#giftCollapse2" aria-expanded="false"></i>
-		                                    
-		                                </button>
-		                                <span>&ensp;기본2</span>
-		                            </div>
-		                            <div>
-		                                <span class="badge badge-primary badge-pill" style="cursor: pointer;">14</span>
-		                                &ensp;
-		                                <i class="fas fa-times" style="cursor: pointer;"></i>
-		                            </div>
-		                        </li>
-		                        <li id="giftCollapse2" class="collapse" data-parent="#giftAccordion" style="border: 1px solid black;">
-		                            <div class="card-body">
-		                                Some placeholder content for the second accordion panel. This panel is hidden by default.
-		                            </div>
-		                        </li>
-		
-		                        <li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">
-		                            <div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">
-		                                <button type="button" value="GIFT3" style="outline: none; border: none; cursor: default; background: white;">
-		                                    <i class="fas fa-folder" id="GIFT3" style="color: gold; cursor: pointer;" data-toggle="collapse" data-target="#giftCollapse3" aria-expanded="false"></i>
-		                                    
-		                                </button>
-		                                <span>&ensp;기본3</span>
-		                            </div>
-		                            <div>
-		                                <span class="badge badge-primary badge-pill" style="cursor: pointer;">14</span>
-		                                &ensp;
-		                                <i class="fas fa-times" style="cursor: pointer;"></i>
-		                            </div>
-		                        </li>
-		                        <li id="giftCollapse3" class="collapse" data-parent="#giftAccordion" style="border: 1px solid black;">
-		                            <div class="card-body">
-		                                Some placeholder content for the second accordion panel. This panel is hidden by default.
-		                            </div>
-		                        </li>
-		      --%>
 		                    </ul>
 		                </div><hr>   
 		            </div>
@@ -251,52 +227,186 @@
 	</section>
 
 	<script>
-	    $(function(){
-	        $(document).on('click', '.giftListFolder>button', function(e){
-	            
-	        	<%-- 
+
+		<%-- (4) 선택한 폴더 내 리스트 조회 기능 --%>
+		$(function(){
+			$(document).on('click', '.giftIcon', function(e){
+				
+				<%-- 
 	        	e.currentTarget : button 태그 -> value값 추출 가능
 	        	e.target : i 태그
 	        	--%>
-	        	console.log(e.target);
-	        	console.log(e.currentTarget);
 	        	
-	            var targetVal = e.currentTarget.value;
-	            var targetId = e.target.id;
+	        	<%-- 
+	        	var targetVal = e.currentTarget.value;
+	        	var targetId = e.target.id;  
+	        	--%>
+	        	
+	        	<%-- 폴더 아이콘 변경 코드 --%>
+				var iconClickYN = $(this).attr("aria-expanded");
 
-	            console.log(targetVal);
-	            console.log(targetId);	            
+            	if(iconClickYN == "false"){
+		            $(this).children().removeClass().addClass('fas fa-folder');
+		        }else{
+		        	<%-- collapse를 연 요소만 폴더 아이콘이 변하게 설정 --%>
+		        	$(".giftIcon").children().removeClass().addClass('fas fa-folder');
+		            $(this).children().removeClass().addClass('fas fa-folder-open');
+		        }
+				
+            	<%-- ================================================================================== --%>
+				
+            	<%-- 폴더 클릭 시 기프티콘 목록 출력 코드 --%>
+            	
+				<%-- button value값을 status.count로 구해서 쿼리문에서 WHERE절의 ROWNUM 값으로 활용(GIFT_LIST 테이블)--%> 
+				
+				<%-- 폴더 새로 추가 시 e.currentTarget.value 값이 undefined가 되므로 
+					length값으로 targetVal 설정 후 rowNumVal이 null일 때 targetVal에 + 1을 하면
+					원하는 값을 얻을 수 있음
+				--%>
+				var targetVal = $(".giftIcon").length;
+				
+				var rowNumVal = e.currentTarget.value;
+				
+				if(rowNumVal == null){
+					rowNumVal = targetVal + 1;
+				}
+				
+				console.log("rowNumVal : "+rowNumVal);
+				
+				$.ajax({
+					url: "selectFolderInfo.birth",
+					type: "POST",
+					data:{
+						rowNum : rowNumVal
+					},
+					success: function(list){
+						console.log("폴더info성공");
+						//console.log(list);
+						//console.log(list.length);
+						
+						var result='';
+						
+						if(list.length != 0){
+							$.each(list, function(index, item){
+								var price = (item.giftPrice).toLocaleString();
+								console.log("price:"+price)
+
+								result += '<tr>';
+								result += '<th scope="row" style="text-align:center;">' + (index+1) + '</th>';
+								result += '<td><img width="50%" height="50%" src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '"></td>';
+								result += '<td>' + item.giftBrand + '</td>';
+								result += '<td>' + item.giftName + '</td>';
+								result += '<td>' + price + '</td>';
+								result += '</tr>';
+							});
+							
+						}else{
+							<%-- 폴더에 내용 추가되면 아래 내용은 없어져야함 - 추후 수정 --%>
+							result += '<tr><td colspan="5"><h5>추가된 상품이 존재하지 않습니다.</h5></td></tr>';
+						}
+						$("#folderInfoBody"+rowNumVal).html(result);
+					},
+					error: function(error){
+						alert(error);
+					}
+				});
+				
+				
+			});
+		});
+	
+		<%-- 각 제품 영역에 나타나는 아이콘 클릭 시 실행되는 함수 - giftNo를 가져오므로 BIRTHDAY_GIFT 테이블에서 해당 정보를 SELECT --%>
+	    $(function(){
+	    	$(document).on('click', '.addGift', function(e){
+	    		console.log(e.currentTarget);
+	            console.log(e.currentTarget.value);
+	            var aaa = e.currentTarget.value;
 	            
-	            var iconClickYN = $(this).children().attr("aria-expanded");
-	            console.log(iconClickYN);
+	            //folderBadge
+	            $(document).on('click','.folderBadge', function(e){
+	            	console.log("aaa : "+aaa);
 
-	            <%-- i태그가 아닌 button 클릭 시 함수이므로 button 범위를 클릭했을 때 targetId 값이 비는 경우를 조건으로 처리 --%>
-	            if(targetId != ""){
-	            	if(iconClickYN == "false"){
-		                $("#" + targetId).removeClass('fa-folder-open').addClass('fa-folder');
-		            }else{
-		                $("#" + targetId).removeClass('fa-folder').addClass('fa-folder-open');
-		            }
-	            }
-	        })
+		    	});
+	            
+	            
+	    	});
 	    });
 	    
+	    <%-- 뱃지 클릭 시 함수
 	    $(function(){
-	    	$("#addFolder").click(function(){
+	    	$(document).on('click','.folderBadge', function(e){
+	    		console.log(e.target);
+	            console.log(e.target.value);	    		
+	    		console.log(e.currentTarget);
+	            console.log(e.currentTarget.value);
+	    	});
+	    }); --%>
+
+	    <%-- (1) 폴더 추가 기능 --%>
+	    $(function(){
+	    	
+	    	//$("#addFolder").click(function(){
+	    	$(document).on('click','#addFolder',function(e){
 	    		console.log("확인!");
+	    		
+	    		var fName= $("input[name='folderName']").val();
+		    	console.log("fName : " + fName);
 	    		
 	    		$.ajax({
 	    			url: "addGiftFolder.birth",
 	    			type: "POST",
-	    			data: "",
+	    			data: {
+	    				folderName : fName
+	    			},
 	    			success: function(data){
 	    				console.log("성공!!!");
+	    				console.log("data : " + data);
+	    				
+	    				<%-- 폴더 생성 후에는 text를 비워줌 --%>
+	    				$("input[name='folderName']").val("");
+	    				<%-- ul내부 li개수를 구해서 modal id뒤의 count를 지정 
+	    				- 한 항목당 li태그가 두 개 들어있으므로 나누기 2한 후 다음 인덱스를 대입하기 위해 +1--%>
+	    				var liCount = $("#folderUlTag").children().length/2 + 1;
+	    				console.log("li 개수 : "+liCount);
+	    				
+	    				var html = '';
+	    				if(data != ""){
+	    					html += '<li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">';
+		    				html += '<div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">';
+		    				html += '<button type="button" value="${index }" data-toggle="collapse" data-target="#giftCollapse' + liCount + '" aria-expanded="false" style="outline: none; border: none; background: white;">';
+		    				html += '<i class="fas fa-folder giftIcon" id="GIFT${index }" style="color: gold; cursor: pointer;"></i></button>';
+		    				html += '<span>&ensp;' + data + '</span></div>';
+		    				html += '<div><span class="badge badge-primary badge-pill folderBadge" style="cursor: pointer; width: 28px; margin-right: 10px;">0</span>';
+		    				html += '<i class="fas fa-times" style="cursor: pointer;"></i></div></li>';
+		    				html += '<li id="giftCollapse' + liCount + '" class="collapse" data-parent="#giftAccordion">';
+		    				html += '<div style="padding: 2rem;">';
+		    				html += '<table class="table">';
+		    				html += '<thead class="thead-dark">';
+		    				html += '<tr>';
+		    				html += '<th scope="col">번호</th>';
+		    				html += '<th scope="col">브랜드명</th>';
+		    				html += '<th scope="col">상품명</th>';
+		    				html += '<th scope="col">가격</th>';
+		    				html += '</tr>';
+		    				html += '</thead>';
+		    				html += '<tbody>';
+		    				html += '<tr><td colspan="5"><h5>추가된 상품이 존재하지 않습니다.</h5></td></tr>'
+		    				html += '</tbody>';
+		    				html += '</table></div></li>';
+		    				
+		    				console.log(html);
+		    				//위에 주석에 있는 내용 append하자
+		    				$("#folderUlTag").append(html);
+		    				
+	    				}else{
+	    					alert("폴더명을 입력하세요.");
+	    				}
+
 	    			},
 	    			error: function(e){
 	    				console.log("에러!!!");
 	    			}
 	    		});
-	    		
 	    	});
 	    });
 	</script>
@@ -571,18 +681,6 @@
 			});
 		});
 	    
-	    <%-- 각 제품 영역에 나타나는 아이콘 클릭 시 실행되는 함수 - giftNo를 가져오므로 BIRTHDAY_GIFT 테이블에서 해당 정보를 SELECT --%>
-	    $(function(){
-	    	$(document).on('click', '.addGift', function(e){
-	    		console.log(e.currentTarget);
-                console.log(e.currentTarget.value);
-                
-                
-                
-                
-                
-	    	});
-	    });
 	</script>
 </body>
 </html>

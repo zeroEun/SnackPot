@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.kh.spring.birthday.giftList.model.service.GiftListService;
 import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
 import com.kh.spring.birthday.giftList.model.vo.GiftList;
@@ -53,4 +54,39 @@ public class GiftListController {
 		return list;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="addGiftFolder.birth", produces="application/json; charset=utf-8")
+	public String addGiftFolder(String folderName) {
+		
+		System.out.println("fName : " + folderName);
+		
+		int result = 0;
+		
+		if(folderName != "") {
+			result = giftListService.addGiftFolder(folderName);
+		}
+		
+		System.out.println("result : " + result);
+		
+		if(result > 0) {
+			return new Gson().toJson(folderName);
+		}else {
+			return new Gson().toJson("");
+		}		
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="selectFolderInfo.birth")
+	public ArrayList<GiftList> seletFolderInfo(int rowNum){
+		
+		System.out.println("rowNum : " + rowNum);
+		
+		ArrayList<GiftList> list = new ArrayList<GiftList>();
+		
+		list = giftListService.seletFolderInfo(rowNum);
+		System.out.println("seletFolderInfo : " + list);
+		
+		return list;
+	}
 }

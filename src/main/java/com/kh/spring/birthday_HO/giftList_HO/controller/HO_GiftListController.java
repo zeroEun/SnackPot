@@ -169,6 +169,7 @@ public class HO_GiftListController {
 		
 		int result = giftListService.deleteGift(giftNums);
 		*/
+
 		int result = giftListService.deleteGift(delArr);
 		
 		return String.valueOf(result);

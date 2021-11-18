@@ -354,7 +354,7 @@
 	        });
 	    });
 		
-		var delArr = new Array();
+		//var delArr = new Array();
 		<%-- 선택 삭제한 항목 데이터list modal에 불러오기 --%>
 		function deleteGift(){
 
@@ -388,7 +388,7 @@
 						
 						result += '<h5>총 <span id="checkedGiftNum">' + data.length + '</span>개 상품을 선택하셨습니다. 해당 상품들을 삭제하시겠습니까?</h5>';
 						$.each(data, function(index, item){
-							delArr.push(item.giftNo);
+							//delArr.push(item.giftNo);
 							
 							result += '<input type="hidden" name="delGiftNo" value="' + item.giftNo + '"/>';
 							result += '<div>';
@@ -411,8 +411,14 @@
 		function realDelGift(){
 			<%-- input 히든으로 준 거 가져와볼 것!!! --%>
 			console.log("realDelGift!!");
-			console.log(delArr);
+			var delArr = new Array();
 			
+			$("input[name='giftChk']:checked").each(function(){
+				delArr.push($(this).val());
+			})
+			
+			console.log(delArr);
+ 
 			$.ajax({
 				url : "deleteGift.ho",
 				type : "POST",

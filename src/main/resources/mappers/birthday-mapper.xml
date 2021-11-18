@@ -159,14 +159,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</choose>
 	</select>
 	
+	<!-- 선물리스트 관리 modal에서 첫 화면의 폴더 리스트를 나타내기 위한 resultMap -->
 	<resultMap type="GiftFolder" id="giftFolderMap">
 		<result property="glistNo" column="GLIST_NO"></result>
 		<result property="glistName" column="GLIST_NAME"></result>
+		<result property="folderGiftCount" column="GIFT_COUNT"></result>
 	</resultMap>
 	
+	<!-- GIFT_LIST의 데이터 추출 - 폴더명에만 사용 -->
 	<select id="selectFolderArr" resultMap="giftFolderMap">
-		SELECT DISTINCT * FROM GIFT_LIST
+		SELECT A.GLIST_NO, A.GLIST_NAME, NVL(COUNT(B.GLIST_DETAIL_NO),0) AS GIFT_COUNT
+		FROM GIFT_LIST A
+		LEFT OUTER JOIN GIFT_LIST_DETAIL B ON A.GLIST_NO = B.GLIST_NO
+		LEFT OUTER JOIN BIRTHDAY_GIFT C ON B.GIFT_NO = C.GIFT_NO
+		LEFT OUTER JOIN GIFT_ATTACHMENT D ON C.GIFT_NO = D.GIFT_REF_NO
+		AND D.CHANGE_NAME IS NOT NULL
+		GROUP BY A.GLIST_NO, A.GLIST_NAME
+		ORDER BY TO_NUMBER(SUBSTR(GLIST_NO,7)) ASC
 	</select>
 	
+	<!-- 새로운 폴더 생성 -->
+	<insert id="addGiftFolder" parameterType="String">
+		INSERT INTO GIFT_LIST VALUES
+		('FOLDER'||GIFT_LIST_SEQ.NEXTVAL, #{folderName})
+	</insert>
+	
+	<!-- 각 폴더의 정보 추출 -->
+	<select id="seletFolderInfo" parameterType="_int" resultMap="giftResultSet">
+		SELECT A.GIFT_BRAND, A.GIFT_NAME, A.GIFT_PRICE, B.CHANGE_NAME
+		FROM BIRTHDAY_GIFT A
+		JOIN GIFT_ATTACHMENT B ON A.GIFT_NO = B.GIFT_REF_NO
+		WHERE A.GIFT_STATUS='Y'
+		AND A.GIFT_NO IN (
+		SELECT GIFT_NO 
+		FROM GIFT_LIST_DETAIL 
+		WHERE GLIST_NO=(SELECT GLIST_NO FROM
+		(SELECT ROWNUM AS RNUM, GLIST_NO FROM GIFT_LIST
+		ORDER BY GLIST_NO ASC) A
+		WHERE A.RNUM = #{rowNum})
+		)
+	</select>
 	
 </mapper>

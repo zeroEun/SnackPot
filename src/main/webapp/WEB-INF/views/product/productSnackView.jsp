@@ -251,7 +251,7 @@ text-align: center;
           <img class="card-img-top" src="${ pageContext.servletContext.contextPath }/resources/images/${p.changeName}">
           <div class="card-body">
             <P class="card-title">${p.snackName }</P>
-            <p class="card-text">${p.purchasePrice}원</p>
+            <p class="card-text">${p.releasePrice}원</p>
           </div>
            <span class="wishButton">
   			    <!--<button class="wishBtn" value="${p.snackNo}" onclick="wishAdd(this.value)">위시</button>--> 

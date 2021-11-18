@@ -8,17 +8,23 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring.community.model.vo.Community;
+import com.kh.spring.community.model.vo.ComtyAttachment;
 import com.kh.spring.community.model.vo.Reply;
 import com.kh.spring.qna.model.vo.PageInfo;
 
 @Repository
 public class CommunityDao {
 
-	public int selectListCount(SqlSession sqlSession) {
+//	public int selectListCount(SqlSession sqlSession) {
+//		
+//		return sqlSession.selectOne("cmntMapper.selectListCount");
+//	}
+	public int selectListCount(SqlSession sqlSession, String comCode) {
 		
-		return sqlSession.selectOne("cmntMapper.selectListCount");
+		return sqlSession.selectOne("cmntMapper.selectListCount", comCode);
 	}
 
+	
 	public ArrayList<Community> selectList(SqlSession sqlSession, PageInfo pi) {
 	
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
@@ -28,11 +34,18 @@ public class CommunityDao {
 		
 	}
 
-	public void insertCommunity(SqlSession sqlSession, HashMap<String, Object> map) {
+//	public void insertCommunity(SqlSession sqlSession, HashMap<String, Object> map) {
+//		
+//		sqlSession.insert("cmntMapper.insertCommunity" , map);
+//		
+//	}
+	
+	public void insertCommunity(SqlSession sqlSession, Community cmnt) {
 		
-		sqlSession.insert("cmntMapper.insertCommunity" , map);
+		sqlSession.insert("cmntMapper.insertCommunity" , cmnt);
 		
 	}
+
 
 	public Community selectDetailCmnt(SqlSession sqlSession, int cno) {
 		
@@ -67,6 +80,22 @@ public class CommunityDao {
 		
 		return (ArrayList)sqlSession.selectList("cmntMapper.selectReplyList", cmntNo);
 	}
+
+
+	public int selectCmntNo(SqlSession sqlSession, String memId) {
+		
+		return sqlSession.selectOne("cmntMapper.selectCmntNo" , memId);
+	}
+
+
+	public void insertCommunityAttachment(SqlSession sqlSession, ComtyAttachment att) {
+		
+		sqlSession.insert("cmntMapper.insertCommunityAttachment" , att);
+		
+	}
+
+
+	
 
 
 }

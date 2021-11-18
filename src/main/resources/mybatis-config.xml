@@ -49,6 +49,7 @@
 		<!-- community -->
 		<typeAlias type="com.kh.spring.community.model.vo.Community" alias="Community"/>
 		<typeAlias type="com.kh.spring.community.model.vo.Reply" alias="Reply"/>
+		<typeAlias type="com.kh.spring.community.model.vo.ComtyAttachment" alias="ComtyAttachment"/>
 		
 		
 	</typeAliases>

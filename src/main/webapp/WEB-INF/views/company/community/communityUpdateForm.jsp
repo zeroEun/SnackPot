@@ -15,29 +15,61 @@
   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
 </head>
 <style>
-.title{
-	width:1250px;
-	height : 30px;
-	margin : 20px 0px 10px 0px;
-	
-}
-
+   .title{
+        width:1250px;
+        height : 30px;
+        margin : 20px 0px 10px 0px;
+    }
+    ::placeholder{
+        padding-left: 20px;
+        padding-top: 40px;
+    }
+    .btn{
+        margin-left: 80px;
+        text-align: center;
+        
+    }
+    h4{
+        text-align: left;
+        margin-left: 150px;
+    }
+    hr{
+        width: 1250px;
+        margin-bottom: -10px;
+        height: 0.1px;
+        background-color: black;
+    }
+    .btn{
+        float: left;
+        margin-left: 150px;
+    }
+ 
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 <br>
 
   <form action="update.cm" method="post" id="frm" style="text-align:center;">
-  <input type="hidden" name="cno" value="${dlist.communityNo }"> 
-  	<h3>수정</h3>
-  	<input type="text" class="title" name="title" value="${dlist.title}">
+  <input type="hidden" name="cno" value="${ulist.communityNo }"> 
+  	<h3>게시글 수정</h3>
+  	<input type="text" class="title" name="title" value="${ulist.title}">
   	<div class="tarea">
-    <textarea name="seContent" id="smarteditor" rows="100" cols="100" style="width:1250px; height:450px;">${dlist.content }</textarea>
+    <textarea name="seContent" id="smarteditor" rows="100" cols="100" style="width:1250px; height:450px;">${ulist.content}</textarea>
     </div>
-    <div><input type="button" onclick="update()" value="확인"></div>
-    <div><input type="button" onclick="back()" value="취소"></div>
-  </form>
- 
+    <div>
+    	<button>파일</button>
+    	<a href="${ pageContext.servletContext.contextPath }/resources/upload_files/cmntAttachment/${ulist.changeName}" class="attachmentfile">${ ulist.originName }</a>
+		<input type="file" name="uploadFile" >
+		  <c:if test="${ !empty ulist.originName }">
+	      <input type="hidden" name="changeName" value="${ ulist.changeName }">
+	      <input type="hidden" name="originName" value="${ ulist.originName }">
+          </c:if>
+	</div>
+		<div>
+			<input type="button" onclick="update()" value="확인">
+			<input type="button" onclick="back()" value="취소">
+		</div>
+	</form>
 </body>
 <!--  -->	
  <script type="text/javascript">

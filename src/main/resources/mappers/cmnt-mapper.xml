@@ -14,7 +14,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="writer" column="WRITER"/>
 		<result property="title" column="TITLE"/>
 		<result property="comCode" column="COM_CODE" />
-	</resultMap> 
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="originName" column="ORIGIN_NAME"/>		
+	</resultMap>
+
+	<resultMap type="ComtyAttachment" id="ComtyAttachmentResultSet">
+	 	<id property="fileNo" column="FILE_NO"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="communityNo" column="COMMUNITY_NO"/>
+	</resultMap> 	
 
 	<resultMap type="Reply" id="ReplyResultSet">
 	 	<id property="reNo" column="RE_NO"/>
@@ -31,29 +41,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	SELECT COUNT(*)
 	FROM COMMUNITY
 	WHERE STATUS = 'Y'
+    AND COM_CODE= #{comCode}
 </select>
 
 
 <select id="selectList" resultMap="communityResultSet">
-	SELECT A.COMMUNITY_NO , A.CONTENT , A.VIEWS , A.RECOMMEND , A.N_RECOMMEND, A.WRITER_DATE, A.STATUS 
-			, A.WRITER , A.TITLE , B.COM_CODE
+	SELECT A.COMMUNITY_NO , A.CONTENT, A.VIEWS, A.RECOMMEND , A.N_RECOMMEND , A.WRITER_DATE , A.TITLE , A.COM_CODE,
+       	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME
 	FROM COMMUNITY A 
-	JOIN COMPANY_MEMBER B ON (A.WRITER = B.MEM_ID)
+	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
 	WHERE A.STATUS='Y'
-	ORDER BY COMMUNITY_NO DESC
+	ORDER BY A.COMMUNITY_NO DESC
 </select>
 
 
-<insert id="insertCommunity" parameterType="hashMap">
+<insert id="insertCommunity" parameterType="Community">
 	INSERT INTO COMMUNITY
-	VALUES (CMNT_SEQ.NEXTVAL , #{seContent} , 0 , 0 , 0 , SYSDATE , 'Y' , #{memId} , #{title})
+	VALUES (CMNT_SEQ.NEXTVAL , #{content} , 0 , 0 , 0 , SYSDATE , 'Y' , #{writer} , #{title} , #{comCode} )
 </insert>
 
-<select id="selectDetailCmnt" parameterType="_int" resultMap="communityResultSet">
-	SELECT *
+<select id="selectCmntNo" resultType="_int">
+	SELECT MAX(COMMUNITY_NO)
 	FROM COMMUNITY
-	WHERE COMMUNITY_NO = #{cno}
-	AND STATUS = 'Y'
+	WHERE WRITER = #{memId}
+</select>
+
+<insert id="insertCommunityAttachment" parameterType="ComtyAttachment">
+	INSERT INTO COMTY_ATTACHMENT
+	VALUES (CMNTATT_SEQ.NEXTVAL , #{originName} , #{changeName} , #{filePath} , #{communityNo})
+</insert>
+
+
+<select id="selectDetailCmnt" parameterType="_int" resultMap="communityResultSet">
+	SELECT A.COMMUNITY_NO , A.CONTENT, A.VIEWS, A.RECOMMEND , A.N_RECOMMEND , A.WRITER_DATE , A.TITLE , A.COM_CODE,
+		 A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME
+	FROM COMMUNITY A
+	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
+	WHERE A.COMMUNITY_NO = #{cno}
+	AND A.STATUS = 'Y'
 </select>
 
 <update id="updateCmnt" parameterType="hashMap">

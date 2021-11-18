@@ -43,6 +43,8 @@ public interface SnackpotEmpService {
 
 	Company selectSempCompany(String string);
 
-	SnackpotEmp selectComCodeCheck(String check);
+	ArrayList<SnackpotEmp> selectComCodeCheck(String check);
+
+	void deleteSempComCode(SnackpotEmp se);
 
 }

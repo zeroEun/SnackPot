@@ -112,8 +112,7 @@
 								<label class="inputLabel">비고</label> <input type="text"
 									name="remark">
 							</p>
-							<br>
-							<br> <input type="submit" value="등록하기" class="btn">
+							<br> <br> <input type="submit" value="등록하기" class="btn">
 						</div>
 					</form>
 				</div>
@@ -124,7 +123,7 @@
 
 				<h3>입고목록</h3>
 
-				<input type="date" id='currentDate'> <br>
+				<input type="date" id='currentDate' name='currentDate'> <br>
 				<form name="search">
 					<select name="searchType">
 						<option value="1">상품코드</option>
@@ -151,9 +150,9 @@
 						<tr>
 							<td>${ a.arrivalNo }</td>
 							<td>${ a.snackNo }</td>
-							<td>스낵이름</td>
+							<td>${ a.snackName }</td>
 							<td>${ a.amount }</td>
-							<td>재고량</td>
+							<td>${ a.stock }</td>
 							<td>${ a.unit}</td>
 							<td>${ a.remark }</td>
 						</tr>
@@ -177,7 +176,54 @@
 				</table>
 
 
-			<!-- 	<script>
+				<script>
+				
+				$(function() {
+					$('#currentDate').on('change', function () {
+						
+					date = $(this).val();
+					
+					if(date != ""){
+						
+						$.ajax({
+							url: 'arrivalListAjax2.im',
+							data: {'date' : date},
+							success: function(list){
+								$tableBody = $('#boardList tbody');
+								$tableBody.html('');
+								
+			    				$.each(list, function(i, obj){
+									var $tr = $('<tr>');
+									var $arrivalNo = $('<td>').text(obj.arrivalNo);
+									var $snackNo = $('<td>').text(obj.snackNo);
+									var $snackName = $('<td>').text(obj.snackName);
+									var $amount = $('<td>').text(obj.amount);
+									var $stock = $('<td>').text(obj.stock);
+									var $unit = $('<td>').text(obj.unit);
+									var $remark = $('<td>').text(obj.remark);
+									
+							
+									
+									$tr.append($arrivalNo);
+									$tr.append($snackNo);
+									$tr.append($snackName);
+									$tr.append($amount);
+									$tr.append($stock);
+									$tr.append($unit);
+									$tr.append($remark);
+									$tableBody.append($tr);
+								});
+						
+					
+					
+					
+							}
+						});
+					}
+						
+					})
+				})
+				
 		function topList(){
 			$.ajax({
 				url: 'arrivalListAjax.im',
@@ -190,17 +236,20 @@
 						var $arrivalNo = $('<td>').text(obj.arrivalNo);
 						var $snackNo = $('<td>').text(obj.snackNo);
 						var $snackName = $('<td>').text(obj.snackName);
-						var $arrivalDate = $('<td>').text(obj.createDate);
-						var $bCount = $('<td>').text(obj.count);
-						var $bFile = $('<td>').text(" ");
+						var $amount = $('<td>').text(obj.amount);
+						var $stock = $('<td>').text(obj.stock);
+						var $unit = $('<td>').text(obj.unit);
+						var $remark = $('<td>').text(obj.remark);
+						
 				
 						
-						$tr.append($bId);
-						$tr.append($bTitle);
-						$tr.append($bWriter);
-						$tr.append($bCreateDate);
-						$tr.append($bCount);
-						$tr.append($bFile);
+						$tr.append($arrivalNo);
+						$tr.append($snackNo);
+						$tr.append($snackName);
+						$tr.append($amount);
+						$tr.append($stock);
+						$tr.append($unit);
+						$tr.append($remark);
 						$tableBody.append($tr);
 					});
 				}
@@ -215,7 +264,6 @@
 		})
 	</script>
 
- -->
 				<div id="pagingArea">
 					<ul class="pagination">
 						<c:choose>

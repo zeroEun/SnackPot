@@ -85,6 +85,11 @@
 <!-- Latest compiled JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
 </head>
 <body>
 	<div class="container-fluid">
@@ -123,7 +128,44 @@
 
 				<h3>입고목록</h3>
 
-				<input type="date" id='currentDate' name='currentDate'> <br>
+				 <input type="text" id="datepicker" name="datepicker" class="datepicker">
+	
+    <script>
+    
+    $.datepicker.setDefaults({
+    	  dateFormat: 'yy-mm-dd',
+    	  currentText: '오늘',
+    	  prevText: '이전 달',
+    	  nextText: '다음 달',
+    	  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    	  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    	  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+    	  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+    	  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+    	  showMonthAfterYear: true,
+    	  yearSuffix: '년'
+    	});
+    
+    $(function() { $("#datepicker").datepicker({  maxDate: '0',
+    	  onSelect: function (dateText, inst) {
+    	      
+          	var date = $( "#datepicker" ).datepicker( "getDate" );
+          	topList();
+          	
+          }
+    	
+    
+    
+    }); });
+    
+        $(function () {
+	
+        	$("#datepicker").datepicker();
+        	$("#datepicker").datepicker('setDate', new Date);
+
+        });
+    </script>
+ <br>
 				<form name="search">
 					<select name="searchType">
 						<option value="1">상품코드</option>
@@ -133,32 +175,7 @@
 						type="submit" name="searchBtn">
 				</form>
 				<br> <br>
-				<table id="arrivalList" border="1">
 
-
-					<tr>
-						<th>입고번호</th>
-						<th>상품코드</th>
-						<th>상품명</th>
-						<th>입고수량</th>
-						<th>재고량</th>
-						<th>단위</th>
-						<th>비고</th>
-					</tr>
-
-					<c:forEach items="${ list }" var="a">
-						<tr>
-							<td>${ a.arrivalNo }</td>
-							<td>${ a.snackNo }</td>
-							<td>${ a.snackName }</td>
-							<td>${ a.amount }</td>
-							<td>${ a.stock }</td>
-							<td>${ a.unit}</td>
-							<td>${ a.remark }</td>
-						</tr>
-					</c:forEach>
-
-				</table>
 
 				<table id="boardList" class="table table-hover" align="center">
 					<thead>
@@ -177,56 +194,19 @@
 
 
 				<script>
-				
-				$(function() {
-					$('#currentDate').on('change', function () {
-						
-					date = $(this).val();
+
+				$("document").ready(function() {
+
+					var date = $( "#datepicker" ).datepicker( "getDate" );
+					console.log(date);
 					
-					if(date != ""){
-						
-						$.ajax({
-							url: 'arrivalListAjax2.im',
-							data: {'date' : date},
-							success: function(list){
-								$tableBody = $('#boardList tbody');
-								$tableBody.html('');
-								
-			    				$.each(list, function(i, obj){
-									var $tr = $('<tr>');
-									var $arrivalNo = $('<td>').text(obj.arrivalNo);
-									var $snackNo = $('<td>').text(obj.snackNo);
-									var $snackName = $('<td>').text(obj.snackName);
-									var $amount = $('<td>').text(obj.amount);
-									var $stock = $('<td>').text(obj.stock);
-									var $unit = $('<td>').text(obj.unit);
-									var $remark = $('<td>').text(obj.remark);
-									
-							
-									
-									$tr.append($arrivalNo);
-									$tr.append($snackNo);
-									$tr.append($snackName);
-									$tr.append($amount);
-									$tr.append($stock);
-									$tr.append($unit);
-									$tr.append($remark);
-									$tableBody.append($tr);
-								});
-						
-					
-					
-					
-							}
-						});
-					}
-						
-					})
 				})
+				
 				
 		function topList(){
 			$.ajax({
 				url: 'arrivalListAjax.im',
+				data: {'date' : $( "#datepicker" ).datepicker( "getDate" )},
 				success: function(list){
 					$tableBody = $('#boardList tbody');
 					$tableBody.html('');
@@ -332,7 +312,7 @@
     }
 })
 
- document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);;
+// document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);;
         </script>
 </body>
 

@@ -30,17 +30,17 @@ public class InvenManagementDao {
 		return sqlSession.insert("invenMapper.arrivalInsert", a);
 	}
 
-	public int todayArrivalCount(SqlSessionTemplate sqlSession) {
+	public int todayArrivalCount(SqlSessionTemplate sqlSession, String date) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("invenMapper.todayArrivalCount");
+		return sqlSession.selectOne("invenMapper.todayArrivalCount", date);
 	}
 
-	public ArrayList<Arrival> todayArrivalList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<Arrival> todayArrivalList(SqlSessionTemplate sqlSession, PageInfo pi, String date) {
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		
-		return (ArrayList)sqlSession.selectList("invenMapper.todayArrivalList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("invenMapper.todayArrivalList", date, rowBounds);
 	}
 
 	public int todayReleaseCount(SqlSessionTemplate sqlSession) {

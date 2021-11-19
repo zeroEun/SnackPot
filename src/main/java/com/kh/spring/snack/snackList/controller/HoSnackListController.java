@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,7 @@ import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackList.model.vo.SnackList;
 import com.kh.spring.snack.snackSubs.model.service.SnackSubsService;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
+import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
 @Controller
 public class HoSnackListController {
@@ -35,11 +38,12 @@ public class HoSnackListController {
 	private SnackSubsService snackSubsService;
 	
 	@RequestMapping("listSchedule.sn")
-	public String listScheduleForm(Model model) {
+	public String listScheduleForm(Model model, HttpSession session) {
 	
 		//세션에서 로그인 사원의 담당 회사 코드 불러오기, 회사 코드 여러개일 때?
 		
-		String comCode = "k2111151557,k2111151730";
+		//String comCode = "k2111151557,k2111151730";
+		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
 		model.addAttribute("schedule", companyInfo(comCode));
 		
@@ -203,9 +207,10 @@ public class HoSnackListController {
 	}
 	
 	@RequestMapping("sendingList.sn")
-	public String snackSendingList(Model model) {
+	public String snackSendingList(Model model, HttpSession session) {
 		
-		String comCode = "k2111151557,k2111151730";
+		//String comCode = "k2111151557,k2111151730";
+		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
 		model.addAttribute("sendingList", selectSendingList(comCode));
 		
@@ -225,11 +230,12 @@ public class HoSnackListController {
 	}
 	
 	@RequestMapping("searchList.sn")
-	public String searchSendingList(SearchList searchList, Model model) {
+	public String searchSendingList(SearchList searchList, Model model, HttpSession session) {
 		
-		String comCode = "k2111151557,k2111151730";
+		//String comCode = "k2111151557,k2111151730";
+		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
-		String[] arr = comCode.split(",");
+		String[] arr = comCode.split("/");
 		HashMap<String, String> comArr = new HashMap<String, String>();
 		
 		for(int i=0; i < arr.length; i++) {
@@ -252,7 +258,7 @@ public class HoSnackListController {
 		//회사 코드로 회사명,  간식 배송 예정일, 신청일, 해당 월 리스트 발송 여부 알아오기
 		
 		HashMap map = new HashMap();
-		String[] comArr = comCode.split(",");
+		String[] comArr = comCode.split("/");
 		map.put("comArr", comArr);
 
 		ArrayList<ComListInfo> info = hoSnackListService.selectSubsInfo(map);
@@ -449,7 +455,7 @@ public class HoSnackListController {
 	public ArrayList<SnackList> selectSendingList(String comCode){
 		
 		HashMap map = new HashMap();
-		String[] comArr = comCode.split(",");
+		String[] comArr = comCode.split("/");
 		map.put("comArr", comArr);
 		
 		return hoSnackListService.selectSendingList(map);

@@ -19,6 +19,7 @@ public class Orders {
 	private String comCode;
 	private String comName;
 	private String orderStatus;
+	private String status;
 	private int budget;
 	private int totalPrice;
 	private Date orderDeadline;

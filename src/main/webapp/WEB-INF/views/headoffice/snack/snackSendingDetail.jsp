@@ -65,24 +65,26 @@
                     <table class="table table-bordered ">
                         <thead class="thead-light">
                             <tr>
-                                <th>이미지</th>
                                 <th>카테고리</th>
                                 <th>상세 카테고리</th>
+                                <th>이미지</th>
                                 <th>품목명</th>
                                 <th>공급가</th>
                                 <th>수량</th>
+                                <th>금액</th>
                             </tr>
                         </thead>
 
                         <tbody>
                         	<c:forEach items="${dList}" var="d">
                         		<tr>
-	                                <td></td>
 	                                <td>${d.categoryName}</td>
 	                                <td>${d.subCategoryName}</td>
+	                                <td></td>
 	                                <td>${d.snackName}</td>
 	                                <td>${d.releasePrice}</td>
 	                                <td>${d.amount}</td>
+	                                <td>${d.releasePrice*d.amount}</td>
                            		</tr>
                         	</c:forEach>
 

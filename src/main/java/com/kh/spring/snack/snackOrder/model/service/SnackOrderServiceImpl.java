@@ -104,4 +104,40 @@ public class SnackOrderServiceImpl implements SnackOrderService {
 		return snackOrderDao.selectHoOrderedList(sqlSession, map);
 	}
 
+	@Override
+	public Orders selectOrderForNo(int orderNo) {
+		return snackOrderDao.selectOrderForNo(sqlSession, orderNo);
+	}
+
+	@Override
+	public void orderRelease(int orderNo) {
+		
+		int insert = snackOrderDao.insertRelease(sqlSession, orderNo);
+		
+		if(insert < 0) {
+			throw new CommException("insertRelease 실패");
+		}
+		
+		int update = snackOrderDao.updateOrderRelease(sqlSession, orderNo);
+		
+		if(update < 0) {
+			throw new CommException("updateOrderRelease 실패");
+		}
+	}
+
+	@Override
+	public void orderCancel(HashMap order) {
+		
+		int orderNo = (int) order.get("orderNo");
+		
+		int update = snackOrderDao.updateOrderStatus(sqlSession, orderNo);
+		
+		if(update < 0) {
+			throw new CommException("updateOrderRelease 실패");
+		}
+		
+		int insert = snackOrderDao.insertNewOrder(sqlSession, order);
+		
+	}
+
 }

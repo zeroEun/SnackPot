@@ -33,4 +33,10 @@ public interface SnackOrderService {
 
 	ArrayList<Orders> selectHoOrderedList(HashMap map);
 
+	Orders selectOrderForNo(int orderNo);
+
+	void orderRelease(int orderNo);
+
+	void orderCancel(HashMap order);
+
 }

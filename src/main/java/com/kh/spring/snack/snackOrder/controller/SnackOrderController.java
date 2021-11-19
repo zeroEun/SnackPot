@@ -23,6 +23,7 @@ import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackOrder.model.service.SnackOrderService;
 import com.kh.spring.snack.snackOrder.model.vo.OrderDetail;
 import com.kh.spring.snack.snackOrder.model.vo.Orders;
+import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
 @SessionAttributes("o")
 @Controller
@@ -149,11 +150,11 @@ public class SnackOrderController {
 	@RequestMapping("hoOrderList.sn")
 	public String selectHoOrderedList(HttpSession session, Model model) {
 		
-		//String comCode = ((CompanyMember)session.getAttribute("loginEmp")).getComCode();
-		String comCode = "k2111151557,k2111151730";
+		//String comCode = "k2111151557,k2111151730";
+		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
 		HashMap map = new HashMap();
-		String[] comArr = comCode.split(",");
+		String[] comArr = comCode.split("/");
 		map.put("comArr", comArr);
 		
 		ArrayList<Orders> orderList = snackOrderService.selectHoOrderedList(map);
@@ -163,5 +164,50 @@ public class SnackOrderController {
 		return "headoffice/snack/hoOrderList";
 	}
 	
+	@RequestMapping("hoOrderDetail.sn")
+	public String selectHoOrderedDetail(int orderNo, Model model) {
+		
+		Orders orders = snackOrderService.selectOrderForNo(orderNo);
+		ArrayList<OrderDetail> dList = snackOrderService.selectOrderDetail(orderNo);
+		
+		model.addAttribute("orders", orders);
+		model.addAttribute("dList", dList);
+		
+		return "headoffice/snack/hoOrderDetail";
+	}
+	
+	@RequestMapping("orderRelease.sn")
+	public String orderRelease(int orderNo, Model model) {
+		
+		snackOrderService.orderRelease(orderNo);
+		
+		Orders orders = snackOrderService.selectOrderForNo(orderNo);
+		ArrayList<OrderDetail> dList = snackOrderService.selectOrderDetail(orderNo);
+		
+		model.addAttribute("orders", orders);
+		model.addAttribute("dList", dList);
+		
+		return "headoffice/snack/hoOrderDetail";
+	}
+	
+	@RequestMapping("orderCancel.sn")
+	public String orderCancel(int orderNo, Model model) {
+		
+		int newOrderNo = hoSnackListService.selectOrderNo();
+		
+		HashMap order = new HashMap();
+		order.put("orderNo", orderNo);
+		order.put("newOrderNo", newOrderNo);
+		
+		//snackOrderService.orderCancel(order);
+		
+		Orders orders = snackOrderService.selectOrderForNo(orderNo);
+		ArrayList<OrderDetail> dList = snackOrderService.selectOrderDetail(orderNo);
+		
+		model.addAttribute("orders", orders);
+		model.addAttribute("dList", dList);
+		
+		return "headoffice/snack/hoOrderDetail";
+	}
 	
 }

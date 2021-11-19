@@ -61,4 +61,24 @@ public class SnackOrderDao {
 		return (ArrayList)sqlSession.selectList("snackOrderMapper.selectHoOrderedList", map);
 	}
 
+	public Orders selectOrderForNo(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.selectOne("snackOrderMapper.selectOrderForNo", orderNo);
+	}
+
+	public int insertRelease(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.insert("snackOrderMapper.insertRelease", orderNo);
+	}
+
+	public int updateOrderRelease(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.update("snackOrderMapper.updateOrderRelease", orderNo);
+	}
+
+	public int updateOrderStatus(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.update("snackOrderMapper.updateOrderStatus", orderNo);
+	}
+
+	public int insertNewOrder(SqlSessionTemplate sqlSession, HashMap order) {
+		return sqlSession.insert("snackOrderMapper.insertNewOrder", order);
+	}
+
 }

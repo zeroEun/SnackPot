@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="comCode" column="COM_CODE"/>
 		<result property="comName" column="COM_NAME"/>
 		<result property="orderStatus" column="ORDER_STATUS"/>
+		<result property="status" column="STATUS"/>
 		<result property="budget" column="BUDGET"/>
 		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<result property="orderDeadline" column="ORDER_DEADLINE"/>
@@ -56,12 +57,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND ORDER_STATUS = 'N'
 	</select>
 	
+	<select id="selectOrderForNo" parameterType="_int" resultMap="ordersResultSet">
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DATE, A.DELIVERY_DATE, A.RELEASE_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS
+		FROM ORDERS A
+		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		WHERE A.ORDER_NO = #{orderNo}
+	</select>
+	
 	<select id="selectComOrderedList" parameterType="String" resultMap="ordersResultSet">
-		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE,
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS,
 		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
-           			WHEN A.ORDER_STATUS = 'R' THEN '출고 완료'
+           			WHEN A.ORDER_STATUS = 'R' THEN '발송 완료'
             		WHEN A.ORDER_STATUS = 'C' THEN '주문 취소'
-       		   END AS ORDER_STATUS
+       		   END AS STATUS
 		FROM ORDERS A
 		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
 		WHERE A.COM_CODE = #{comCode}
@@ -70,11 +78,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectHoOrderedList" parameterType="java.util.HashMap" resultMap="ordersResultSet">
-		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE,
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS,
 		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
-           			WHEN A.ORDER_STATUS = 'R' THEN '출고 완료'
+           			WHEN A.ORDER_STATUS = 'R' THEN '발송 완료'
             		WHEN A.ORDER_STATUS = 'C' THEN '주문 취소'
-       		   END AS ORDER_STATUS
+       		   END AS STATUS
 		FROM ORDERS A
 		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
 		WHERE A.COM_CODE IN(
@@ -156,5 +164,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						WHERE A.ORDER_NO = #{orderNo})	
 		WHERE ORDER_NO = #{orderNo}
 	</update>
+	
+	<update id="updateOrderRelease" parameterType="_int">
+		UPDATE ORDERS
+		SET RELEASE_DATE = SYSDATE, ORDER_STATUS = 'R'
+		WHERE ORDER_NO = #{orderNo}
+	</update>
+	
+	<update id="updateOrderStatus" parameterType="_int">
+		UPDATE ORDERS
+		SET ORDER_STATUS = 'C'
+		WHERE ORDER_NO = #{orderNo}
+	</update>
+
+	<insert id="insertRelease" parameterType="_int">
+		INSERT INTO RELEASE (RELEASE_NO, AMOUNT, REMARK, RELEASE_DATE, SNACK_NO, COM_CODE)
+		SELECT RELEASE_SEQ.NEXTVAL, AMOUNT, ORDER_NO, SYSDATE, SNACK_NO, 
+		       (SELECT COM_CODE FROM ORDERS WHERE ORDER_NO = #{orderNo})
+		FROM ORDER_DETAIL
+		WHERE ORDER_NO = #{orderNo}
+	</insert>
 
 </mapper>

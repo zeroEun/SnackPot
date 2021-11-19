@@ -85,7 +85,7 @@
 	                                <td>${o.budget}</td>
 	                                <td>${o.totalPrice}</td>
 	                                <td>${o.deliveryDate}</td>
-	                                <td>${o.orderStatus}</td>
+	                                <td>${o.status}</td>
                             	</tr>
                         	
                         	</c:forEach>

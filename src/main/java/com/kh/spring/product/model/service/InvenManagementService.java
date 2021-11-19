@@ -1,5 +1,6 @@
 package com.kh.spring.product.model.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import com.kh.spring.product.arrival.model.vo.Arrival;
@@ -16,9 +17,9 @@ public interface InvenManagementService {
 
 	void arrivalInsert(Arrival a);
 
-	int todayArrivalCount();
+	int todayArrivalCount(String date);
 
-	ArrayList<Arrival> todayArrivalList(PageInfo pi);
+	ArrayList<Arrival> todayArrivalList(PageInfo pi, String date);
 
 	int todayReleaseCount();
 

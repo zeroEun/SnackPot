@@ -1,5 +1,6 @@
 package com.kh.spring.product.model.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -55,15 +56,15 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 	}
 
 	@Override
-	public int todayArrivalCount() {
+	public int todayArrivalCount(String date) {
 		// TODO Auto-generated method stub
-		return invenManagementDao.todayArrivalCount(sqlSession);
+		return invenManagementDao.todayArrivalCount(sqlSession, date);
 	}
 
 	@Override
-	public ArrayList<Arrival> todayArrivalList(PageInfo pi) {
+	public ArrayList<Arrival> todayArrivalList(PageInfo pi, String date) {
 		// TODO Auto-generated method stub
-		return invenManagementDao.todayArrivalList(sqlSession, pi);
+		return invenManagementDao.todayArrivalList(sqlSession, pi, date);
 	}
 
 	@Override

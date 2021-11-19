@@ -128,17 +128,17 @@ public class InvenManagementController {
 	@RequestMapping("arrivalList.im")
 	private String todayArrivalList(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
 	
-		int listCount = invenManagementService.todayArrivalCount();
-		System.out.println(listCount);
+		//int listCount = invenManagementService.todayArrivalCount();
+		//System.out.println(listCount);
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		//PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
-		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
+		//ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
 		
-		System.out.println(list);
+		//System.out.println(list);
 		
-		model.addAttribute("list", list);
-		model.addAttribute("pi", pi);
+		//model.addAttribute("list", list);
+		//model.addAttribute("pi", pi);
 
 
 		return "headoffice/invenManagement/snackArrivalList";
@@ -178,32 +178,25 @@ public class InvenManagementController {
 	//입고 목록 Ajax
 	@ResponseBody
 	@RequestMapping(value="arrivalListAjax.im", produces="application/json; charset=utf-8")
-	private String arrivalListajax(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage) {
+	private String arrivalListajax(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage,
+			@RequestParam(value="date") Date beforeDate) {
 		
-		int listCount = invenManagementService.todayArrivalCount();
-		System.out.println(listCount);
+		System.out.println("넘어온 날짜 ==================== " + beforeDate);
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
+
+		String date = transFormat.format(beforeDate);
+		
+
+		int listCount = invenManagementService.todayArrivalCount(date);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
-		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
+		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi, date);
 		
 		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
 	}
 	
-	/*@ResponseBody
-	@RequestMapping(value="arrivalListAjax.im", produces="application/json; charset=utf-8")
-	private String arrivalListajax2(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage) {
-		
-		int listCount = invenManagementService.todayArrivalCount();
-		System.out.println(listCount);
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		
-		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
-		
-		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
-	}*/
-	
+
 
 	/*private String arrivalDate() {
 		

@@ -27,7 +27,7 @@
         overflow-y: scroll;
     }
     #outer{
-        margin-top: 70px;
+        margin-top: 30px;
     }
     #search{
     	width: 25px;

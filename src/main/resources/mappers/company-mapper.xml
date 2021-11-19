@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insertCompany" parameterType="Company">
 		INSERT INTO COMPANY
-		VALUES(#{comCode}, #{comAdmin}, #{comName}, #{comAddress}, NULL)
+		VALUES(#{comCode}, #{comAdmin}, #{comName}, #{comAddress}, #{sempNum})
 	</insert>
 	
 	<select id="selectCompany" parameterType="string" resultMap="companyResultSet">

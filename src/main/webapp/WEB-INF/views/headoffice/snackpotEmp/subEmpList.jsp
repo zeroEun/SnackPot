@@ -17,7 +17,7 @@
     
 <style>
 	#outer{
-        margin-top: 70px;
+        margin-top: 30px;
     }
     #title{
     	font-weight: bold;

@@ -99,7 +99,7 @@
     
 </style>
 <body>
-	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
+	<!--<jsp:include page="/WEB-INF/views/common/menubar.jsp" />-->
 	<br>
 
 	<form action="insert.cm" method="post" id="frm" style="text-align: center;" enctype="multipart/form-data">
@@ -154,19 +154,19 @@
 		<label data-toggle="collapse" data-target="#demo" onclick="getReplyList(${dlist.communityNo})">댓글</label>
 		
 		<!-- replyBox안에 댓글리스트가 보여짐 -->
-		<div id="demo" class="collapse">
-		<div class="replyBox" id="replyBoxDiv" style="background-color: pink;">
-		
+		<div id="demo${list.reNo}" class="collapse">
+			<div class="replyBox" id="replyBoxDiv"
+				style="background-color: pink;"></div>
+			<!-- 댓글 작성 부분 -->
+			<div class="replyWrite">
+				<div>
+					<input type="text" class="input_re_reply_div form-control" id="input_rereply"  placeholder="댓글을 입력하세요.">
+				</div>
+
+				<button type="button" class="btn writer_rereply">댓글달기</button>
+			</div>
 		</div>
-		<!-- 댓글 작성 부분 -->
-		<div class="replyWrite">
-			<table>
-				<tr>
-					<td class="write_td"><input type="text" class="write_content" id="write_content" placeholder="댓글을 작성해주세요."></td>
-					<td class="write_btn_td"><button class="reply_write_btn" onclick="insertReply();">등록</button></td>
-				</tr>
-			</table>
-		</div>
+	</div>
 	</div>
 	</div>
 	<br><br><br><br>
@@ -185,38 +185,96 @@
 				console.log(list)
 				
 				var reply = "";
-				for(i=0 ; list.length ; i++){
+				for(var i in list){
+					var reNo = list[i].reNo;
+					var cmntNo = list[i].communityNo;
+					var reGroup = list[i].reGroup;
+					var reGroups = list[i].reGroups;
+					var reGroupDept = list[i].reGroupsDept;
+					var reWriter = list[i].reWriter;
+					var reContent = list[i].reContent;
+					var reDate = list[i].reDate;
 					
-					if(list[i].reGroups == 0){
-						var reply = "<li class='replyItem'>"
-						+"<div class='reply_area showDiv'>"
-						+"<div class='reply_comment_box'>"+list[i].reContent+"</div>"
-						console.log(reply)
-				}
-					$('#replyBoxDiv').html(reply)	
-			}
+//					console.log(reGroups);
+					
+					reply += "<div class ='row replyrow reply" + reNo + "''>";
+					
+					if(reContent == ""){
+						reply += "<div>";
+						reply += "(삭제된 댓글입니다)";
+						reply += "</div>";
+					}else{
+						if(reGroups == 0){ //부모 댓글일때
+							reply += "    <div class='reply-content"+ reGroup+ "col-12'>";
+							reply += "<div>";
+							reply += 	"<span>";
+							reply +=          "<br>" + reContent + "</b>";
+							reply +=    "</span>";
+							reply +=    "<span>";
+							reply +=          reDate;
+							reply +=     "<span>";
+							reply +="</div>";
+						
+						
+						}else{//답글일때 자식일때
+							reply += "    <div class='reply-content"+ reGroup+ "col-12'>";
+							reply += "<div>";
+							reply += 	"<span>";
+							reply +=          "<br>" + reContent + "</b>";
+							reply +=    "</span>";
+							reply +=    "<span>";
+							reply +=          reDate;
+							reply +=     "<span>";
+							reply +="</div>";
+							
+						}
+							
+							if("${loginUser.memId}" == reWriter){
+								
+								reply += "<div>";
+								reply += " <a href='javascript:' reGroup'" + reGroup +"'reGroups'"+ reGroups + "'communityNo'" + cmntNo +"'reNo'"+ reNo +"'class='reply_delete'>삭제</a>";
+									
+							}
+							reply += "</div>";
+							
+						reply += "<div class='collapse row reply_writer' id='re_reply"+ reNo +">'";
+						reply += "<div>";
+						reply += "<input type='text' class='input_re_reply_div form-control' id='input_rereply'"+ reNo +"placeholder='답글을 입력하세요.'>";
+						reply += "</div>";
+						
+						reply += "<button type='button' class='btn writer_rereply' reNo='"+ reNo + "' communityNo='"+ cmntNo +"'>답글달기 </button>";
+						reply += "</div>";
+						reply += "</div>";
+						
+					}
+					reply += "</div>";
+					// 답글달기 버튼 클릭시 답글 입력란
+					
 				
-		}
+				};
+				
+				$("#replyBoxDiv").append(reply);
+				
+				//답글달기 버튼클릭
+				$('.reply_delete').on('click' , function(){
+					//부모댓글일때
+					if($(this).attr('reGroups') == 0){
+						DeleteReply($(this).attr('reNo'), $(this).attr('cmntNo'));
+					}else{
+						//자식답글일때
+						DeleteReReply($(this).attr('reNo'), $(this).attr('cmntNo'), $(this).attr('reGroup'));
+					}
+					
+				})
+				
+				
+			}//success 끝마침
 		});
 		
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 	/*수정폼으로*/
 	function update(val) {
 		const cno = val;

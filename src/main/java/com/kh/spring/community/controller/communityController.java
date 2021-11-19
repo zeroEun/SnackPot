@@ -57,15 +57,30 @@ public class communityController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		
 		ArrayList<Community> list = cmntService.selectList(pi);
-
+		ArrayList<Community> topList = cmntService.selectTopList(comCode); //인기글 가져오기
+		
+		System.out.println("topList *****" + topList);
 		System.out.println("list====> " + list);
 		
 		model.addAttribute("list" , list);
+		model.addAttribute("topList" , topList);
 		model.addAttribute("pi" , pi);
 		
 		return "company/community/communityMainView";
 		
 	}
+	@RequestMapping("myWriter.cm")
+	public String selectMyWriter( Model model , HttpSession session) {
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		String memId = loginUser.getMemId();
+		
+		ArrayList<Community> list = cmntService.selectMyWriter(memId);
+		model.addAttribute("list" , list);
+		
+		System.out.println("내가쓴글======" + list);
+		return "company/community/communityMyWriter";
+	}
+	
 	
 	@RequestMapping("enrollForm.cm")
 	public String enrollForm() {
@@ -106,13 +121,6 @@ public class communityController {
 			
 		}
 		
-//		System.out.println("=============커뮤니티 insert확인===============");
-//		System.out.println("*****확인*****" + cmnt.getContent());
-//		System.out.println("*****확인*****" + cmnt.getTitle());
-//		System.out.println("*****확인*****" + cmnt.getWriter());
-//		System.out.println("*****사진확인*****" + att.getOriginName());
-//		System.out.println("*****사진확인*****" + att.getChangeName());
-//		System.out.println("*****사진확인*****" + att.getFilePath());
 
 		return "redirect:list.cm";
 	}
@@ -247,7 +255,7 @@ public class communityController {
 		ArrayList<Reply> list = cmntService.selectReplyList(cno);
 		System.out.println("댓글 리스트? : " + list);
 		
-		return new GsonBuilder().setDateFormat("yyyy년 MM월 dd일 HH:mm:ss").create().toJson(list); 
+		return new GsonBuilder().setDateFormat("yyyy년 MM월 dd일 ").create().toJson(list); 
 
 
 	}

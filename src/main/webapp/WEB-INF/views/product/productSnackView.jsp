@@ -196,13 +196,13 @@ text-align: center;
     <c:if test="${ctdNo eq '1'}">
       <div class="detail-menu">
         <div class="btn-group">
-          <button type="button" class="btn btn-outline">스낵</button>
-          <button type="button" class="btn btn-outline">파이/비스켓</button>
-          <button type="button" class="btn btn-outline">젤리</button>
-          <button type="button" class="btn btn-outline">사탕</button>
-          <button type="button" class="btn btn-outline">초콜릿</button>
-          <button type="button" class="btn btn-outline">껌</button>
-          <button type="button" class="btn btn-outline">시리얼바</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=1'">스낵</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=2'">파이/비스켓</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=3'">젤리</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=4'">사탕</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=5'">초콜릿</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=6'">껌</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=7'">시리얼바</button>
         </div>
       </div>
     </c:if>
@@ -211,12 +211,12 @@ text-align: center;
       <c:if test="${ctdNo eq '2'}">
       <div class="detail-menu">
         <div class="btn-group">
-          <button type="button" class="btn btn-outline">탄산음료</button>
-          <button type="button" class="btn btn-outline">이온음료</button>
-          <button type="button" class="btn btn-outline">과일음료</button>
-          <button type="button" class="btn btn-outline">에너지음료</button>
-          <button type="button" class="btn btn-outline">유산균음료</button>
-          <button type="button" class="btn btn-outline">커피</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.drink?dtc=8'">탄산음료</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.drink?dtc=9'">이온음료</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.drink?dtc=10'">과일음료</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.drink?dtc=11'">에너지음료</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.drink?dtc=12'">유산균음료</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.drink?dtc=13'">커피</button>
         </div>
       </div>
       </c:if>
@@ -225,11 +225,11 @@ text-align: center;
       <c:if test="${ctdNo eq '3'}">
       <div class="detail-menu">
         <div class="btn-group">
-          <button type="button" class="btn btn-outline">컵라면</button>
-          <button type="button" class="btn btn-outline">핫도그/소시지</button>
-          <button type="button" class="btn btn-outline">계란</button>
-          <button type="button" class="btn btn-outline">시리얼</button>
-          <button type="button" class="btn btn-outline">컵밥</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.food?dtc=14'">컵라면</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.food?dtc=15'">핫도그/소시지</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.food?dtc=16'">계란</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.food?dtc=17'">시리얼</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.food?dtc=18'">컵밥</button>
         </div>
       </div>
       </c:if>

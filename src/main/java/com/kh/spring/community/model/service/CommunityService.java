@@ -31,7 +31,6 @@ public interface CommunityService {
 
 	void updateNrecommend(String cno);
 
-	/*댓글===========================================================================================*/
 	ArrayList<Reply> selectReplyList(int cmntNo);
 
 	void updateCmnt(Community cmnt);
@@ -41,6 +40,10 @@ public interface CommunityService {
 	void deleteCmnt(Community cmnt);
 
 	void deleteCmntAttachment(ComtyAttachment att);
+
+	ArrayList<Community> selectTopList(String comCode);
+
+	ArrayList<Community> selectMyWriter(String memId);
 
 
 

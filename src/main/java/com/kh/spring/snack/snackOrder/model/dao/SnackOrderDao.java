@@ -1,6 +1,7 @@
 package com.kh.spring.snack.snackOrder.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -42,6 +43,22 @@ public class SnackOrderDao {
 
 	public ArrayList<WishListDtail> selecComtWishList(SqlSessionTemplate sqlSession, int wishNo) {
 		return (ArrayList)sqlSession.selectList("snackOrderMapper.selecComtWishList", wishNo);
+	}
+
+	public ArrayList<OrderDetail> checkOrderStock(SqlSessionTemplate sqlSession, int orderNo) {
+		return (ArrayList)sqlSession.selectList("snackOrderMapper.checkOrderStock", orderNo);
+	}
+
+	public int updateSnackOrder(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.update("snackOrderMapper.updateSnackOrder", orderNo);
+	}
+
+	public ArrayList<Orders> selectComOrderedList(SqlSessionTemplate sqlSession, String comCode) {
+		return (ArrayList)sqlSession.selectList("snackOrderMapper.selectComOrderedList", comCode);
+	}
+
+	public ArrayList<Orders> selectHoOrderedList(SqlSessionTemplate sqlSession, HashMap map) {
+		return (ArrayList)sqlSession.selectList("snackOrderMapper.selectHoOrderedList", map);
 	}
 
 }

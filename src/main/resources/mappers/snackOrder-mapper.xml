@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<result property="orderDeadline" column="ORDER_DEADLINE"/>
 		<result property="orderDate" column="ORDER_DATE"/>
+		<result property="deliveryDate" column="DELIVERY_DATE"/>
 		<result property="releaseDate" column="RELEASE_DATE"/>
 		<result property="wishNo" column="WISH_NO"/>
 	</resultMap>
@@ -48,11 +49,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<select id="selectOrder" parameterType="String" resultMap="ordersResultSet">
-		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.BUDGET, A.WISH_NO
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.DELIVERY_DATE, A.BUDGET, A.WISH_NO
 		FROM ORDERS A
 		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
 		WHERE A.COM_CODE = #{comCode}
 		AND ORDER_STATUS = 'N'
+	</select>
+	
+	<select id="selectComOrderedList" parameterType="String" resultMap="ordersResultSet">
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE,
+		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
+           			WHEN A.ORDER_STATUS = 'R' THEN '출고 완료'
+            		WHEN A.ORDER_STATUS = 'C' THEN '주문 취소'
+       		   END AS ORDER_STATUS
+		FROM ORDERS A
+		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		WHERE A.COM_CODE = #{comCode}
+		AND ORDER_STATUS != 'N'
+		ORDER BY ORDER_DATE DESC
+	</select>
+	
+	<select id="selectHoOrderedList" parameterType="java.util.HashMap" resultMap="ordersResultSet">
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE,
+		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
+           			WHEN A.ORDER_STATUS = 'R' THEN '출고 완료'
+            		WHEN A.ORDER_STATUS = 'C' THEN '주문 취소'
+       		   END AS ORDER_STATUS
+		FROM ORDERS A
+		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		WHERE A.COM_CODE IN(
+			<foreach collection="comArr" item="item" separator=",">
+				#{item}
+			</foreach>)
+		AND ORDER_STATUS != 'N'
+		ORDER BY A.ORDER_DATE DESC, B.COM_NAME
 	</select>
 	
 	<select id="selectOrderDetail" parameterType="_int" resultMap="orderDetailResultSet">
@@ -108,5 +138,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE A.WISH_NO = #{wishNo}
 		ORDER BY B.CATEGORY_NO, B.DETAIL_NO, B.SNACK_NAME
 	</select>
+	
+	<select id="checkOrderStock" parameterType="_int" resultMap="orderDetailResultSet">
+		SELECT A.SNACK_NO, B.SNACK_NAME, B.STOCK
+		FROM ORDER_DETAIL A
+		JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
+		WHERE ORDER_NO = #{orderNo}
+		AND A.AMOUNT > B.STOCK
+	</select>
+	
+	<update id="updateSnackOrder" parameterType="_int">
+		UPDATE ORDERS
+		SET ORDER_DATE = SYSDATE, ORDER_STATUS = 'Y',
+		TOTAL_PRICE = (SELECT NVL(SUM(B.RELEASE_PRICE * A.AMOUNT), 0)
+						FROM ORDER_DETAIL A
+						JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
+						WHERE A.ORDER_NO = #{orderNo})	
+		WHERE ORDER_NO = #{orderNo}
+	</update>
 
 </mapper>

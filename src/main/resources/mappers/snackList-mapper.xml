@@ -226,8 +226,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="insertOrder" parameterType="ComListInfo">
-		INSERT INTO ORDERS
-		VALUES(#{orderNo}, #{comCode}, DEFAULT, #{budget}, NULL, #{orderDeadline}, NULL, NULL, 
+		INSERT INTO ORDERS(ORDER_NO, COM_CODE, ORDER_STATUS, BUDGET, TOTAL_PRICE, ORDER_DEADLINE, ORDER_DATE, DELIVERY_DATE, RELEASE_DATE, WISH_NO)
+		VALUES(#{orderNo}, #{comCode}, DEFAULT, #{budget}, NULL, #{orderDeadline}, NULL, #{deliveryDate}, NULL, 
 		      (SELECT WISH_NO
 		       FROM WISHLIST
 		       WHERE STATUS = 'Y' 

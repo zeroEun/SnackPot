@@ -133,9 +133,9 @@
                         </a>
                         <div class="collapse" id="birth-management">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">발송 진행 현황</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">발송 리스트 관리</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">선물 리스트 관리</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="sendingcursts.ho">발송 진행 현황</a></li>
+							<li class="nav-item"> <a class="nav-link" href="sendingList.ho">발송 리스트 관리</a></li>
+							<li class="nav-item"> <a class="nav-link" href="giftList.ho">선물 리스트 관리</a></li>
                         </ul>
                         </div>
                     </li>
@@ -150,7 +150,7 @@
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item"> <a class="nav-link" href="listSchedule.sn">리스트 발송</a></li>
                             <li class="nav-item"> <a class="nav-link" href="sendingList.sn">리스트 발송 내역</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">주문 내역</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="hoOrderList.sn">주문 내역</a></li>
                         </ul>
                         </div>
                     </li>

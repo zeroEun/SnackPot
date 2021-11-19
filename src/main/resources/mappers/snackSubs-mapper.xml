@@ -55,5 +55,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE COM_CODE = #{comCode}
 		AND SUBS_STATUS = 'Y'
 	</select>
+	
+	<select id="selectSnackSub" parameterType="string" resultMap="SnackSubsResultSet">
+		SELECT *
+	    FROM SNACK_SUBS
+	    WHERE COM_CODE = #{comCode}
+    </select>
 
 </mapper>

@@ -22,6 +22,7 @@ public class Orders {
 	private int budget;
 	private int totalPrice;
 	private Date orderDeadline;
+	private Date deliveryDate;
 	private Date orderDate;
 	private Date releaseDate;
 	private int wishNo;

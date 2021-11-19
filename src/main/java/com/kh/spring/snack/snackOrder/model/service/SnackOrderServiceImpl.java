@@ -1,6 +1,7 @@
 package com.kh.spring.snack.snackOrder.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,32 @@ public class SnackOrderServiceImpl implements SnackOrderService {
 	@Override
 	public ArrayList<WishListDtail> selecComtWishList(int wishNo) {
 		return snackOrderDao.selecComtWishList(sqlSession, wishNo);
+	}
+
+	@Override
+	public ArrayList<OrderDetail> checkOrderStock(int orderNo) {
+		
+		return snackOrderDao.checkOrderStock(sqlSession, orderNo);
+	}
+
+	@Override
+	public void updateSnackOrder(int orderNo) {
+		
+		int result = snackOrderDao.updateSnackOrder(sqlSession, orderNo);
+		
+		if(result < 0) {
+			throw new CommException("snackOrder 실패");
+		}
+	}
+
+	@Override
+	public ArrayList<Orders> selectComOrderedList(String comCode) {
+		return snackOrderDao.selectComOrderedList(sqlSession, comCode);
+	}
+
+	@Override
+	public ArrayList<Orders> selectHoOrderedList(HashMap map) {
+		return snackOrderDao.selectHoOrderedList(sqlSession, map);
 	}
 
 }

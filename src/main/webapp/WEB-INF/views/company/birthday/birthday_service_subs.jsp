@@ -25,6 +25,9 @@
 	<%-- 생일 구독을 이미 하고 있는지 체크 --%>
 	<script>
 		$(function(){
+			
+			console.log(${loginUser.comCode});
+			
 			var chkResult = ${chkResult};
 			console.log("chkResult : "+chkResult);
 			

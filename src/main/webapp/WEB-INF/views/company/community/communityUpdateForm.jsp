@@ -10,9 +10,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- smarteditor
+    <!-- smarteditor-->
   <script type="text/javascript" src="${ pageContext.servletContext.contextPath}/resources/static/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
 </head>
 <style>
    .title{
@@ -49,7 +49,7 @@
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 <br>
 
-  <form action="update.cm" method="post" id="frm" style="text-align:center;">
+  <form action="update.cm" method="post" id="frm" style="text-align:center;" enctype="multipart/form-data" >
   <input type="hidden" name="cno" value="${ulist.communityNo }"> 
   	<h3>게시글 수정</h3>
   	<input type="text" class="title" name="title" value="${ulist.title}">
@@ -58,18 +58,20 @@
     </div>
     <div>
     	<button>파일</button>
-    	<a href="${ pageContext.servletContext.contextPath }/resources/upload_files/cmntAttachment/${ulist.changeName}" class="attachmentfile">${ ulist.originName }</a>
-		<input type="file" name="uploadFile" >
+    	<!-- <a href="${ pageContext.servletContext.contextPath }/resources/upload_files/cmntAttachment/${ulist.changeName}" class="attachmentfile"> -->
+    	${ ulist.originName }<!-- </a> -->
+		   <input type="file" name="reuploadFile">
 		  <c:if test="${ !empty ulist.originName }">
 	      <input type="hidden" name="changeName" value="${ ulist.changeName }">
 	      <input type="hidden" name="originName" value="${ ulist.originName }">
           </c:if>
 	</div>
-		<div>
-			<input type="button" onclick="update()" value="확인">
-			<input type="button" onclick="back()" value="취소">
-		</div>
 	</form>
+	<div>
+		<input type="button" onclick="update()" value="확인">
+		<input type="button" onclick="back()" value="취소">
+	</div>
+		
 </body>
 <!--  -->	
  <script type="text/javascript">

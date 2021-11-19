@@ -53,10 +53,11 @@ public class CommunityDao {
 	}
 
 
-	public int updateCmnt(SqlSession sqlSession, HashMap<String, Object> map) {
+	public Object updateCmnt(SqlSession sqlSession, Community cmnt) {
 		
-		return sqlSession.insert("cmntMapper.updateCmnt" , map);
+		return sqlSession.insert("cmntMapper.updateCmnt" , cmnt);
 	}
+
 
 	public int updateViews(SqlSession sqlSession, int cno) {
 	
@@ -93,6 +94,25 @@ public class CommunityDao {
 		sqlSession.insert("cmntMapper.insertCommunityAttachment" , att);
 		
 	}
+
+
+	public void updateAttachment(SqlSession sqlSession, ComtyAttachment att) {
+		
+		sqlSession.update("cmntMapper.updateAttachment" , att);
+	}
+
+
+	public void deleteCmnt(SqlSession sqlSession, Community cmnt) {
+		
+		sqlSession.update("cmntMapper.deleteCmnt" , cmnt);
+	}
+
+	public void deleteCmntAttachment(SqlSession sqlSession, ComtyAttachment att) {
+		
+		sqlSession.delete("cmntMapper.deleteCmntAttachment" , att);		
+	}
+
+
 
 
 	

@@ -6,12 +6,10 @@
 <head>
 <meta charset="UTF-8">
   <title>communityDetail</title>
- 	 <meta name="viewport" content="width=device-width, initial-scale=1">
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
    
     <!-- smarteditor 
   <script type="text/javascript" src="${ pageContext.servletContext.contextPath}/resources/static/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
@@ -154,41 +152,81 @@
 	<div class="container">
 		<i class="far fa-comment-dots" data-toggle="collapse" data-target="#demo" onclick="getReplyList(${dlist.communityNo})"></i>
 		<label data-toggle="collapse" data-target="#demo" onclick="getReplyList(${dlist.communityNo})">댓글</label>
-
-		<!--구현할 댓글 class="replyBox"-->
-		<div class="collapse" id="demo">
-			<div  id="replyBox" class="replyBox" style="background-color: pink; border-color: red;" >
 		
-			</div>
-			
-			<!-- 댓글 작성 부분 -->
-			<div class="replyWrite">
-				<table>
-					<tr>
-						<td class="write_td">
-						<textarea class="write_content" id="write_content" placeholder="댓글을 입력해주세요"></textarea>
-						</td>
-						<td class="write_btn_td">
-						<button class="reply_write_btn"onclick="insertReply();">등록</button>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<!-- replyBox안에 댓글리스트가 보여짐 -->
+		<div id="demo" class="collapse">
+		<div class="replyBox" id="replyBoxDiv" style="background-color: pink;">
+		
 		</div>
+		<!-- 댓글 작성 부분 -->
+		<div class="replyWrite">
+			<table>
+				<tr>
+					<td class="write_td"><input type="text" class="write_content" id="write_content" placeholder="댓글을 작성해주세요."></td>
+					<td class="write_btn_td"><button class="reply_write_btn" onclick="insertReply();">등록</button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
 	</div>
 	<br><br><br><br>
 
 </body>
 <script>
-	//댓글 리스트 가져오기
+	//댓글리스트 가져오기
+	function getReplyList(val){
+		var cno = val;
+		
+		$.ajax({
+			url : "reList.cm",
+			type : "get",
+			data : { cno : cno },
+			success : function(list){
+				console.log(list)
+				
+				var reply = "";
+				for(i=0 ; list.length ; i++){
+					
+					if(list[i].reGroups == 0){
+						var reply = "<li class='replyItem'>"
+						+"<div class='reply_area showDiv'>"
+						+"<div class='reply_comment_box'>"+list[i].reContent+"</div>"
+						console.log(reply)
+				}
+					$('#replyBoxDiv').html(reply)	
+			}
+				
+		}
+		});
+		
+	}
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	/*수정폼으로*/
 	function update(val) {
 		const cno = val;
 		//alert(cno)
 		location.href = "updateForm.cm?cno=" + cno;
+	}
+	/*게시글 삭제하기*/
+	function deleteCmnt(val){
+		const cno = val;
+		location.href = "delete.cm?cno=" + cno;
 	}
 	
 	/*게시글 조회수 , 추천수*/

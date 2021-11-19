@@ -23,7 +23,7 @@ public interface CommunityService {
 
 	Community selectDetailCmnt(int cno);
 
-	int updateCmnt(HashMap<String, Object> map);
+//	int updateCmnt(HashMap<String, Object> map);
 
 	int updateViews(int cno);
 
@@ -33,6 +33,14 @@ public interface CommunityService {
 
 	/*댓글===========================================================================================*/
 	ArrayList<Reply> selectReplyList(int cmntNo);
+
+	void updateCmnt(Community cmnt);
+
+	void updateAttachment(ComtyAttachment att);
+
+	void deleteCmnt(Community cmnt);
+
+	void deleteCmntAttachment(ComtyAttachment att);
 
 
 

@@ -2,6 +2,7 @@ package com.kh.spring.community.controller;
 
 import java.awt.List;
 import java.io.File;
+import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.attachment.AttachmentMarshaller;
 
 import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.GsonBuilder;
 import com.kh.spring.community.model.service.CommunityService;
 import com.kh.spring.community.model.vo.Community;
 import com.kh.spring.community.model.vo.ComtyAttachment;
@@ -159,32 +162,65 @@ public class communityController {
 	}
 	//게시글 수정
 	@RequestMapping("update.cm")
-	public String updateCmnt(Community cmnt , String cno ,String title , String seContent,
-			String changeName , String originName , @RequestParam(name="uploadFile", required = false) MultipartFile file) {
-		System.out.println("========업데이트 확인============");
-		System.out.println("cmnt : " + cmnt);
-		System.out.println("cno : " + cno);
-		System.out.println("title : " + title);
-		System.out.println("seContent : " + seContent);
-		System.out.println("changeName : " + changeName);
-		System.out.println("originName : " + originName);
-		System.out.println("file : " + file);
+	public String updateCmnt(Community cmnt , int cno , String seContent ,ComtyAttachment att, 
+			@RequestParam(name="reuploadFile", required = false) MultipartFile file , HttpServletRequest request ,
+			RedirectAttributes ra) {
+		
+		cmnt.setContent(seContent);
+		cmnt.setCommunityNo(cno);
+		
+		String savePath = request.getSession().getServletContext().getRealPath("/resources/upload_files/cmntAttachment/");
+		
+		if(!file.getOriginalFilename().equals("")) { //1. 이전에 첨부한 파일이 있을때
+			
+			if(cmnt.getChangeName() != null) { //삭제한게 아님
+				deleteFile(cmnt.getChangeName(), request);	
+			}
+			
+			String changeName = saveFile(file, request);
+			
+			att.setOriginName(file.getOriginalFilename());
+			att.setChangeName(changeName);
+			att.setCommunityNo(cno);
+			
+			cmntService.updateCmnt(cmnt);
+			cmntService.updateAttachment(att);
+			
+		}
+		cmntService.updateCmnt(cmnt);		
+		ra.addAttribute("cno" ,cno);
 		
 		
-		
-		
-//		HashMap<String, Object> map = new HashMap<String, Object>();
-//		map.put("title", title);
-//		map.put("seContent", seContent);
-//		map.put("cno", cno);
-//		
-//		int result = cmntService.updateCmnt(map);
-//		System.out.println("cno.......>"  + cno);
-//		
-//		ra.addAttribute("cno" ,cno);
-		
+		System.out.println("=============수정 update확인===============");
+		System.out.println("*****확인*****" + cmnt.getContent());
+		System.out.println("*****확인*****" + cmnt.getTitle());
+		System.out.println("*****확인*****" + cmnt.getWriter());
+		System.out.println("*****사진확인*****" + att.getOriginName());
+		System.out.println("*****사진확인*****" + att.getChangeName());
+		System.out.println("*****사진확인*****" + att.getFilePath());
 		return "redirect:detail.cm";
 	}
+	
+	private void deleteFile(String fileName, HttpServletRequest request) {
+		
+		String savePath = request.getSession().getServletContext().getRealPath("/resources/upload_files/cmntAttachment/");
+			
+		File deleteFile = new File(savePath + fileName);
+		deleteFile.delete();
+	}
+	
+	//파일 삭제하기
+	@RequestMapping("delete.cm")
+	public String deleteCmnt(Community cmnt , ComtyAttachment att,   int cno) {
+		cmnt.setCommunityNo(cno);
+		att.setCommunityNo(cno);
+		
+		cmntService.deleteCmnt(cmnt);
+		cmntService.deleteCmntAttachment(att);
+		
+		return "redirect:list.cm";
+	}
+	
 	 
 	//추천
 	@RequestMapping("plusCount.recommend")
@@ -204,14 +240,16 @@ public class communityController {
 	
 	//댓글 리스트 
 	@ResponseBody
-	@RequestMapping(value="list.reply" , produces = "application/json; charset=utf-8")
-	public ArrayList<Reply> selectReplyList(@RequestParam int cmntNo , HttpSession session) {
+	@RequestMapping(value="reList.cm" , produces = "application/json; charset=utf-8")
+	public String selectReplyList(@RequestParam int cno , HttpSession session) {
 		
-		System.out.println("cmntNo =====>" +  cmntNo);
-		ArrayList<Reply> list = cmntService.selectReplyList(cmntNo);
-		
+		System.out.println("cno =====>" +  cno);
+		ArrayList<Reply> list = cmntService.selectReplyList(cno);
 		System.out.println("댓글 리스트? : " + list);
-		return list;
+		
+		return new GsonBuilder().setDateFormat("yyyy년 MM월 dd일 HH:mm:ss").create().toJson(list); 
+
+
 	}
 	
 	

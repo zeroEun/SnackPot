@@ -22,39 +22,43 @@
 	<%-- 구독 정보 조회 시 불러온 객체의 정보를 바탕으로 radio태그 체크 설정 --%>
 	$(function(){
 		
-		var perAmount = ${b.per_amount};
-		var sendingTime = "${b.sending_time}";		
+		var chkResult = ${chkResult};
+		console.log("chkResult: " + chkResult);
 		
-		console.log(perAmount);
-		console.log(sendingTime);
-		
-		switch(perAmount){
-		case 10000 :
-			$("#per_amount1").prop("checked",true);
-			break;
-		case 30000 :
-			$("#per_amount2").prop("checked",true);
-			break;
-		case 50000 :
-			$("#per_amount3").prop("checked",true);
-			break;
-		case 100000 :
-			$("#per_amount4").prop("checked",true);
-			break;
+		if(chkResult > 0){
+			var perAmount = ${b.per_amount};
+			var sendingTime = "${b.sending_time}";		
+			
+			console.log(perAmount);
+			console.log(sendingTime);
+			
+			switch(perAmount){
+			case 10000 :
+				$("#per_amount1").prop("checked",true);
+				break;
+			case 30000 :
+				$("#per_amount2").prop("checked",true);
+				break;
+			case 50000 :
+				$("#per_amount3").prop("checked",true);
+				break;
+			case 100000 :
+				$("#per_amount4").prop("checked",true);
+				break;
+			}
+			
+			switch(sendingTime){
+			case "당일" :
+				$("#sending_time1").prop("checked",true);
+				break;
+			case "3일전" :
+				$("#sending_time2").prop("checked",true);
+				break;
+			case "5일전" :
+				$("#sending_time3").prop("checked",true);
+				break;		
+			}
 		}
-		
-		switch(sendingTime){
-		case "당일" :
-			$("#sending_time1").prop("checked",true);
-			break;
-		case "3일전" :
-			$("#sending_time2").prop("checked",true);
-			break;
-		case "5일전" :
-			$("#sending_time3").prop("checked",true);
-			break;		
-		}
-		
 	});
 </script>
 <body>

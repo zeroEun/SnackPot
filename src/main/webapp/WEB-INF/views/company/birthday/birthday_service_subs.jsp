@@ -11,12 +11,57 @@
 <title>Insert title here</title>
 </head>
 <style>
-    .per_amount{
-        display: inline;
+    #birthContainer{
+    	margin-top: 30px;
     }
-    .sending_time{
-        display: inline;
+    #birthSubOuter{
+    	margin: auto;
+    	width: 100%;
+    	/*border: 1px solid black;*/
+    	/*padding: 3rem;*/
     }
+    #subsBirthService{
+    	margin: auto;
+    	width: 80%;
+    }
+    .per_amount, .sending_time{
+    	
+    }
+    .per_amount input[name="per_amount"], .sending_time input[name="sending_time"]{
+		display:none;
+	}
+	.per_amount input[name="per_amount"] + span, .sending_time input[name="sending_time"] + span{
+		display:inline-block;
+		background:none;
+		border:1px solid #dfdfdf;  
+		padding:0px 10px;
+		text-align:center;
+		height:35px;
+		line-height:33px;
+		font-weight:500;
+		cursor:pointer;
+	}
+	.per_amount input[name="per_amount"]:checked + span, .sending_time input[name="sending_time"]:checked + span{
+		border:1px solid #23a3a7;
+		background:#23a3a7;
+		color:#fff;
+	}
+	.per_amount_div, .sending_time_div{
+		width: 15%;
+	}
+	#modalBtn{
+		float: right;
+		background: rgb(10, 23, 78);
+		color: rgb(245, 208, 66);
+		font-weight: bolder;
+	}
+	#modalBtn:hover{
+		float: right;
+		transition-duration: 0.7s;
+		background: rgb(245, 208, 66);
+		color: rgb(10, 23, 78);
+
+	}
 </style>
 <body>
 
@@ -26,7 +71,7 @@
 	<script>
 		$(function(){
 			
-			console.log(${loginUser.comCode});
+			console.log("${loginUser.comCode}");
 			
 			var chkResult = ${chkResult};
 			console.log("chkResult : "+chkResult);
@@ -39,102 +84,140 @@
 			}
 		});
 	</script>
-    <h3>생일 구독 신청</h3>
-    <%-- 이미 구독 중일 때 나타내는 정보 --%>
-    <div id="chkService">
-    	<h5>생일 구독 정보가 이미 존재합니다.</h5>
-    </div>
-    
-    <%-- 구독 중이지 않을 때 나타내는 정보 --%>
-    <form class="" id="subsBirthService" action="subscribe.birth" method="post">
-        <label for="">1인당 최대 금액</label>
-        <div class="form-group">            
-            <div class="form-check per_amount">
-                <input class="form-check-input" type="radio" name="per_amount" id="per_amount1" value="10000">
-                <label class="form-check-label" for="per_amount1">10,000원</label>
-            </div>
-            <div class="form-check per_amount">
-                <input class="form-check-input" type="radio" name="per_amount" id="per_amount2" value="30000">
-                <label class="form-check-label" for="per_amount2">30,000원</label>
-            </div>
-            <div class="form-check per_amount">
-                <input class="form-check-input" type="radio" name="per_amount" id="per_amount3" value="50000">
-                <label class="form-check-label" for="per_amount3">50,000원</label>
-            </div>
-            <div class="form-check per_amount">
-                <input class="form-check-input" type="radio" name="per_amount" id="per_amount4" value="100000">
-                <label class="form-check-label" for="per_amount4">100,000원</label>
-            </div>
-        </div>
-        <hr>
-        <label for="">발송 시점</label>
-        <div class="form-group">            
-            <div class="form-check sending_time">
-                <input class="form-check-input" type="radio" name="sending_time" id="sending_time1" value="당일">
-                <label class="form-check-label" for="per_amount1">당일</label>
-            </div>
-            <div class="form-check sending_time">
-                <input class="form-check-input" type="radio" name="sending_time" id="sending_time2" value="3일전">
-                <label class="form-check-label" for="per_amount2">3일 전</label>
-            </div>
-            <div class="form-check sending_time">
-                <input class="form-check-input" type="radio" name="sending_time" id="sending_time3" value="5일전">
-                <label class="form-check-label" for="per_amount2">5일 전</label>
-            </div>
-        </div>
-        <hr>
-        <label for="">선물 선택 알림 메시지</label>
-        <div class="form-group">
-            <select class="custom-select custom-select-md" id="sendMsg">
-                <option value="0" selected>선택</option>
-                <option value="1">선택1 메시지에요~</option>
-                <option value="2">선택2 메시지에요~</option>
-                <option value="3">직접 입력</option>
-            </select>
-            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요." disabled></textarea>
-        </div>
-        
-        <hr>
-        <label for="">수신자 정보</label><br>
-        <button type="button" class="btn btn-dark" id="callEmpList">사원 리스트 불러오기</button>
-        
-        <h6 id="countResult1">총 <b id="empCount">${countEmp }</b>명이 등록되었습니다.</h6>
-		
-        <h6 id="countResult2">사원 정보가 존재하지 않습니다. <button type="button" id="moveRegisterPage" class="btn btn-primary">등록하러 가기</button></h6>
-
-        <hr>
-        <%-- 나중에 세션에 있는 로그인 유저 객체의 comCode를 form전송, name도 클래스 객체 필드에 맞게 수정--%>
-        <input type="hidden" name="com_code" value="${loginUser.comCode}">
-        
-        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
-        <button type="button" class="btn btn-outline-primary" id="modalBtn" data-toggle="modal" data-target="#subscribeBtn">구독 신청하기</button>
-        
-        <div class="modal fade" id="subscribeBtn" tabindex="-1" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">생일 구독</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		       <div class="modal-body">
-				   <h5>생일 구독 서비스를 신청하시겠습니까?</h5>
-	               <hr>
-	               <h6>- 1인당 최대 금액 : <span id="modalInfo1"></span></h6>
-	               <h6>- 발송 시점 : <span id="modalInfo2"></span></h6>
-	               <h6>- 선택 알림 메시지 : <span id="modalInfo3"></span></h6>
-	               <hr>
-	               <h5>결제일은 매월 1일입니다.</h5>
-			   </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-		        <button type="submit" id="subscribe" class="btn btn-primary">확인</button>
-		      </div>
-		    </div>
-		  </div>
+	<section>
+		<div class="container-fluid" id="birthContainer">
+			<div id="birthSubOuter">
+				
+			    <%-- 이미 구독 중일 때 나타내는 정보 --%>
+			    <div id="chkService">
+			    	<h4>생일 구독 신청</h4>
+					<hr>
+			    	<h5>생일 구독 정보가 이미 존재합니다.</h5>
+			    </div>
+			    
+			    <%-- 구독 중이지 않을 때 나타내는 정보 --%>
+			    <form class="" id="subsBirthService" action="subscribe.birth" method="post">
+			    	<h4 style="text-align:center;">생일 구독 신청</h4>
+					<hr>
+			    	<input type="hidden" name="comCode" value="${loginUser.comCode }"/>
+			        <div class="form-group row">
+			        	<label class="col-md-3">1인당 최대 금액</label>
+			        	<div class="col-md-9 row">
+			        		<div class="form-check form-check-inline per_amount_div">
+				                <label class="form-check-label per_amount" for="per_amount1">
+				                <input class="form-check-input" type="radio" name="per_amount" id="per_amount1" value="10000">
+				                <span>10,000원</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline per_amount_div">
+				                <label class="form-check-label per_amount" for="per_amount2">
+				                <input class="form-check-input" type="radio" name="per_amount" id="per_amount2" value="30000">
+				                <span>30,000원</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline per_amount_div">
+				                <label class="form-check-label per_amount" for="per_amount3">
+				                <input class="form-check-input" type="radio" name="per_amount" id="per_amount3" value="50000">
+				                <span>50,000원</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline per_amount_div">
+				                <label class="form-check-label per_amount" for="per_amount4">
+				                <input class="form-check-input" type="radio" name="per_amount" id="per_amount4" value="100000">
+				                <span>100,000원</span>
+				                </label>
+				            </div>
+			        	</div>
+			        </div>
+			        <hr>
+			        
+			        <div class="form-group row">
+			        	<label class="col-md-3">발송 시점</label>
+			        	<div class="col-md-9 row">
+			        		<div class="form-check form-check-inline sending_time_div">
+				                <label class="form-check-label sending_time" for="sending_time1">
+				                <input class="form-check-input" type="radio" name="sending_time" id="sending_time1" value="당일">
+								<span>당일</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline sending_time_div">
+				                <label class="form-check-label sending_time" for="sending_time2">
+				                <input class="form-check-input" type="radio" name="sending_time" id="sending_time2" value="3일전">
+				                <span>3일 전</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline sending_time_div">
+				                <label class="form-check-label sending_time" for="sending_time3">
+				                <input class="form-check-input" type="radio" name="sending_time" id="sending_time3" value="5일전">
+				                <span>5일 전</span>
+				                </label>
+				            </div>
+			        	</div>
+			        </div>
+			        <hr>
+			        
+			        <div class="form-group row">
+			        	<label class="col-md-3">선물 선택 알림 메시지</label>
+			        	<div class="col-md-9 row">
+			        		<select class="custom-select custom-select-md" id="sendMsg">
+				                <option value="0" selected>선택</option>
+				                <option value="1">선택1 메시지에요~</option>
+				                <option value="2">선택2 메시지에요~</option>
+				                <option value="3">직접 입력</option>
+				            </select>
+				            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요." disabled></textarea>
+			        	</div>
+			        </div>
+			        <hr>
+			        
+			        <div class="form-group row">
+			        	<label class="col-md-3">수신자 정보</label><br>
+			        	<div class="col-md-9 row">
+			        		<button type="button" class="btn btn-dark" id="callEmpList">사원 리스트 불러오기</button>
+					        <h6 id="countResult1">총 <b id="empCount">${countEmp }</b>명이 등록되었습니다.</h6>
+					        <h6 id="countResult2">사원 정보가 존재하지 않습니다. <button type="button" id="moveRegisterPage" class="btn btn-primary">등록하러 가기</button></h6>
+			        	</div>
+			        </div>
+					<hr>
+					
+			        <%-- 나중에 세션에 있는 로그인 유저 객체의 comCode를 form전송, name도 클래스 객체 필드에 맞게 수정--%>
+			        <input type="hidden" name="com_code" value="${loginUser.comCode}">
+			        
+			        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+			        <button type="button" class="btn btn-outline-primary" id="modalBtn" data-toggle="modal" data-target="#subscribeBtn">구독 신청하기</button>
+			        
+			        <div class="modal fade" id="subscribeBtn" tabindex="-1" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">생일 구독</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					       <div class="modal-body">
+							   <h5>생일 구독 서비스를 신청하시겠습니까?</h5>
+				               <hr>
+				               <h6>- 1인당 최대 금액 : <span id="modalInfo1"></span></h6>
+				               <h6>- 발송 시점 : <span id="modalInfo2"></span></h6>
+				               <h6>- 선택 알림 메시지 : <span id="modalInfo3"></span></h6>
+				               <hr>
+				               <h5>결제일은 매월 1일입니다.</h5>
+						   </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					        <button type="submit" id="subscribe" class="btn btn-primary">확인</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+			    </form>
+			</div>
 		</div>
-    </form>
+	</section>
+	
+	
+    
 	<script>
 		<%-- 선택 알림 메시지 항목에서 메시지 내용을 선택하는 부분 --%>
 		$(function(){

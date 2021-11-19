@@ -1,6 +1,7 @@
 package com.kh.spring.snack.snackOrder.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.kh.spring.companyMember.model.vo.CompanyMember;
 import com.kh.spring.product.model.vo.Product;
@@ -112,8 +114,54 @@ public class SnackOrderController {
 	@RequestMapping(value="selectComWishList.sn", produces="application/json; charset=utf-8")
 	public ArrayList<WishListDtail> selecComtWishList(int wishNo) {
 		
-		
 		return snackOrderService.selecComtWishList(wishNo);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="checkOrderStock.sn", produces="application/json; charset=utf-8")
+	public ArrayList<OrderDetail> checkOrderStock(int orderNo) {
+		
+		return snackOrderService.checkOrderStock(orderNo);
+	}
+	
+	
+	@RequestMapping("snackOrder.sn")
+	public String updateSnackOrder(int orderNo, SessionStatus session) {
+		
+		snackOrderService.updateSnackOrder(orderNo);
+		session.setComplete();
+		
+		return "redirect:comSnackList.sn";
+	}
+	
+	@RequestMapping("comOrderList.sn")
+	public String selectComOrderedList(HttpSession session, Model model) {
+		
+		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
+		
+		ArrayList<Orders> orderList = snackOrderService.selectComOrderedList(comCode);
+		
+		model.addAttribute("orderList", orderList);
+		
+		return "company/snack/comOrderList";
+	}
+	
+	@RequestMapping("hoOrderList.sn")
+	public String selectHoOrderedList(HttpSession session, Model model) {
+		
+		//String comCode = ((CompanyMember)session.getAttribute("loginEmp")).getComCode();
+		String comCode = "k2111151557,k2111151730";
+		
+		HashMap map = new HashMap();
+		String[] comArr = comCode.split(",");
+		map.put("comArr", comArr);
+		
+		ArrayList<Orders> orderList = snackOrderService.selectHoOrderedList(map);
+		
+		model.addAttribute("orderList", orderList);
+		
+		return "headoffice/snack/hoOrderList";
+	}
+	
 	
 }

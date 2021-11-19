@@ -273,6 +273,7 @@
 		             	<input type="hidden" name="comCode" value="${i.comCode}">
 		                <input type="hidden" name="listNo" value="${i.listNo}">
 		                <input type="hidden" name="orderDeadline" value="${i.orderDeadline}">
+		                <input type="hidden" name="deliveryDate" value="${i.deliveryDate}">
 		                <input type="hidden" name="wishEndDate" value="${i.wishEndDate}">
 		                <input type="hidden" name="budget" value="${i.budget}">
 		                <input type="hidden" name="totalPrice" value="${i.totalPrice}">

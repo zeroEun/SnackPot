@@ -86,7 +86,7 @@
 						    회사명, 예산, 주문 마감일, 리스트 번호      
 					 -->
 					<c:if test="${ empty o }">
-						<p>전송된 간식 리스트가 없습니다.</p>
+						<p>주문 가능한 간식 리스트가 없습니다.</p>
 					</c:if>
 					
 					<c:if test="${ !empty o }">
@@ -95,8 +95,9 @@
                     <br><br>
                     <span class="">예산 : ${o.budget}원</span>&nbsp;&nbsp;&nbsp;
                     <span class="" id="totalPrice"></span>&nbsp;&nbsp;&nbsp;
-                 	<span class="">주문 마감일 : ${o.orderDeadline}</span>
-
+                 	<span class="">주문 마감일 : ${o.orderDeadline}</span>&nbsp;&nbsp;&nbsp;
+					<span class="">배송 예정일 : ${o.deliveryDate}</span>
+					
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wishModal" id="wishBtn">위시리스트 조회</button>
                     
 					<!-- The Modal -->
@@ -122,7 +123,6 @@
 	                                    <th>품목명</th>
 	                                    <th>공급가</th>
 	                                    <th>수량</th>
-	                                    <th>재고</th>
 	                                    <th>금액</th>
 	                                </tr>
 	                            </thead>
@@ -266,8 +266,7 @@
 		                <input type="hidden" name="orderDNo" id="orderDNo">
 		            </form>
 		            
-		             <form action="" method="post" id="sendSnackList">
-		             	<input type="hidden" name="comCode" value="${o.comCode}">
+		             <form action="snackOrder.sn" method="post" id="snackOrder">
 		                <input type="hidden" name="orderNo" value="${o.orderNo}">
 		            </form>
 		            
@@ -412,23 +411,36 @@
 		<%-- 리스트 발송 버튼 클릭 시--%>
 		$('#orderBtn').on('click', function(){
 			
-			var result = confirm("리스트를 전송하시겠습니까?");
+			var result = confirm("주문하시겠습니까?");
 			if(result){
+				
+				var orderNo =  ${o.orderNo};
 				
 				$.ajax({
 					
-					url:'totalPrice.sn',
+					url:'checkOrderStock.sn',
 					data:{orderNo:orderNo},
-					success: function(totalPrice){
+					success: function(list){
 						
-						$('#totalPrice').text('총 금액 : ' + totalPrice + '원');
+						console.log(list);
+						
+						if(list.length == 0){
+							 $('#snackOrder').submit();
+						}else{
+							
+							var snack = '';
+							$.each(list, function(index, obj){
+								snack += '품명 : ' + obj.snackName + ', 주문 가능 수량: ' + obj.stock + '\n'
+							})
+							
+							alert('주문 수량을 초과한 제품이 있습니다.\n' +snack);
+						}
 						
 					},error:function(){
 						console.log("댓글 작성 ajax 통신 실패");
 					}
 				});
 				
-				<%-- $('#sendSnackList').submit();--%>
 			}
 			
 		});
@@ -457,9 +469,8 @@
 						var name = $("<td>").text(obj.snackName);
 						var price = $("<td>").text(obj.releasePrice);
 						var count = $("<td>").text(obj.count);
-						var stock = $("<td>").text(obj.stock);
 						var totalPrice = $("<td>").text(obj.releasePrice*obj.count);
-						var tr = $("<tr>").append(category, subCategory, image, name, price, count, stock, totalPrice);
+						var tr = $("<tr>").append(category, subCategory, image, name, price, count, totalPrice);
 						
 						$('#wish-table tbody').append(tr);
 					})

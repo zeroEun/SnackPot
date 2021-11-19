@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>문의게시판</title>
 <style>
 	#boardList{text-align: center;}
     #boardList>tbody>tr:hover{cursor:pointer;}
@@ -38,7 +38,7 @@
             <br>
             <!-- 로그인 상태일 경우만 보여지는 글쓰기 버튼-->
             <c:if test="${ !empty loginUser }">
-            	<a class="btn btn-secondary" style="float:right" href="enrollForm.bo">글쓰기</a>
+            	<a class="btn btn-secondary" style="float:right" href="enrollForm.qna">글쓰기</a>
             </c:if>
             <br>
             <table id="boardList" class="table table-hover" align="center">
@@ -51,10 +51,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                	<c:forEach items="${ list }" var="b">
+                	<c:forEach items="${list}" var="q">
 	                    <tr>
-	                        <td>${ q.qNo }</td>
-	                        <td>${ q.qTitle }</td>
+	                        <td>${ q.QNo }</td>
+	                        <td>${ q.QTitle }</td>
 	                        <td>${ q.writer }</td>
 	                        <td>${ q.createDate }</td>
 	             

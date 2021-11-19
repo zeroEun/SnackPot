@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class qna {
+public class Qna {
 	
 	private int qNo;
 	private String writer;
@@ -24,6 +24,8 @@ public class qna {
 	private String aTitle;
 	private String aContent;
 	private Date aDate;
+	private String changeName;
+	private String status;
 	
 	
 

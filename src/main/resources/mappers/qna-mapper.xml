@@ -4,32 +4,70 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="qnaMapper">
 
-<resultMap id="qnaResultSet" type="Qna">
-		<id column="q_no" property="qNo"/>
-		<result column="writer" property="writer"/>
-		<result column="q_title" property="qTitle"/>
-		<result column="q_content" property="qContent"/>
-		<result column="create_date" property="createDate"/>
-		<result column="a_title" property="aTitle"/>
-		<result column="a_content" property="aContent"/>
-		<result column="a_date" property="aDate"/>
+	<resultMap id="qnaResultSet" type="Qna">
+		<id column="q_no" property="qNo" />
+		<result column="writer" property="writer" />
+		<result column="q_title" property="qTitle" />
+		<result column="q_content" property="qContent" />
+		<result column="create_date" property="createDate" />
+		<result column="a_title" property="aTitle" />
+		<result column="a_content" property="aContent" />
+		<result column="a_date" property="aDate" />
+		<result column="status" property="status" />
+		<result column="change_name" property="changeName" />
 	</resultMap>
-	
+
+
 	<select id="selectListCount" resultType="_int">
-		
+
 		SELECT COUNT(*)
 		FROM QNA
-		
-		
+
+
 	</select>
-	
+
 	<select id="selectList" resultMap="qnaResultSet">
 
-	SELECT * 
+		SELECT *
+		FROM QNA
+		ORDER BY Q_NO DESC
+
+	</select>
+
+	<insert id="insertQna" parameterType="Qna">
+
+
+		INSERT INTO QNA
+		(Q_NO, WRITER, Q_TITLE, Q_CONTENT, CREATE_DATE, CHANGE_NAME, STATUS)
+		VALUES 
+		(QNA_SEQ.NEXTVAL, '${writer}', '${qTitle}','${qContent}',sysdate,'${changeName}', 'Y'
+		)
+
+	</insert>
+
+	<insert id="insertQnaAttachment">
+		INSERT INTO QNA_ATTACHMENT
+		VALUES 
+		(QNAATTACH_SEQ.NEXTVAL, '${originName}', '${changeName}','${filePath}'
+		)
+
+	</insert>
+	
+	<select id="detailQna" resultMap="qnaResultSet">
+	
+	SELECT 
+	WRITER,
+	Q_TITLE,
+	Q_CONTENT,
+	CREATE_DATE,
+	A_TITLE,
+	CHANGE_NAME
 	FROM QNA
-	ORDER BY Q_NO DESC
+	WHERE Q_NO = #{qno}
+	AND STATUS = 'Y'
+	
 	
 	</select>
 
-	
+
 </mapper>

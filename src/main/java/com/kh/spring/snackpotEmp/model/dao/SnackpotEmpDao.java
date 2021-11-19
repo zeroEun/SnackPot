@@ -7,7 +7,9 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring.birthday.subscribe.model.vo.Birthday;
 import com.kh.spring.company.model.vo.Company;
+import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
 @Repository
@@ -125,6 +127,16 @@ public class SnackpotEmpDao {
 	public int deleteSempComCode(SqlSessionTemplate sqlSession, SnackpotEmp se) {
 		
 		return sqlSession.update("snackpotEmpMapper.deleteSempComCode", se);
+	}
+
+	public SnackSubs selectSnackSub(SqlSessionTemplate sqlSession, String comCode) {
+		
+		return sqlSession.selectOne("snackSubsMapper.selectSnackSub", comCode);
+	}
+
+	public Birthday selectBirthSub(SqlSessionTemplate sqlSession, String comCode) {
+		
+		return sqlSession.selectOne("birthdayMapper.selectBirthSub", comCode);
 	}
 
 }

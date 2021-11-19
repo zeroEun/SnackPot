@@ -117,8 +117,7 @@
 <script>
 //클릭한 행의 사원번호 가져오기
 $(".modifyBtn").click(function(){ 
-	  var str = ""
-      var tdArr = new Array();   
+      
       var modifyBtn = $(this);
        
       var tr = modifyBtn.parent().parent();

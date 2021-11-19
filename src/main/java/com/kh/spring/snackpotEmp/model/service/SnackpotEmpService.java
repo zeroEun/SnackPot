@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.kh.spring.birthday.subscribe.model.vo.Birthday;
 import com.kh.spring.company.model.vo.Company;
+import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
 public interface SnackpotEmpService {
@@ -46,5 +48,9 @@ public interface SnackpotEmpService {
 	ArrayList<SnackpotEmp> selectComCodeCheck(String check);
 
 	void deleteSempComCode(SnackpotEmp se);
+
+	SnackSubs selectSnackSub(String comCode);
+
+	Birthday selectBirthSub(String comCode);
 
 }

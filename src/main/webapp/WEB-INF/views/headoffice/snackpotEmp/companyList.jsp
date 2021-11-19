@@ -29,40 +29,20 @@
     #outer{
         margin-top: 70px;
     }
-    #search{
-    	width: 25px;
-    	border: none;
-    	background: none;
-    }
-    #icon{
-   		width: 25px;
-    }
-    #searchdiv{
-    	margin-left: 880px;
-    	margin-bottom: 30px;
-    }
-    #enrollBtn{
-    	margin-left: 1010px;
-    	padding: 10px;
-    	border: none;
-    	background-color: rgb(94, 94, 94);
-    	color: white;
-    	border-radius: 5px;
-    	margin-top: 10px;
-    }
     #title{
     	font-weight: bold;
     }
-    .modifyBtn{
-    	width: 60px;
+    .subBtn{
+    	width: 120px;
     	height: 30px;
     	border: none;
     	background-color: rgb(94, 94, 94);
     	color: white;
     	border-radius: 5px;
+    	margin-right: -80px;
     }
-    .deleteBtn{
-    	width: 60px;
+    .empBtn{
+    	width: 80px;
     	height: 30px;
     	border: none;
     	background-color: rgb(94, 94, 94);
@@ -77,9 +57,7 @@
 <jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 
 <div class="container" id="outer">
-<h5 id="title">구독회사 정보</h5><br>
-<div id="searchdiv">
-</div>
+<h5 id="title">구독회사 정보</h5><br><br><br><br>
 <div id="tdiv">
 <table class="table table-hover" id="empList">
     <thead>
@@ -87,6 +65,7 @@
             <th>No.</th>
             <th>회사명</th>
             <th>주소</th>
+            <th>회사코드</th>
             <th colspan="2"></th>
         </tr>
     </thead>
@@ -96,8 +75,9 @@
             <td>${st.index +1}</td>
             <td>${com.comName}</td>
             <td>${com.comAddress}</td>
-            <td><input type="button" class="modifyBtn" value="구독정보"></td>
-            <td><input type="button" class="deleteBtn" value="사원"></td>
+            <td>${com.comCode}</td>
+            <td><input type="button" class="subBtn" value="구독정보"></td>
+            <td><input type="button" class="empBtn" value="사원"></td>
         </tr>
      </c:forEach>
     </tbody>
@@ -107,24 +87,26 @@
 </div>
 </div>
 <script>
-//클릭한 행의 사원번호 가져오기
-$(".modifyBtn").click(function(){ 
-	  var str = ""
-      var tdArr = new Array();   
+//클릭한 행의 회사코드 가져오기
+$(".subBtn").click(function(){ 
       var modifyBtn = $(this);
        
       var tr = modifyBtn.parent().parent();
       var td = tr.children();
-       
-      var sempNum = td.eq(1).text();
+      
+      var comName = td.eq(1).text();
+      var comCode = td.eq(3).text();
       
       $.ajax({
-  		url: "modifyEmp.sn",
+  		url: "searchCompany.sn",
   		type:"post",
-  		data:{sempNum : sempNum},
+  		data:{
+  			comCode : comCode,
+  			comName : comName
+  			},
   		success:function(result){
   			if(result == "ok"){
-  				location.href="<%=request.getContextPath()%>/modify.sn"
+  				location.href="<%=request.getContextPath()%>/selectCompany.sn"
   			}
   		},
   		error:function(){
@@ -134,36 +116,31 @@ $(".modifyBtn").click(function(){
       
 });
 
-$(".deleteBtn").click(function(){ 
-	var str = ""
-    var tdArr = new Array();   
-    var modifyBtn = $(this);
-     
-    var tr = modifyBtn.parent().parent();
+$(".empBtn").click(function(){ 
+	var empBtn = $(this);
+    
+    var tr = empBtn.parent().parent();
     var td = tr.children();
      
-    var sempNum = td.eq(1).text();
+    var comName = td.eq(1).text();
+    var comCode = td.eq(3).text();
     
-    if(confirm('정말 삭제하시겠습니까?')){
-    	$.ajax({
-		url: "deleteEmp.sn",
+    $.ajax({
+		url: "searchEmp.sn",
 		type:"post",
-		data:{sempNum : sempNum},
+		data:{
+  			comCode : comCode,
+  			comName : comName
+  			},
 		success:function(result){
-			if(result > 0){
-				alert("삭제되었습니다.")
-				location.reload();
-			}else{
-				alert("삭제에 실패하였습니다.")
+			if(result == "ok"){
+				location.href="<%=request.getContextPath()%>/selectEmp.sn"
 			}
 		},
 		error:function(){
 			console.log("서버통신실패");
 		}
 	})
-	  }else{
-		 return; 
-	  } 
 });
 </script>
 </body>

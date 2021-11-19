@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		INSERT INTO ARRIVAL
 		VALUES (
-		ARRIVAL_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}
+		ARRIVAL_SEQ.NEXTVAL,${amount}, '${remark}', sysdate, ${snackNo}
 		)
 
 	</insert>
@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT
 		A.ARRIVAL_NO,
 		A.AMOUNT,
-		A.UNIT,
+		B.UNIT,
 		A.REMARK,
 		A.ARRIVAL_DATE,
 		A.SNACK_NO,
@@ -96,7 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		INSERT INTO RELEASE
 		VALUES (
-		RELEASE_SEQ.NEXTVAL,${amount}, 'ea', '${remark}', sysdate, ${snackNo}, '1'
+		RELEASE_SEQ.NEXTVAL,${amount}, '${remark}', sysdate, ${snackNo}, '1'
 		)
 
 	</insert>
@@ -117,7 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT
 		A.RELEASE_NO,
 		A.AMOUNT,
-		A.UNIT,
+		B.UNIT,
 		A.REMARK,
 		A.RELEASE_DATE,
 		A.SNACK_NO,

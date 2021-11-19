@@ -28,7 +28,6 @@ import com.kh.spring.product.model.vo.ProductAttachment;
 import com.kh.spring.product.release.model.vo.Release;
 import com.kh.spring.qna.model.vo.PageInfo;
 import com.kh.spring.qna.model.vo.Pagination;
-import com.kh.spring.qna.model.vo.qna;
 
 @Controller
 public class InvenManagementController {

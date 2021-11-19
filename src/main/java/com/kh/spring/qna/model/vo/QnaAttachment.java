@@ -13,12 +13,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class qnaAttachment {
+public class QnaAttachment {
 
 	
 	private int fileNo;
 	private String originName;
 	private String changeName;
 	private String filePath;
-	private int qNo;
+
 }

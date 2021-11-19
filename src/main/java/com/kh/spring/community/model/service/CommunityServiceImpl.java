@@ -61,11 +61,11 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public int updateCmnt(HashMap<String, Object> map) {
+	public void updateCmnt(Community cmnt) {
 		
-		return cmntDao.updateCmnt(sqlSession , map);
-		
+		 cmntDao.updateCmnt(sqlSession , cmnt);
 	}
+
 
 	@Override
 	public int updateViews(int cno) {
@@ -109,6 +109,28 @@ public class CommunityServiceImpl implements CommunityService {
 		cmntDao.insertCommunityAttachment(sqlSession , att);
 		
 	}
+
+
+	@Override
+	public void updateAttachment(ComtyAttachment att) {
+		cmntDao.updateAttachment(sqlSession, att);
+		
+	}
+
+	@Override
+	public void deleteCmnt(Community cmnt) {
+		
+		cmntDao.deleteCmnt(sqlSession , cmnt);
+		
+	}
+
+
+	@Override
+	public void deleteCmntAttachment(ComtyAttachment att) {
+		cmntDao.deleteCmntAttachment(sqlSession , att);
+		
+	}
+
 
 
 

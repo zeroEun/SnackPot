@@ -81,10 +81,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	AND A.STATUS = 'Y'
 </select>
 
-<update id="updateCmnt" parameterType="hashMap">
+<update id="updateCmnt" parameterType="Community">
 	UPDATE COMMUNITY
-	SET CONTENT=#{seContent} , TITLE=#{title}
-	WHERE COMMUNITY_NO= #{cno}
+	SET CONTENT=#{content} , TITLE=#{title} , WRITER_DATE=SYSDATE
+	WHERE COMMUNITY_NO= #{communityNo}
+</update>
+
+<delete id="deleteCmntAttachment" parameterType="ComtyAttachment">
+	DELETE FROM COMTY_ATTACHMENT
+	WHERE COMMUNITY_NO =#{communityNo}
+</delete>
+
+<update id="updateAttachment" parameterType="ComtyAttachment">
+	UPDATE COMTY_ATTACHMENT
+	SET ORIGIN_NAME =#{originName}, CHANGE_NAME=#{changeName}
+	WHERE COMMUNITY_NO =#{communityNo}
+</update>
+
+<update id="deleteCmnt" parameterType="Community">
+	UPDATE COMMUNITY
+	SET STATUS='N'
+	WHERE COMMUNITY_NO =#{communityNo}
 </update>
 
 <update id="updateViews">
@@ -107,7 +124,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <select id="selectReplyList" parameterType="_int" resultMap="ReplyResultSet">
 	SELECT *
 	FROM REPLY
-	WHERE COMMUNITY_NO = #{cmntNo}
+	WHERE COMMUNITY_NO = #{cno}
 	ORDER BY RE_GROUP ASC , RE_GROUPDEPT
 </select>
 </mapper>

@@ -11,9 +11,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- smarteditor  
-    <script type="text/javascript" src="${ pageContext.servletContext.contextPath}/resources/static/smarteditor2/js/HuskyEZCreator.js" charset="utf-8"></script> 
+    <script type="text/javascript" src="${ pageContext.servletContext.contextPath}/resources/static/smarteditor2/js/HuskyEZCreator.js" charset="utf-8"></script> -->
   <script type="text/javascript" src="${ pageContext.servletContext.contextPath}/resources/static/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>-->
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 </head>
 <style>
     .title{

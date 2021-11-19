@@ -117,8 +117,6 @@
 <script>
 //클릭한 행의 사원번호 가져오기
 $(".modifyBtn").click(function(){ 
-	  var str = ""
-      var tdArr = new Array();   
       var modifyBtn = $(this);
        
       var tr = modifyBtn.parent().parent();
@@ -139,12 +137,10 @@ $(".modifyBtn").click(function(){
   			console.log("서버통신실패");
   		}
   	})
-      
+     
 });
 
-$(".deleteBtn").click(function(){ 
-	var str = ""
-    var tdArr = new Array();   
+$(".deleteBtn").click(function(){  
     var modifyBtn = $(this);
      
     var tr = modifyBtn.parent().parent();

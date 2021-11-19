@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kh.spring.birthday.subscribe.model.vo.Birthday;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.company.model.vo.Company;
+import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 import com.kh.spring.snackpotEmp.model.dao.SnackpotEmpDao;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
@@ -179,6 +181,18 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 			throw new CommException("기존 사원 담당 회사 삭제에 실패했습니다");
 		}
 		
+	}
+
+	@Override
+	public SnackSubs selectSnackSub(String comCode) {
+		
+		return sed.selectSnackSub(sqlSession, comCode);
+	}
+
+	@Override
+	public Birthday selectBirthSub(String comCode) {
+		
+		return sed.selectBirthSub(sqlSession, comCode);
 	}
 
 }

@@ -18,7 +18,7 @@ public class CompanyEmp {
 	private String cempDept;
 	private String cempJob;
 	private String cempEmail;
-	private int cempPhone;
+	private String cempPhone;
 	private int cempBirth;
 	private String comCode;
 	private int cempNum;

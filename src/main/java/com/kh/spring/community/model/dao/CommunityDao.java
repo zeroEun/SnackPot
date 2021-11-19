@@ -33,12 +33,19 @@ public class CommunityDao {
 		return (ArrayList)sqlSession.selectList("cmntMapper.selectList" , null, rowBounds);
 		
 	}
+	
 
-//	public void insertCommunity(SqlSession sqlSession, HashMap<String, Object> map) {
-//		
-//		sqlSession.insert("cmntMapper.insertCommunity" , map);
-//		
-//	}
+	public ArrayList<Community> selectTopList(SqlSession sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("cmntMapper.selectTopList" , comCode);
+	}
+
+
+	public ArrayList<Community> selectMyWriter(SqlSession sqlSession, String memId) {
+		
+		return (ArrayList)sqlSession.selectList("cmntMapper.selectMyWriter" , memId);
+		
+	}
 	
 	public void insertCommunity(SqlSession sqlSession, Community cmnt) {
 		
@@ -115,7 +122,9 @@ public class CommunityDao {
 
 
 
-	
+
+
+
 
 
 }

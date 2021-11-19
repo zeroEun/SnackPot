@@ -38,6 +38,12 @@ public class CommunityServiceImpl implements CommunityService {
 		
 		return cmntDao.selectList(sqlSession , pi); 
 	}
+	
+	@Override
+	public ArrayList<Community> selectTopList(String comCode) {
+		
+		return cmntDao.selectTopList(sqlSession , comCode); 
+	}
 
 //	@Override
 //	public void insertCommunity(HashMap<String, Object> map) {
@@ -132,8 +138,15 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 
+	@Override
+	public ArrayList<Community> selectMyWriter(String memId) {
+		
+		return cmntDao.selectMyWriter(sqlSession , memId); 
+		
+	}
 
 
+	
 
 
 }

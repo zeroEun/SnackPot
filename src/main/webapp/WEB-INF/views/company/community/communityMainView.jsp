@@ -86,24 +86,26 @@
 		</div>
 
 		<!--인기글 table-->
-		<table class="table table-borderless">
+		<table class="table table-borderless" id="cmnt">
 			<thead>
 				<tr>
-					<th></th>
+					<th>no.</th>
 					<th>제목</th>
-					<th>작성일</th>
-					<th>추천</th>
-					<th>조회</th>
+					<th>내용</th>
+					<th>조회수</th>
+					<th>추천수</th>
 				</tr>
 			</thead>
 			<tbody id="topBoardBody">
+				<c:forEach items="${topList}" var="t">
 				<tr>
-					<td>1.</td>
-					<td>제목내용</td>
-					<th>작성일내용</th>
-					<td>추천수</td>
-					<td>조회수</td>
+					<td>${t.communityNo}</td>
+					<td>${t.title}</td>
+					<th>${t.content}</th>
+					<td>${t.views}</td>
+					<td>${t.recommend}</td>
 				</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 		<br>
@@ -111,7 +113,7 @@
 
 		<!--제목 찾기 부트스트랩(filter)-->
 		<div class="search-box">
-			<input class="form-control" id="myInput" type="text" placeholder="제목">
+			<input class="form-control" id="myInput" type="text" placeholder="제목" >
 			<a class="searchBtn"> <i class="fas fa-search"></i>
 			</a>
 		</div>
@@ -124,9 +126,10 @@
 					<th>작성일</th>
 					<th>추천</th>
 					<th>조회</th>
+					<th>작성자</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="myTable">
 			<c:forEach items="${list}" var="c">
 		<!-- <c:if test="${c.comCode eq loginUser.comCode }">	</c:if> -->	
 				<tr>
@@ -141,13 +144,14 @@
 					<td>${c.writerDate }</td>
 					<td>${c.recommend }</td>
 					<td>${c.views }</td>
+					<td>${c.writer}</td>
 				</tr>
 			</c:forEach>
 			</tbody>
 		</table>
 		<div class="board-Btn">
 			<button class="writerBtn" onclick="writer()">글쓰기</button>
-			<button class="readBtn">내글보기</button>
+			<button class="readBtn" onclick="myWriter()">내글보기</button>
 		</div>
 		
 		 <div id="pagingArea">
@@ -184,6 +188,16 @@
 	</div>
 </body>
 <script>
+
+		$(document).ready(function(){
+			  $("#myInput").on("keyup", function() {
+			    var value = $(this).val().toLowerCase();
+			    $("#myTable tr").filter(function() {
+			      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			    });
+			  });
+			});
+
     	$(function(){
     		$("#cmnt tbody tr").click(function(){
     			location.href="detail.cm?cno=" + $(this).children().eq(0).text();
@@ -191,8 +205,15 @@
     	});
     	
     	function writer(){
-    	location.href="enrollForm.cm";
+    		location.href="enrollForm.cm";
     	}
+    	
+    	function myWriter(){
+    		location.href="myWriter.cm";
+    	}
+    
+    	
+    	
 </script>
 
 </html>

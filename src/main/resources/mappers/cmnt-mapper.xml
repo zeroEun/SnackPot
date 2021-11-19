@@ -54,6 +54,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	ORDER BY A.COMMUNITY_NO DESC
 </select>
 
+<select id="selectTopList" resultMap="communityResultSet">
+		<![CDATA[
+		SELECT *
+		FROM(SELECT *
+		 FROM COMMUNITY
+		WHERE STATUS ='Y'
+		AND COM_CODE = #{comCode}
+		ORDER BY RECOMMEND DESC
+		)
+		WHERE ROWNUM <=3
+		]]>
+</select>
+
+<select id="selectMyWriter" resultMap="communityResultSet">
+	SELECT A.COMMUNITY_NO , A.CONTENT, A.VIEWS, A.RECOMMEND , A.N_RECOMMEND , A.WRITER_DATE , A.TITLE , A.COM_CODE,
+       	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME
+	FROM COMMUNITY A 
+	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
+	WHERE A.STATUS='Y'
+	AND A.WRITER = #{memId}
+	ORDER BY A.COMMUNITY_NO DESC
+</select>
 
 <insert id="insertCommunity" parameterType="Community">
 	INSERT INTO COMMUNITY

@@ -142,6 +142,7 @@ public class CompanyMemberController {
 			co.setComName(comName);
 			co.setComAddress(comAddress);
 			co.setComAdmin(m.getMemId());
+			co.setSempNum("미정");
 			
 			//회사코드 만들기
 			String first = comName.substring(0, 1);
@@ -152,6 +153,8 @@ public class CompanyMemberController {
 	        
 	        m.setComCode(comCode);
 	        co.setComCode(comCode);
+	        System.out.println("멤버 : " + m);
+	        System.out.println("회사 : " + co);
 			int result = cms.insertCompanyAdmin(m);
 			if(result > 0) {
 				cms.insertCompany(co);

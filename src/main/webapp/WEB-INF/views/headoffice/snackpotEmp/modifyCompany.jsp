@@ -27,7 +27,7 @@
         overflow-y: scroll;
     }
     #outer{
-        margin-top: 70px;
+        margin-top: 30px;
     }
     #search{
     	width: 25px;
@@ -80,10 +80,10 @@
     }
     #content{
         display: inline-block;
-        margin-top: 50px;
+        margin-top: -20px;
     }
     #btnDiv{
-    	margin-top: 50px;
+    	margin-top: 30px;
     }
     #cancel{
    	 	background-color: rgb(224, 224, 224);
@@ -98,6 +98,9 @@
     	padding: 10px;
     	border: none;
     	border-radius: 5px;
+    }
+    #sample{
+    	font-size: 13px;
     }
 </style>
 </head>
@@ -140,6 +143,7 @@
 
 <div id="outline">
 <div id="content">
+<label id="sample">입력예시 : 카카오, 네이버 (회사, 회사 ...)</label><br><br>
 <label>${semp.sempName} 사원의 담당 거래처</label>&emsp;<input type="text" name="comName" value="${sempComName}"><br>
 <input type="hidden" name="sempNum" value="${semp.sempNum}">
 <div id="btnDiv">

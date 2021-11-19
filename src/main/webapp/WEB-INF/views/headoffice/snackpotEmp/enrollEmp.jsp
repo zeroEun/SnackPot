@@ -15,7 +15,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
 	#outer{
-        margin-top: 70px;
+        margin-top: 30px;
     }
     #title{
     	font-weight: bold;

@@ -63,8 +63,8 @@ public class SnackpotEmpController {
 	
 	@RequestMapping("loginEmp.sn")
 	public String loginEmp(SnackpotEmp se, Model model) {
-//		String encPwd = bCryptPasswordEncoder.encode(se.getSempPw());
-//		System.out.println("비밀번호 : " + encPwd);
+		String encPwd = bCryptPasswordEncoder.encode(se.getSempPw());	
+		System.out.println("비밀번호 암호화 : " + encPwd);
 		
 		SnackpotEmp loginEmp = ses.loginEmp(bCryptPasswordEncoder, se);
 		model.addAttribute("loginEmp", loginEmp);
@@ -74,6 +74,11 @@ public class SnackpotEmpController {
 	
 	@RequestMapping("insertEmp.sn")
 	public String insertEmp(@ModelAttribute SnackpotEmp se, Model model) {
+		
+		//암호회된 비밀번호
+		String encPwd = bCryptPasswordEncoder.encode(se.getSempPw());
+		se.setSempPw(encPwd);
+		System.out.println("비밀번호 암호화 : " + encPwd);
 		
 		se.setSempStatus("Y");
 		ses.insertEmp(se);

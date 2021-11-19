@@ -87,17 +87,15 @@
 
             <nav id="sidebar" class="sidebar col-2">
                 <div class="sidebar-header">
-                    <a class="navbar-brand" href="#"><h2>SnackPot</h2></a>
+                    <a class="navbar-brand" href="#">SnackPot</a>
 
                     <div id="user">
-                        <h5>UserName</h5>
+                        <h5>${ sessionScope.loginEmp.sempName }님</h5>
                         <a href="logout.sn">logout</a>
                     </div>
                 </div>
 
                 <ul class="nav">
-
-                   
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#member-management" aria-expanded="false" aria-controls="member-management">
                         <span class="menu-title">사원 정보 관리</span>
@@ -105,11 +103,18 @@
                         </a>
                         <div class="collapse" id="member-management">
                         <ul class="nav flex-column sub-menu">
-                        	<!-- 본사 마스터 계정으로 로그인시에만 보여주기-->
-                            <li class="nav-item"> <a class="nav-link" href="empList.sn ">사원 계정 관리</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="empCompanyList.sn">담당 거래처 관리</a></li>
-                            <!-- 사원으로 로그인 했을 경우에만 보이기 -->
-                            <li class="nav-item"> <a class="nav-link" href="modifyPw.sn">비밀번호 변경</a></li>
+                        	
+                        	<c:choose>
+                        		<c:when test="${ sessionScope.loginEmp.sempNum  == 0 }">
+		                        	<li class="nav-item"> <a class="nav-link" href="empList.sn ">사원 계정 관리</a></li>
+		                            <li class="nav-item"> <a class="nav-link" href="empCompanyList.sn">담당 거래처 관리</a></li>
+		                        </c:when>
+		                        	
+	           					<c:otherwise>
+	           						<li class="nav-item"> <a class="nav-link" href="modifyPw.sn">비밀번호 변경</a></li>
+	           					</c:otherwise>
+                        	</c:choose>	
+                        	
                         </ul>
                         </div>
                     </li>

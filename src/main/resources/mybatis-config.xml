@@ -44,8 +44,8 @@
 		<typeAlias type="com.kh.spring.snackpotEmp.model.vo.SnackpotEmp" alias="SnackpotEmp"/>
 		
 		<!-- qna -->
-		<typeAlias type="com.kh.spring.qna.model.vo.qna" alias="Qna"/>
-		<typeAlias type="com.kh.spring.qna.model.vo.qnaAttachment" alias="QnaAttachment"/>
+		<typeAlias type="com.kh.spring.qna.model.vo.Qna" alias="Qna"/>
+		<typeAlias type="com.kh.spring.qna.model.vo.QnaAttachment" alias="QnaAttachment"/>
 		
 		<!-- community -->
 		<typeAlias type="com.kh.spring.community.model.vo.Community" alias="Community"/>

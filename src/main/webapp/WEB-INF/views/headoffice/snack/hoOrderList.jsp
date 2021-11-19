@@ -47,7 +47,7 @@
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
             
                 <div class="content col-8">
-                    <h5>간식 리스트 발송 내역</h5>
+                    <h5>간식 주문 내역</h5>
                     <hr>
 
                     <div class="search form-inline"><!-- form-inline : 한줄에 배치 -->
@@ -92,7 +92,7 @@
 	                                <td>${o.budget}</td>
 	                                <td>${o.totalPrice}</td>
 	                                <td>${o.deliveryDate}</td>
-	                                <td>${o.orderStatus}</td>
+	                                <td>${o.status}</td>
                             	</tr>
                         	
                         	</c:forEach>
@@ -109,7 +109,7 @@
 <script>
 	$(function(){
 		$("#orderList tbody tr").click(function(){
-			location.href="" + $(this).children().eq(0).text();
+			location.href="hoOrderDetail.sn?orderNo=" + $(this).children().eq(1).text();
 		});
 		
 		

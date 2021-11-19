@@ -48,6 +48,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="changeName" column="CHANGE_NAME"></result>
 	</resultMap>
 
+	<!-- 효은님 사용 쿼리 -->
+	<select id="selectBirthSub" parameterType="string" resultMap="bServiceResultSet">
+      SELECT *
+      FROM BIRTHDAY_SERVICE
+      WHERE COM_CODE = #{comCode}
+   	</select>
+
 	<select id="countEmp" resultType="_int">
 		SELECT COUNT(*) FROM COMPANY_EMP
 		WHERE COM_CODE = #{comCode}
@@ -167,7 +174,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<!-- GIFT_LIST의 데이터 추출 - 폴더명에만 사용 -->
-	<select id="selectFolderArr" resultMap="giftFolderMap">
+	<select id="selectFolderList" resultMap="giftFolderMap">
 		SELECT A.GLIST_NO, A.GLIST_NAME, NVL(COUNT(B.GLIST_DETAIL_NO),0) AS GIFT_COUNT
 		FROM GIFT_LIST A
 		LEFT OUTER JOIN GIFT_LIST_DETAIL B ON A.GLIST_NO = B.GLIST_NO
@@ -185,8 +192,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 각 폴더의 정보 추출 -->
-	<select id="seletFolderInfo" parameterType="_int" resultMap="giftResultSet">
-		SELECT A.GIFT_BRAND, A.GIFT_NAME, A.GIFT_PRICE, B.CHANGE_NAME
+	<select id="selectFolderInfo" parameterType="_int" resultMap="giftResultSet">
+		SELECT A.GIFT_NO, A.GIFT_BRAND, A.GIFT_NAME, A.GIFT_PRICE, B.CHANGE_NAME
 		FROM BIRTHDAY_GIFT A
 		JOIN GIFT_ATTACHMENT B ON A.GIFT_NO = B.GIFT_REF_NO
 		WHERE A.GIFT_STATUS='Y'
@@ -200,4 +207,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
 	</select>
 	
+	<!-- 선택한 폴더에 선택한 상품 추가 -->
+	<insert id="addGiftDetail" parameterType="map">
+		INSERT INTO GIFT_LIST_DETAIL VALUES
+		(GIFT_DLIST_SEQ.NEXTVAL,
+		<foreach collection="array" item="detailArr" separator=",">
+			#{detailArr}
+		</foreach>
+		)
+	</insert>
+	
+	<!-- GIFT_LIST_DETAIL -->
+	<resultMap type="GiftFolderDetail" id="giftFolderDetailMap">
+		<result property="glistDetailNo" column="GIFT_LIST_DETAIL"></result>
+		<result property="glistNo" column="GLIST_NO"></result>
+		<result property="giftNo" column="GIFT_NO"></result>
+	</resultMap>
+	
+	<!-- 폴더에 넣는 데이터 중복 체크 -->
+	<select id="checkDuplicate" parameterType="map" resultMap="giftFolderDetailMap">
+		SELECT * FROM GIFT_LIST_DETAIL
+		WHERE 1=1
+		AND GLIST_NO IN
+		<foreach collection="array" item="detailArr" open="(" close=")" separator=",">
+		 #{detailArr}		
+		</foreach>
+		AND GIFT_NO IN
+		<foreach collection="array" item="detailArr" open="(" close=")" separator=",">
+		 #{detailArr}		
+		</foreach>
+	</select>
+	
+	<!-- 폴더 삭제 -->
+	<delete id="deleteGiftFolder" parameterType="String">
+		DELETE FROM GIFT_LIST WHERE GLIST_NO = #{glistNo}
+	</delete>
+	
+	<!-- 폴더 상세 내용 삭제 -->
+	<delete id="deleteFolderDetail" parameterType="map">
+		DELETE FROM GIFT_LIST_DETAIL
+		WHERE 1=1
+		AND GLIST_NO IN
+		<foreach collection="array" item="delGiftArr" open="(" close=")" separator=",">
+		 #{delGiftArr}		
+		</foreach>
+		AND GIFT_NO IN
+		<foreach collection="array" item="delGiftArr" open="(" close=")" separator=",">
+		 #{delGiftArr}		
+		</foreach>
+	</delete>
 </mapper>

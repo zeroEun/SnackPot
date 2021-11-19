@@ -76,7 +76,7 @@
     justify-content: center;
     align-items: center;
 }
-#cardInner{
+.cardInner{
 	width: 40%;
 	height: 20%;
 	
@@ -87,7 +87,7 @@
     justify-content: center;
     align-items: center;
 }
-#cardInner i{
+.cardInner i{
 	margin: auto;
     cursor: pointer;
 }
@@ -101,6 +101,12 @@
 }
 .folderTable{
 	text-align: center;
+}
+.delFolderDetail:hover{
+	color: red;
+}
+.folderGiftImg:hover{
+	-webkit-transform: scale(2.0);
 }
 </style>
 <body id="giftListBody">
@@ -146,7 +152,7 @@
 								<h6 class="card-text">${giftList.giftPrice }</h6>
 							</div>
 							<div class="cardOuter" id="cardOuter">
-								<div id="cardInner">
+								<div class="cardInner">
 									<div>
 										<button type="button" class="addGift" value="${giftList.giftNo }" data-toggle="modal" data-target="#addGiftModal">
 											<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>
@@ -182,42 +188,7 @@
 		
 		                <div class="accordion" id="giftAccordion">
 		                    <ul class="list-group" id="folderUlTag" style="list-style: none;">
-		                    
-		                    	<c:forEach items="${folder }" var="folders" varStatus="status">
-		                    	<c:set var="index" value="${status.count }"/>
-		                        <li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">
-		                            <div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">
-		                                <button class="giftIcon" type="button" value="${index }" data-toggle="collapse" data-target="#giftCollapse${index }" aria-expanded="false" style="outline: none; border: none; background: white;">
-		                                    <i class="fas fa-folder" id="GIFT${index }" style="color: gold; cursor: pointer;"></i>
-		                                </button>
-		                                <span>&ensp;${folders.glistName }</span>
-		                            </div>
-		                            <div class="folderRight">
-		                                <span class="badge badge-primary badge-pill folderBadge" style="cursor: pointer; width: 28px; margin-right: 7px;">${folders.folderGiftCount }</span>
-		                                <i class="fas fa-times" style="cursor: pointer;"></i>
-		                            </div>
-		                        </li>
-		                        <li id="giftCollapse${index }" class="collapse" data-parent="#giftAccordion">
-		                            <div style="padding: 1.5rem;">
-			                            <table class="table folderTable">
-			                            	<thead class="thead-dark">
-				                            	<tr>
-				                            		<th scope="col" style="width: 10%;">번호</th>
-				                            		<th scope="col" style="width: 20%;">이미지</th>
-				                            		<th scope="col" style="width: 18%;">브랜드명</th>
-				                            		<th scope="col" style="width: 40%;">상품명</th>
-				                            		<th scope="col" style="width: 12%;">가격(원)</th>
-				                            	</tr>
-			                            	</thead>
-			                            	<tbody class="folderInfoBody" id="folderInfoBody${index }">
-			                            	
-			                            	<%-- ajax에서 불러온 데이터 출력 --%>
-			                            	
-			                            	</tbody>
-			                            </table>
-		                            </div>
-		                        </li>
-								</c:forEach>
+		                    	<%-- 선물 폴더 리스트 ajax로 출력되는 부분 --%>
 		                    </ul>
 		                </div><hr>   
 		            </div>
@@ -227,9 +198,107 @@
 	</section>
 
 	<script>
+		<%-- # modal에 폴더 리스트 출력 --%>
+		function selectFolderList(){
+			
+			$.ajax({
+				url: "selectFolderList.birth",
+				type: "POST",
+				data :"",
+				success: function(list){
+					
+					var result = '';
+					
+					$.each(list, function(index, item){
+						result += '<li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">';
+						result += '<div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">';
+						result += '<button class="giftIcon" type="button" value="' + (index+1) + '" data-toggle="collapse" data-target="#giftCollapse' + (index+1) + '" aria-expanded="false" style="outline: none; border: none; background: white;">';
+						result += '<input class="glistNo" type="hidden" value="' + item.glistNo + '"/>';
+						result += '<i class="fas fa-folder" id="GIFT' + (index+1) + '" style="color: gold; cursor: pointer;"></i></button>';
+						result += '<span>&ensp;' + item.glistName + '</span></div>';
+						
+						result += '<div class="folderRight">';
+						result += '<input class="folderNo" type="hidden" value="' + item.glistNo + '"/>';
+						result += '<input class="folderRowNum" type="hidden" value="' + (index+1) + '"/>';
+						result += '<span class="badge badge-primary badge-pill folderBadge" style="cursor: pointer; width: 28px; margin-right: 7px;">' + item.folderGiftCount + '</span>';
+						result += '<i class="fas fa-times folderTimes" style="cursor: pointer;"></i></div></li>';
+						result += '<li id="giftCollapse' + (index+1) + '" class="collapse" data-parent="#giftAccordion">';
+						result += '<div style="padding: 1.5rem;">';
+						result += '<table class="table folderTable">';
+						result += '<thead class="thead-dark">';
+						result += '<tr>';
+						result += '<th scope="col" style="width: 10%;">번호</th>';
+						result += '<th scope="col" style="width: 20%;">이미지</th>';
+						result += '<th scope="col" style="width: 18%;">브랜드명</th>';
+						result += '<th scope="col" style="width: 40%;">상품명</th>';
+						result += '<th scope="col" style="width: 12%;">가격(원)</th>';
+						result += '</tr>';
+						result += '</thead>';
+						result += '<tbody class="folderInfoBody" id="folderInfoBody' + (index+1) + '">';
+						result += '</tbody>';
+						result += '</table>';
+						result += '</div>';
+						result += '</li>';
+					});
+					$("#folderUlTag").html(result);
+						
+				},
+				error: function(error){
+					alert(error);
+				}
+			});
+		}
+		<%-- # 각 폴더에 속한 상품 리스트 출력 --%>
+		function selectFolderInfo(value){
+			
+			console.log("value : " + value);
+			
+			$.ajax({
+				url: "selectFolderInfo.birth",
+				type: "POST",
+				data:{
+					rowNum : value
+				},
+				success: function(list){
+					//console.log("폴더info성공");
+					//console.log(list);
+					//console.log(list.length);
+					
+					var result='';
+					
+					if(list.length != 0){
+						$.each(list, function(index, item){
+							var price = (item.giftPrice).toLocaleString();
+							//console.log("price:"+price)
 
-		<%-- (4) 선택한 폴더 내 리스트 조회 기능 --%>
+							result += '<tr>';
+							result += '<th scope="row" style="text-align:center;">';
+							result += '<input class="delGiftNo" type="hidden" value="' + item.giftNo + '"/>';
+							result += '<i class="fas fa-times delFolderDetail" id="dddd" style="cursor: pointer; float:left;"></i> ' + (index+1) + '</th>'
+							result += '<td><img class="folderGiftImg" width="50%" height="50%" src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '"></td>';
+							result += '<td>' + item.giftBrand + '</td>';
+							result += '<td>' + item.giftName + '</td>';
+							result += '<td>' + price + '</td>';
+							result += '</tr>';
+						});
+						
+					}else{
+						<%-- 폴더에 내용 추가되면 아래 내용은 없어져야함 - 추후 수정 --%>
+						result += '<tr><td colspan="5"><h5>추가된 상품이 존재하지 않습니다.</h5></td></tr>';
+					}
+					$("#folderInfoBody"+value).html(result);
+				},
+				error: function(error){
+					alert(error);
+				}
+			});
+		}
+		
+		<%-- 4. 선택한 폴더 내 리스트 조회 기능 --%>
 		$(function(){
+			
+			selectFolderList();
+			
 			$(document).on('click', '.giftIcon', function(e){
 				
 				<%-- 
@@ -271,78 +340,166 @@
 					rowNumVal = targetVal + 1;
 				}
 				
-				console.log("rowNumVal : "+rowNumVal);
+				selectFolderInfo(rowNumVal);
+				//console.log("rowNumVal : "+rowNumVal);
+				console.log($("#dddd"));
+				<%-- 폴더 내 상품 삭제를 위해 glistNo을 먼저 구한 후 함수로 값을 넘겨줌 --%>
+				console.log("GLIST_NO22 : "+$(this).children().eq(0).val());
+				
+				var glistNo = $(this).children().eq(0).val();
+				
+				deleteFolderDetail(glistNo, rowNumVal);
+				
+			});
+		});
+	
+		function deleteFolderDetail(glistNo, rowNumVal){
+			
+			console.log($("#dddd"));
+			
+			$(".delFolderDetail").hover(function(e){
+				console.log("hover실행");
+				$(".delFolderDetail").css("color","red");
+				$(".delFolderDetail").css("background","red");
+			})
+			
+			$(document).on('click', '.delFolderDetail', function(e){
+				console.log("ROWNUM : " + rowNumVal);
+				console.log("GLIST_NO : " + glistNo);
+				console.log("GIFT_NO : "+$(this).siblings(".delGiftNo").val());
+				
+				var delRowNum = rowNumVal;
+				var delGlistNo = glistNo;
+				var delGiftNo = $(this).siblings(".delGiftNo").val();
+				
+				var delGiftArr = new Array();
+				delGiftArr.push(delGlistNo);
+				delGiftArr.push(delGiftNo);
+				
+				console.log(delGiftArr);
 				
 				$.ajax({
-					url: "selectFolderInfo.birth",
+					url: "delFolderDetail.birth",
 					type: "POST",
-					data:{
-						rowNum : rowNumVal
+					traditional: true,
+					data : {
+						delGiftArr : delGiftArr
 					},
-					success: function(list){
-						console.log("폴더info성공");
-						//console.log(list);
-						//console.log(list.length);
-						
-						var result='';
-						
-						if(list.length != 0){
-							$.each(list, function(index, item){
-								var price = (item.giftPrice).toLocaleString();
-								console.log("price:"+price)
-
-								result += '<tr>';
-								result += '<th scope="row" style="text-align:center;">' + (index+1) + '</th>';
-								result += '<td><img width="50%" height="50%" src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '"></td>';
-								result += '<td>' + item.giftBrand + '</td>';
-								result += '<td>' + item.giftName + '</td>';
-								result += '<td>' + price + '</td>';
-								result += '</tr>';
-							});
-							
-						}else{
-							<%-- 폴더에 내용 추가되면 아래 내용은 없어져야함 - 추후 수정 --%>
-							result += '<tr><td colspan="5"><h5>추가된 상품이 존재하지 않습니다.</h5></td></tr>';
-						}
-						$("#folderInfoBody"+rowNumVal).html(result);
+					success: function(result){
+						selectFolderInfo(delRowNum);
 					},
 					error: function(error){
 						alert(error);
 					}
 				});
-				
-				
 			});
-		});
-	
-		<%-- 각 제품 영역에 나타나는 아이콘 클릭 시 실행되는 함수 - giftNo를 가져오므로 BIRTHDAY_GIFT 테이블에서 해당 정보를 SELECT --%>
-	    $(function(){
+			
+		}
+		<%--2. 선택한 제품 원하는 폴더에 추가 기능 (뱃지 클릭해서 추가) --%>
+		$(function(){
+	    	
+	    	<%-- (1) 각 상품 클릭하면 해당 GIFT_NO 값을 giftNo에 삽입 --%>
+	    	var giftNo;
 	    	$(document).on('click', '.addGift', function(e){
-	    		console.log(e.currentTarget);
-	            console.log(e.currentTarget.value);
-	            var aaa = e.currentTarget.value;
-	            
-	            //folderBadge
-	            $(document).on('click','.folderBadge', function(e){
-	            	console.log("aaa : "+aaa);
-
-		    	});
-	            
-	            
+	    		//console.log(e.currentTarget);
+	    		
+	            console.log("GIFT_NO : "+e.currentTarget.value);
+	            giftNo = e.currentTarget.value;
+ 
 	    	});
+	    	
+	    	<%-- (2) 뱃지 클릭 시 중복체크 후 뱃지 숫자 증가시킴 --%>
+            $(document).on('click','.folderBadge', function(e2){
+
+            	//console.log(typeof($(this).html())+1)
+            	//console.log(typeof($(this).text())+1)
+            	//console.log(parseInt($(this).html())+1)
+            	//console.log(parseInt($(this).text())+1)
+            	
+            	<%-- thisTag : 태그를 ajax로 가지고 들어가기 위해 변수로 선언(여기서는 span 태그를 의미)
+            		 folderGiftCnt : 뱃지(span태그)를 클릭하면 상품이 들어가 +1이 되어야 하므로 기존 값에 +1을 한 값을 이 변수에 대입
+            	--%>
+            	var thisTag = $(this);
+            	var folderGiftCnt = parseInt($(this).html()) + 1;
+            	
+            	<%-- 선택한 폴더의 glistNo을 가져오기위해 siblings() 활용해 input[type='hidden']의 val값을 가져옴 --%>
+            	//console.log($(this).siblings(".folderNo").val());
+            	console.log("GLIST_NO : "+$(this).siblings(".folderNo").val());
+            	console.log("FOLDER_ROWNUM : "+$(this).siblings(".folderRowNum").val());
+            	var glistNo = $(this).siblings(".folderNo").val();
+            	var folderRowNum = $(this).siblings(".folderRowNum").val();
+            	var detailArr = new Array();
+            	detailArr.push(glistNo);
+            	detailArr.push(giftNo);
+            	
+            	<%-- (2-1) 중복 데이터가 들어가지 못하게 먼저 체크 --%>
+            	$.ajax({
+            		url: "checkDuplicate.birth",
+            		type: "POST",
+            		traditional: true,
+            		data:{
+            			detailArr : detailArr
+            		},
+            		success: function(result){
+            			console.log("중복체크 결과 : " + result);
+            			if(result > 0){
+            				alert("이미 해당 기프티콘 정보가 존재합니다.");
+            				return false;
+            			}else{
+            				<%-- (2-2) 폴더에 데이터 추가와 뱃지 숫자 증가 처리 --%>
+        	            	$.ajax({
+        	            		url: "addGiftDetail.birth",
+        	            		type: "POST",
+        	            		traditional: true,
+        	            		data:{
+        	            			detailArr : detailArr
+        	            		},
+        	            		success: function(result){
+        	            			//console.log(result);
+        	            			console.log("success!!!");
+        	            			thisTag.html(''+folderGiftCnt);
+        	            			//selectFolderList();
+        	            			selectFolderInfo(folderRowNum);
+        	            		},
+        	            		error: function(error){
+        	            			alert(error);
+        	            		}
+        	            	});
+            			}
+            		},
+            		error: function(error){
+            			alert(error);
+            		}
+            	});	
+	    	});
+            
+            $(document).on('click','.folderTimes', function(e3){
+            	var folderNo = $(this).siblings(".folderNo").val();
+            	console.log("folderNo : "+folderNo);
+            	var confirmVal = confirm("정말 삭제하시겠습니까?");
+            	if(confirmVal == true){
+            		$.ajax({
+                		url: "delGiftFolder.birth",
+                		type: "POST",
+                		data: {
+                			glistNo : folderNo
+                		},
+                		success: function(result){
+                			console.log("폴더 삭제 성공!!!");
+                			console.log(result);
+                			selectFolderList();
+                		},
+                		error: function(error){
+                			alert(error);
+                		}
+                	});
+            	}else{
+            		alert("삭제가 취소되었습니다.")
+            	}
+            });
 	    });
-	    
-	    <%-- 뱃지 클릭 시 함수
-	    $(function(){
-	    	$(document).on('click','.folderBadge', function(e){
-	    		console.log(e.target);
-	            console.log(e.target.value);	    		
-	    		console.log(e.currentTarget);
-	            console.log(e.currentTarget.value);
-	    	});
-	    }); --%>
 
-	    <%-- (1) 폴더 추가 기능 --%>
+	    <%-- 1. 폴더 추가 기능 --%>
 	    $(function(){
 	    	
 	    	//$("#addFolder").click(function(){
@@ -361,43 +518,17 @@
 	    			success: function(data){
 	    				console.log("성공!!!");
 	    				console.log("data : " + data);
-	    				
+
 	    				<%-- 폴더 생성 후에는 text를 비워줌 --%>
 	    				$("input[name='folderName']").val("");
 	    				<%-- ul내부 li개수를 구해서 modal id뒤의 count를 지정 
 	    				- 한 항목당 li태그가 두 개 들어있으므로 나누기 2한 후 다음 인덱스를 대입하기 위해 +1--%>
 	    				var liCount = $("#folderUlTag").children().length/2 + 1;
 	    				console.log("li 개수 : "+liCount);
-	    				
-	    				var html = '';
+	    				var result = '';
 	    				if(data != ""){
-	    					html += '<li class="list-group-item d-flex justify-content-between align-items-center" style="padding-top: 0; padding-bottom: 0; height: 3rem; cursor: default;">';
-		    				html += '<div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">';
-		    				html += '<button type="button" value="${index }" data-toggle="collapse" data-target="#giftCollapse' + liCount + '" aria-expanded="false" style="outline: none; border: none; background: white;">';
-		    				html += '<i class="fas fa-folder giftIcon" id="GIFT${index }" style="color: gold; cursor: pointer;"></i></button>';
-		    				html += '<span>&ensp;' + data + '</span></div>';
-		    				html += '<div><span class="badge badge-primary badge-pill folderBadge" style="cursor: pointer; width: 28px; margin-right: 10px;">0</span>';
-		    				html += '<i class="fas fa-times" style="cursor: pointer;"></i></div></li>';
-		    				html += '<li id="giftCollapse' + liCount + '" class="collapse" data-parent="#giftAccordion">';
-		    				html += '<div style="padding: 2rem;">';
-		    				html += '<table class="table">';
-		    				html += '<thead class="thead-dark">';
-		    				html += '<tr>';
-		    				html += '<th scope="col">번호</th>';
-		    				html += '<th scope="col">브랜드명</th>';
-		    				html += '<th scope="col">상품명</th>';
-		    				html += '<th scope="col">가격</th>';
-		    				html += '</tr>';
-		    				html += '</thead>';
-		    				html += '<tbody>';
-		    				html += '<tr><td colspan="5"><h5>추가된 상품이 존재하지 않습니다.</h5></td></tr>'
-		    				html += '</tbody>';
-		    				html += '</table></div></li>';
-		    				
-		    				console.log(html);
-		    				//위에 주석에 있는 내용 append하자
-		    				$("#folderUlTag").append(html);
-		    				
+	    					selectFolderList();
+		    				selectFolderInfo(liCount);
 	    				}else{
 	    					alert("폴더명을 입력하세요.");
 	    				}
@@ -422,8 +553,59 @@
 			$("#giftCtgry3").css("font-weight", "normal");
 			$("#giftCtgry3").html('낮은가격순');
 			
+			<%-- 카테고리별 상품 리스트 출력 함수 --%>
+			function selectCategory(categoryNum){
+				
+				console.log("categoryNum : " + categoryNum);
+				$.ajax({
+					url: "selectCtgry.birth",
+					type: "POST",
+					data: {
+						ctgryNum : categoryNum
+					},
+					success: function(data){
+						var result = '';
+
+						$.each(data, function(index, item){
+							result += '<div class="col mb-4 gift">';
+							result += '<div class="card h-100 cardWholeArea">';
+							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
+							result += '<div class="card-body">';
+							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
+							result += '<p class="card-text">' + item.giftName + '</p>';
+							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
+							result += '</div>';
+							
+							result += '<div class="cardOuter" id="cardOuter">';
+							result += '<div class="cardInner">';
+							result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
+							result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
+							result += '</button></div>';
+							result += '</div></div>';
+							
+							result += '</div>';
+							result += '</div>';
+						});
+						$("#giftListArea").html(result);
+						
+						$(".cardOuter").css("opacity","0");
+						
+						$(".gift").each(function(index){
+							$(this).hover(function(){
+								$(this).children(index).children(index).eq(2).css("opacity","1.0");
+							}, function(){
+								$(this).children(index).children(index).eq(2).css("opacity","0");
+							});
+						});
+					},
+					error: function(error){
+						alert(error);
+					}
+				});
+			}
+
 			var ctgryNum;
-			<%-- 추천상품순 --%>
+			<%-- (1) 추천상품순 --%>
 			$("#giftCtgry1").on('click', function(){
 				
 				$("#giftCtgry1").css("font-weight", "bolder");
@@ -440,63 +622,9 @@
 				console.log($("#giftListArea").children());
 				console.log(typeof(ctgryNum));
 				
-				$.ajax({
-					url: "selectCtgry.birth",
-					type: "POST",
-					data: {
-						ctgryNum : ctgryNum
-					},
-					success: function(data){
-						var result = '';
-						/*
-						<div class="cardOuter" id="cardOuter">
-								<div id="cardInner">
-									<div>
-										<button type="button" class="addGift" value="${giftList.giftNo }">
-											<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						*/
-						$.each(data, function(index, item){
-							result += '<div class="col mb-4 gift">';
-							result += '<div class="card h-100 cardWholeArea">';
-							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
-							result += '<div class="card-body">';
-							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
-							result += '<p class="card-text">' + item.giftName + '</p>';
-							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
-							result += '</div>';
-							
-							result += '<div class="cardOuter" id="cardOuter">';
-							result += '<div id="cardInner">';
-							result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
-							result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
-							result += '</button></div>';
-							result += '</div></div>';
-							
-							result += '</div>';
-							result += '</div>';
-						});
-						$("#giftListArea").html(result);
-						
-						$(".cardOuter").css("opacity","0");
-						
-						$(".gift").each(function(index){
-							$(this).hover(function(){
-								$(this).children(index).children(index).eq(2).css("opacity","1.0");
-							}, function(){
-								$(this).children(index).children(index).eq(2).css("opacity","0");
-							});
-						});
-					},
-					error: function(error){
-						alert(error);
-					}
-				});
+				selectCategory(ctgryNum);
 			});
-			<%-- 높은가격순 --%>
+			<%-- (2) 높은가격순 --%>
 			$("#giftCtgry2").on('click', function(){
 				
 				$("#giftCtgry1").css("font-weight", "normal");
@@ -513,53 +641,9 @@
 				console.log($("#giftListArea").children());
 				console.log(typeof(ctgryNum));
 				
-				$.ajax({
-					url: "selectCtgry.birth",
-					type: "POST",
-					data: {
-						ctgryNum : ctgryNum
-					},
-					success: function(data){
-						var result = '';
-						
-						$.each(data, function(index, item){
-							result += '<div class="col mb-4 gift">';
-							result += '<div class="card h-100 cardWholeArea">';
-							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
-							result += '<div class="card-body">';
-							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
-							result += '<p class="card-text">' + item.giftName + '</p>';
-							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
-							result += '</div>';
-							
-							result += '<div class="cardOuter" id="cardOuter">';
-							result += '<div id="cardInner">';
-							result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
-							result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
-							result += '</button></div>';
-							result += '</div></div>';
-							
-							result += '</div>';
-							result += '</div>';
-						});
-						$("#giftListArea").html(result);
-						
-						$(".cardOuter").css("opacity","0");
-						
-						$(".gift").each(function(index){
-							$(this).hover(function(){
-								$(this).children(index).children(index).eq(2).css("opacity","1.0");
-							}, function(){
-								$(this).children(index).children(index).eq(2).css("opacity","0");
-							});
-						});
-					},
-					error: function(error){
-						alert(error);
-					}
-				});
+				selectCategory(ctgryNum);
 			});
-			<%-- 낮은가격순 --%>
+			<%-- (3) 낮은가격순 --%>
 			$("#giftCtgry3").on('click', function(){
 				
 				$("#giftCtgry1").css("font-weight", "normal");
@@ -578,51 +662,7 @@
 				
 				//location.href="giftSortList.birth";				
 				
-				$.ajax({
-					url: "selectCtgry.birth",
-					type: "POST",
-					data: {
-						ctgryNum : ctgryNum
-					},
-					success: function(data){
-						var result = '';
-						
-						$.each(data, function(index, item){
-							result += '<div class="col mb-4 gift">';
-							result += '<div class="card h-100 cardWholeArea">';
-							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
-							result += '<div class="card-body">';
-							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
-							result += '<p class="card-text">' + item.giftName + '</p>';
-							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
-							result += '</div>';
-							
-							result += '<div class="cardOuter" id="cardOuter">';
-							result += '<div id="cardInner">';
-							result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
-							result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
-							result += '</button></div>';
-							result += '</div></div>';
-							
-							result += '</div>';
-							result += '</div>';
-						});
-						$("#giftListArea").html(result);
-						
-						$(".cardOuter").css("opacity","0");
-						
-						$(".gift").each(function(index){
-							$(this).hover(function(){
-								$(this).children(index).children(index).eq(2).css("opacity","1.0");
-							}, function(){
-								$(this).children(index).children(index).eq(2).css("opacity","0");
-							});
-						});
-					},
-					error: function(error){
-						alert(error);
-					}
-				});
+				selectCategory(ctgryNum);
 			});
 		});
 	

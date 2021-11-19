@@ -3,6 +3,7 @@ package com.kh.spring.birthday.giftList.model.service;
 import java.util.ArrayList;
 
 import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
+import com.kh.spring.birthday.giftList.model.vo.GiftFolderDetail;
 import com.kh.spring.birthday.giftList.model.vo.GiftList;
 
 public interface GiftListService {
@@ -10,11 +11,21 @@ public interface GiftListService {
 	ArrayList<GiftList> selectGiftList();
 
 	ArrayList<GiftList> selectCtgry(int ctgryNum);
-
-	ArrayList<GiftFolder> selectFolderArr();
+	
+	//ArrayList<GiftFolder> selectFolderArr();
+	
+	ArrayList<GiftFolder> selectFolderList();
 
 	int addGiftFolder(String folderName);
 
-	ArrayList<GiftList> seletFolderInfo(int rowNum);
+	ArrayList<GiftList> selectFolderInfo(int rowNum);
+
+	int addGiftDetail(String[] detailArr);
+
+	GiftFolderDetail checkDuplicate(String[] detailArr);
+
+	int deleteGiftFolder(String glistNo);
+
+	int deleteFolderDetail(String[] delGiftArr);
 
 }

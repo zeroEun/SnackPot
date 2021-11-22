@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
     <title>SnackPot</title>
-       
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
       	<!-- <link rel="stylesheet" href="resources/css/menubar.css"> --> 
@@ -122,9 +121,9 @@
             </div>
         </li>
            <!--소통 , 랭킹 ,문의-->
-           <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="list.cm">소통팟</a></li>
+           <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" onclick="cmntBtn()">소통팟</a></li>
            <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="#">랭킹팟</a></li>
-           <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="#">문의</a></li>
+           <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="list.qna">문의</a></li>
     </ul>  
 
    		 <!--로그인 / 로그아웃-->
@@ -146,7 +145,7 @@
 							<a href="logout.co" class="logOut">로그아웃</a>
 								<div class=" dropdown-menuDiv dropdown-menu ">
 									<a class="dropdownItem dropdown-item" href="modifyMember.co">회원정보 수정</a>
-									<a class="dropdownItem dropdown-item" href="#">회원관리</a>
+									<a class="dropdownItem dropdown-item" href="empManage.em">사원관리</a>
 								</div>
 							</li>
 						</div>
@@ -170,5 +169,14 @@
 </header>
 <br clear="both">
 </body>
-
+<script type="text/javascript">
+	function cmntBtn(){
+		if(${empty sessionScope.loginUser}){
+			alert("로그인후 이용가능합니다")
+			location.href="login.co";
+		}else{
+			location.href="list.cm";
+		}
+	}
+</script>
 </html>

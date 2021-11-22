@@ -195,13 +195,30 @@ public class InvenManagementController {
 		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
 	}
 	
+	//출고목록Ajax
+	@ResponseBody
+	@RequestMapping(value="releaseListAjax.im.im", produces="application/json; charset=utf-8")
+	private String releaseListAjax(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage,
+			@RequestParam(value="date") Date beforeDate) {
+		
+		System.out.println("넘어온 날짜 ==================== " + beforeDate);
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
+
+		String date = transFormat.format(beforeDate);
+		
+
+		int listCount = invenManagementService.todayArrivalCount(date);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi, date);
+		
+		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
+	}
+	
+	
 
 
-	/*private String arrivalDate() {
-		
-		
-		return "";
-	}*/
 	
 	
 }

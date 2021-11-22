@@ -44,6 +44,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     AND COM_CODE= #{comCode}
 </select>
 
+<select id="selectWriterListCount" resultType="_int">
+	SELECT COUNT(*)
+	FROM COMMUNITY
+	WHERE STATUS = 'Y'
+    AND WRITER= #{writer}
+    AND COM_CODE =#{comCode}
+</select>
+
 
 <select id="selectList" resultMap="communityResultSet">
 	SELECT A.COMMUNITY_NO , A.CONTENT, A.VIEWS, A.RECOMMEND , A.N_RECOMMEND , A.WRITER_DATE , A.TITLE , A.COM_CODE,
@@ -51,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	FROM COMMUNITY A 
 	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
 	WHERE A.STATUS='Y'
+	AND A.COM_CODE = #{comCode}
 	ORDER BY A.COMMUNITY_NO DESC
 </select>
 
@@ -73,8 +82,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	FROM COMMUNITY A 
 	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
 	WHERE A.STATUS='Y'
-	AND A.WRITER = #{memId}
+	AND A.WRITER = #{writer}
+	AND A.COM_CODE = #{comCode}
 	ORDER BY A.COMMUNITY_NO DESC
+</select>
+
+
+<select id="selectSearchCmnt" resultMap="communityResultSet">
+	SELECT A.COMMUNITY_NO , A.CONTENT, A.VIEWS, A.RECOMMEND , A.N_RECOMMEND , A.WRITER_DATE , A.TITLE , A.COM_CODE,
+       	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME
+	FROM COMMUNITY A 
+	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="title !=null">
+			AND A.TITLE LIKE '%' || #{title} || '%'
+		</if>
+		</trim>
+		AND A.STATUS='Y'
+		AND A.COM_CODE = #{comCode}
+		ORDER BY A.COMMUNITY_NO DESC
 </select>
 
 <insert id="insertCommunity" parameterType="Community">
@@ -149,4 +175,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE COMMUNITY_NO = #{cno}
 	ORDER BY RE_GROUP ASC , RE_GROUPDEPT
 </select>
+
+<select id="selectMaxGroupNo" resultType="_int">
+	SELECT MAX(RE_GROUP)
+	FROM REPLY
+	WHERE COMMUNITY_NO = #{cno}
+</select>
+
+<insert id="insertReply">
+	INSERT INTO REPLY
+	VALUES (REPLY_SEQ.NEXTVAL , #{communityNo} , #{reGroup} ,  0 , 0 , #{reWriter} , #{reContent} , SYSDATE)
+</insert>
+
+<select id="selectReplyCount" resultType="_int">
+	SELECT COUNT(COMMUNITY_NO)
+	FROM REPLY
+	WHERE COMMUNITY_NO =#{cno}
+</select>
+
+<insert id="insertNewReply">
+	INSERT INTO REPLY
+	VALUES (REPLY_SEQ.NEXTVAL , #{communityNo} , 0 ,  0 , 0 , #{reWriter} , #{reContent} , SYSDATE)
+</insert>
+
+<delete id="deleteReply">
+	DELETE FROM REPLY
+	WHERE RE_NO =#{reNo}
+</delete>
 </mapper>

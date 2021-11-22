@@ -22,22 +22,18 @@ public class CommunityServiceImpl implements CommunityService {
 	@Autowired
 	private CommunityDao cmntDao;
 	
-//	@Override
-//	public int selectListCount() {
-//			
-//		return cmntDao.selectListCount(sqlSession);
-//	}
 	@Override
 	public int selectListCount(String comCode) {
 		return cmntDao.selectListCount(sqlSession , comCode);
 	}
 
-
+	
 	@Override
-	public ArrayList<Community> selectList(PageInfo pi) {
+	public ArrayList<Community> selectList(PageInfo pi, Community cmnt) {
 		
-		return cmntDao.selectList(sqlSession , pi); 
+		return cmntDao.selectList(sqlSession , pi , cmnt); 
 	}
+
 	
 	@Override
 	public ArrayList<Community> selectTopList(String comCode) {
@@ -45,12 +41,6 @@ public class CommunityServiceImpl implements CommunityService {
 		return cmntDao.selectTopList(sqlSession , comCode); 
 	}
 
-//	@Override
-//	public void insertCommunity(HashMap<String, Object> map) {
-//		
-//		cmntDao.insertCommunity(sqlSession , map);
-//		
-//	}
 	
 	@Override
 	public void insertCommunity(Community cmnt) {
@@ -69,7 +59,7 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public void updateCmnt(Community cmnt) {
 		
-		 cmntDao.updateCmnt(sqlSession , cmnt);
+		cmntDao.updateCmnt(sqlSession , cmnt);
 	}
 
 
@@ -92,15 +82,6 @@ public class CommunityServiceImpl implements CommunityService {
 		cmntDao.updateNrecommend(sqlSession , cno);
 		
 	}
-
-	/*댓글===========================================================================================*/
-	@Override
-	public ArrayList<Reply> selectReplyList(int cmntNo) {
-		
-		return cmntDao.selectReplyList(sqlSession , cmntNo);
-		
-	}
-
 
 	@Override
 	public int selectCmntNo(String memId) {
@@ -139,11 +120,83 @@ public class CommunityServiceImpl implements CommunityService {
 
 
 	@Override
-	public ArrayList<Community> selectMyWriter(String memId) {
+	public ArrayList<Community> selectMyWriter(Community cmnt, PageInfo pi) {
 		
-		return cmntDao.selectMyWriter(sqlSession , memId); 
+		return cmntDao.selectMyWriter(sqlSession , cmnt , pi);
 		
 	}
+
+
+
+
+	@Override
+	public ArrayList<Community> selectSearchCmnt(PageInfo pi, Community cmnt) {
+		
+		return cmntDao.selectSearchCmnt(sqlSession , pi , cmnt); 
+	}
+
+
+	@Override
+	public int selectWriterListCount(Community cmnt) {
+		
+		return cmntDao.selectWriterListCount(sqlSession , cmnt);
+		
+	}
+
+
+
+	/*댓글===========================================================================================*/
+	@Override
+	public ArrayList<Reply> selectReplyList(int cmntNo) {
+		
+		return cmntDao.selectReplyList(sqlSession , cmntNo);
+		
+	}
+
+
+	@Override
+	public int selectMaxGroupNo(int cno) {
+		
+		return cmntDao.selectMaxGroupNo(sqlSession , cno);
+		
+	}
+
+
+	@Override
+	public int insertReply(Reply r) {
+		
+		return cmntDao.insertReply(sqlSession , r);
+	}
+
+
+	@Override
+	public int selectReplyCount(int cno) {
+		
+		return cmntDao.selectReplyCount(sqlSession , cno);
+	}
+
+
+	@Override
+	public int insertNewReply(Reply r) {
+		
+		return cmntDao.insertNewReply(sqlSession , r);
+		
+	}
+
+
+	@Override
+	public int deleteReply(Reply r) {
+
+		return cmntDao.deleteReply(sqlSession , r);
+	}
+
+
+
+	
+
+
+	
+
 
 
 	

@@ -6,14 +6,12 @@
 <head>
 <meta charset="UTF-8">
   <title>communityDetail</title>
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
-   
-    <!-- smarteditor 
-  <script type="text/javascript" src="${ pageContext.servletContext.contextPath}/resources/static/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+
 </head>
 <style>
     #smarteditor{
@@ -96,10 +94,11 @@
         padding-right: 5px;
       
     }
+  
     
 </style>
 <body>
-	<!--<jsp:include page="/WEB-INF/views/common/menubar.jsp" />-->
+	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 	<br>
 
 	<form action="insert.cm" method="post" id="frm" style="text-align: center;" enctype="multipart/form-data">
@@ -130,7 +129,7 @@
 				</div>
 			</c:if>
 				<div class="topLine">
-					<button class="back" onclick="back()">취소</button>
+					<button class="back" onclick="javascript:history.go(-1);">취소</button>
 				</div>
 		</div>
 	
@@ -148,133 +147,30 @@
 	</div>
 	<br>
 	<br>
-	<!--댓글 창 -->
-	<div class="container">
-		<i class="far fa-comment-dots" data-toggle="collapse" data-target="#demo" onclick="getReplyList(${dlist.communityNo})"></i>
-		<label data-toggle="collapse" data-target="#demo" onclick="getReplyList(${dlist.communityNo})">댓글</label>
-		
-		<!-- replyBox안에 댓글리스트가 보여짐 -->
-		<div id="demo${list.reNo}" class="collapse">
-			<div class="replyBox" id="replyBoxDiv"
-				style="background-color: pink;"></div>
-			<!-- 댓글 작성 부분 -->
-			<div class="replyWrite">
-				<div>
-					<input type="text" class="input_re_reply_div form-control" id="input_rereply"  placeholder="댓글을 입력하세요.">
-				</div>
+	<!-- 댓글!! -->
+	<button class="far fa-comment-dots" onclick="selectReplyList()">댓글(<span id="rcount">0</span>)</button>
+ 		<table id="replyArea" class="table" align="center">
+                <thead>
+                    <tr>
+	                        <th colspan="4" style="width:75%">
+	                            <textarea class="form-control" id="replyContent" rows="1" style="resize:none; width:100%"></textarea>
+	                        </th>
+	                        <th style="vertical-align: middle"><button class="btn btn-secondary" id="addReply" onclick="addReply()">등록하기</button></th>
+                    </tr>
+                </thead>
+                <tbody>  
+                	
+                            
+                </tbody>
+         </table>
 
-				<button type="button" class="btn writer_rereply">댓글달기</button>
-			</div>
-		</div>
 	</div>
 	</div>
-	</div>
+</div>
 	<br><br><br><br>
 
 </body>
 <script>
-	//댓글리스트 가져오기
-	function getReplyList(val){
-		var cno = val;
-		
-		$.ajax({
-			url : "reList.cm",
-			type : "get",
-			data : { cno : cno },
-			success : function(list){
-				console.log(list)
-				
-				var reply = "";
-				for(var i in list){
-					var reNo = list[i].reNo;
-					var cmntNo = list[i].communityNo;
-					var reGroup = list[i].reGroup;
-					var reGroups = list[i].reGroups;
-					var reGroupDept = list[i].reGroupsDept;
-					var reWriter = list[i].reWriter;
-					var reContent = list[i].reContent;
-					var reDate = list[i].reDate;
-					
-//					console.log(reGroups);
-					
-					reply += "<div class ='row replyrow reply" + reNo + "''>";
-					
-					if(reContent == ""){
-						reply += "<div>";
-						reply += "(삭제된 댓글입니다)";
-						reply += "</div>";
-					}else{
-						if(reGroups == 0){ //부모 댓글일때
-							reply += "    <div class='reply-content"+ reGroup+ "col-12'>";
-							reply += "<div>";
-							reply += 	"<span>";
-							reply +=          "<br>" + reContent + "</b>";
-							reply +=    "</span>";
-							reply +=    "<span>";
-							reply +=          reDate;
-							reply +=     "<span>";
-							reply +="</div>";
-						
-						
-						}else{//답글일때 자식일때
-							reply += "    <div class='reply-content"+ reGroup+ "col-12'>";
-							reply += "<div>";
-							reply += 	"<span>";
-							reply +=          "<br>" + reContent + "</b>";
-							reply +=    "</span>";
-							reply +=    "<span>";
-							reply +=          reDate;
-							reply +=     "<span>";
-							reply +="</div>";
-							
-						}
-							
-							if("${loginUser.memId}" == reWriter){
-								
-								reply += "<div>";
-								reply += " <a href='javascript:' reGroup'" + reGroup +"'reGroups'"+ reGroups + "'communityNo'" + cmntNo +"'reNo'"+ reNo +"'class='reply_delete'>삭제</a>";
-									
-							}
-							reply += "</div>";
-							
-						reply += "<div class='collapse row reply_writer' id='re_reply"+ reNo +">'";
-						reply += "<div>";
-						reply += "<input type='text' class='input_re_reply_div form-control' id='input_rereply'"+ reNo +"placeholder='답글을 입력하세요.'>";
-						reply += "</div>";
-						
-						reply += "<button type='button' class='btn writer_rereply' reNo='"+ reNo + "' communityNo='"+ cmntNo +"'>답글달기 </button>";
-						reply += "</div>";
-						reply += "</div>";
-						
-					}
-					reply += "</div>";
-					// 답글달기 버튼 클릭시 답글 입력란
-					
-				
-				};
-				
-				$("#replyBoxDiv").append(reply);
-				
-				//답글달기 버튼클릭
-				$('.reply_delete').on('click' , function(){
-					//부모댓글일때
-					if($(this).attr('reGroups') == 0){
-						DeleteReply($(this).attr('reNo'), $(this).attr('cmntNo'));
-					}else{
-						//자식답글일때
-						DeleteReReply($(this).attr('reNo'), $(this).attr('cmntNo'), $(this).attr('reGroup'));
-					}
-					
-				})
-				
-				
-			}//success 끝마침
-		});
-		
-	}
-
-
-	
 	/*수정폼으로*/
 	function update(val) {
 		const cno = val;
@@ -282,11 +178,15 @@
 		location.href = "updateForm.cm?cno=" + cno;
 	}
 	/*게시글 삭제하기*/
-	function deleteCmnt(val){
+	function deleteCmnt(val) {
 		const cno = val;
-		location.href = "delete.cm?cno=" + cno;
+		if(comfirm("정말 삭제하시겠습니가?")){
+			location.href = "delete.cm?cno=" + cno;
+		}else{
+			return;
+		}
 	}
-	
+
 	/*게시글 조회수 , 추천수*/
 	function recommend(val) {
 		const cno = val;
@@ -315,6 +215,136 @@
 			success : location.reload()
 		})
 	}
+	
+	//댓글
+	function selectReplyList(){
+		var cno = ${dlist.communityNo};
+		$.ajax({
+			url:"reList.cm",
+			data:{cno:cno},
+			type:"get",
+			success:function(list){
+				console.log(list)
+				$("#rcount").text(list.length);
+				
+				var value="";
+				$.each(list, function(index, obj){
+					
+					if("${loginUser.memId}" == obj.reWriter && obj.reGroups == 0){
+						value += "<tr>";
+					    value += "<th>" + '익명' + "</th>" + 
+								 "<td>" + obj.reContent + "</td>" + 
+								 "<td>" + obj.reDate + "</td>" + 
+								 "<td><input type='button' value='수정' class='updateReply' data_num="+obj.reNo+" data_text="+obj.reContent+" data_index="+index+">"+
+								 "<input type='button' value='삭제' class='deleteReply' data_num="+obj.reNo+">"+
+								 "<input type='button' value='답글' class='reReplyAdd' data_num="+obj.reNo+"+>"+"</td>"+
+								 //"<td><div id='updateCommentFormDiv' ></div></td>"+
+								 "<td><div id='updateCommentFormDiv "+index+"' ></div></td>"+
+						 	  	 "</tr>";
+				 		 //value += "<tr>";
+					     //value += "<td><div class='updateCommentFormDiv "+index+"'></div></td>"+
+				 	  	 //		  "</tr>";
+				
+					}else if(obj.reGroups == 1){
+						value += "<tr  style='background-color: pink;'>";
+					    value += "<th>" + '익명' + "</th>" + 
+								 "<td>"+'->' + obj.reContent + "</td>" + 
+								 "<td>" + obj.reDate + "</td>" + 
+								 " <button class='write_recomeent_btn' value="+ obj.reNo+" onclick='deleteReply(this);'>삭제하기</button>"+"</td>" +
+						 	  	 "</tr>";
+					}
+					
+				});
+				$("#replyArea tbody").html(value);
+				//비동기식 방법에서는 ajax에서 한번에 해결해야한다
+				//댓글 삭제
+				 $('.deleteReply').on('click', function(){
+					 var reNo = $(this).attr('data_num'); 
+					 console.log(reNo)
+					 
+					   $.ajax({
+		                    
+		                    url : "deleteReply.cm",
+		                    type : "POST",
+		                        
+		                    data :{
+		                    	reNo : reNo
+		                    },
+		                    success : function(){
+		                        alert("삭제되었습니다.");
+		                        selectReplyList();
+		                    },
+		                    error : function(error){
+		                        console.log(error);
+		                    }
+		                    
+		                });
+		            
+		            });//댓글삭제 function끝
+
+		            
+				// 댓글 수정
+				//$(".updateReply").on('click', function(){
+					$(document).on('click', '.updateReply', function(){
+				
+					 var num = $(this).attr('data_num');
+		             var text = $(this).attr('data_text');
+		             var index = $(this).attr('data_index');
+					 console.log("수정할 번호 : " + num); // 잘 가져옴
+					 console.log("수정할 내용 : " + text);
+					 console.log("수정할 댓글 인덱스 : " + index);
+			
+						value = '<input type="hidden" id ="num"  value="'+num+'">';
+		                value += '<input type="text" id ="text2"  value="'+text+'" >';
+		                value += '<input type="button" value="수정완료" id="updateComment" > ';
+		
+					  		   
+		            	 $('#updateCommentFormDiv'+index).html(value);
+		             		console.log("value값 : " + value)
+		            	  
+
+				})//댓글수정 function끝
+
+
+			},error:function(){
+				console.log("댓글 리스트 가져오기 실패");
+			}
+		});
+	}
+     
+	//댓글달기
+	function addReply(){
+		var  cno = ${dlist.communityNo};
+
+			if($("#replyContent").val().trim().length != 0){
+				
+				$.ajax({
+					url:"reinsert.cm",
+					type:"post",
+					data:{
+						  reContent:$("#replyContent").val(),
+						  cno: cno,
+						  reWriter:"${loginUser.memId}"
+						  },
+					success:function(result){
+						if(result > 0){
+							$("#replyContent").val("");
+							selectReplyList();
+							
+						}else{
+							alert("댓글등록실패");
+						}
+					},error:function(){
+						console.log("댓글 작성 ajax 통신 실패");
+					}
+				});
+				
+			}else{
+				alert("댓글을 입력해주세요");
+			}
+		}
+	
+	
 </script>
 
 </html>

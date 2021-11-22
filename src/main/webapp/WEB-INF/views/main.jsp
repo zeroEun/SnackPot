@@ -25,7 +25,7 @@
         <!--스낵 구독-->
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="${ pageContext.servletContext.contextPath }/resources/images/간식구독배너.jpg" class="img1">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/common/간식구독배너.jpg" class="img1">
             <div class="carousel-caption banner-img1">
                 <h1>간식의 공식, 스낵팟</h1>
                 <p>NO.1 맞춤형 간식구독 서비스</p><br>
@@ -36,7 +36,7 @@
           </div>
           <!--생일 구독-->
           <div class="carousel-item">
-            <img src="${ pageContext.servletContext.contextPath }/resources/images/생일구독배너.png" class="img1">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/common/생일구독배너.png" class="img1">
             <div class="carousel-caption banner-img1">
                 <h1>1년의 단하루,</h1>
                 <p>직원의 행복한 생일을 만들어주는 구독서비스</p><br>
@@ -69,7 +69,7 @@
                         <div class="body">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="profile-image float-md-right"><img src="${ pageContext.servletContext.contextPath }/resources/images/물음표1.png" style="padding: 30px;"> </div>
+                                    <div class="profile-image float-md-right"><img src="${ pageContext.servletContext.contextPath }/resources/images/common물음표1.png" style="padding: 30px;"> </div>
                                 </div>
                                 <div class=" col-md-8 ">
                                     <span class="queTxt">담당직원이 매일 탕비실을 채워넣기도 힘들고 지속적인 관리 해주는 곳은 없을까?</span>
@@ -83,7 +83,7 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="profile-image float-md-right"> <img src="${ pageContext.servletContext.contextPath }/resources/images/물음표1.png" style="padding: 30px;"> </div>
+                                <div class="profile-image float-md-right"> <img src="${ pageContext.servletContext.contextPath }/resources/images/common물음표1.png" style="padding: 30px;"> </div>
                             </div>
                             <div class="col-md-8">
                                 <span class="queTxt">직원들의 복지를 효율적으로 관리할수있는 서비스가 없을까?</span>

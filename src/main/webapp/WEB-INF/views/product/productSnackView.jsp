@@ -154,9 +154,9 @@ text-align: center;
         <div class="dropdown-menu wish-menu"> 
           <a class="dropdown-item" href="list.pro?dtc=1">스낵</a> 
           <a class="dropdown-item" href="list.pro?dtc=2">파이/비스켓</a> 
-          <a class="dropdown-item" href="list.pro?dtc=3">젤리</a>
+          <a class="dropdown-item" href="list.pro?dtc=3">초콜릿</a>
           <a class="dropdown-item" href="list.pro?dtc=4">사탕</a>
-          <a class="dropdown-item" href="list.pro?dtc=5">초콜릿</a>
+          <a class="dropdown-item" href="list.pro?dtc=5">젤리</a>
           <a class="dropdown-item" href="list.pro?dtc=6">껌</a>
           <a class="dropdown-item" href="list.pro?dtc=7">시리얼바</a>
       </div>
@@ -198,9 +198,9 @@ text-align: center;
         <div class="btn-group">
           <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=1'">스낵</button>
           <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=2'">파이/비스켓</button>
-          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=3'">젤리</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=3'">초콜릿</button>
           <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=4'">사탕</button>
-          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=5'">초콜릿</button>
+          <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=5'">젤리</button>
           <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=6'">껌</button>
           <button type="button" class="btn btn-outline" onclick ="location.href='list.pro?dtc=7'">시리얼바</button>
         </div>

@@ -46,21 +46,22 @@ public class communityController {
 	private CommunityService cmntService;
 	
 	@RequestMapping("list.cm") 
-	public String selectCommunityList(Model model ,@RequestParam(value="currentPage" ,required=false , defaultValue="1") int currentPage , HttpSession session) {
+	public String selectCommunityList(Community cmnt , Model model ,@RequestParam(value="currentPage" ,required=false , defaultValue="1") int currentPage , HttpSession session) {
 		
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		String comCode = loginUser.getComCode();
-	
-		int listCount = cmntService.selectListCount(comCode);
+		cmnt.setComCode(comCode);
 		
-		System.out.println("listCount : " + listCount);
+		int listCount = cmntService.selectListCount(comCode);
+//		System.out.println("listCount글 갯수 : " + listCount);
+		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		
-		ArrayList<Community> list = cmntService.selectList(pi);
+		ArrayList<Community> list = cmntService.selectList(pi , cmnt);
 		ArrayList<Community> topList = cmntService.selectTopList(comCode); //인기글 가져오기
 		
-		System.out.println("topList *****" + topList);
-		System.out.println("list====> " + list);
+//		System.out.println("topList *****" + topList);
+//		System.out.println("list====> " + list);
 		
 		model.addAttribute("list" , list);
 		model.addAttribute("topList" , topList);
@@ -69,17 +70,57 @@ public class communityController {
 		return "company/community/communityMainView";
 		
 	}
-	@RequestMapping("myWriter.cm")
-	public String selectMyWriter( Model model , HttpSession session) {
+	// 내가쓴글 보기
+	@RequestMapping("myWriter.cm") //페이징처리 다시해야함 -- >페이지 따로 안만들어 줘도 될꺼같음
+	public String selectMyWriter(Community cmnt , Model model , HttpSession session ,
+								@RequestParam(value="currentPage" ,required=false , defaultValue="1") int currentPage ) {
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		String memId = loginUser.getMemId();
+		String comCode = loginUser.getComCode();
+		cmnt.setWriter(memId);
+		cmnt.setComCode(comCode);
 		
-		ArrayList<Community> list = cmntService.selectMyWriter(memId);
+		int listCount = cmntService.selectWriterListCount(cmnt);
+		//System.out.println("내가쓴글 갯수 : " + listCount);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
+		ArrayList<Community> list = cmntService.selectMyWriter(cmnt , pi);
 		model.addAttribute("list" , list);
+		model.addAttribute("pi" , pi);
 		
 		System.out.println("내가쓴글======" + list);
+		
 		return "company/community/communityMyWriter";
 	}
+	
+	//제목검색
+	@RequestMapping("search.cm")   
+	public String selectSearchCmnt(@RequestParam(value="title", required=false) String title , Community cmnt , HttpSession session , Model model ,
+								   @RequestParam(value="currentPage" ,required=false , defaultValue="1") int currentPage) {
+		
+		System.out.println("검색한 제목은??--->" + title); 
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		String comCode = loginUser.getComCode();
+		cmnt.setComCode(comCode);
+		cmnt.setTitle(title);
+		
+		
+		int listCount = cmntService.selectListCount(comCode);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 3, 7);
+		
+		ArrayList<Community> list = cmntService.selectSearchCmnt(pi , cmnt);
+		System.out.println("제목에 들어간거 검색 리스트확인=====>" + list);
+		
+		model.addAttribute("list" , list);
+		model.addAttribute("pi" , pi);
+	
+		ArrayList<Community> topList = cmntService.selectTopList(comCode);
+		model.addAttribute("topList" , topList);
+	
+		return "company/community/communitySearchView";
+		
+	}
+	
 	
 	
 	@RequestMapping("enrollForm.cm")
@@ -168,44 +209,51 @@ public class communityController {
 		return "company/community/communityUpdateForm";
 		
 	}
+	
 	//게시글 수정
 	@RequestMapping("update.cm")
-	public String updateCmnt(Community cmnt , int cno , String seContent ,ComtyAttachment att, 
+	public String updateCmnt(Community cmnt , int cno , String seContent , String title, ComtyAttachment att, 
 			@RequestParam(name="reuploadFile", required = false) MultipartFile file , HttpServletRequest request ,
 			RedirectAttributes ra) {
 		
-		cmnt.setContent(seContent);
+		cmnt.setContent(seContent); //내용 , 제목 , 첨부파일
 		cmnt.setCommunityNo(cno);
+		cmnt.setTitle(title);
 		
 		String savePath = request.getSession().getServletContext().getRealPath("/resources/upload_files/cmntAttachment/");
 		
-		if(!file.getOriginalFilename().equals("")) { //1. 이전에 첨부한 파일이 있을때
+		if(!file.getOriginalFilename().equals("")) {//파일을 새로 첨부했다
 			
-			if(cmnt.getChangeName() != null) { //삭제한게 아님
-				deleteFile(cmnt.getChangeName(), request);	
+			if(cmnt.getChangeName() != null) { //근데 이미 파일이 있었디 (기존파일)
+				deleteFile(cmnt.getChangeName(), request); //파일을 삭제해준다
+				
+				String changeName = saveFile(file , request); //새로 첨부한 파일을 savefile로 만들어준다
+				
+				att.setOriginName(file.getOriginalFilename());
+				att.setChangeName(changeName);
+				att.setCommunityNo(cno);
+				
+				cmntService.updateCmnt(cmnt);
+				cmntService.updateAttachment(att);
+			}else {
+				String changeName = saveFile(file , request); //새로 첨부한 파일을 savefile로 만들어준다
+				
+				att.setOriginName(file.getOriginalFilename());
+				att.setChangeName(changeName);
+				att.setCommunityNo(cno);
+				
+				cmntService.updateCmnt(cmnt);
+				cmntService.insertCommunityAttachment(att);
+				
 			}
+		
+		}else {
 			
-			String changeName = saveFile(file, request);
-			
-			att.setOriginName(file.getOriginalFilename());
-			att.setChangeName(changeName);
-			att.setCommunityNo(cno);
-			
-			cmntService.updateCmnt(cmnt);
-			cmntService.updateAttachment(att);
-			
+		cmntService.updateCmnt(cmnt);
+	
 		}
-		cmntService.updateCmnt(cmnt);		
-		ra.addAttribute("cno" ,cno);
+		ra.addAttribute("cno" , cno);
 		
-		
-		System.out.println("=============수정 update확인===============");
-		System.out.println("*****확인*****" + cmnt.getContent());
-		System.out.println("*****확인*****" + cmnt.getTitle());
-		System.out.println("*****확인*****" + cmnt.getWriter());
-		System.out.println("*****사진확인*****" + att.getOriginName());
-		System.out.println("*****사진확인*****" + att.getChangeName());
-		System.out.println("*****사진확인*****" + att.getFilePath());
 		return "redirect:detail.cm";
 	}
 	
@@ -257,10 +305,46 @@ public class communityController {
 		
 		return new GsonBuilder().setDateFormat("yyyy년 MM월 dd일 ").create().toJson(list); 
 
-
 	}
 	
+	//댓글 달기
+	@ResponseBody
+	@RequestMapping(value="reinsert.cm" )
+	public String insertReply(Reply r , @RequestParam int  cno) {
+		System.out.println("[r]" + r);
+		//0. 글번호에 총 답글 갯수를 가져와서 0 이면 insert 
+		int reCount = cmntService.selectReplyCount(cno);
+		
+		if(reCount == 0) {
+			System.out.println("댓글 단게 없어요~!");
+			//그냥 insert해준다
+			r.setCommunityNo(cno);
+			int result = cmntService.insertNewReply(r);
+			return String.valueOf(result); 
+		}else {
+		//1. re_Group의 마지막 번호를 가져와야한다 (cno를 기준으로)
+		int count = cmntService.selectMaxGroupNo(cno);
+		System.out.println("68번쨰의 가장 마지막 댓글 번호는?" + count);
+
+		//2. re_Group에 +1 을 해주고 insert해준다 
+		int reGroup = count++;
+		r.setReGroup(reGroup);
+		r.setCommunityNo(cno);
+		
+		int result = cmntService.insertReply(r);
+		return String.valueOf(result); 
 	
+		}
+	}
+	
+	//댓글 삭제
+	@RequestMapping(value="deleteReply.cm")
+	public int deleteReply(Reply r) {
+		
+		return cmntService.deleteReply(r);
+		
+
+	}
 	
 	
 }

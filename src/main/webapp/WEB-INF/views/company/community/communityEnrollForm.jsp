@@ -51,7 +51,7 @@
 <br>
 
  <form action="insert.cm" method="post" id="frm" style="text-align:center;" enctype="multipart/form-data" >
-        <h4>(회사이름)글쓰기</h4>
+        <h4>글쓰기</h4>
         <hr>
         <input type="text" class="title" name="title"  placeholder="제목을 입력해주세요." >
      <div class="tarea">
@@ -94,6 +94,10 @@
 	    	
 	    	frm.submit(); 
 	    	return;
+	    }
+	    
+	    function back(){
+	    	location.href = "list.cm"
 	    }
 	    
  </script>  

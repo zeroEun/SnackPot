@@ -11,10 +11,16 @@ public interface SendListService {
 
 	int deleteSendList(int cempSeq);
 
-	int insertSendList(SendingStatus s);
+	int insertSendList(SendList s);
 
 	SendingStatus selectEmpOne(int cempSeq);
 
 	int updateSendList(SendingStatus s);
+
+	int subscribeChk(String comCode);
+
+	String selectSendingTime(String comCode);
+
+	int insertSendList2(SendList s);
 
 }

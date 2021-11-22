@@ -24,6 +24,11 @@
     	margin: auto;
     	width: 80%;
     }
+    #chkService{
+    	margin: auto;
+    	width: 60%;
+    	text-align: center;
+    }
     .per_amount, .sending_time{
     	
     }
@@ -62,6 +67,17 @@
 		color: rgb(10, 23, 78);
 
 	}
+	#goToSubsInfo{
+		background: rgb(10, 23, 78);
+		color: rgb(245, 208, 66);
+		font-weight: bolder;
+	}
+	#goToSubsInfo:hover{
+		transition-duration: 0.7s;
+		background: rgb(245, 208, 66);
+		color: rgb(10, 23, 78);
+
+	}
 </style>
 <body>
 
@@ -71,10 +87,7 @@
 	<script>
 		$(function(){
 			
-			console.log("${loginUser.comCode}");
-			
 			var chkResult = ${chkResult};
-			console.log("chkResult : "+chkResult);
 			
 			$("#chkService").hide();
 			
@@ -93,13 +106,16 @@
 			    	<h4>생일 구독 신청</h4>
 					<hr>
 			    	<h5>생일 구독 정보가 이미 존재합니다.</h5>
+			    	<h5>구독 정보를 확인하려면 아래 버튼을 클릭하세요.</h5><br>
+			    	<button type="button" id="goToSubsInfo" class="btn btn-primary" onclick="goToSubsInfo();">구독 정보 조회</button>
+			    	<br><hr>
 			    </div>
 			    
 			    <%-- 구독 중이지 않을 때 나타내는 정보 --%>
 			    <form class="" id="subsBirthService" action="subscribe.birth" method="post">
 			    	<h4 style="text-align:center;">생일 구독 신청</h4>
-					<hr>
-			    	<input type="hidden" name="comCode" value="${loginUser.comCode }"/>
+					<br><hr>
+			    	<input type="hidden" name="com_code" value="${loginUser.comCode }"/>
 			        <div class="form-group row">
 			        	<label class="col-md-3">1인당 최대 금액</label>
 			        	<div class="col-md-9 row">
@@ -129,7 +145,7 @@
 				            </div>
 			        	</div>
 			        </div>
-			        <hr>
+			        <br><hr>
 			        
 			        <div class="form-group row">
 			        	<label class="col-md-3">발송 시점</label>
@@ -154,7 +170,7 @@
 				            </div>
 			        	</div>
 			        </div>
-			        <hr>
+			        <br><hr>
 			        
 			        <div class="form-group row">
 			        	<label class="col-md-3">선물 선택 알림 메시지</label>
@@ -168,20 +184,20 @@
 				            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요." disabled></textarea>
 			        	</div>
 			        </div>
-			        <hr>
+			        <br><hr>
 			        
 			        <div class="form-group row">
 			        	<label class="col-md-3">수신자 정보</label><br>
 			        	<div class="col-md-9 row">
 			        		<button type="button" class="btn btn-dark" id="callEmpList">사원 리스트 불러오기</button>
-					        <h6 id="countResult1">총 <b id="empCount">${countEmp }</b>명이 등록되었습니다.</h6>
-					        <h6 id="countResult2">사원 정보가 존재하지 않습니다. <button type="button" id="moveRegisterPage" class="btn btn-primary">등록하러 가기</button></h6>
+			        		<div>
+			        			<input type="hidden" id="empListYN" value=""/>
+						        <h6 id="countResult1">총 <b id="empCount">${countEmp }</b>명이 등록되었습니다.</h6>
+						        <h6 id="countResult2">&emsp;사원 정보가 존재하지 않습니다.&emsp;<button type="button" id="moveRegisterPage" class="btn btn-primary">등록하러 가기</button></h6>
+			        		</div>
 			        	</div>
 			        </div>
-					<hr>
-					
-			        <%-- 나중에 세션에 있는 로그인 유저 객체의 comCode를 form전송, name도 클래스 객체 필드에 맞게 수정--%>
-			        <input type="hidden" name="com_code" value="${loginUser.comCode}">
+					<br><hr>
 			        
 			        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
 			        <button type="button" class="btn btn-outline-primary" id="modalBtn" data-toggle="modal" data-target="#subscribeBtn">구독 신청하기</button>
@@ -219,6 +235,9 @@
 	
     
 	<script>
+		function goToSubsInfo(){
+			location.href="subscribeInfo.birth";
+		}
 		<%-- 선택 알림 메시지 항목에서 메시지 내용을 선택하는 부분 --%>
 		$(function(){
 		    $("#sendMsg").on('change', function(){
@@ -255,26 +274,32 @@
 		});
 		<%-- 구독신청 버튼을 눌렀을 때 모든 사항이 입력돼야 신청이 되도록 설정 --%>
 		$(function(){
-		    $("#subscribe").click(function(){
+		    $("#modalBtn").click(function(){
 		    	var perAmount = $("input[name='per_amount']:checked").val();
 		        var sendingTime = $("input[name='sending_time']:checked").val();
 		        var notificationMsg = $("textarea[name='notification_msg']").val();
-		
-		        //console.log(perAmount);
-		        //console.log(sendingTime);
-		        //console.log(notificationMsg);
+		        var empListYN = $("#empListYN").val();
 		
 		        if(perAmount == null){
-		            alert("1인당 최대 금액을 설정해주세요.")
+		            alert("1인당 최대 금액을 설정해주세요.");
 		            return false;            
 		        }else{
 		            if(sendingTime == null){
-		                alert("발송 시점을 선택해주세요.")
+		                alert("발송 시점을 선택해주세요.");
 		                return false;
 		            }else{
 		                if(notificationMsg == "" || notificationMsg == null){
-		                    alert("선물 선택 알림 메시지를 설정해주세요.")
+		                    alert("선물 선택 알림 메시지를 설정해주세요.");
 		                    return false;
+		                }else{
+		                	if(empListYN == ""){
+		                		alert("수신자 정보를 불러와주세요.");
+		                		return false;
+		                	}else if(empListYN == "n"){
+		                		alert("사원 리스트를 먼저 등록해주세요.");
+		                		$("#moveRegisterPage").focus();
+		                		return false;
+		                	}
 		                }
 		            }
 		        }
@@ -292,15 +317,15 @@
 		$(function(){
 			$("#callEmpList").click(function(){
 	    		var countEmp = ${countEmp};
-	    		//console.log(countEmp);
-	    		//console.log(typeof(countEmp));
-	    		
+
 	    		if(countEmp > 0){
 	    			$("#countResult1").show();
 	    			$("#countResult2").hide();
+	    			$("#empListYN").val("y");
 	    		}else{
 	    			$("#countResult1").hide();
 	    			$("#countResult2").show();
+	    			$("#empListYN").val("n");
 	    			return false;
 	    		}
 	    		
@@ -322,9 +347,14 @@
 	    		$("#modalInfo1").html(perAmount);
 	    		$("#modalInfo2").html(sendingTime);
 	    		$("#modalInfo3").html(notificationMsg);
-			})
+	    		
+	    		var sendText = $("#sendMsgArea").val();
+				sendText = sendText.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+				$("#sendMsgArea").val(sendText);
+			});
 			
 		});
+
 	</script>
 </body>
 </html>

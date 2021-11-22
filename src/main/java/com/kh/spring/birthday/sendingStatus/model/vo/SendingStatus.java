@@ -23,8 +23,9 @@ public class SendingStatus {
 	private String cempPhone;
 	private String cempEmail;
 	private Date cempBirth;
-	private Date sendingMsgDate;
+	private String sendingMsgDate;
 	private Date selectDate;
 	
+	private String comCode;
 	private String cempBirthSdf; //Date객체에 담아온 값을 수정 페이지에 원하는 형식으로 나타내기 위함
 }

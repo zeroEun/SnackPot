@@ -11,6 +11,11 @@ import com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus;
 @Repository
 public class SendListDao {
 
+	public int subscribeChk(SqlSessionTemplate sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("birthdayMapper.subscribeChk", comCode);
+	}
+	
 	public ArrayList<SendList> selectSendList(SqlSessionTemplate sqlSession) {
 		// TODO Auto-generated method stub
 		return (ArrayList)sqlSession.selectList("birthdayMapper.selectSendList");
@@ -21,7 +26,7 @@ public class SendListDao {
 		return sqlSession.delete("birthdayMapper.deleteSendStatus", cempSeq);
 	}
 
-	public int insertSendList(SqlSessionTemplate sqlSession, SendingStatus s) {
+	public int insertSendList(SqlSessionTemplate sqlSession, SendList s) {
 		// TODO Auto-generated method stub
 		return sqlSession.insert("birthdayMapper.insertSendList", s);
 	}
@@ -34,6 +39,16 @@ public class SendListDao {
 	public int updateSendList(SqlSessionTemplate sqlSession, SendingStatus s) {
 		// TODO Auto-generated method stub
 		return sqlSession.insert("birthdayMapper.updateSendList", s);
+	}
+
+	public String selectSendingTime(SqlSessionTemplate sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("birthdayMapper.selectSendingTime", comCode);
+	}
+
+	public int insertSendList2(SqlSessionTemplate sqlSession, SendList s) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("birthdayMapper.insertSendList2", s);
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.spring.birthday.sendList.model.dao.SendListDao;
 import com.kh.spring.birthday.sendList.model.vo.SendList;
+import com.kh.spring.birthday.sendingStatus.model.dao.SendingStatusDao;
 import com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus;
 import com.kh.spring.common.exception.CommException;
 
@@ -21,6 +22,14 @@ public class SendListServiceImpl implements SendListService {
 	private SendListDao sendListDao;
 
 	@Override
+	public int subscribeChk(String comCode) {
+
+		int result = sendListDao.subscribeChk(sqlSession, comCode);
+		
+		return result;
+	}
+	
+	@Override
 	public ArrayList<SendList> selectSendList() {
 		// TODO Auto-generated method stub
 		return sendListDao.selectSendList(sqlSession);
@@ -32,19 +41,19 @@ public class SendListServiceImpl implements SendListService {
 		int result = sendListDao.deleteSendList(sqlSession, cempSeq);
 		
 		if(result < 0) {
-			throw new CommException("발송현황 선택 삭제 실패");
+			throw new CommException("발송리스트 선택 삭제 실패");
 		}
 		
 		return result;
 	}
 
 	@Override
-	public int insertSendList(SendingStatus s) {
+	public int insertSendList(SendList s) {
 
 		int result = sendListDao.insertSendList(sqlSession, s);
 		
 		if(result < 0) {
-			throw new CommException("발송현황 추가하기 실패");
+			throw new CommException("발송리스트 추가하기 실패");
 		}
 		
 		return result;
@@ -62,9 +71,28 @@ public class SendListServiceImpl implements SendListService {
 		int result = sendListDao.updateSendList(sqlSession, s);
 		
 		if(result < 0) {
-			throw new CommException("발송현황 수정하기 실패");
+			throw new CommException("발송리스트 수정하기 실패");
 		}
 		
 		return result;
 	}
+
+	@Override
+	public String selectSendingTime(String comCode) {
+		// TODO Auto-generated method stub
+		return sendListDao.selectSendingTime(sqlSession, comCode);
+	}
+
+	@Override
+	public int insertSendList2(SendList s) {
+
+		int result = sendListDao.insertSendList2(sqlSession, s);
+		
+		if(result < 0) {
+			throw new CommException("발송리스트2 추가하기 실패");
+		}
+		
+		return result;
+	}
+
 }

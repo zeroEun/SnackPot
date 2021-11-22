@@ -19,9 +19,17 @@ public class SendingStatusServiceImpl implements SendingStatusService {
 	private SendingStatusDao sendingStatusDao;
 	
 	@Override
-	public ArrayList<SendingStatus> selectsList() {
+	public int subscribeChk(String comCode) {
+
+		int result = sendingStatusDao.subscribeChk(sqlSession, comCode);
+		
+		return result;
+	}
+	
+	@Override
+	public ArrayList<SendingStatus> sendingcursts(int sendingTime) {
 		// TODO Auto-generated method stub
-		return sendingStatusDao.selectsList(sqlSession);
+		return sendingStatusDao.sendingcursts(sqlSession, sendingTime);
 	}
 
 	@Override
@@ -61,6 +69,24 @@ public class SendingStatusServiceImpl implements SendingStatusService {
 		
 		if(result < 0) {
 			throw new CommException("발송현황 수정하기 실패");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public String selectSendingTime(String comCode) {
+		// TODO Auto-generated method stub
+		return sendingStatusDao.selectSendingTime(sqlSession, comCode);
+	}
+
+	@Override
+	public int insertSendStatus2(SendingStatus s) {
+
+		int result = sendingStatusDao.insertSendStatus2(sqlSession, s);
+		
+		if(result < 0) {
+			throw new CommException("발송현황2 추가하기 실패");
 		}
 		
 		return result;

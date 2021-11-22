@@ -12,7 +12,17 @@
 <title>Insert title here</title>
 </head>
 <style>
+	#birthContainer{
+    	margin-top: 30px;
+    	
+    }
+    #birthCard{
+    	height: 777px;
+    	overflow: scroll;
+    	margin-bottom: 5px;
+    }
     #sendingTab>li>p {
+       	cursor: pointer;
         margin-left: 0;
         width: 100%;
     }
@@ -20,193 +30,224 @@
         float: left;
         width: 12%;
     }
+    #sendingTab p {
+    	border: none;
+    	margin: 1px;
+    }
     #sendingTab>li{
     	width: 100%;
     }
+    #tabArea{
+    	padding-top: 20px;
+    	padding-left: 10px;
+    }
     #tabArea button{
         float: right;
-        margin-left: 2px;
-        margin-right: 2px;
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+    #birthCard > .card-body{
+        background: rgb(218, 215, 208);
+    }
+    .tableHead{
+    	background: rgb(255, 227, 114);
+    }
+    .tableBody{
+    	background: rgb(252, 248, 238);
     }
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 
-        <div class="card text-center">
-            <div class="card-header" id="tabArea">
-                <ul class="nav nav-tabs card-header-tabs" id="sendingTab">
-                    <li class="nav-item" id="sendingListTab">
-                        <p class="nav-link">발송 리스트</p>
-                    </li>
-                    
-                </ul>
-                <button type="button" class="btn btn-dark" id="updateBtn" onclick="updateRow();">선택 수정</button>                
-                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#sending_insert">추가하기</button>
-                <button type="button" class="btn btn-dark" onclick="deleteRow();">선택 삭제</button>                
-            </div>
-            
-            <div class="card-body">
-                <%-- 발송 예정 테이블 --%>
-                <table class="table" id="sending_expected_table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col"><input type="checkbox" id="sendingChk"></th>
-                            <th scope="col">번호</th>
-                            <th scope="col">부서명</th>
-                            <th scope="col">직급명</th>
-                            <th scope="col">사원명</th>
-                            <th scope="col">전화번호</th>
-                            <th scope="col">생일날짜</th>
-                            <th scope="col">발송예정일</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                   		<c:set var="sendListChk" value="${list }"/>
-                   		<c:choose>
-                   			<c:when test="${empty sendListChk }">
-                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
-                   			</c:when>
-                   			<c:when test="${!empty sendListChk }">
-                   				<c:forEach items="${ list }" var="sendList" varStatus="status">                   					                		
-									<c:set var="num" value="${ num+1 }" />
-			                        <tr>
-			                            <td><input type="checkbox" name="sendingChk" value="${sendList.cempSeq }"></td>
-			                           	<td>${ num }</td>
-										<td>${sendList.cempDept }</td>
-						                <td>${sendList.cempJob }</td>
-						                <td>${sendList.cempName }</td>
-						                <td>${sendList.cempPhone }</td>
-						                <td>${sendList.cempBirth }</td>
-						                <td>${sendList.sendMsgDate }</td>
-			                        </tr>
-                   				</c:forEach>
-                   				<c:if test="${empty num }">
-                   					<tr><td colspan="8">발송 예정인 사원이 없습니다.</td></tr>
-                   				</c:if>
-                   				</c:when>
-                   		</c:choose>
-                    </tbody>
-                </table>
+	<section id="birthSection">
+    	<div class="container-fluid" id="birthContainer">
+    		<div class="card text-center" id="birthCard">
+	            <div class="card-header" id="tabArea">
+	                <ul class="nav nav-tabs card-header-tabs" id="sendingTab">
+	                    <li class="nav-item" id="sendingListTab">
+	                        <p class="nav-link">발송 리스트</p>
+	                    </li>
+	                    
+	                </ul>
+	                <button type="button" class="btn btn-dark" id="updateBtn" onclick="updateRow();">선택 수정</button>                
+	                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#sending_insert">추가하기</button>
+	                <button type="button" class="btn btn-dark" onclick="deleteRow();">선택 삭제</button>                
+	            </div>
+	            
+	            <div class="card-body">
+	                <%-- 발송 예정 테이블 --%>
+	                <table class="table" id="sending_expected_table">
+	                    <thead class="tableHead">
+	                        <tr>
+	                            <th scope="col"><input type="checkbox" id="sendingChk"></th>
+	                            <th scope="col">번호</th>
+	                            <th scope="col">부서명</th>
+	                            <th scope="col">직급명</th>
+	                            <th scope="col">사원명</th>
+	                            <th scope="col">전화번호</th>
+	                            <th scope="col">생일날짜</th>
+	                            <th scope="col">발송예정일</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody class="tableBody">
+	                   		<c:set var="sendListChk" value="${list }"/>
+	                   		<c:set var="birthSubsChk" value="${birthSubsChk }"/>
+	                   		<c:if test ="${birthSubsChk > 0}">
+		                   		<c:choose>
+		                   			<c:when test="${empty sendListChk }">
+		                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
+		                   			</c:when>
+		                   			<c:when test="${!empty sendListChk }">
+		                   				<c:forEach items="${ list }" var="sendList" varStatus="status">                   					                		
+											<c:set var="num" value="${ num+1 }" />
+					                        <tr>
+					                            <td><input type="checkbox" name="sendingChk" value="${sendList.cempSeq }"></td>
+					                           	<td>${ num }</td>
+												<td>${sendList.cempDept }</td>
+								                <td>${sendList.cempJob }</td>
+								                <td>${sendList.cempName }</td>
+								                <td>${sendList.cempPhone }</td>
+								                <td>${sendList.cempBirth }</td>
+								                <td>${sendList.sendMsgDate }</td>
+					                        </tr>
+		                   				</c:forEach>
+		                   				<c:if test="${empty num }">
+		                   					<tr><td colspan="8">발송 예정인 사원이 없습니다.</td></tr>
+		                   				</c:if>
+		                   				</c:when>
+		                   		</c:choose>
+	                   		</c:if>
+		                   	<c:if test ="${birthSubsChk <= 0}">
+		                   		<tr><td colspan="8">구독 정보가 존재하지 않습니다.</td></tr>
+		                   	</c:if>
+	                    </tbody>
+	                </table>
+	
+	                <%-- 추가하기 --%>
+	                <div class="modal fade" id="sending_insert" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	                    <div class="modal-dialog">
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h5 class="modal-title" id="staticBackdropLabel">추가하기</h5>
+	                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                                    <span aria-hidden="true">&times;</span>
+	                                </button>
+	                            </div>
+	                            
+	                                <div class="modal-body">                                
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">부서명</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cempDept" required>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">직급명</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cempJob" required>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">사원명</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cempName" required>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">전화번호</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cempPhone" placeholder="'-' 빼고 입력" required>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">이메일</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="email" class="form-control" id="cempEmail" placeholder="example@email" required>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">생일날짜</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="date" class="form-control" id="cempBirth" required>
+	                                        </div>
+	                                    </div>                                                                
+	                                </div>
+	                                <div class="modal-footer">
+	                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	                                    <button type="submit" id="insertSendListBtn" class="btn btn-primary">추가</button>
+	                                </div>
+	
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <%-- 선택 수정 --%>
+	                <div class="modal fade" id="sending_update" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	                    <div class="modal-dialog">
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h5 class="modal-title" id="staticBackdropLabel">선택 수정</h5>
+	                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                                    <span aria-hidden="true">&times;</span>
+	                                </button>
+	                            </div>
+	                            	<input type="hidden" id="cSeq">
+	                                <div class="modal-body">                                
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">부서명</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cDept">
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">직급명</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cJob">
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">사원명</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cName">
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">전화번호</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cPhone" placeholder="'-' 빼고 입력">
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">이메일</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="email" class="form-control" id="cEmail" placeholder="example@email">
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label for="deptName" class="col-form-label col-sm-3">생일날짜</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="date" class="form-control" id="cBirth">
+	                                        </div>
+	                                    </div>                                                                
+	                                </div>
+	                                <div class="modal-footer">
+	                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	                                    <button type="submit" id="updateSendListBtn" class="btn btn-primary">수정</button>
+	                                </div>
+	                            
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>    
+	    
+	        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+    	</div>
+    	
+    	<input type="hidden" id="comCodeInput" name="comCode" value="${loginUser.comCode }">
+    </section>
 
-                <%-- 추가하기 --%>
-                <div class="modal fade" id="sending_insert" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">추가하기</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            
-                                <div class="modal-body">                                
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">부서명</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cempDept" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">직급명</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cempJob" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">사원명</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cempName" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">전화번호</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cempPhone" placeholder="'-' 빼고 입력" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">이메일</label>
-                                        <div class="col-sm-9">
-                                            <input type="email" class="form-control" id="cempEmail" placeholder="example@email" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">생일날짜</label>
-                                        <div class="col-sm-9">
-                                            <input type="date" class="form-control" id="cempBirth" required>
-                                        </div>
-                                    </div>                                                                
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                                    <button type="submit" id="insertSendListBtn" class="btn btn-primary">추가</button>
-                                </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <%-- 선택 수정 --%>
-                <div class="modal fade" id="sending_update" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">선택 수정</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            	<input type="hidden" id="cSeq">
-                                <div class="modal-body">                                
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">부서명</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cDept">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">직급명</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cJob">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">사원명</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">전화번호</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cPhone" placeholder="'-' 빼고 입력">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">이메일</label>
-                                        <div class="col-sm-9">
-                                            <input type="email" class="form-control" id="cEmail" placeholder="example@email">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="deptName" class="col-form-label col-sm-3">생일날짜</label>
-                                        <div class="col-sm-9">
-                                            <input type="date" class="form-control" id="cBirth">
-                                        </div>
-                                    </div>                                                                
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                                    <button type="submit" id="updateSendListBtn" class="btn btn-primary">수정</button>
-                                </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>    
-    
-        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+        
         
 	<script>
 		window.onload = function() {
@@ -220,7 +261,7 @@
 		    $("#insertBtn").show();
 		    $("#deleteBtn").show();
 		    */
-		    $("#sendingListTab").css("background", "gray");
+		    $("#sendingListTab").css("background", "rgb(218, 215, 208)");
 		    $("#tabArea").css("padding-bottom", 4);//추가탭 없으면 style로 변경
 		}
 		
@@ -287,6 +328,9 @@
 		}
 		
 		$(function(){
+			
+			var comCode = $("#comCodeInput").val();
+			
 			$("#insertSendListBtn").click(function(){
 				
 				var cempDept = $("#cempDept").val();
@@ -296,38 +340,48 @@
 				var cempEmail = $("#cempEmail").val();
 				var cempBirth = $("#cempBirth").val();
 				
+				var thisMonth = new Date().getMonth() + 1;
+				var empMonth = new Date(cempBirth).getMonth() + 1;
+				console.log("thisMonth : " + thisMonth);
+				console.log("empMonth : " + empMonth);
+				
 				if(cempDept == "" || cempJob == "" || cempName == "" || 
 						cempPhone == "" || cempEmail == "" || cempBirth == ""){
 					alert("모든 항목을 입력해주세요.");
 				}else{
-					$.ajax({		            				
-						url : "insSendList.birth",
-						type : "POST",
-						data:{
-							cempDept : cempDept,
-							cempJob : cempJob,
-							cempName : cempName,
-							cempPhone : cempPhone,
-							cempEmail : cempEmail,
-							cempBirth : cempBirth
-						},
-						success : function(result){
-							if(result > 0){
-								//console.log("result : " + result);
-								//console.log("result타입 : " + typeof(result));
-								alert("발송 리스트 등록 성공!");
-								location.replace("sendList.birth");
-								
-							}else{
-								alert("발송 리스트 등록 실패!");
+					if(empMonth == thisMonth + 1){
+						$.ajax({		            				
+							url : "insSendList.birth",
+							type : "POST",
+							data:{
+								comCode: comCode,
+								cempDept : cempDept,
+								cempJob : cempJob,
+								cempName : cempName,
+								cempPhone : cempPhone,
+								cempEmail : cempEmail,
+								cempBirth : cempBirth
+							},
+							success : function(result){
+								if(result > 0){
+									//console.log("result : " + result);
+									//console.log("result타입 : " + typeof(result));
+									alert("발송 리스트 등록 성공!");
+									location.replace("sendList.birth");
+									
+								}else{
+									alert("발송 리스트 등록 실패!");
+								}
+							},
+							error : function(error){
+								//console.log("error진입" + error);	            					
+								alert("에러발생 : " + error);
 							}
-						},
-						error : function(error){
-							//console.log("error진입" + error);	            					
-							alert("에러발생 : " + error);
-						}
-						
-					});
+							
+						});
+					}else{
+						alert((thisMonth + 1)+"월 생일자인 사원만 등록이 가능합니다.");
+					}
 				}
 				
 			});

@@ -6,7 +6,9 @@ import com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus;
 
 public interface SendingStatusService {
 
-	ArrayList<SendingStatus> selectsList();
+	int subscribeChk(String comCode);
+	
+	ArrayList<SendingStatus> sendingcursts(int sendingTime);
 
 	int deleteSendStatus(int cempSeq);
 
@@ -15,5 +17,9 @@ public interface SendingStatusService {
 	SendingStatus selectEmpOne(int cempSeq);
 
 	int updateSendStatus(SendingStatus s);
+
+	String selectSendingTime(String comCode);
+
+	int insertSendStatus2(SendingStatus s);
 
 }

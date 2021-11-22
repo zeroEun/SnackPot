@@ -149,8 +149,8 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 
 
 	@Override
-	public int selectSnackMaxNum() {
-		return  hoSnackListDao.selectSnackMaxNum(sqlSession);
+	public int selectSnackCount() {
+		return  hoSnackListDao.selectSnackCount(sqlSession);
 	}
 
 

@@ -44,7 +44,7 @@ public interface HoSnackListService {
 
 	ArrayList<WishListDtail> selectWishList(ComListInfo info);
 	
-	int selectSnackMaxNum();
+	int selectSnackCount();
 
 	void insertOrder(ComListInfo schedule);
 

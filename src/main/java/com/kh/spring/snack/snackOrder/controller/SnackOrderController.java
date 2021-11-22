@@ -17,9 +17,8 @@ import com.kh.spring.companyMember.model.vo.CompanyMember;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.service.HoSnackListService;
-import com.kh.spring.snack.snackList.model.vo.ComListInfo;
+import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackList.model.vo.SearchSnack;
-import com.kh.spring.snack.snackList.model.vo.SnackDList;
 import com.kh.spring.snack.snackOrder.model.service.SnackOrderService;
 import com.kh.spring.snack.snackOrder.model.vo.OrderDetail;
 import com.kh.spring.snack.snackOrder.model.vo.Orders;
@@ -147,6 +146,33 @@ public class SnackOrderController {
 		return "company/snack/comOrderList";
 	}
 	
+	@RequestMapping("comSearchOrder.sn")
+	public String selectComSearchOrder(SearchList search, HttpSession session, Model model) {
+		
+		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
+		search.setComCode(comCode);
+		
+		ArrayList<Orders> orderList = snackOrderService.selectComSearchOrder(search);
+		
+		model.addAttribute("orderList", orderList);
+		
+		return "company/snack/comOrderList";
+	}
+	
+	
+	@RequestMapping("comOrderDetail.sn")
+	public String selectComOrderedDetail(int orderNo, Model model) {
+		
+		Orders orders = snackOrderService.selectOrderForNo(orderNo);
+		ArrayList<OrderDetail> dList = snackOrderService.selectOrderDetail(orderNo);
+		
+		model.addAttribute("orders", orders);
+		model.addAttribute("dList", dList);
+		
+		return "company/snack/comOrderDetail";
+	}
+	
+	
 	@RequestMapping("hoOrderList.sn")
 	public String selectHoOrderedList(HttpSession session, Model model) {
 		
@@ -158,6 +184,26 @@ public class SnackOrderController {
 		map.put("comArr", comArr);
 		
 		ArrayList<Orders> orderList = snackOrderService.selectHoOrderedList(map);
+		
+		model.addAttribute("orderList", orderList);
+		
+		return "headoffice/snack/hoOrderList";
+	}
+	
+	@RequestMapping("hoSearchOrder.sn")
+	public String selectHoSearchOrder(SearchList search, HttpSession session, Model model) {
+		
+		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
+		
+		String[] arr = comCode.split("/");
+		HashMap<String, String> comArr = new HashMap<String, String>();
+		
+		for(int i=0; i < arr.length; i++) {
+			comArr.put("arr"+i, arr[i]);
+		}
+		search.setComArr(comArr);
+		
+		ArrayList<Orders> orderList = snackOrderService.selectHoSearchOrder(search);
 		
 		model.addAttribute("orderList", orderList);
 		
@@ -190,8 +236,25 @@ public class SnackOrderController {
 		return "headoffice/snack/hoOrderDetail";
 	}
 	
-	@RequestMapping("orderCancel.sn")
+	@ResponseBody
+	@RequestMapping(value="orderCancel.sn", produces="application/String; charset=utf-8")
 	public String orderCancel(int orderNo, Model model) {
+		
+		orderCancel(orderNo);
+		
+		return "success";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="comOrderCancel.sn", produces="application/String; charset=utf-8")
+	public String comOrderCancel(int orderNo) {
+		
+		orderCancel(orderNo);
+		
+		return "success";
+	}
+	
+	public void orderCancel(int orderNo) {
 		
 		int newOrderNo = hoSnackListService.selectOrderNo();
 		
@@ -199,15 +262,8 @@ public class SnackOrderController {
 		order.put("orderNo", orderNo);
 		order.put("newOrderNo", newOrderNo);
 		
-		//snackOrderService.orderCancel(order);
+		snackOrderService.orderCancel(order);
 		
-		Orders orders = snackOrderService.selectOrderForNo(orderNo);
-		ArrayList<OrderDetail> dList = snackOrderService.selectOrderDetail(orderNo);
-		
-		model.addAttribute("orders", orders);
-		model.addAttribute("dList", dList);
-		
-		return "headoffice/snack/hoOrderDetail";
 	}
 	
 }

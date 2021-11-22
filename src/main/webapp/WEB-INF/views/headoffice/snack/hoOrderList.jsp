@@ -51,15 +51,17 @@
                     <hr>
 
                     <div class="search form-inline"><!-- form-inline : 한줄에 배치 -->
-                    	<form action="" method="post" id="searchList">
+                    	<form action="hoSearchOrder.sn" method="post" id="searchList">
 	                        <select class="search-select form-control" id="category" name="category">
 	                            <option value="0">카테고리</option>
-	                            <option value="1">리스트 번호</option>
+	                            <option value="1">주문 번호</option>
 	                            <option value="2">회사명</option>
 	                        </select>
 	
 							<input hidden="hidden"><!-- enter 눌렀을 때 submit 방지 -->
 	                        <input type="text" class="form-control" name="search" id="searchInput" placeholder="검색어 입력">
+	                        
+	                        <span>주문일: </span>
 	                        <input type="date" class="form-control" name="startDate" id="startDate">
 	                        <input type="date" class="form-control" name="endDate" id="endDate">
 	
@@ -67,8 +69,6 @@
                         </form>
                     </div>
                     
-                    <div><p>기간 검색은 주문일 기준</p></div>
-
                     <table class="table table-bordered" id="orderList">
                         <thead class="thead-light">
                             <tr>
@@ -116,8 +116,10 @@
 		<%--날짜 값을 설정하지 않으면 형변환 에러가 발생하므로 disabled속성 주기, disabled는  객체 전송 안됨--%>
 		$('#searchBtn').click(function(){
 			
+			var category = $('select[name=category]').val();
 			var startDate = $('#startDate').val();
 			var endDate = $('#endDate').val();
+			var input = $('#searchInput').val();
 			
 			if(startDate == ''){
 				$('#startDate').attr('disabled', true);
@@ -127,15 +129,28 @@
 				$('#endDate').attr('disabled', true);
 			}
 			
-			<%--카테고리 리스트번호 선택 후 검색어 입력하지 않았을 경우 --%>
-			var c = $('select[name=category]').val();
-			var text = $('#searchInput').val();
-			
-			if(c == 1 && text == ''){
-				$('select[name=category]').val(0);
+			if(input != '' && category == 0){
+				alert("카테고리를 선택해 주세요");
+				$('#startDate').removeAttr('disabled');
+				$('#endDate').removeAttr('disabled');
+			}else{
+				$('#searchList').submit();
 			}
 			
-			$('#searchList').submit();
+		});
+		
+		$('#category').on('change', function(){
+			
+			var c = $('select[name=category]').val();
+			
+			if(c == 1){
+				$('#searchInput').val('');
+				$('#searchInput').attr('placeholder', '숫자만 입력해 주세요');
+				$('#searchInput').attr('onKeyup', 'this.value=this.value.replace(/[^0-9]/g,"");');
+			}else{
+				$('#searchInput').removeAttr('onKeyup');
+				$('#searchInput').attr('placeholder', '검색어 입력');
+			}
 			
 		});
 		

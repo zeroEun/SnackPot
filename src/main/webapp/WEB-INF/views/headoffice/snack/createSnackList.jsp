@@ -320,7 +320,7 @@
 					})
 					
 				},error:function(){
-					console.log("댓글 작성 ajax 통신 실패");
+					console.log("ajax 통신 실패");
 				}
 				
 			});

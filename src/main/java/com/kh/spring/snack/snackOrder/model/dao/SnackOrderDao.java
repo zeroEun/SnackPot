@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring.product.model.vo.WishListDtail;
+import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackOrder.model.vo.OrderDetail;
 import com.kh.spring.snack.snackOrder.model.vo.Orders;
 
@@ -79,6 +80,18 @@ public class SnackOrderDao {
 
 	public int insertNewOrder(SqlSessionTemplate sqlSession, HashMap order) {
 		return sqlSession.insert("snackOrderMapper.insertNewOrder", order);
+	}
+
+	public int insertNewOrderDetail(SqlSessionTemplate sqlSession, HashMap order) {
+		return sqlSession.insert("snackOrderMapper.insertNewOrderDetail", order);
+	}
+
+	public ArrayList<Orders> selectComSearchOrder(SqlSessionTemplate sqlSession, SearchList search) {
+		return (ArrayList)sqlSession.selectList("snackOrderMapper.selectComSearchOrder", search);
+	}
+
+	public ArrayList<Orders> selectHoSearchOrder(SqlSessionTemplate sqlSession, SearchList search) {
+		return (ArrayList)sqlSession.selectList("snackOrderMapper.selectHoSearchOrder", search);
 	}
 
 }

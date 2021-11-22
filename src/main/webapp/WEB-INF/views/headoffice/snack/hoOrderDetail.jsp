@@ -129,12 +129,34 @@ $(function(){
 	}
 	
 	<%-- 주문 취소 버튼 클릭 시 --%>
-	$('#releaseBtn').on('click', function(){
+	$('#orderCancelBtn').on('click', function(){
 		
+		var orderNo = ${orders.orderNo}
 		var result = confirm("정말 취소하시겠습니까?")
-		if(result) $('#submitForm').attr('action', 'orderCancel.sn').submit();
-		
+		if(result){
+			
+			$.ajax({
+				
+				url:"orderCancel.sn",
+				type:'POST',
+				data: {orderNo:orderNo},
+				success: function(result){
+					
+					console.log(result);
+					if(result == 'success'){
+						alert("주문이 취소되었습니다.");
+						$('#orderCancelBtn').attr('disabled', true);
+						$('#releaseBtn').attr('disabled', true);
+					}
+					
+				},error:function(){
+					console.log("ajax 통신 실패");
+				}
+			});
+			
+		}
 	})
+	
 	
 	<%-- 간식 출고 버튼 클릭 시--%>
 	$('#releaseBtn').on('click', function(){
@@ -148,6 +170,7 @@ $(function(){
 			$.ajax({
 				
 				url:'checkOrderStock.sn',
+				type:'POST',
 				data:{orderNo:orderNo},
 				success: function(list){
 					

@@ -87,7 +87,7 @@
 
             <nav id="sidebar" class="sidebar col-2">
                 <div class="sidebar-header">
-                    <a class="navbar-brand" href="#">SnackPot</a>
+                    <a class="navbar-brand" href="mainPage.ho">SnackPot</a>
 
                     <div id="user">
                         <h5>${ sessionScope.loginEmp.sempName }님</h5>
@@ -167,10 +167,10 @@
                         </a>
                         <div class="collapse" id="snack-management">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">품목 등록</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">입고 등록</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">출고 등록</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">재고 조회</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="snackEnrollForm.pm">품목 등록</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="arrivalList.pm">입고 등록</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="releaseList.pm">출고 등록</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="invenList.pm">재고 조회</a></li>
                         </ul>
                         </div>
                     </li>

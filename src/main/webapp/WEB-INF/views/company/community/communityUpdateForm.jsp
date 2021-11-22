@@ -49,7 +49,7 @@
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 <br>
 
-  <form action="update.cm" method="post" id="frm" style="text-align:center;" enctype="multipart/form-data" >
+  <form action="update.cm" method="post" id="frm" style="text-align:center;" enctype="multipart/form-data">
   <input type="hidden" name="cno" value="${ulist.communityNo }"> 
   	<h3>게시글 수정</h3>
   	<input type="text" class="title" name="title" value="${ulist.title}">

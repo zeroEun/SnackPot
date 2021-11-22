@@ -10,20 +10,17 @@ import com.kh.spring.qna.model.vo.PageInfo;
 
 public interface CommunityService {
 
-//	int selectListCount();
 	int selectListCount(String comCode);
 
 	int selectCmntNo(String memId);
 
 	void insertCommunityAttachment(ComtyAttachment att);
 	
-	ArrayList<Community> selectList(PageInfo pi);
+	ArrayList<Community> selectList(PageInfo pi, Community cmnt);
 
 	void insertCommunity(Community cmnt);
 
 	Community selectDetailCmnt(int cno);
-
-//	int updateCmnt(HashMap<String, Object> map);
 
 	int updateViews(int cno);
 
@@ -43,7 +40,30 @@ public interface CommunityService {
 
 	ArrayList<Community> selectTopList(String comCode);
 
-	ArrayList<Community> selectMyWriter(String memId);
+	ArrayList<Community> selectMyWriter(Community cmnt, PageInfo pi);
+
+	ArrayList<Community> selectSearchCmnt(PageInfo pi, Community cmnt);
+
+	int selectWriterListCount(Community cmnt);
+
+	int selectMaxGroupNo(int  cno);
+
+	int insertReply(Reply r);
+
+	int selectReplyCount(int cno);
+
+	int insertNewReply(Reply r);
+
+	int deleteReply(Reply r);
+
+
+
+
+
+
+
+
+	
 
 
 

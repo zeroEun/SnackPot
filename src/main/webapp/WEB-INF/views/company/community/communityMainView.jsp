@@ -72,11 +72,10 @@
 <body>
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 	<div class="container-fluid">
-		<!--맨위 상단
+		
 		<div class="top-img">
-			<img src="/resource/image/쿠키.png" style="width: 30px;"> <label><h4>회사명커뮤니티</h4></label>
-			<img src="/resource/image/케이크.png" style="width: 30px;">
-		</div>-->
+			<label><h4>${loginUser.comName}의  커뮤니티입니다.</h4></label>
+		</div>
 
 		<br>
 
@@ -112,11 +111,13 @@
 		<br>
 
 		<!--제목 찾기 부트스트랩(filter)-->
+		<form action="search.cm" method="post" id="searchForm"> 
 		<div class="search-box">
-			<input class="form-control" id="myInput" type="text" placeholder="제목" >
-			<a class="searchBtn"> <i class="fas fa-search"></i>
-			</a>
+			<input class="form-control" id="myInput" name="title" type="text" placeholder="제목" >
+			<a class="searchBtn"><i class="fas fa-search" onclick="document.getElementById('searchForm').submit();"></i></a>
 		</div>
+		</form>
+		
 		<!--커뮤니티 게시판-->
 		<table class="table" id="cmnt">
 			<thead>
@@ -188,16 +189,6 @@
 	</div>
 </body>
 <script>
-
-		$(document).ready(function(){
-			  $("#myInput").on("keyup", function() {
-			    var value = $(this).val().toLowerCase();
-			    $("#myTable tr").filter(function() {
-			      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-			    });
-			  });
-			});
-
     	$(function(){
     		$("#cmnt tbody tr").click(function(){
     			location.href="detail.cm?cno=" + $(this).children().eq(0).text();
@@ -212,7 +203,6 @@
     		location.href="myWriter.cm";
     	}
     
-    	
     	
 </script>
 

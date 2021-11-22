@@ -79,7 +79,6 @@ public class ProductController {
 		int deliveryDate =  Integer.parseInt(productService.selectDeliveryDate(comCode)); //11
 		System.out.println("deliveryDate : " + deliveryDate);
 		
-		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		
@@ -133,14 +132,13 @@ public class ProductController {
 				int result2 = productService.updateWishEndDate(map);
 					
 				}
-			
-		}
+			}
 	
 		return "product/productSnackView";
 	
 	}
 	
-/*=========================================================================================================*/
+/*===================================================================================================================*/
 	
 	/*위시리스트 view*/
 	@RequestMapping("wishList")

@@ -15,24 +15,22 @@ import com.kh.spring.qna.model.vo.PageInfo;
 @Repository
 public class CommunityDao {
 
-//	public int selectListCount(SqlSession sqlSession) {
-//		
-//		return sqlSession.selectOne("cmntMapper.selectListCount");
-//	}
+
 	public int selectListCount(SqlSession sqlSession, String comCode) {
 		
 		return sqlSession.selectOne("cmntMapper.selectListCount", comCode);
 	}
 
+
 	
-	public ArrayList<Community> selectList(SqlSession sqlSession, PageInfo pi) {
-	
+	public ArrayList<Community> selectList(SqlSession sqlSession, PageInfo pi, Community cmnt) {
+		
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
 		
 		RowBounds rowBounds = new RowBounds(offset , pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("cmntMapper.selectList" , null, rowBounds);
-		
+		return (ArrayList)sqlSession.selectList("cmntMapper.selectList" , cmnt, rowBounds);
 	}
+
 	
 
 	public ArrayList<Community> selectTopList(SqlSession sqlSession, String comCode) {
@@ -41,11 +39,21 @@ public class CommunityDao {
 	}
 
 
-	public ArrayList<Community> selectMyWriter(SqlSession sqlSession, String memId) {
+	public int selectWriterListCount(SqlSession sqlSession, Community cmnt) {
 		
-		return (ArrayList)sqlSession.selectList("cmntMapper.selectMyWriter" , memId);
+		return sqlSession.selectOne("cmntMapper.selectWriterListCount", cmnt);
+	}
+	
+
+	public ArrayList<Community> selectMyWriter(SqlSession sqlSession, Community cmnt, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset , pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("cmntMapper.selectMyWriter" , cmnt, rowBounds);
 		
 	}
+
 	
 	public void insertCommunity(SqlSession sqlSession, Community cmnt) {
 		
@@ -60,9 +68,9 @@ public class CommunityDao {
 	}
 
 
-	public Object updateCmnt(SqlSession sqlSession, Community cmnt) {
+	public void updateCmnt(SqlSession sqlSession, Community cmnt) {
 		
-		return sqlSession.insert("cmntMapper.updateCmnt" , cmnt);
+		sqlSession.insert("cmntMapper.updateCmnt" , cmnt);
 	}
 
 
@@ -82,14 +90,6 @@ public class CommunityDao {
 		sqlSession.update("cmntMapper.updateNrecommend" , cno);
 	}
 	
-	/*댓글===========================================================================================*/
-
-	public ArrayList<Reply> selectReplyList(SqlSession sqlSession, int cmntNo) {
-		
-		return (ArrayList)sqlSession.selectList("cmntMapper.selectReplyList", cmntNo);
-	}
-
-
 	public int selectCmntNo(SqlSession sqlSession, String memId) {
 		
 		return sqlSession.selectOne("cmntMapper.selectCmntNo" , memId);
@@ -118,6 +118,68 @@ public class CommunityDao {
 		
 		sqlSession.delete("cmntMapper.deleteCmntAttachment" , att);		
 	}
+
+
+	public ArrayList<Community> selectSearchCmnt(SqlSession sqlSession, PageInfo pi, Community cmnt) {
+		
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset , pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("cmntMapper.selectSearchCmnt" , cmnt, rowBounds);
+	}
+
+
+
+
+
+	
+
+	/*댓글===========================================================================================*/
+
+	public ArrayList<Reply> selectReplyList(SqlSession sqlSession, int cmntNo) {
+		
+		return (ArrayList)sqlSession.selectList("cmntMapper.selectReplyList", cmntNo);
+	}
+
+
+
+	public int selectMaxGroupNo(SqlSession sqlSession, int cno) {
+		
+		return sqlSession.selectOne("cmntMapper.selectMaxGroupNo" , cno);
+	}
+
+
+
+	public int insertReply(SqlSession sqlSession, Reply r) {
+		
+		return sqlSession.insert("cmntMapper.insertReply" , r);
+	}
+
+
+
+	public int selectReplyCount(SqlSession sqlSession, int cno) {
+		
+		return sqlSession.selectOne("cmntMapper.selectReplyCount" , cno);
+	}
+
+
+
+	public int insertNewReply(SqlSession sqlSession, Reply r) {
+		
+		return sqlSession.insert("cmntMapper.insertNewReply" , r);
+	}
+
+
+
+	public int deleteReply(SqlSession sqlSession, Reply r) {
+		
+		return sqlSession.delete("cmntMapper.deleteReply" , r);
+	}
+
+
+
+
+
 
 
 

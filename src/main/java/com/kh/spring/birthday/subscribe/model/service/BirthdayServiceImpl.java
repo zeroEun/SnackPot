@@ -64,4 +64,15 @@ public class BirthdayServiceImpl implements BirthdayService {
 		}	
 	}
 
+	@Override
+	public void deleteSubscribe(String bservice_no) {
+
+		int result = bDao.deleteSubscribe(sqlSession, bservice_no);
+		
+		if(result < 0) {
+			throw new CommException("구독 취소 실패");
+		}	
+		
+	}
+
 }

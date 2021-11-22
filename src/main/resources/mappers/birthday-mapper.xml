@@ -24,7 +24,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="cempBirth" column="CEMP_BIRTH"></result>
 		<result property="cempEmail" column="CEMP_EMAIL"></result>
 		<result property="sendingMsgDate" column="SENDING_MESSAGE_DATE"></result>
-		<result property="selectDate" column="SELECT_COMPLETE_DATE"></result>		
+		<result property="selectDate" column="SELECT_COMPLETE_DATE"></result>
+		<result property="comCode" column="COM_CODE"></result>
 	</resultMap>
 	
 	<resultMap type="SendList" id="sListResultSet">
@@ -73,23 +74,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateSubscribe" parameterType="Birthday">
 		UPDATE BIRTHDAY_SERVICE SET
 		PER_AMOUNT=#{per_amount}, SENDING_TIME=#{sending_time}, NOTIFICATION_MESSAGE=#{notification_msg}
-		WHERE COM_CODE=#{com_code}
+		WHERE COM_CODE=#{com_code} AND BSERVICE_STATUS='Y'
 	</update>
 	
 	<select id="subscribeChk" parameterType="String" resultType="_int">
 		SELECT COUNT(*) FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{com_code} AND BSERVICE_STATUS='Y'
 	</select>
 	
+	<update id="deleteSubscribe" parameterType="String">
+		UPDATE BIRTHDAY_SERVICE SET BSERVICE_STATUS='N' WHERE BSERVICE_NO=#{bservice_no}
+	</update>
+	
 	<!-- 구독회사용 -->
-	<select id="selectsList" resultMap="sendingStsResultSet">
-		SELECT 
-		B.CEMP_SEQ, B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
-		, A.SENDING_MESSAGE_DATE, A.SELECT_COMPLETE_DATE
-		FROM SENDING_CURRENT_STATUS A
-		JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
-		WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(SYSDATE,'MM')
-		AND B.CEMP_STATUS='Y'
-		ORDER BY SENDING_MESSAGE_DATE
+	<select id="sendingcursts" resultMap="sendingStsResultSet">
+		<![CDATA[
+			SELECT 
+			B.CEMP_SEQ, B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
+			, A.SENDING_MESSAGE_DATE, A.SELECT_COMPLETE_DATE
+			FROM SENDING_CURRENT_STATUS A
+			JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
+			WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(SYSDATE,'MM')
+			AND TO_CHAR(B.CEMP_BIRTH,'DD') > TO_CHAR(SYSDATE,'DD')+#{sendingTime}
+			AND B.CEMP_STATUS='Y'
+			ORDER BY SENDING_MESSAGE_DATE
+		]]>
 	</select>
 	
 	<!-- 발송 현황/발송 예정 리스트에서 선택 삭제 -->
@@ -106,7 +114,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insertSendStatus" parameterType="SendingStatus">
 		INSERT INTO COMPANY_EMP VALUES
-		(COM_EMP_SEQ.NEXTVAL, #{cempName}, #{cempDept}, #{cempJob}, #{cempEmail}, #{cempPhone}, #{cempBirth}, 'A', TEST_SEQ1.NEXTVAL, 'Y')
+		(COM_EMP_SEQ.NEXTVAL, #{cempName}, #{cempDept}, #{cempJob}, #{cempEmail}, #{cempPhone}, #{cempBirth}, TEST_SEQ1.NEXTVAL, 'Y', #{comCode})
+	</insert>
+	
+	<insert id="insertSendStatus2" parameterType="SendingStatus">
+		INSERT INTO SENDING_CURRENT_STATUS VALUES
+		(SC_STATUS_SEQ.NEXTVAL, #{sendingMsgDate}, NULL, #{comCode}, COM_EMP_SEQ.CURRVAL)
 	</insert>
 	
 	<update id="updateSendStatus" parameterType="SendingStatus">
@@ -116,10 +129,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE CEMP_SEQ=#{cempSeq}
 	</update>
 	
+	<select id="selectSendingTime" resultType="String">
+		SELECT SENDING_TIME	FROM BIRTHDAY_SERVICE
+		WHERE COM_CODE=#{comCode} AND BSERVICE_STATUS='Y'
+	</select>
+	
 	<!-- 발송 리스트 삽입, 수정 -->
 	<insert id="insertSendList" parameterType="SendList">
 		INSERT INTO COMPANY_EMP VALUES
-		(COM_EMP_SEQ.NEXTVAL, #{cempName}, #{cempDept}, #{cempJob}, #{cempEmail}, #{cempPhone}, #{cempBirth}, 'A', TEST_SEQ1.NEXTVAL, 'Y')
+		(COM_EMP_SEQ.NEXTVAL, #{cempName}, #{cempDept}, #{cempJob}, #{cempEmail}, #{cempPhone}, #{cempBirth}, TEST_SEQ1.NEXTVAL, 'Y', #{comCode})
+	</insert>
+	
+	<insert id="insertSendList2" parameterType="SendList">
+		INSERT INTO SENDING_LIST VALUES
+		(SEND_LIST_SEQ.NEXTVAL, #{sendMsgDate}, DEFAULT, DEFAULT, COM_EMP_SEQ.CURRVAL)
 	</insert>
 	
 	<update id="updateSendList" parameterType="SendList">

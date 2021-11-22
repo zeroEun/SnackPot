@@ -16,13 +16,16 @@ import lombok.ToString;
 public class SendList {
 
 	private String sListNo;
+	private int cempSeq;
 	private String cempDept;
 	private String cempJob;
 	private String cempName;
 	private String cempPhone;
+	private String cempEmail;
 	private Date cempBirth;
-	private Date sendMsgDate;
+	private String sendMsgDate;
 	private String sListStatus;
-	private int glistNo;
-	private int cempSeq;
+	private String glistNo;
+	
+	private String comCode;
 }

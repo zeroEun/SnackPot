@@ -11,12 +11,65 @@
 <title>Insert title here</title>
 </head>
 <style>
-    .per_amount{
-        display: inline;
+	#birthBody{
+		
+	}
+	#birthSection{
+		
+	}
+    #birthContainer{
+    	
+    	margin-top: 30px;
     }
-    .sending_time{
-        display: inline;
+    #birthInfoOuter{
+    	margin: auto;
+    	width: 100%;
+    	
+    	/*border: 1px solid black;*/
+    	/*padding: 3rem;*/
     }
+    #infoBirthService{
+    	margin: auto;
+    	width: 80%;
+    }
+    .per_amount, .sending_time{
+    	
+    }
+    .per_amount input[name="per_amount"], .sending_time input[name="sending_time"]{
+		display:none;
+	}
+	.per_amount input[name="per_amount"] + span, .sending_time input[name="sending_time"] + span{
+		display:inline-block;
+		background:none;
+		border:1px solid #dfdfdf;  
+		padding:0px 10px;
+		text-align:center;
+		height:35px;
+		line-height:33px;
+		font-weight:500;
+		cursor:pointer;
+	}
+	.per_amount input[name="per_amount"]:checked + span, .sending_time input[name="sending_time"]:checked + span{
+		border:1px solid #23a3a7;
+		background:#23a3a7;
+		color:#fff;
+	}
+	.per_amount_div, .sending_time_div{
+		width: 15%;
+	}
+	#updateBirthSubs{
+		float: right;
+		background: rgb(10, 23, 78);
+		color: rgb(245, 208, 66);
+		font-weight: bolder;
+	}
+	#updateBirthSubs:hover{
+		float: right;
+		transition-duration: 0.7s;
+		background: rgb(245, 208, 66);
+		color: rgb(10, 23, 78);
+
+	}
 </style>
 <script>
 	<%-- 구독 정보 조회 시 불러온 객체의 정보를 바탕으로 radio태그 체크 설정 --%>
@@ -58,86 +111,136 @@
 				$("#sending_time3").prop("checked",true);
 				break;		
 			}
+
 		}
+
 	});
 </script>
-<body>
+<body id="birthBody">
 
-<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
+	
+	<section id="birthSection">
+		<div class="container-fluid" id="birthContainer">
+			<div class="birthInfoOuter">
+				<form class="" id="infoBirthService" action="updateSubscribe.birth" method="post">
+			    	<h4 style="text-align:center;">생일 구독 정보</h4>
+			    	<hr>
+			    	
+			    	<input type="hidden" name="com_code" value="${loginUser.comCode }"/>
+			    
+			    	<div class="form-group row">
+			    		<label class="col-md-3">1인당 최대 금액</label><!--데이터와 일치하는 값 속성 checked-->
+			    		<div class="col-md-9 row">
+			        		<div class="form-check form-check-inline per_amount_div">
+				                <label class="form-check-label per_amount" for="per_amount1">
+				                <input class="form-check-input" type="radio" name="per_amount" id="per_amount1" value="10000">
+				                <span>10,000원</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline per_amount_div">
+				                <label class="form-check-label per_amount" for="per_amount2">
+				                <input class="form-check-input" type="radio" name="per_amount" id="per_amount2" value="30000">
+				                <span>30,000원</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline per_amount_div">
+				                <label class="form-check-label per_amount" for="per_amount3">
+				                <input class="form-check-input" type="radio" name="per_amount" id="per_amount3" value="50000">
+				                <span>50,000원</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline per_amount_div">
+				                <label class="form-check-label per_amount" for="per_amount4">
+				                <input class="form-check-input" type="radio" name="per_amount" id="per_amount4" value="100000">
+				                <span>100,000원</span>
+				                </label>
+				            </div>
+			        	</div>
+			    	</div>
 
-    <h3>생일 구독 정보</h3>
-    <form class="" action="updateSubscribe.birth">
-        <label for="">1인당 최대 금액</label><!--데이터와 일치하는 값 속성 checked-->
-        
-        <div class="form-group">              
-            <div class="form-check per_amount">
-                <input class="form-check-input" type="radio" name="per_amount" id="per_amount1" value="10000">
-                <label class="form-check-label" for="per_amount1">10,000원</label>
-            </div>
-            <div class="form-check per_amount">
-                <input class="form-check-input" type="radio" name="per_amount" id="per_amount2" value="30000">
-                <label class="form-check-label" for="per_amount2">30,000원</label>
-            </div>
-            <div class="form-check per_amount">
-                <input class="form-check-input" type="radio" name="per_amount" id="per_amount3" value="50000">
-                <label class="form-check-label" for="per_amount3">50,000원</label>
-            </div>
-            <div class="form-check per_amount">
-                <input class="form-check-input" type="radio" name="per_amount" id="per_amount4" value="100000">
-                <label class="form-check-label" for="per_amount4">100,000원</label>
-            </div>
-        </div>
-        
-        <hr>
-        <label for="">발송 시점</label>
-        <div class="form-group">            
-            <div class="form-check sending_time">
-                <input class="form-check-input" type="radio" name="sending_time" id="sending_time1" value="당일">
-                <label class="form-check-label" for="per_amount1">당일</label>
-            </div>
-            <div class="form-check sending_time">
-                <input class="form-check-input" type="radio" name="sending_time" id="sending_time2" value="3일전">
-                <label class="form-check-label" for="per_amount2">3일 전</label>
-            </div>
-            <div class="form-check sending_time">
-                <input class="form-check-input" type="radio" name="sending_time" id="sending_time3" value="5일전">
-                <label class="form-check-label" for="per_amount2">5일 전</label>
-            </div>
-        </div>
-        <hr>
-        <label for="">선물 선택 알림 메시지</label>
-        <div class="form-group">
-            <select class="custom-select custom-select-md" id="sendMsg">
-                <option value="0" selected>선택</option>
-                <option value="1">선택1 메시지에요~</option>
-                <option value="2">선택2 메시지에요~</option>
-                <option value="3">직접 입력</option>
-            </select>
-            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요." disabled>${b.notification_msg}</textarea>
-        </div>
-        <hr>
-        <label for="">결제일</label><span> <b>매월 1일</b></span>
-        
-        <hr>
-        
-        <input type="hidden" name="com_code" value="${loginUser.comCode}">
-        
-        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button><button type="submit" class="btn btn-outline-primary">구독 수정하기</button>
-    </form>
+			        <br><hr>
+			        <div class="form-group row">
+			        	<label class="col-md-3">발송 시점</label>
+			        	<div class="col-md-9 row">
+			        		<div class="form-check form-check-inline sending_time_div">
+				                <label class="form-check-label sending_time" for="sending_time1">
+				                <input class="form-check-input" type="radio" name="sending_time" id="sending_time1" value="당일">
+								<span>당일</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline sending_time_div">
+				                <label class="form-check-label sending_time" for="sending_time2">
+				                <input class="form-check-input" type="radio" name="sending_time" id="sending_time2" value="3일전">
+				                <span>3일 전</span>
+				                </label>
+				            </div>&emsp;
+				            <div class="form-check form-check-inline sending_time_div">
+				                <label class="form-check-label sending_time" for="sending_time3">
+				                <input class="form-check-input" type="radio" name="sending_time" id="sending_time3" value="5일전">
+				                <span>5일 전</span>
+				                </label>
+				            </div>
+			        	</div>
+			        </div>
+			        <br><hr>
+
+			        <div class="form-group row">
+			        	<label class="col-md-3">선물 선택 알림 메시지</label>
+			        	<div class="col-md-9 row">
+			        		<select class="custom-select custom-select-md" id="sendMsg">
+				                <option value="0" selected>선택</option>
+				                <option value="1">선택1 메시지에요~</option>
+				                <option value="2">선택2 메시지에요~</option>
+				                <option value="3">직접 입력</option>
+				            </select>
+				            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요."></textarea>
+			        	</div>
+			        </div>
+			        <br><hr>
+
+			        <div class="form-group row">
+			        	<label class="col-md-3">결제일</label><span>
+			        	<b>매월 1일</b></span>
+			        </div>
+			        <br><hr>
+			        
+			        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+			        
+			        <button type="button" class="btn btn-outline-primary" onclick="deleteBirthSubs();">구독 취소하기</button>
+			        <button type="submit" class="btn btn-outline-primary" id="updateBirthSubs">구독 수정하기</button>
+			    </form>
+			    <form id="deleteSubs" action="deleteSubscribe.birth" method="post">
+			    	<input type="hidden" name="bservice_no" value="${b.bservice_no }"/>
+			    </form>
+			</div>
+		</div>
+	</section>
+    
 	<script>
 		<%-- 선물 선택 알림 메시지 옵션에 따른 태그 속성 설정 --%>
 		$(function(){
+			
+			<%-- 수정 페이지에 들어오면 기존 값을 textarea에 출력, [선택] 옵션을 선택하면 기존의 값을 출력--%>
+			
+			var notification_msg = "${b.notification_msg}";
+			
+			$("#sendMsgArea").attr("disabled", false);
+            $("#sendMsgArea").attr("readonly", true);
+            
+            notification_msg = notification_msg.split('<br/>').join("\r\n");
+            $("#sendMsgArea").val(notification_msg);
+
 		    $("#sendMsg").on('change', function(){
-		        //console.log($("#sendMsg").val());
+
 		        var sendMsgNum = $("#sendMsg").val();
 		        var sendMsg = $("#sendMsg option:checked").text();
 		        
 		        switch(sendMsgNum){
 		        case "0" :
-		            $("#sendMsgArea").attr("disabled", true);
-		            $("#sendMsgArea").attr("readonly", false);
-		            $("#sendMsgArea").attr("placeholder", "선택하세요.");
-		            $("#sendMsgArea").val("");                        
+		            $("#sendMsgArea").attr("disabled", false);
+		            $("#sendMsgArea").attr("readonly", true);
+		            $("#sendMsgArea").val(notification_msg);                        
 		            break;
 		        case "1" :
 		            $("#sendMsgArea").attr("disabled",false);
@@ -162,11 +265,11 @@
 		
 		<%-- 구독 수정하기 버튼 클릭 시 모두 입력되어야 수정되도록 설정 --%>
 		$(function(){
-		    $("#subscribe").click(function(){
+		    $("#updateBirthSubs").click(function(){
 		    	var perAmount = $("input[name='per_amount']:checked").val();
 		        var sendingTime = $("input[name='sending_time']:checked").val();
 		        var notificationMsg = $("textarea[name='notification_msg']").val();
-		
+		        
 		        if(perAmount == null){
 		            alert("1인당 최대 금액을 설정해주세요.")
 		            return false;            
@@ -178,6 +281,10 @@
 		                if(notificationMsg == "" || notificationMsg == null){
 		                    alert("선물 선택 알림 메시지를 설정해주세요.")
 		                    return false;
+		                }else{
+		                	var sendText = $("#sendMsgArea").val();
+		    				sendText = sendText.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+		    				$("#sendMsgArea").val(sendText);
 		                }
 		            }
 		        }
@@ -186,7 +293,15 @@
 		});
 		
 		<%-- 구독 취소 -> 추후 작성 --%>
-		
+		function deleteBirthSubs(){
+			
+			var deleteYN = confirm("구독을 취소하시겠습니까?");
+			
+			if(deleteYN == true){
+				$("#deleteSubs").submit();
+			}
+			
+		}
 	</script>
 </body>
 </html>

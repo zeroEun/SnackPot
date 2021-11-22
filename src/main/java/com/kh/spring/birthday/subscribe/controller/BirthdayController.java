@@ -1,5 +1,6 @@
 package com.kh.spring.birthday.subscribe.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,9 @@ public class BirthdayController {
 	@RequestMapping("subscribeForm.birth")
 	public ModelAndView subscribeForm(ModelAndView mv, HttpSession session) {
 		
-		//사원리스트 불러오기 버튼 눌렀을 때 사원 등록이 되어있는지 유무를 확인하기 위해 가져오는 데이터
 		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
-		System.out.println("생일 구독 comCode : "+comCode);
+		
+		//사원리스트 불러오기 버튼 눌렀을 때 사원 등록이 되어있는지 유무를 확인하기 위해 가져오는 데이터
 		int empCount = bService.countEmp(comCode);		
 
 		//현재 생일 구독 서비스를 이용중인지 체크하기 위한 데이터
@@ -40,9 +41,8 @@ public class BirthdayController {
 	@RequestMapping("subscribe.birth")
 	public ModelAndView subscribe(Birthday b, ModelAndView mv) {
 		
-		b.setNotification_msg(b.getNotification_msg().replaceAll("\n", "<br>"));
-		
 		bService.subscribe(b);
+		
 		mv.addObject("b", b).setViewName("redirect:/");
 			
 		return mv;
@@ -52,15 +52,12 @@ public class BirthdayController {
 	public ModelAndView subscribeInfo(ModelAndView mv, HttpSession session) {
 
 		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
-		System.out.println("생일 구독 정보 comCode : "+comCode);
+		
 		int chkResult = bService.subscribeChk(comCode);
 		
 		if(chkResult > 0) {
 
 			Birthday b = bService.subscribeInfo(comCode);
-			
-			b.setNotification_msg(b.getNotification_msg().replaceAll("<br>", "\n"));
-			
 			mv.addObject("chkResult", chkResult);
 			mv.addObject("b", b);
 			mv.setViewName("company/birthday/birthday_service_info");
@@ -68,8 +65,6 @@ public class BirthdayController {
 			return mv;
 			
 		}else {
-			//mv.addObject("chkResult", chkResult);
-			//mv.setViewName("company/birthday/birthday_service_info");
 			mv.addObject("msg", "구독 정보가 존재하지 않습니다.");
 			mv.setViewName("common/alert");
 			
@@ -79,10 +74,8 @@ public class BirthdayController {
 	}
 	
 	@RequestMapping("updateSubscribe.birth")
-	public ModelAndView updateSubscribe(Birthday b, ModelAndView mv) {
-		
-		b.setCom_code("A");// 우선 A로 설정
-		
+	public ModelAndView updateSubscribe(Birthday b, ModelAndView mv, HttpServletRequest request) {
+
 		bService.updateSubscribe(b);
 		
 		mv.addObject("comCode", b.getCom_code()).setViewName("redirect:/");
@@ -90,4 +83,11 @@ public class BirthdayController {
 		return mv;
 	}
 	
+	@RequestMapping("deleteSubscribe.birth")
+	public String deleteSubscribe(String bservice_no) {
+		
+		bService.deleteSubscribe(bservice_no);
+		
+		return "redirect:/";
+	}
 }

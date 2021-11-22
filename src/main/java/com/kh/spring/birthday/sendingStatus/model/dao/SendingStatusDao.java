@@ -10,9 +10,14 @@ import com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus;
 @Repository
 public class SendingStatusDao {
 
-	public ArrayList<SendingStatus> selectsList(SqlSessionTemplate sqlSession) {
+	public int subscribeChk(SqlSessionTemplate sqlSession, String comCode) {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("birthdayMapper.selectsList");
+		return sqlSession.selectOne("birthdayMapper.subscribeChk", comCode);
+	}
+	
+	public ArrayList<SendingStatus> sendingcursts(SqlSessionTemplate sqlSession, int sendingTime) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("birthdayMapper.sendingcursts", sendingTime);
 	}
 
 	public int deleteSendStatus(SqlSessionTemplate sqlSession, int cempSeq) {
@@ -33,6 +38,16 @@ public class SendingStatusDao {
 	public int updateSendStatus(SqlSessionTemplate sqlSession, SendingStatus s) {
 		// TODO Auto-generated method stub
 		return sqlSession.insert("birthdayMapper.updateSendStatus", s);
+	}
+
+	public String selectSendingTime(SqlSessionTemplate sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("birthdayMapper.selectSendingTime", comCode);
+	}
+
+	public int insertSendStatus2(SqlSessionTemplate sqlSession, SendingStatus s) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("birthdayMapper.insertSendStatus2", s);
 	}
 
 }

@@ -5,9 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
 <script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
@@ -111,7 +110,7 @@
 </style>
 <body id="giftListBody">
 
-	<%-- <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>--%>
+	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 
 	<section>
 		<div class="container" id="giftContainer">
@@ -249,15 +248,15 @@
 			});
 		}
 		<%-- # 각 폴더에 속한 상품 리스트 출력 --%>
-		function selectFolderInfo(value){
+		function selectFolderInfo(rowNumVal){
 			
-			console.log("value : " + value);
+			console.log("value2 : " + rowNumVal);
 			
 			$.ajax({
 				url: "selectFolderInfo.birth",
 				type: "POST",
 				data:{
-					rowNum : value
+					rowNum : rowNumVal
 				},
 				success: function(list){
 					//console.log("폴더info성공");
@@ -274,7 +273,7 @@
 							result += '<tr>';
 							result += '<th scope="row" style="text-align:center;">';
 							result += '<input class="delGiftNo" type="hidden" value="' + item.giftNo + '"/>';
-							result += '<i class="fas fa-times delFolderDetail" id="dddd" style="cursor: pointer; float:left;"></i> ' + (index+1) + '</th>'
+							result += '<i class="fas fa-times delFolderDetail" style="cursor: pointer; float:left;"></i>' + (index+1) + '</th>'
 							result += '<td><img class="folderGiftImg" width="50%" height="50%" src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '"></td>';
 							result += '<td>' + item.giftBrand + '</td>';
 							result += '<td>' + item.giftName + '</td>';
@@ -286,12 +285,14 @@
 						<%-- 폴더에 내용 추가되면 아래 내용은 없어져야함 - 추후 수정 --%>
 						result += '<tr><td colspan="5"><h5>추가된 상품이 존재하지 않습니다.</h5></td></tr>';
 					}
-					$("#folderInfoBody"+value).html(result);
+					$("#folderInfoBody"+rowNumVal).html(result);
 				},
 				error: function(error){
 					alert(error);
 				}
 			});
+			
+			
 		}
 		
 		<%-- 4. 선택한 폴더 내 리스트 조회 기능 --%>
@@ -340,43 +341,45 @@
 					rowNumVal = targetVal + 1;
 				}
 				
-				selectFolderInfo(rowNumVal);
+				
 				//console.log("rowNumVal : "+rowNumVal);
-				console.log($("#dddd"));
+				//console.log($("#dddd"));
 				<%-- 폴더 내 상품 삭제를 위해 glistNo을 먼저 구한 후 함수로 값을 넘겨줌 --%>
 				console.log("GLIST_NO22 : "+$(this).children().eq(0).val());
 				
 				var glistNo = $(this).children().eq(0).val();
+				selectFolderInfo(rowNumVal);
 				
-				deleteFolderDetail(glistNo, rowNumVal);
-				
+				//deleteFolderDetail(glistNo, rowNumVal);
 			});
 		});
 	
-		function deleteFolderDetail(glistNo, rowNumVal){
-			
-			console.log($("#dddd"));
-			
-			$(".delFolderDetail").hover(function(e){
+		$(function(){
+			$(".delFolderDetail").hover(function(){
 				console.log("hover실행");
 				$(".delFolderDetail").css("color","red");
 				$(".delFolderDetail").css("background","red");
 			})
-			
-			$(document).on('click', '.delFolderDetail', function(e){
-				console.log("ROWNUM : " + rowNumVal);
-				console.log("GLIST_NO : " + glistNo);
-				console.log("GIFT_NO : "+$(this).siblings(".delGiftNo").val());
+		});
+		
+		$(function(){
+			$(document).on('click','.delFolderDetail', function(){
 				
-				var delRowNum = rowNumVal;
-				var delGlistNo = glistNo;
+				var thisBadge = $(this).parents("li").prev().find("span:eq(1)");
+				//console.log($(this).parents("li").prev().find("button[class='giftIcon']").children().eq(0).val());
+				//console.log($(this).parents("li").prev().find("input[class='folderRowNum']").val());
+				
+				var delGlistNo = $(this).parents("li").prev().find("button[class='giftIcon']").children().eq(0).val();
+				var delRowNumVal = $(this).parents("li").prev().find("input[class='folderRowNum']").val();
 				var delGiftNo = $(this).siblings(".delGiftNo").val();
 				
 				var delGiftArr = new Array();
 				delGiftArr.push(delGlistNo);
 				delGiftArr.push(delGiftNo);
 				
-				console.log(delGiftArr);
+				//console.log("delGlistNo: " + delGlistNo);
+				//console.log("delRowNumVal: " + delRowNumVal);
+				//console.log("delGiftNo: " + delGiftNo);
 				
 				$.ajax({
 					url: "delFolderDetail.birth",
@@ -385,16 +388,19 @@
 					data : {
 						delGiftArr : delGiftArr
 					},
-					success: function(result){
-						selectFolderInfo(delRowNum);
+					success: function(result){						
+						var badgeCount = thisBadge.html();
+						//console.log("badgeCount : " + badgeCount);
+						thisBadge.html(badgeCount-1);
+						selectFolderInfo(delRowNumVal);
 					},
 					error: function(error){
 						alert(error);
 					}
 				});
 			});
-			
-		}
+		});
+
 		<%--2. 선택한 제품 원하는 폴더에 추가 기능 (뱃지 클릭해서 추가) --%>
 		$(function(){
 	    	

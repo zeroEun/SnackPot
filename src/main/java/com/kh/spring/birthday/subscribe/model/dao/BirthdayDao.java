@@ -34,4 +34,9 @@ public class BirthdayDao {
 		return sqlSession.update("birthdayMapper.updateSubscribe", b);
 	}
 
+	public int deleteSubscribe(SqlSessionTemplate sqlSession, String bservice_no) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("birthdayMapper.deleteSubscribe", bservice_no);
+	}
+
 }

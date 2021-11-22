@@ -14,4 +14,6 @@ public interface BirthdayService {
 
 	void updateSubscribe(Birthday b);
 
+	void deleteSubscribe(String bservice_no);
+
 }

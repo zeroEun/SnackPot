@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type="SnackDList" id="snackDListResultSet">
 	 	<id property="snackDNo" column="SNACK_D_NO"/>
+	 	<result property="rowNum" column="ROWNUM"/>
 		<result property="snackListNo" column="SNACK_LIST_NO"/>
 		<result property="categoryNo" column="CATEGORY_NO"/>
 		<result property="categoryName" column="CATEGORY"/>
@@ -141,7 +142,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<select id="selectSnack" parameterType="SnackSubs" resultMap="snackDListResultSet">
-		SELECT A.SNACK_NO, A.SNACK_NAME, A.RELEASE_PRICE, A.CATEGORY_NO, C.CATEGORY,  A.DETAIL_NO, D.DETAIL,
+		SELECT ROWNUM, A.SNACK_NO, A.SNACK_NAME, A.RELEASE_PRICE, A.CATEGORY_NO, C.CATEGORY,  A.DETAIL_NO, D.DETAIL,
 			   A.STOCK, B.CHANGE_NAME
 		FROM SNACK A 
 		LEFT JOIN SNACK_ATTACHMENT B ON (A.SNACK_NO = B.SNACK_NO)
@@ -216,8 +217,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 ORDER BY B.CATEGORY_NO, B.DETAIL_NO, B.SNACK_NAME
 	</select>
 	
-	<select id="selectSnackMaxNum" resultType="_int">
-		SELECT MAX(SNACK_NO)
+	<select id="selectSnackCount" resultType="_int">
+		SELECT COUNT(SNACK_NO)
 		FROM SNACK
 	</select>
 	

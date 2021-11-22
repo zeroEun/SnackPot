@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.vo.WishListDtail;
+import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackOrder.model.dao.SnackOrderDao;
 import com.kh.spring.snack.snackOrder.model.vo.OrderDetail;
 import com.kh.spring.snack.snackOrder.model.vo.Orders;
@@ -136,8 +137,28 @@ public class SnackOrderServiceImpl implements SnackOrderService {
 			throw new CommException("updateOrderRelease 실패");
 		}
 		
-		int insert = snackOrderDao.insertNewOrder(sqlSession, order);
+		int insertOrder = snackOrderDao.insertNewOrder(sqlSession, order);
 		
+		if(insertOrder < 0) {
+			throw new CommException("insertNewOrder 실패");
+		}
+		
+		int insertDetail = snackOrderDao.insertNewOrderDetail(sqlSession, order);
+		
+		if(insertDetail < 0) {
+			throw new CommException("insertNewOrderDetail 실패");
+		}
+		
+	}
+
+	@Override
+	public ArrayList<Orders> selectComSearchOrder(SearchList search) {
+		return snackOrderDao.selectComSearchOrder(sqlSession, search);
+	}
+
+	@Override
+	public ArrayList<Orders> selectHoSearchOrder(SearchList search) {
+		return snackOrderDao.selectHoSearchOrder(sqlSession, search);
 	}
 
 }

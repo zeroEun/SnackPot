@@ -15,6 +15,7 @@ import lombok.ToString;
 public class SnackDList {
 
 	private int snackDNo;
+	private int rowNum;
 	private int snackListNo;
 	private int categoryNo;
 	private String categoryName;

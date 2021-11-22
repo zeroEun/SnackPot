@@ -49,7 +49,7 @@
                     <hr>
 
                     <div class="search form-inline"><!-- form-inline : 한줄에 배치 -->
-                    	<form action="" method="post" id="searchList">
+                    	<form action="comSearchOrder.sn" method="post" id="searchList">
 	                        <select class="search-select form-control" id="category" name="category">
 	                            <option value="0">정렬</option>
 	                            <option value="1">날짜순</option>
@@ -57,6 +57,7 @@
 	                        </select>
 	
 							<input hidden="hidden"><!-- enter 눌렀을 때 submit 방지 -->
+							<span>주문일 : </span>
 	                        <input type="date" class="form-control" name="startDate" id="startDate">
 	                        <input type="date" class="form-control" name="endDate" id="endDate">
 	
@@ -102,7 +103,7 @@
 <script>
 	$(function(){
 		$("#orderList tbody tr").click(function(){
-			location.href="" + $(this).children().eq(0).text();
+			location.href="comOrderDetail.sn?orderNo=" + $(this).children().eq(1).text();
 		});
 		
 		

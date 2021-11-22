@@ -184,5 +184,79 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM ORDER_DETAIL
 		WHERE ORDER_NO = #{orderNo}
 	</insert>
+	
+	<insert id="insertNewOrder" parameterType="java.util.HashMap">
+		INSERT INTO ORDERS(ORDER_NO, COM_CODE, ORDER_STATUS, BUDGET, ORDER_DEADLINE, DELIVERY_DATE, WISH_NO)
+		SELECT #{newOrderNo}, COM_CODE, 'N', BUDGET, ORDER_DEADLINE, DELIVERY_DATE, WISH_NO
+		FROM ORDERS
+		WHERE ORDER_NO = #{orderNo} 
+	</insert>
+
+	<insert id="insertNewOrderDetail" parameterType="java.util.HashMap">
+		INSERT INTO ORDER_DETAIL (ORDER_D_NO, ORDER_NO, SNACK_NO, AMOUNT)
+		SELECT ORDER_D_NO_SEQ.NEXTVAL, #{newOrderNo} , SNACK_NO, AMOUNT
+		FROM ORDER_DETAIL
+		WHERE ORDER_NO = #{orderNo}
+	</insert>
+	
+	<select id="selectComSearchOrder" parameterType="com.kh.spring.snack.snackList.model.vo.SearchList" resultMap="ordersResultSet">
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS,
+		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
+           			WHEN A.ORDER_STATUS = 'R' THEN '발송 완료'
+            		WHEN A.ORDER_STATUS = 'C' THEN '주문 취소'
+       		   END AS STATUS
+		FROM ORDERS A
+		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		WHERE A.COM_CODE = #{comCode}
+		AND ORDER_STATUS != 'N'
+		<if test="startDate != null">
+		 	<![CDATA[
+		 		AND A.ORDER_DATE >= #{startDate}
+		 	]]>
+		</if>
+		<if test="endDate != null">
+		 	<![CDATA[
+		 		AND A.ORDER_DATE < #{endDate}+1
+		 	]]>
+		 </if>
+		 <if test="category != 2">
+			ORDER BY A.ORDER_DATE DESC
+		</if>
+		<if test="category == 2">
+			ORDER BY A.TOTAL_PRICE DESC
+		</if>
+	</select>
+	
+	<select id="selectHoSearchOrder" parameterType="com.kh.spring.snack.snackList.model.vo.SearchList" resultMap="ordersResultSet">
+		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS,
+		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
+           			WHEN A.ORDER_STATUS = 'R' THEN '발송 완료'
+            		WHEN A.ORDER_STATUS = 'C' THEN '주문 취소'
+       		   END AS STATUS
+		FROM ORDERS A
+		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		WHERE A.COM_CODE IN(
+			<foreach collection="comArr" item="item" separator=",">
+				#{item}
+			</foreach>)
+		AND ORDER_STATUS != 'N'
+		<if test="startDate != null">
+		 	<![CDATA[
+		 		AND A.ORDER_DATE >= #{startDate}
+		 	]]>
+		</if>
+		<if test="endDate != null">
+		 	<![CDATA[
+		 		AND A.ORDER_DATE < #{endDate}+1
+		 	]]>
+		 </if>
+		 <if test="category == 1">
+	 		AND A.ORDER_NO = #{search}
+		 </if>
+		 <if test="category == 2">
+		 	AND B.COM_NAME LIKE '%'|| #{search} ||'%'
+		 </if>
+		ORDER BY A.ORDER_DATE DESC, B.COM_NAME
+	</select>
 
 </mapper>

@@ -78,8 +78,8 @@ public class HoSnackListDao {
 		return (ArrayList)sqlSession.selectList("snackListMapper.selectWishList", info);
 	}
 	
-	public int selectSnackMaxNum(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("snackListMapper.selectSnackMaxNum");
+	public int selectSnackCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("snackListMapper.selectSnackCount");
 	}
 
 	public int insertOrder(SqlSessionTemplate sqlSession, ComListInfo info) {

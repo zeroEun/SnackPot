@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.spring.product.model.vo.WishListDtail;
+import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackOrder.model.vo.OrderDetail;
 import com.kh.spring.snack.snackOrder.model.vo.Orders;
 
@@ -38,5 +39,9 @@ public interface SnackOrderService {
 	void orderRelease(int orderNo);
 
 	void orderCancel(HashMap order);
+
+	ArrayList<Orders> selectComSearchOrder(SearchList search);
+
+	ArrayList<Orders> selectHoSearchOrder(SearchList search);
 
 }

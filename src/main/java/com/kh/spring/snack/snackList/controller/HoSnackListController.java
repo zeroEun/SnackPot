@@ -41,8 +41,6 @@ public class HoSnackListController {
 	public String listScheduleForm(Model model, HttpSession session) {
 	
 		//세션에서 로그인 사원의 담당 회사 코드 불러오기, 회사 코드 여러개일 때?
-		
-		//String comCode = "k2111151557,k2111151730";
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
 		model.addAttribute("schedule", companyInfo(comCode));
@@ -209,7 +207,6 @@ public class HoSnackListController {
 	@RequestMapping("sendingList.sn")
 	public String snackSendingList(Model model, HttpSession session) {
 		
-		//String comCode = "k2111151557,k2111151730";
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
 		model.addAttribute("sendingList", selectSendingList(comCode));
@@ -232,7 +229,6 @@ public class HoSnackListController {
 	@RequestMapping("searchList.sn")
 	public String searchSendingList(SearchList searchList, Model model, HttpSession session) {
 		
-		//String comCode = "k2111151557,k2111151730";
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
 		String[] arr = comCode.split("/");
@@ -347,8 +343,8 @@ public class HoSnackListController {
 		ArrayList<SnackDList> dList = new ArrayList<SnackDList>();
 		
 		int amount = defaultAmount;
-		int maxNum = hoSnackListService.selectSnackMaxNum()-1;
-		System.out.println("maxNum" + maxNum);
+		int snackCount = hoSnackListService.selectSnackCount()-1;
+		System.out.println("snackCount" + snackCount);
 		
 		int budget = subs.getBudget();
 		int snackBudget = budget * subs.getSnackRatio()/100;
@@ -395,9 +391,8 @@ public class HoSnackListController {
 			
 			if(list.isEmpty()) break; //예산 초과 시 해당 항목을 지워 무한루프 방지
 			
-			//랜덤 범위 과자번호 MAX불러오기
 			System.out.println( "budget: " +  budget);
-			int r = (int)((Math.random())*maxNum + 1);
+			int r = (int)((Math.random())*snackCount + 1); //랜덤 범위 과자 개수 불러오기
 			System.out.println(r);
 			
 			Iterator<SnackDList> iter = list.iterator();
@@ -405,12 +400,11 @@ public class HoSnackListController {
 				
 				SnackDList s = iter.next();
 				
-				if(r == s.getSnackNo()) {
+				if(r == s.getRowNum()) {
 					System.out.println("------------일치----------");
 					
 					if(s.getStock() >= amount) {
-						System.out.println(s.getCategoryNo());
-						
+
 						switch(s.getCategoryNo()){
 						case 1: 
 							if(snackBudget > 0) {

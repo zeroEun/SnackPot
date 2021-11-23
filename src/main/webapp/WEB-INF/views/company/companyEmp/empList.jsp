@@ -79,7 +79,7 @@
 <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 
 <div class="container" id="outer">
-<h5 id="title">사원 계정 현황</h5><br>
+<h5 id="title">사원 관리</h5><br>
 <div id="searchdiv">
 <input type="text" placeholder="검색어 입력"><button type="button" id="search"><img id="icon" src="${ pageContext.servletContext.contextPath }/resources/images/search.png"></button>
 </div>
@@ -94,51 +94,50 @@
             <th>&emsp;직급</th>
             <th>&emsp;&ensp;휴대폰 번호</th>
             <th>&emsp;&emsp;&emsp;이메일</th>
-            <th>&emsp;생일</th>
+            <th>&emsp;&emsp;생일</th>
             <th colspan="2"></th>
         </tr>
     </thead>
     <tbody>
-    <%-- <c:forEach items="${list}" var="emp" varStatus="st">--%>
+    <c:forEach items="${list}" var="emp" varStatus="st">
         <tr>
-            <td>1</td>
-            <td>유재석</td>
-            <td>20100512</td>
-            <td>인사팀</td>
-            <td>부장</td>
-            <td>01011112222</td>
-            <td>wotjr@naver.com</td>
-            <td>701020</td>
+            <td>${st.index +1}</td>
+            <td>${emp.cempName}</td>
+            <td>${emp.cempNum}</td>
+            <td>${emp.cempDept}</td>
+            <td>${emp.cempJob}</td>
+            <td>${emp.cempPhone}</td>
+            <td>${emp.cempEmail}</td>
+            <td>${emp.cempBirth}</td>
             <td><input type="button" class="modifyBtn" value="수정"></td>
             <td><input type="button" class="deleteBtn" value="삭제"></td>
         </tr>
-     <%-- </c:forEach>--%>
+     </c:forEach>
     </tbody>
 </table>
 </div>
 <div id="btnDiv">
-<input type="button" id="enrollBtn" value="사원등록" onclick="location.href='enrollEmp.sn'">
+<input type="button" id="enrollBtn" value="사원등록" onclick="location.href='enrollEmp.em'">
 </div>
 </div>
 
 <script>
 //클릭한 행의 사원번호 가져오기
-<%-- 
 $(".modifyBtn").click(function(){ 
       var modifyBtn = $(this);
        
       var tr = modifyBtn.parent().parent();
       var td = tr.children();
        
-      var sempNum = td.eq(1).text();
+      var cempNum = td.eq(2).text();
       
       $.ajax({
-  		url: "modifyEmp.sn",
+  		url: "modifyEmp.em",
   		type:"post",
-  		data:{sempNum : sempNum},
+  		data:{cempNum : cempNum},
   		success:function(result){
   			if(result == "ok"){
-  				location.href="<%=request.getContextPath()%>/modify.sn"
+  				location.href="<%=request.getContextPath()%>/modify.em"
   			}
   		},
   		error:function(){
@@ -154,13 +153,13 @@ $(".deleteBtn").click(function(){
     var tr = modifyBtn.parent().parent();
     var td = tr.children();
      
-    var sempNum = td.eq(1).text();
+    var cempNum = td.eq(2).text();
     
     if(confirm('정말 삭제하시겠습니까?')){
     	$.ajax({
-		url: "deleteEmp.sn",
+		url: "deleteEmp.em",
 		type:"post",
-		data:{sempNum : sempNum},
+		data:{cempNum : cempNum},
 		success:function(result){
 			if(result > 0){
 				alert("삭제되었습니다.")
@@ -177,7 +176,7 @@ $(".deleteBtn").click(function(){
 		 return; 
 	  } 
 });
---%>
+
 </script>
 </body>
 </html>

@@ -36,11 +36,24 @@
         a{
             font-size: 15px;
         }
+        #mainBtn{
+        	font-size: 25px;
+        	font-weight: bold;
+        	background: none;
+        	border: none;
+        	cursor: pointer;
+        }
+        #icon{
+   		width: 20px;
+   		}
 </style>
 </head>
 <body>
+<input type="button" value="MAIN" id="mainBtn" onclick="location='<%=request.getContextPath()%>/'">
+<img id="icon" src="${ pageContext.servletContext.contextPath }/resources/images/common/back.png">
 		<div id="outer">
             <div id="inner">
+            
             	<form id="loginForm" method="POST">
                 <h1 id="title">LOGIN</h1><br>
                 <input type="text" class="input" id="sempNum" name="sempNum" placeholder=" 사원번호" minlength="1" maxlength="8"><br>

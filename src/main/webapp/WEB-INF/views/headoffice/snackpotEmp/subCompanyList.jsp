@@ -91,8 +91,8 @@
 <label class="bold">선택 카테고리</label>&emsp;&emsp;<label id="l2">스낵류 - ${sSub.snackCategory }</label><br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label class="l3">음료 - ${sSub.drinkCategory }</label><br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label class="l3">간편식 - ${sSub.retortCategory }</label><br>
-<label class="bold">선호하는 맛</label>&emsp;&emsp;<label class="l4">가나다라마바사 ${sSub.preferTaste }</label><br>
-<label class="bold">싫어하는 향</label>&emsp;&emsp;<label class="l4">가나다라마바사 ${sSub.dislikeFlavour }</label><br>
+<label class="bold">선호하는 맛</label>&emsp;&emsp;<label class="l4">${sSub.preferTaste }</label><br>
+<label class="bold">싫어하는 향</label>&emsp;&emsp;<label class="l4">${sSub.dislikeFlavour }</label><br>
 <label class="bold">배송 예정일</label>&emsp;&emsp;<label class="l4">매월 ${sSub.deliveryDate }일</label><br>
 <label class="bold">결제일</label>&emsp;&emsp;<label id="l5">매월 ${setSDate }일</label>
 </c:when>

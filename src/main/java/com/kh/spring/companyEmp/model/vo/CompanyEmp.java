@@ -1,5 +1,7 @@
 package com.kh.spring.companyEmp.model.vo;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +21,10 @@ public class CompanyEmp {
 	private String cempJob;
 	private String cempEmail;
 	private String cempPhone;
-	private int cempBirth;
-	private String comCode;
+	private Date cempBirth;
 	private int cempNum;
 	private String cempStatus;
+	private String comCode;
+	private String birth;		
 	
 }

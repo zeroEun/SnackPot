@@ -18,6 +18,8 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.kh.spring.birthday.subscribe.model.vo.Birthday;
 import com.kh.spring.company.model.vo.Company;
+import com.kh.spring.companyEmp.model.service.CompanyEmpService;
+import com.kh.spring.companyEmp.model.vo.CompanyEmp;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 import com.kh.spring.snackpotEmp.model.service.SnackpotEmpService;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
@@ -31,6 +33,9 @@ public class SnackpotEmpController {
 	
 	@Autowired
 	private SnackpotEmpService ses;
+	
+	@Autowired
+	private CompanyEmpService ces;
 	
 	private Company co;
 	private SnackSubs sSub;	
@@ -567,22 +572,32 @@ public class SnackpotEmpController {
 		//회사코드로 해당 회사의 생일구독 정보 객체 받아오기 
 		bSub = ses.selectBirthSub(comCode);
 		
+		System.out.println("간식구독 : " +  sSub);
+		System.out.println("생일구독 : " +  bSub);
+		
 		String setSDate = "";
 		String setBDate = "";
 		
-		if(sSub.getSubsStatus().equals("N") && bSub.getBservice_status().equals("Y")) {
+		if(sSub != null && bSub != null) {
+			if(sSub.getSubsStatus().equals("N") && bSub.getBservice_status().equals("Y")) {
 			sSub = null;
 			 setBDate = String.valueOf(bSub.getSettlement_date()).substring(8,10);
-		}else if(bSub.getBservice_status().equals("N") && sSub.getSubsStatus().equals("Y")) {
-			bSub = null;
-			 setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);	
-		}else if(sSub.getSubsStatus().equals("Y") && bSub.getBservice_status().equals("Y")) {
-			 setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);
-			 setBDate = String.valueOf(bSub.getSettlement_date()).substring(8,10);		
-		}else {
-			sSub = null;
-			bSub = null;
+			}else if(bSub.getBservice_status().equals("N") && sSub.getSubsStatus().equals("Y")) {
+				bSub = null;
+				 setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);	
+			}else if(sSub.getSubsStatus().equals("Y") && bSub.getBservice_status().equals("Y")) {
+				 setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);
+				 setBDate = String.valueOf(bSub.getSettlement_date()).substring(8,10);		
+			}else {
+				sSub = null;
+				bSub = null;
+			}
+		}else if(sSub != null && bSub == null) {
+			setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);	
+		}else if(sSub == null && bSub != null) {
+			setBDate = String.valueOf(bSub.getSettlement_date()).substring(8,10);
 		}
+		
 		
 		model.addAttribute("setSDate", setSDate);
 		model.addAttribute("setBDate", setBDate);
@@ -595,6 +610,10 @@ public class SnackpotEmpController {
 	
 	@RequestMapping("selectEmp.sn")
 	public String selectEmp(Model model) {
+		
+		ArrayList <CompanyEmp> list = ces.selectEmpList(comCode);
+		
+		model.addAttribute("list", list);
 		
 		return "headoffice/snackpotEmp/subEmpList";
 	}

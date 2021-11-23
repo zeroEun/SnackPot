@@ -27,11 +27,17 @@
         margin-bottom: 0.8rem;
     }
     
-    #delivery p, #settlement p{
+    #delivery p, #settlement p, #snack-budget p{
     	width: 50px;
     	min-width: 50px;
     	margin: auto;
     }
+    
+    #ratio p{
+    	margin: auto;
+    }
+    
+    
 </style>
 
 </head>
@@ -39,6 +45,12 @@
 
 <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 
+	<c:if test="${empty sessionScope.loginUser }">
+		<script>
+			alert('로그인이 필요한 서비스 입니다.');
+			location.href="login.co";
+		</script>
+	</c:if>
 
  	<!-- snack subscribe section-->
     <section class="snack-subs">
@@ -50,15 +62,15 @@
                     <h4>간식 구독 신청</h4>
                     <hr>
 
-                    <form id="subsEnroll" method="post" action="insertSubs.sn">
+                    <form id="subsEnroll" method="post" action="insertSubs.sn" onsubmit="return false">
                     	<input type="hidden" name="comCode" value="${loginUser.comCode}">
 
                         <div class="form-group row" id="snack-budget">
 
                             <!-- 숫자만 입력하도록 하기-->
                             <label for="budget" class="col-md-2 col-form-label">간식 예산</label> 
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="budget" name="budget" placeholder="금액을 입력해 주세요">
+                            <div class="col-md-3 d-flex">
+                                <input type="text" class="form-control" id="budget" name="budget" placeholder="금액을 입력해 주세요" required> <p>원</p>
                             </div>
                            
                         </div>
@@ -69,20 +81,24 @@
                             <label class="col-md-2">간식 비율</label>
 
                             <div class="col-md-10 row">
-                                    <!-- 숫자만 입력하도록 하기-->
+                                <!-- 숫자만 입력하도록 하기-->
                                 <label for="snack-ratio" class="col-md-1 col-form-label">스낵</label> 
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" id="snack-ratio" name="snackRatio" placeholder="%">
+                                <div class="col-md-2 d-flex">
+                                    <input type="text" class="form-control" id="snack-ratio" name="snackRatio" placeholder="숫자만 입력" required><p>%</p>
                                 </div>
 
                                 <label for="drink-ratio" class="col-md-1 col-form-label">음료</label> 
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" id="drink-ratio" name="drinkRatio" placeholder="%">
+                                <div class="col-md-2 d-flex">
+                                    <input type="text" class="form-control" id="drink-ratio" name="drinkRatio" placeholder="숫자만 입력" required><p>%</p>
                                 </div>
 
                                 <label for="retort-ratio" class="col-md-1 col-form-label">간편식</label> 
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" id="retort-ratio" name="retortRatio" placeholder="%">
+                                <div class="col-md-2 d-flex">
+                                    <input type="text" class="form-control" id="retort-ratio" name="retortRatio" placeholder="숫자만 입력" required><p>%</p>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                	<p id="ratioInfo">※ 간식 비율의 합이 100이 되도록 해주세요.</p>
                                 </div>
                             </div>
                            
@@ -91,7 +107,6 @@
 
                         <!-- 카테고리 선택-->
                         <div class="form-group row" id="category">
-
                             <label class="col-md-2">카테고리 선택</label>
 
                             <div class="col-md-10 category-menu" id="category-menu">
@@ -179,7 +194,7 @@
 
                             <label for="delivery-date" class="col-md-2 col-form-label">배송 예정일</label> 
                             <div class="col-md-3 d-flex"> <!-- d-flex 인라인으로 정렬 -->
-                                <p>매달</p><input type="text" class="form-control" id="delivery-date" name="deliveryDate"><p>일</p>
+                                <p>매달</p><input type="text" class="form-control" id="delivery-date" name="deliveryDate" placeholder="숫자만 입력" required><p>일</p>
                             </div>
             
                         </div>
@@ -195,7 +210,7 @@
                         </div>
                         
 
-                        <button type="button" class="btn btn-warning mr-2 float-right"  id="subsBtn">구독 신청하기</button>
+                        <button type="submit" class="btn btn-warning mr-2 float-right"  id="subsBtn">구독 신청하기</button>
 
 
                     </form>
@@ -211,32 +226,79 @@
     
 <script type="text/javascript">
 	$(function(){
+		 
 		var today = new Date();
 		var date = today.getDate();
-		console.log(date);
 		$('#settlement-date').attr('value', date);
+		
+		
+		function addCommas(c){
+			return c.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		
+		function uncomma(value) {
+			var value = value.replace(/[^\d]+/g, "");
+	        return value;
+		}
+		
+		function onlyNum(value){
+			return value.replace(/[^0-9]/g,"")
+		}
+		
+		$('#budget').on('keyup', function(){
+			$(this).val(addCommas(onlyNum($(this).val())));
+		});
+		
+		$('#snack-ratio').on('keyup', function(){
+			$(this).val(onlyNum($(this).val()));
+		});
+		
+		$('#drink-ratio').on('keyup', function(){
+			$(this).val(onlyNum($(this).val()));
+		});
+		
+		$('#retort-ratio').on('keyup', function(){
+			$(this).val(onlyNum($(this).val()));
+		});
+		
+		$('#delivery-date').on('keyup', function(){
+			$(this).val(onlyNum($(this).val()));
+		});
 		
 		$('#subsBtn').on('click', function(){
 			
-			$.ajax({
-				
-				url:'checkSubsDup.sn',
-				data:{comCode : '${loginUser.comCode}'},
-				success: function(result){
-					
-					if(result > 0){
-						alert("이미 구독중 입니다.")				
-					}else{
-						$('#subsEnroll').submit();
-					}
-					
-				},error:function(){
-					console.log("댓글 작성 ajax 통신 실패");
-				}
-				
-			});
+			var snack = Number($('#snack-ratio').val());
+			var drink = Number($('#drink-ratio').val());
+			var retort = Number($('#retort-ratio').val());
+			var total = snack + drink + retort;
 			
-		})
+			if(total != 100){
+				alert("간식 비율의 합이 100이 되도록 해주세요.");
+			}else{
+				$('#budget').val(uncomma($('#budget').val()));
+			}
+			
+			$.ajax({
+
+				url : 'checkSubsDup.sn',
+				data : {comCode : '${loginUser.comCode}'},
+				success : function(result) {
+
+					if (result > 0) {
+						alert("이미 구독중 입니다.");
+						$('#budget').val(addCommas($('#budget').val()));
+					} else {
+						$('#subsEnroll').attr('onsubmit', 'return true');
+					}
+
+				},
+				error : function() {
+					console.log("ajax 통신 실패");
+				}
+
+			});
+		});
+
 	});
 </script>
 

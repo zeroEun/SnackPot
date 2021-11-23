@@ -148,23 +148,21 @@
                     <div class="search-list">
       
 						<!-- 검색 부분 -->
-                        <div class="search-sub ">
+                        <div class="search-sub form-inline">
                             <form action="comSearchSnack.sn" method="post">    
-	                            <select class="search-select category" name="category" id="category">
+	                            <select class="search-select category form-control" name="category" id="category">
 	                                <option value="0">카테고리</option>
 	                                <option value="1">스낵</option>
 	                                <option value="2">음료</option>
 	                                <option value="3">간편식</option>
 	                            </select>
 	
-	                            <select class="search-select subCategory" name="subCategory" id="subCategory">
+	                            <select class="search-select subCategory form-control" name="subCategory" id="subCategory">
 	                                <option value="0">상세 카테고리</option>
 	                            </select>
 	
-	                            <div class="input-group search-input">
-	                                <input type="text" class="" placeholder="검색어 입력" name="search" aria-describedby="searchBtn">
-	                                <button class="btn btn-warning" type="submit" id="searchBtn">검색</button>
-	                            </div>
+	                            <input type="text" class="form-control" placeholder="검색어 입력" name="search" aria-describedby="searchBtn">
+	                            <button class="btn btn-warning" type="submit" id="searchBtn">검색</button>
 							</form>
                         </div>
                         

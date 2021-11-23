@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 
 <style>
-    .content{
+   .content{
         margin: auto;
         margin-top: 30px;
         margin-bottom: 50px;
@@ -27,11 +27,16 @@
         margin-bottom: 0.8rem;
     }
     
-    #delivery p, #settlement p{
+    #delivery p, #settlement p, #snack-budget p{
     	width: 50px;
     	min-width: 50px;
     	margin: auto;
     }
+    
+    #ratio p{
+    	margin: auto;
+    }
+    
 </style>
 
 </head>
@@ -56,7 +61,7 @@
 
 					<c:if test="${ !empty subs }">
 					
-                    <form id="subsEnroll" method="post" action="updateSubs.sn">
+                    <form id="subsEnroll" method="post" action="updateSubs.sn" onsubmit="return false">
                     	<input type="hidden" name="subsNo" value="${subs.subsNo}">
                     	<input type="hidden" name="comCode" value="${subs.comCode}">
 
@@ -64,8 +69,9 @@
 
                             <!-- 숫자만 입력하도록 하기-->
                             <label for="budget" class="col-md-2 col-form-label">간식 예산</label> 
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="budget" name="budget" placeholder="금액을 입력해 주세요" value="${subs.budget}">
+                            <div class="col-md-3 d-flex">
+                                <input type="text" class="form-control" id="budgetInput" name="budgetInput" placeholder="금액을 입력해 주세요" value="${subs.budget}" required><p>원</p>
+                                <input type="hidden" id="budgetHidden" name="budget" value="" >
                             </div>
                            
                         </div>
@@ -78,21 +84,25 @@
                             <div class="col-md-10 row">
                                     <!-- 숫자만 입력하도록 하기-->
                                 <label for="snack-ratio" class="col-md-1 col-form-label">스낵</label> 
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" id="snack-ratio" name="snackRatio" placeholder="%" value="${subs.snackRatio}">
+                                <div class="col-md-2 d-flex">
+                                    <input type="text" class="form-control" id="snack-ratio" name="snackRatio" placeholder="숫자만 입력" value="${subs.snackRatio}" required><p>%</p>
                                 </div>
 
                                 <label for="drink-ratio" class="col-md-1 col-form-label">음료</label> 
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" id="drink-ratio" name="drinkRatio" placeholder="%" value="${subs.drinkRatio}">
+                                <div class="col-md-2 d-flex">
+                                    <input type="text" class="form-control" id="drink-ratio" name="drinkRatio" placeholder="숫자만 입력" value="${subs.drinkRatio}" required><p>%</p>
                                 </div>
 
                                 <label for="retort-ratio" class="col-md-1 col-form-label">간편식</label> 
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" id="retort-ratio" name="retortRatio" placeholder="%" value="${subs.retortRatio}">
+                                <div class="col-md-2 d-flex">
+                                    <input type="text" class="form-control" id="retort-ratio" name="retortRatio" placeholder="숫자만 입력" value="${subs.retortRatio}" required><p>%</p>
                                 </div>
+                            	
+                            	<div class="col-md-12">
+                                	<p id="ratioInfo">※ 간식 비율의 합이 100이 되도록 해주세요.</p>
+                                </div>
+                            
                             </div>
-                           
                         </div>
                         <hr>
 
@@ -192,7 +202,7 @@
 
                             <label for="delivery-date" class="col-md-2 col-form-label">배송 예정일</label> 
                             <div class="col-md-3 d-flex"> <!-- d-flex 인라인으로 정렬 -->
-                                <p>매달</p><input type="text" class="form-control" id="delivery-date" name="deliveryDate" value="${subs.deliveryDate}"><p>일</p>
+                                <p>매달</p><input type="text" class="form-control" id="delivery-date" name="deliveryDate" value="${subs.deliveryDate}" placeholder="숫자만 입력" required><p>일</p>
                             </div>
             
                         </div>
@@ -273,6 +283,58 @@
 			console.log(e);
 		});
 		
+		function addCommas(c){
+			return c.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		
+		function uncomma(value) {
+			var value = value.replace(/[^\d]+/g, "");
+	        return value;
+		}
+		
+		function onlyNum(value){
+			return value.replace(/[^0-9]/g,"");
+		}
+		
+		$('#budgetInput').val(addCommas(onlyNum($('#budgetInput').val())));
+		$('#budgetHidden').val(uncomma($('#budgetInput').val()));
+		
+		$('#budgetInput').on('keyup', function(){
+			$(this).val(addCommas(onlyNum($(this).val())));
+			$('#budgetHidden').val(uncomma($('#budgetInput').val()));
+		});
+		
+		$('#snack-ratio').on('keyup', function(){
+			$(this).val(onlyNum($(this).val()));
+		});
+		
+		$('#drink-ratio').on('keyup', function(){
+			$(this).val(onlyNum($(this).val()));
+		});
+		
+		$('#retort-ratio').on('keyup', function(){
+			$(this).val(onlyNum($(this).val()));
+		});
+		
+		$('#delivery-date').on('keyup', function(){
+			$(this).val(onlyNum($(this).val()));
+		});
+		
+		$('#updateBtn').on('click', function(){
+			
+			var snack = Number($('#snack-ratio').val());
+			var drink = Number($('#drink-ratio').val());
+			var retort = Number($('#retort-ratio').val());
+			var total = snack + drink + retort;
+			console.log(total);
+			
+			if(total != 100){
+				alert("간식 비율의 합이 100이 되도록 해주세요.");
+			}else{
+				$('#subsEnroll').attr('onsubmit', 'return true');
+			}
+		});
+		
 		/*구독 취소하기 버튼 클릭 시*/
 		$('#cancelBtn').click(function(){
 			var result = confirm("정말로 구독을 취소하시겠습니까?")
@@ -280,7 +342,6 @@
 			if(result){
 				/*replace 기존페이지를 새 페이지로 덮어씀, 뒤로가기 불가
 				  href='' 새로운 페이지로 이동, 페이지가 기록됨 */
-				//location.replace('cancelSubs.sn?subsNo=${subs.subsNo}');
 				$('#postForm').submit();
 			}
 		});

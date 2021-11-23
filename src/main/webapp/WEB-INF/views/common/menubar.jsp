@@ -5,10 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-    <title>SnackPot</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-      	<!-- <link rel="stylesheet" href="resources/css/menubar.css"> --> 
+    <title>SnackPot</title>  	
+      	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+		<script   src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
 /*마우스 오버*/
@@ -121,7 +122,7 @@
             </div>
         </li>
            <!--소통 , 랭킹 ,문의-->
-           <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" onclick="cmntBtn()">소통팟</a></li>
+           <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="list.cm">소통팟</a></li>
            <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="#">랭킹팟</a></li>
            <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="list.qna">문의</a></li>
     </ul>  
@@ -169,14 +170,5 @@
 </header>
 <br clear="both">
 </body>
-<script type="text/javascript">
-	function cmntBtn(){
-		if(${empty sessionScope.loginUser}){
-			alert("로그인후 이용가능합니다")
-			location.href="login.co";
-		}else{
-			location.href="list.cm";
-		}
-	}
-</script>
+
 </html>

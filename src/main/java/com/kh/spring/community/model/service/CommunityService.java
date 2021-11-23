@@ -56,6 +56,16 @@ public interface CommunityService {
 
 	int deleteReply(Reply r);
 
+	int updateReply(Reply r);
+
+	int selectDeptNo(int reGroup);
+
+	int insertReReply(Reply r);
+
+	
+
+
+
 
 
 

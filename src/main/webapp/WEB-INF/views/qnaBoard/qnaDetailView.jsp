@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>문의게시판</title>
+<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 <style>
 #contentArea {
 	width: 100%
@@ -42,15 +43,22 @@
 					<th>내용</th>
 					<td colspan="3"></td>
 				</tr>
+				<c:if test="${ !empty q.changeName }">
+				
 				<tr>
-					<td colspan="4"><p style="height: 150px">
-							<c:if test="${ !empty q.changeName }">
-								<img
-									src="${ pageContext.servletContext.contextPath }/resources/upload_files/qnaAttachment/${q.changeName}">
+				<td>
+				
+					<img src="${ pageContext.servletContext.contextPath }/resources/upload_files/qnaAttachment/${q.changeName}" width="500px">
+				</td>
+				
+				</tr>
 							</c:if>
 							<c:if test="${ empty q.changeName }">
 									
 							</c:if>
+				<tr>
+					<td colspan="4"><p style="height: 150px">
+							
 					
 							<br>
 							${ q.QContent }
@@ -66,21 +74,40 @@
 				</div>
 
 				<form id="postForm" action="" method="post">
-					<input type="hidden" name="bno" value="${ q.QNo }"> <input
-						type="hidden" name="fileName" value="${ q.changeName }">
+					<input type="hidden" name="qno" value="${ q.QNo }"> 
+					<input type="hidden" name="fileName" value="${ q.changeName }">
 				</form>
 				<script>
 					function postFormSubmit(num) {
 						var postForm = $("#postForm");
-
 						if (num == 1) {
-							postForm.attr("action", "updateForm.bo");
+							postForm.attr("action", "updateForm.qna");
 						} else {
-							postForm.attr("action", "delete.bo");
+							postForm.attr("action", "delete.qna");
 						}
 						postForm.submit();
 					}
 				</script>
+			</c:if>
+			
+			<c:if test="${!empty loginEmp} ">
+			
+				<div align="center">
+					<button class="btn btn-primary" onclick="answerFormSubmit();">수정하기</button>
+				</div>
+
+				<form id="answerForm" action="" method="post">
+					<input type="hidden" name="qno" value="${ q.QNo }"> 
+				</form>
+				<script>
+					function answerFormSubmit(num) {
+						var answerForm = $("#answerForm");
+						answerForm.attr("action", "answerForm.qna");
+					
+						answerForm.submit();
+					}
+				</script>
+			
 			</c:if>
 			<br>
 			<br>

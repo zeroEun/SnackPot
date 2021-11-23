@@ -22,6 +22,7 @@
 		<!-- company -->
 		<typeAlias type="com.kh.spring.companyMember.model.vo.CompanyMember" alias="CompanyMember"/>
 		<typeAlias type="com.kh.spring.company.model.vo.Company" alias="Company"/>
+		<typeAlias type="com.kh.spring.companyEmp.model.vo.CompanyEmp" alias="CompanyEmp"/>
 		
 		<!-- product -->
 		<typeAlias type="com.kh.spring.product.model.vo.Product" alias="Product"/>
@@ -32,6 +33,7 @@
 		<typeAlias type="com.kh.spring.product.arrival.model.vo.Arrival" alias="Arrival"/>
 		<typeAlias type="com.kh.spring.product.release.model.vo.Release" alias="Release"/>
 		<typeAlias type="com.kh.spring.product.model.vo.WishListDtail" alias="WishListDtail"/>
+				<typeAlias type="com.kh.spring.product.model.vo.Snack" alias="Snack"/>
 		
 		<!-- snack -->
 		<typeAlias type="com.kh.spring.snack.snackSubs.model.vo.SnackSubs" alias="SnackSubs"/>
@@ -69,6 +71,7 @@
 		<mapper resource="/mappers/qna-mapper.xml"/>
 		<mapper resource="/mappers/snackOrder-mapper.xml"/>
 		<mapper resource="/mappers/cmnt-mapper.xml"/>
+		<mapper resource="/mappers/companyEmp-mapper.xml"/>
 	</mappers>
 
 

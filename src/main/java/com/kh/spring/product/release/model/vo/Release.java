@@ -23,6 +23,9 @@ public class Release {
 	private String remark;
 	private Date releaseDate;
 	private int snackNo;
+	private String snackName;
+	private int stock;
+
 	
 	
 }

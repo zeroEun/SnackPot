@@ -25,6 +25,7 @@ import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.service.InvenManagementService;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
+import com.kh.spring.product.model.vo.Snack;
 import com.kh.spring.product.release.model.vo.Release;
 import com.kh.spring.qna.model.vo.PageInfo;
 import com.kh.spring.qna.model.vo.Pagination;
@@ -108,17 +109,6 @@ public class InvenManagementController {
 	@RequestMapping("releaseList.im")
 	private String ReleaseList(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
 
-		int listCount = invenManagementService.todayReleaseCount();
-		System.out.println(listCount);
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		
-		ArrayList<Release> list = invenManagementService.todayReleaseList(pi);
-		
-		System.out.println(list);
-		
-		model.addAttribute("list", list);
-		model.addAttribute("pi", pi);
 
 
 		return "headoffice/invenManagement/snackReleaseList";
@@ -197,7 +187,7 @@ public class InvenManagementController {
 	
 	//출고목록Ajax
 	@ResponseBody
-	@RequestMapping(value="releaseListAjax.im.im", produces="application/json; charset=utf-8")
+	@RequestMapping(value="releaseListAjax.im", produces="application/json; charset=utf-8")
 	private String releaseListAjax(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage,
 			@RequestParam(value="date") Date beforeDate) {
 		
@@ -207,17 +197,62 @@ public class InvenManagementController {
 		String date = transFormat.format(beforeDate);
 		
 
-		int listCount = invenManagementService.todayArrivalCount(date);
+		int listCount = invenManagementService.todayReleaseCount(date);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
-		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi, date);
+		ArrayList<Release> list = invenManagementService.todayReleaseList(pi, date);
 		
 		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
 	}
 	
 	
+	@RequestMapping("invenList.pm")
+	private String invenList(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
+		
 
+		int listCount = invenManagementService.invenListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Snack> list = invenManagementService.invenList(pi);
+		
+		System.out.println(list);
+
+		model.addAttribute("invenList", list);
+		model.addAttribute("pi", pi);
+		
+		return "headoffice/invenManagement/invenList";
+	}
+	
+	@RequestMapping("searchInven.im")
+	private String searchInven(@RequestParam(value="category") int category, 
+								@RequestParam(value="search") String search,
+								@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
+		int listCount = 0;
+		ArrayList<Snack> list = new ArrayList<Snack>();
+		PageInfo pi = new PageInfo();
+		if(category == 0) {
+			
+			listCount = invenManagementService.sNoSearchCount(search);
+			pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+			list = invenManagementService.sNoSearch(pi, search);
+			
+		}else if(category == 1) {
+			
+			listCount = invenManagementService.sNameSearchCount(search);
+			pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+			list = invenManagementService.sNameSearch(pi, search);
+		}
+		
+		System.out.println(list);
+
+		model.addAttribute("search", search);
+		model.addAttribute("searchList", list);
+		model.addAttribute("pi", pi);
+		
+		return "headoffice/invenManagement/invenSearchList";
+	}
 
 	
 	

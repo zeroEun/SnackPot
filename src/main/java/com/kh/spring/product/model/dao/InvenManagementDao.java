@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
+import com.kh.spring.product.model.vo.Snack;
 import com.kh.spring.product.release.model.vo.Release;
 import com.kh.spring.qna.model.vo.PageInfo;
 
@@ -43,22 +44,58 @@ public class InvenManagementDao {
 		return (ArrayList)sqlSession.selectList("invenMapper.todayArrivalList", date, rowBounds);
 	}
 
-	public int todayReleaseCount(SqlSessionTemplate sqlSession) {
+	public int todayReleaseCount(SqlSessionTemplate sqlSession, String date) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("invenMapper.todayReleaseCount");
+		return sqlSession.selectOne("invenMapper.todayReleaseCount", date);
 	}
 
-	public ArrayList<Release> todayReleaseList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<Release> todayReleaseList(SqlSessionTemplate sqlSession, PageInfo pi, String date) {
 		
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("invenMapper.todayReleaseList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("invenMapper.todayReleaseList", date, rowBounds);
 	}
 
 	public int releaseInsert(SqlSessionTemplate sqlSession, Release r) {
 		// TODO Auto-generated method stub
 		return sqlSession.insert("invenMapper.releaseInsert", r);
+	}
+
+	public int invenListCount(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.invenListCount");
+	}
+
+	public ArrayList<Snack> invenList(SqlSessionTemplate sqlSession, PageInfo pi) {
+
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		
+		return (ArrayList)sqlSession.selectList("invenMapper.invenList", null, rowBounds);
+	}
+
+	public int sNoSearchCount(SqlSessionTemplate sqlSession, String search) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.invenListCount");
+	}
+
+	public ArrayList<Snack> sNoSearch(SqlSessionTemplate sqlSession, PageInfo pi, String search) {
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("invenMapper.invenList", null, rowBounds);
+	}
+
+	public int sNameSearchCount(SqlSessionTemplate sqlSession, String search) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.invenListCount");
+	}
+
+	public ArrayList<Snack> sNameSearch(SqlSessionTemplate sqlSession, PageInfo pi, String search) {
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("invenMapper.invenList", null, rowBounds);
 	}
 	
 	

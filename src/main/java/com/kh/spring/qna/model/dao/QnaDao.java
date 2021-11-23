@@ -42,4 +42,19 @@ public class QnaDao {
 		return sqlSession.selectOne("qnaMapper.detailQna", qno);
 	}
 
+	public int deleteQna(SqlSessionTemplate sqlSession, int qno) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("qnaMapper.deleteQna", qno);
+	}
+
+	public int updateQna(SqlSessionTemplate sqlSession, Qna q) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("qnaMapper.updateQna", q);
+	}
+
+	public int answerInsert(SqlSessionTemplate sqlSession, Qna q) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("qnaMapper.answerInsert",q);
+	}
+
 }

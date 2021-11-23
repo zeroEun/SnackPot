@@ -103,7 +103,7 @@
 						<h2>출고등록</h2>
 					</div>
 					<div class="close-area">X</div>
-					<form id="arrivalEnroll" action="arrivalInsert.im" method="post">
+					<form id="arrivalEnroll" action="releaseInsert.im" method="post">
 						<div class="content">
 							<p>
 								<label class="inputLabel">제품코드</label> <input type="number"
@@ -213,7 +213,7 @@
 					
     				$.each(list, function(i, obj){
 						var $tr = $('<tr>');
-						var $arrivalNo = $('<td>').text(obj.arrivalNo);
+						var $releaseNo = $('<td>').text(obj.releaseNo);
 						var $snackNo = $('<td>').text(obj.snackNo);
 						var $snackName = $('<td>').text(obj.snackName);
 						var $amount = $('<td>').text(obj.amount);
@@ -223,7 +223,7 @@
 						
 				
 						
-						$tr.append($arrivalNo);
+						$tr.append($releaseNo);
 						$tr.append($snackNo);
 						$tr.append($snackName);
 						$tr.append($amount);
@@ -282,7 +282,7 @@
 						</c:choose>
 					</ul>
 				</div>
-				<button id="addBtn">입고 등록</button>
+				<button id="addBtn">출고 등록</button>
 
 			</div>
 

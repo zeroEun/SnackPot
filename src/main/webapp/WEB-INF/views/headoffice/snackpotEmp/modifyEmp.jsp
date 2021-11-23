@@ -70,14 +70,6 @@
     	background-color: rgb(94, 94, 94);
     	color: white;
     }
-    #checkNumBtn{
-    	padding: 5px;
-        background-color: rgb(255, 255, 255);
-        border-color: rgb(245, 208, 66);
-        border-style: solid;
-        font-weight: bold;
-        color: rgb(10, 23, 78);
-    }
 </style>
 </head>
 <body>

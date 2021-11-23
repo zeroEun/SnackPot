@@ -24,6 +24,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="remark" property="remark" />
 		<result column="release_date" property="releaseDate" />
 		<result column="snack_no" property="snackNo" />
+		<result column="snack_name" property="snackName" />
+		<result column="stock" property="stock" />
+	</resultMap>
+
+	<resultMap type="Snack" id="snackResultSet">
+
+		<id column="snack_no" property="snackNo" />
+		<result column="snack_name" property="snackName" />
+		<result column="purchase_price" property="purchasePrice" />
+		<result column="release_price" property="releasePrice" />
+		<result column="enroll_date" property="enrollDate" />
+		<result column="status" property="status" />
+		<result column="stock" property="stock" />
+		<result column="unit" property="unit" />
+		<result column="taste" property="taste" />
+		<result column="aroma" property="aroma" />
+		<result column="category" property="category" />
+		<result column="detail" property="detail" />
+
 	</resultMap>
 
 
@@ -32,18 +51,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 		INSERT INTO SNACK
-		VALUES (${snackNo}, '${snackName}', ${purchasePrice},
-		${releasePrice}, sysdate, 'Y', 0, '${unit}', ${categoryNo}, ${detailNo},
-		${tasteNo}, ${aromaNo}
+		VALUES
+		(${snackNo}, '${snackName}', ${purchasePrice},
+		${releasePrice},
+		sysdate, 'Y', 0, '${unit}', ${categoryNo}, ${detailNo},
+		${tasteNo},
+		${aromaNo}
 		)
 
 	</insert>
 
 	<insert id="insertSnackAttach" parameterType="ProductAttachment">
 
-		INSERT INTO SNACK_ATTACHMENT
+		INSERT INTO
+		SNACK_ATTACHMENT
 		VALUES (
-		SNACKATTACH_SEQ.NEXTVAL, '${originName}', '${changeName}', '${filePath}',
+		SNACKATTACH_SEQ.NEXTVAL, '${originName}',
+		'${changeName}', '${filePath}',
 		${snackNo}
 		)
 
@@ -54,7 +78,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		INSERT INTO ARRIVAL
 		VALUES (
-		ARRIVAL_SEQ.NEXTVAL,${amount}, '${remark}', sysdate, ${snackNo}
+		ARRIVAL_SEQ.NEXTVAL,${amount}, '${remark}', sysdate,
+		${snackNo}
 		)
 
 	</insert>
@@ -63,7 +88,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 		SELECT COUNT(*)
-		FROM ARRIVAL
+		FROM
+		ARRIVAL
 		WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') =
 		TO_CHAR(TO_DATE(${date}, 'YYYYMMDD'),'YYYYMMDD')
 
@@ -84,7 +110,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM ARRIVAL A
 		JOIN SNACK B
 		ON A.SNACK_NO = B.SNACK_NO
-		WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(TO_DATE(${date}, 'YYYYMMDD'),'YYYYMMDD')
+		WHERE
+		TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(TO_DATE(${date},
+		'YYYYMMDD'),'YYYYMMDD')
 		ORDER BY ARRIVAL_NO DESC
 
 
@@ -96,23 +124,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		INSERT INTO RELEASE
 		VALUES (
-		RELEASE_SEQ.NEXTVAL,${amount}, '${remark}', sysdate, ${snackNo}, '1'
+		RELEASE_SEQ.NEXTVAL,${amount}, '${remark}', sysdate,
+		${snackNo}, '1'
 		)
 
 	</insert>
 
 	<select id="todayReleaseCount" resultType="_int">
-
-
 		SELECT COUNT(*)
-		FROM RELEASE
+		FROM
+		RELEASE
 		WHERE TO_CHAR(RELEASE_DATE,'YYYYMMDD') =
-		TO_CHAR(SYSDATE,'YYYYMMDD')
+		TO_CHAR(TO_DATE(${date}, 'YYYYMMDD'),'YYYYMMDD')
 
 
 	</select>
 
 	<select id="todayReleaseList" resultMap="releaseResultSet">
+
 
 		SELECT
 		A.RELEASE_NO,
@@ -125,9 +154,72 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		B.STOCK
 		FROM RELEASE A
 		JOIN SNACK B
-		ON A.SNACK_NO = B.SNACK_NO
-		WHERE TO_CHAR(ARRIVAL_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
-		ORDER BY RELEASE_NO DESC
+		ON A.SNACK_NO =
+		B.SNACK_NO
+		WHERE TO_CHAR(RELEASE_DATE,'YYYYMMDD') =
+		TO_CHAR(TO_DATE(${date}, 'YYYYMMDD'),'YYYYMMDD')
+		ORDER BY RELEASE_NO
+		DESC
+
+	</select>
+
+	<select id="invenListCount" resultType="_int">
+
+		SELECT COUNT(*)
+		FROM SNACK
+		ORDER BY SNACK_NO DESC
+
+	</select>
+
+	<select id="invenList" resultMap="snackResultSet">
+
+
+		SELECT
+		A.SNACK_NO,
+		A.SNACK_NAME,
+		A.PURCHASE_PRICE,
+		A.RELEASE_PRICE,
+		A.ENROLL_DATE,
+		A.STOCK,
+		A.UNIT,
+		B.CATEGORY,
+		C.DETAIL,
+		D.TASTE,
+		E.AROMA
+		FROM
+		SNACK A
+		JOIN SNACK_CATEGORY B
+		ON A.CATEGORY_NO = B.CATEGORY_NO
+		JOIN
+		SNACK_CATEGORY_DETAIL C
+		ON A.DETAIL_NO = C.DETAIL_NO
+		JOIN TASTE D
+		ON
+		A.TASTE_NO = D.TASTE_NO
+		JOIN AROMA E
+		ON A.AROMA_NO = E.AROMA_NO
+		WHERE
+		STATUS = 'Y'
+		ORDER BY SNACK_NO DESC
+
+	</select>
+
+	
+	<select id="sNoSearchCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		SNACK
+		WHERE SNACK_NO = ${search}
+
+
+	</select>
+	
+	<select id="sNameSearchCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		SNACK
+		WHERE SNACK_NAME LIKE '%${search}%'
+
 
 	</select>
 

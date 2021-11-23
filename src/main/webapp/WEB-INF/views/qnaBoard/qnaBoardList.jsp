@@ -25,6 +25,8 @@
     .text{width:53%;}
     .searchBtn{Width:20%;}
 </style>
+<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
 </head>
 <body>
 	 
@@ -36,10 +38,7 @@
         <div class="innerOuter" style="padding:5% 10%;">
             <h2>문의게시판</h2>
             <br>
-            <!-- 로그인 상태일 경우만 보여지는 글쓰기 버튼-->
-            <c:if test="${ !empty loginUser }">
-            	<a class="btn btn-secondary" style="float:right" href="enrollForm.qna">글쓰기</a>
-            </c:if>
+            
             <br>
             <table id="boardList" class="table table-hover" align="center">
                 <thead>
@@ -68,7 +67,7 @@
                 <ul class="pagination">
                 	<c:choose>
                 		<c:when test="${ pi.currentPage ne 1 }">
-                			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+                			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage-1 }">Previous</a></li>
                 		</c:when>
                 		<c:otherwise>
                 			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
@@ -78,7 +77,7 @@
                     <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
                     	<c:choose>
 	                		<c:when test="${ pi.currentPage ne p }">
-                    			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">${ p }</a></li>
+                    			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ p }">${ p }</a></li>
 	                		</c:when>
 	                		<c:otherwise>
 	                			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
@@ -89,14 +88,19 @@
                     
                     <c:choose>
                 		<c:when test="${ pi.currentPage ne pi.maxPage }">
-                			<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage+1 }">Next</a></li>
                 		</c:when>
                 		<c:otherwise>
-                			<li class="page-item disabled"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                			<li class="page-item disabled"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage+1 }">Next</a></li>
                 		</c:otherwise>
                 	</c:choose>
                 </ul>
             </div>
+            
+            <br>
+            <c:if test="${ !empty loginUser }">
+            	<a class="btn btn-secondary" style="float:right" href="enrollForm.qna">글쓰기</a>
+            </c:if>
            
             <br clear="both"><br>
             
@@ -106,9 +110,10 @@
         <br><br>
     </div>
     
-    <script>
+     <script>
     	$(function(){
     		$("#boardList tbody tr").click(function(){
+    			console.log($(this).children().eq(0).text());
     			location.href="detail.qna?qno=" + $(this).children().eq(0).text();
     		});
     	});

@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		SELECT COUNT(*)
 		FROM QNA
+		WHERE STATUS = 'Y'
 
 
 	</select>
@@ -30,7 +31,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		SELECT *
 		FROM QNA
+		WHERE STATUS = 'Y'
 		ORDER BY Q_NO DESC
+		
 
 	</select>
 
@@ -55,7 +58,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="detailQna" resultMap="qnaResultSet">
 	
-	SELECT 
+	SELECT
+	Q_NO, 
 	WRITER,
 	Q_TITLE,
 	Q_CONTENT,
@@ -63,11 +67,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	A_TITLE,
 	CHANGE_NAME
 	FROM QNA
-	WHERE Q_NO = #{qno}
+	WHERE Q_NO = ${qno}
 	AND STATUS = 'Y'
 	
 	
 	</select>
+	
+	<update id="deleteQna" parameterType="_int">
+	
+	UPDATE QNA
+	SET
+	STATUS = 'N'
+	WHERE 
+	Q_NO = ${qno}	
+	
+	</update>
 
+
+	<update id="updateQna">
+	
+	UPDATE QNA
+	SET
+	Q_TITLE= '${qTitle}',
+	Q_CONTENT='${qContent}',
+	CHANGE_NAME = '${changeName}'
+	WHERE 
+	Q_NO = ${qNo}	
+	
+	</update>
+	
+	<update id="answerInsert">
+	
+	UPDATE QNA
+	SET
+	A_TITLE = '${aTitle}'
+	A_CONTENT = '${aContent}'
+	WHERE
+	Q_NO = ${qNo}	
+	
+	</update>
 
 </mapper>

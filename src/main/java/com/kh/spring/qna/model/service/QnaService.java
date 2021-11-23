@@ -19,4 +19,10 @@ public interface QnaService {
 
 	Qna detailQna(int qno);
 
+	void deleteQna(int qno);
+
+	void updateQna(Qna q);
+
+	void answerInsert(Qna q);
+
 }

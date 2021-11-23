@@ -295,7 +295,7 @@
 	<script>
        
     
-                const modal = document.getElementById("modal")
+    const modal = document.getElementById("modal")
     const btnModal = document.getElementById("addBtn")
     btnModal.addEventListener("click", e => {
         modal.style.display = "flex"

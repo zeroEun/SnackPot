@@ -12,6 +12,7 @@ import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.dao.InvenManagementDao;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
+import com.kh.spring.product.model.vo.Snack;
 import com.kh.spring.product.release.model.vo.Release;
 import com.kh.spring.qna.model.vo.PageInfo;
 
@@ -67,17 +68,6 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 		return invenManagementDao.todayArrivalList(sqlSession, pi, date);
 	}
 
-	@Override
-	public int todayReleaseCount() {
-		// TODO Auto-generated method stub
-		return invenManagementDao.todayReleaseCount(sqlSession);
-	}
-
-	@Override
-	public ArrayList<Release> todayReleaseList(PageInfo pi) {
-		// TODO Auto-generated method stub
-		return invenManagementDao.todayReleaseList(sqlSession, pi);
-	}
 
 	@Override
 	public void releaseInsert(Release r) {
@@ -90,5 +80,54 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 		
 		
 	}
+
+	@Override
+	public int todayReleaseCount(String date) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.todayReleaseCount(sqlSession, date);
+	}
+
+	@Override
+	public ArrayList<Release> todayReleaseList(PageInfo pi, String date) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.todayReleaseList(sqlSession, pi, date);
+	}
+
+	@Override
+	public int invenListCount() {
+		// TODO Auto-generated method stub
+		return invenManagementDao.invenListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Snack> invenList(PageInfo pi) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.invenList(sqlSession, pi);
+	}
+
+	@Override
+	public int sNoSearchCount(String search) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.sNoSearchCount(sqlSession, search);
+	}
+
+	@Override
+	public ArrayList<Snack> sNoSearch(PageInfo pi, String search) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.sNoSearch(sqlSession, pi, search);
+	}
+
+	@Override
+	public int sNameSearchCount(String search) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.sNameSearchCount(sqlSession, search);
+	}
+
+	@Override
+	public ArrayList<Snack> sNameSearch(PageInfo pi, String search) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.sNameSearch(sqlSession, pi, search);
+	}
+
 
 }

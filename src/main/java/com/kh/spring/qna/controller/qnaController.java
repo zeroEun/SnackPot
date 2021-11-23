@@ -2,6 +2,7 @@ package com.kh.spring.qna.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,11 +69,13 @@ public class qnaController {
 
 			qa = saveFile(file, request);
 			q.setChangeName(qa.getChangeName());
+			qnaService.insertQnaAttachment(qa);
 
 		}
 
 		qnaService.insertQna(q);
-		qnaService.insertQnaAttachment(qa);
+
+		
 
 		model.addAttribute("msg", "게시글 등록이 완료되었습니다.");
 		model.addAttribute("url", "/list.qna");
@@ -125,5 +128,100 @@ public class qnaController {
 		
 		return mv;
 	}
+	
+	@RequestMapping("updateForm.qna")
+	private ModelAndView updateForm(int qno, ModelAndView mv) {
+		
+		Qna q = qnaService.detailQna(qno);
+		
+
+		mv.addObject("q", q).setViewName("qnaBoard/qnaUpdateForm");
+		
+		return mv;
+	}
+	
+	
+	@RequestMapping("delete.qna")
+	private String deleteQna(int qno, ModelAndView mv, Model model) {
+		
+		System.out.println(qno);
+		
+		qnaService.deleteQna(qno);
+		
+		
+		model.addAttribute("msg", "게시글이 삭제되었습니다.");
+		model.addAttribute("url", "/list.qna");
+
+		return "common/alert";
+	}
+	
+	
+	@RequestMapping("update.qna")
+	public ModelAndView updateQna(Qna q, HttpServletRequest request, ModelAndView mv, 
+			@RequestParam(name="reUploadFile", required = false) MultipartFile file) {
+		
+		
+		QnaAttachment qa = new QnaAttachment();
+		if(!file.getOriginalFilename().equals("")) {
+			
+			//String changeName = saveFile(file, request);
+			if(q.getChangeName() != null) {
+				deleteFile(q.getChangeName(), request);
+				
+			}
+			
+			qa = saveFile(file, request);
+			
+			q.setChangeName(qa.getChangeName());
+			qnaService.insertQnaAttachment(qa);
+			
+		}
+		
+		qnaService.updateQna(q);
+	
+		
+		
+		mv.addObject("qno", q.getQNo()).setViewName("redirect:detail.qna");
+		
+		return mv;
+	}
+	
+	private void deleteFile(String fileName, HttpServletRequest request) {
+		
+		String resources = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = resources + "/upload_files/qnaAttachment/";
+		
+		System.out.println("savePath : " + savePath);
+		
+		File deleteFile = new File(savePath + fileName);
+		deleteFile.delete();
+		
+	}
+	
+	@RequestMapping("answerForm.qna")
+	public ModelAndView answerForm(int qno, ModelAndView mv) {
+		Qna q = qnaService.detailQna(qno);
+
+		
+		mv.addObject("q", q).setViewName("qnaBoard/qnaAnswerForm");
+		
+		return mv;
+
+	}
+	
+	@RequestMapping("answerInsert.qna")
+	public String answerInsert(Qna q, Model model) {
+		
+		qnaService.answerInsert(q);
+		
+		System.out.println(q);
+		
+
+		model.addAttribute("msg", "답변이 등록되었습니다.");
+		model.addAttribute("url", "/list.qna");
+
+		return "common/alert";
+	}
+	
 
 }

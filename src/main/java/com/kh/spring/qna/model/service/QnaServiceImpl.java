@@ -57,5 +57,34 @@ public class QnaServiceImpl implements QnaService {
 		// TODO Auto-generated method stub
 		return qnaDao.detailQna(sqlSession, qno);
 	}
+
+	@Override
+	public void deleteQna(int qno) {
+		int result = qnaDao.deleteQna(sqlSession, qno);
+		
+		if(result < 0) {
+			throw new CommException("삭제에 실패했습니다.");
+		}
+	}
+
+	@Override
+	public void updateQna(Qna q) {
+		int result = qnaDao.updateQna(sqlSession, q);
+		
+		if(result < 0) {
+			throw new CommException("게시글 수정에 실패했습니다.");
+		}
+		
+	}
+
+	@Override
+	public void answerInsert(Qna q) {
+		int result = qnaDao.answerInsert(sqlSession, q);
+		
+		if(result < 0) {
+			throw new CommException("답변 등록에 실패했습니다.");
+		}
+		
+	}
 	
 }

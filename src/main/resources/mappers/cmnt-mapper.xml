@@ -202,4 +202,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	DELETE FROM REPLY
 	WHERE RE_NO =#{reNo}
 </delete>
+
+<update id="updateRely">
+	UPDATE REPLY SET RE_CONTENT = #{reContent} , RE_DATE = SYSDATE
+	WHERE RE_NO = #{reNo}
+</update>
+
+<select id="selectDeptNo" resultType="_int">
+	SELECT MAX(RE_GROUPDEPT)
+	FROM REPLY
+	WHERE RE_GROUP = #{reGroup}	
+</select>
+
+<insert id="insertReReply">
+	INSERT INTO REPLY
+	VALUES (REPLY_SEQ.NEXTVAL , #{communityNo} , #{reGroup} ,  1 ,  #{reGroupDept} , #{reWriter} , #{reContent} , SYSDATE)
+</insert>
+
+
 </mapper>

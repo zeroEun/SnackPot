@@ -191,6 +191,32 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 
+	@Override
+	public int updateReply(Reply r) {
+		
+		return cmntDao.updateReply(sqlSession , r);
+		
+	}
+
+
+	@Override
+	public int selectDeptNo(int reGroup) {
+		
+		return cmntDao.selectDeptNo(sqlSession , reGroup);
+	}
+
+
+	@Override
+	public int insertReReply(Reply r) {
+		
+		return cmntDao.insertReReply(sqlSession, r);
+	}
+
+
+
+
+
+
 
 	
 

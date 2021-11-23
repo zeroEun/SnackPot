@@ -327,7 +327,8 @@ public class communityController {
 		System.out.println("68번쨰의 가장 마지막 댓글 번호는?" + count);
 
 		//2. re_Group에 +1 을 해주고 insert해준다 
-		int reGroup = count++;
+		int reGroup = count+1;
+		System.out.println("reGroup : " + reGroup);
 		r.setReGroup(reGroup);
 		r.setCommunityNo(cno);
 		
@@ -343,7 +344,47 @@ public class communityController {
 		
 		return cmntService.deleteReply(r);
 		
-
+	}
+	//댓글수정
+	@ResponseBody   
+	@RequestMapping(value="reupdate.cm" , produces = "application/json; charset=utf-8")
+	public int updateReply(Reply r) {
+		
+		System.out.println("업데이트할 댓글 : " + r);
+		
+		return cmntService.updateReply(r);
+		
+	}
+	//답글수정
+	@ResponseBody 
+	@RequestMapping(value="insertReReply.cm" , produces = "application/json; charset=utf-8")
+	public int insertReReply(Reply r , String reRecontent , int reGroup , int cmntNo , HttpSession session) {
+		
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		String memId = loginUser.getMemId();
+		
+		//1. re_no를 통해 re_group과  re_groupdept를 알아온다
+		int deptNo = cmntService.selectDeptNo(reGroup);
+		int lastReGroupDeptNo = deptNo +1;
+		
+		r.setCommunityNo(cmntNo);
+		r.setReContent(reRecontent);
+		r.setReGroup(reGroup);
+		r.setReGroupDept(lastReGroupDeptNo);
+		r.setReWriter(memId);
+		return cmntService.insertReReply(r);
+		
+	}
+	
+	//답글삭제
+	@ResponseBody
+	@RequestMapping(value="deleteReReply.cm" , produces = "application/json; charset=utf-8")
+	public int deleteReReply(Reply r ) {
+		
+		//System.out.println("삭제할  답글 r :" + r);
+	
+		return cmntService.deleteReply(r);
+		
 	}
 	
 	

@@ -69,7 +69,7 @@
                         <div class="body">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="profile-image float-md-right"><img src="${ pageContext.servletContext.contextPath }/resources/images/common물음표1.png" style="padding: 30px;"> </div>
+                                    <div class="profile-image float-md-right"><img src="${ pageContext.servletContext.contextPath }/resources/images/common/물음표1.png" style="padding: 30px;"> </div>
                                 </div>
                                 <div class=" col-md-8 ">
                                     <span class="queTxt">담당직원이 매일 탕비실을 채워넣기도 힘들고 지속적인 관리 해주는 곳은 없을까?</span>
@@ -83,7 +83,7 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="profile-image float-md-right"> <img src="${ pageContext.servletContext.contextPath }/resources/images/common물음표1.png" style="padding: 30px;"> </div>
+                                <div class="profile-image float-md-right"> <img src="${ pageContext.servletContext.contextPath }/resources/images/common/물음표1.png" style="padding: 30px;"> </div>
                             </div>
                             <div class="col-md-8">
                                 <span class="queTxt">직원들의 복지를 효율적으로 관리할수있는 서비스가 없을까?</span>

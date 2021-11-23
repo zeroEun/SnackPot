@@ -176,6 +176,30 @@ public class CommunityDao {
 		return sqlSession.delete("cmntMapper.deleteReply" , r);
 	}
 
+	public int updateReply(SqlSession sqlSession, Reply r) {
+		
+		return	sqlSession.update("cmntMapper.updateRely" , r);
+		
+	}
+
+
+
+	public int selectDeptNo(SqlSession sqlSession, int reGroup) {
+		
+		return sqlSession.selectOne("cmntMapper.selectDeptNo" , reGroup);
+		
+	}
+
+
+
+	public int insertReReply(SqlSession sqlSession, Reply r) {
+		
+		return sqlSession.insert("cmntMapper.insertReReply" , r);
+	}
+
+
+
+
 
 
 

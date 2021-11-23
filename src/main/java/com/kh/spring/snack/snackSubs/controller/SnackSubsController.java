@@ -56,8 +56,6 @@ public class SnackSubsController {
 		
 		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
 		
-		//String comCode = "k2111021928";
-		
 		model.addAttribute("snackCategory", snackSubsService.selectSubCategory(1));
 		model.addAttribute("drinkCategory", snackSubsService.selectSubCategory(2));
 		model.addAttribute("retortCategory", snackSubsService.selectSubCategory(3));
@@ -81,7 +79,7 @@ public class SnackSubsController {
 		
 		snackSubsService.cancelSnackSubs(subsNo);
 		
-		return "redirect:/";
+		return "company/snack/snackSubsInfo";
 	}
 	
 

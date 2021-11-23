@@ -17,6 +17,10 @@
 <title>Insert title here</title>
 </head>
 <style>
+.giftOuter{
+	margin: auto;
+	width: 90%;
+}
 #giftListBody{
 	overflow: scroll;
 }
@@ -29,6 +33,9 @@
 #searchGiftArea{
 	float: right;
 	margin-right: 10px;
+}
+.giftImage{
+	border-bottom: 1px solid rgb(236, 236, 236);
 }
 #giftBtnArea button{
 	float: left;
@@ -52,10 +59,11 @@
 .updateGiftBtnDiv{
 	float:right;
 	display: inline-block;
-	width:25%;
+	width:40%;
 }
 .updateGiftBtn{
 	clear: both;
+	font-size: smaller;
 	width:100%;
 }
 #chosenGiftArea>div>div{
@@ -83,214 +91,220 @@
 }
 </style>
 <body id="giftListBody">
-	<section class="">
-		<div class="container-fluid">
+	<section class="giftSection">
+		<div class="container-fluid" id="giftContainer">
 			<div class="row flex-nowrap">
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 				
-				<div class="col-8">
-				<br><br>
-				<div id="giftBtnArea">
-					<h3>선물 리스트&nbsp;&nbsp;</h3>
-					<button type="button" class="btn btn-primary" id="delGiftBtn" onclick="deleteGift();">선택 삭제</button>
-				    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertGift">추가하기</button>
-				</div>
-			
-				<br>
-				<br>
-				<div>
-					<div class="form-check giftListTop">
-						<input type="checkbox" class="form-check-input" id="giftChk">
-						<label class="form-check-label"	for="giftChk">전체 선택</label>
-					</div>
-					&nbsp;|&nbsp;
-					<div class="giftListTop" id="giftCategory">
-						<span>검색결과 <b id="giftCount"></b>개	</span>&nbsp;|&nbsp;
-						<span><a id="giftCtgry1">추천상품순</a></span>&nbsp;|&nbsp;
-						<span><a id="giftCtgry2">높은가격순</a></span>&nbsp;|&nbsp;
-						<span><a id="giftCtgry3">낮은가격순</a></span>
-					</div>
-					 &emsp;&emsp;
-				    <div class="giftListTop" id="searchGiftArea">
-				        <span><i class="fas fa-search"></i></span>
-				        <input type="text" id="search">        
-				    </div>
-				</div>
-				<hr>
-				<%-- 선택 삭제 modal --%>
-				<div class="modal fade" id="deleteGift" tabindex="-1" aria-hidden="true">
-			        <div class="modal-dialog modal-dialog-scrollable">
-			            <div class="modal-content">
-			                <div class="modal-header">
-			                    <div class="modal-title" id="deleteGiftHead">선택 삭제</div>
-			                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			                        <span aria-hidden="true">&times;</span>
-			                    </button>
-			                </div>
-			                <div class="modal-body" id="chosenGiftArea">
-			                	<div class="card h-100">
-			                	<%-- 이곳에 ajax로 가져온 리스트 출력(선택 삭제하기 위해 체크한 품목들 정보) --%>
-			                	</div>
-			                </div>
-			                <div class="modal-footer">
-			                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-			                    <button type="submit" class="btn btn-primary" onclick="realDelGift();">삭제</button>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-				<%-- 수정하기 modal --%>
-			    <div class="modal fade" id="updateGift" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
-			        <div class="modal-dialog">
-			            <div class="modal-content">
-			                <div class="modal-header">
-			                    <div class="modal-title" id="updateGiftHead">선택 수정</div>
-			                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			                        <span aria-hidden="true">&times;</span>
-			                    </button>
-			                </div>
-			                <form id="updateGiftForm" method="post" action="updateGift.ho" enctype="multipart/form-data">
-			                	<input type="hidden" name="giftNo" id="updateGiftNo"/>
-			                	<div class="modal-body">
-				                	<div class="card h-100">
-				                        <div id="updateGiftImgDiv">
-				                            <img class="card-img-top" id="updateGiftImg" alt="이미지를 등록하세요">
-				                        </div>
-				                        <div id="updateFileArea">
-				                            <input type="file" name="updateImgFile" id="updateImgFile" accept="image/*" onchange="loadImg(this);">
-				                        </div>
-				                    </div>
-				                    <hr>
-				                    <div class="mb-3">
-									  <div class="input-group is-invalid">
-									    <div class="input-group-prepend">
-									      <span class="input-group-text">브랜드명</span>
-									    </div>
-									    <input type="text" class="form-control" id="giftBrand" name="giftBrand" required>
-									  </div>
-									</div>
-									<div class="mb-3">
-									  <div class="input-group is-invalid">
-									    <div class="input-group-prepend">
-									      <span class="input-group-text">상품명</span>
-									    </div>
-									    <input type="text" class="form-control" id="giftName" name="giftName" required>
-									  </div>
-									</div>
-									<div class="mb-3">
-									  <div class="input-group is-invalid">
-									    <div class="input-group-prepend">
-									      <span class="input-group-text">가격</span>
-									    </div>
-									    <input type="text" class="form-control" id="giftPrice" name="giftPrice" required onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
-									  </div>
-									</div>
-				                </div>
-				                <div class="modal-footer">
-				                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-				                    <button type="submit" class="btn btn-primary">수정</button>
-				                </div>
-			                </form>
-			            </div>
-			        </div>
-			    </div>
-			    
-				<%-- 추가하기 modal --%>
-			    <div class="modal fade" id="insertGift" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
-			        <div class="modal-dialog">
-			            <div class="modal-content">
-			                <div class="modal-header">
-			                    <div class="modal-title" id="updateGiftHead">추가하기</div>
-			                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			                        <span aria-hidden="true">&times;</span>
-			                    </button>
-			                </div>
-			                <form id="insertGiftForm" method="post" action="insertGift.ho" enctype="multipart/form-data">
-				                <div class="modal-body">
-				                    <div class="card h-100">
-				                        <div id="insertGiftImgDiv">
-				                            <img class="card-img-top" id="insertGiftImg" alt="이미지를 등록하세요">
-				                        </div>
-				                        <div id="insertFileArea">
-				                            <input type="file" name="insertImgFile" id="insertImgFile" accept="image/*" onchange="loadImg(this);">
-				                        </div>
-				                    </div>
-				                    <hr>
-				                    <div class="mb-3">
-									  <div class="input-group is-invalid">
-									    <div class="input-group-prepend">
-									      <span class="input-group-text">브랜드명</span>
-									    </div>
-									    <input type="text" class="form-control" id="giftBrand" name="giftBrand" required>
-									  </div>
-									</div>
-									<div class="mb-3">
-									  <div class="input-group is-invalid">
-									    <div class="input-group-prepend">
-									      <span class="input-group-text">상품명</span>
-									    </div>
-									    <input type="text" class="form-control" id="giftName" name="giftName" required>
-									  </div>
-									</div>
-									<div class="mb-3">
-									  <div class="input-group is-invalid">
-									    <div class="input-group-prepend">
-									      <span class="input-group-text">가격</span>
-									    </div>
-									    <input type="text" class="form-control" id="giftPrice" name="giftPrice" required onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
-									  </div>
-									</div>
-				                </div>
-				                <div class="modal-footer">
-				                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-				                    <button type="submit" class="btn btn-primary" id="insertGiftBtn">추가</button>
-				                </div>
-			                </form>
-			            </div>
-			        </div>
-			    </div>
-				
-				<script>
-					$(function(){
-						<%-- 각 제품 영역에 마우스를 올리면 각 제품마다의 수정 버튼이 나타나도록 설정 --%>
-						$(".updateGiftBtn").css("opacity", "0");
-						
-						$(".cardWholeArea").each(function(index){
-							$(this).hover(function(){
-								$(this).children(index).children(index).eq(1).children().css("opacity", "1.0");
-								$(this).children(index).children(index).eq(1).children().attr("disabled", false);
-								//console.log($(this).children(index).children(index).eq(1).children());
-								
-								
-							}, function(){
-								$(this).children(index).children(index).eq(1).children().css("opacity", "0");
-								$(this).children(index).children(index).eq(1).children().attr("disabled", true);
-							});
-						});
-					});
-				</script>
-				<div class="row row-cols-1 row-cols-md-5" id="giftListArea">
-					<c:forEach items="${list }" var="giftList">
-						<div class="col mb-4 gift">
-							<div class="card h-100 cardWholeArea">
-								<div class="card-header giftCardHeader">
-								<div class="form-check checkArea">
-									<input type="checkbox" class="form-check-input" name="giftChk" value="${giftList.giftNo }">
-								</div>
-								<div class="updateGiftBtnDiv">
-									<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="${giftList.giftNo }" data-toggle="modal" data-target="#updateGift">수정</button>
-								</div>
-								</div>
-								<img src="${ pageContext.servletContext.contextPath }/resources/images/${giftList.changeName}" class="card-img-top" alt="...">
-								<div class="card-body">
-									<h5 class="card-title">${giftList.giftBrand }</h5>
-									<p class="card-text">${giftList.giftName }</p>
-									<h6 class="card-text">${giftList.giftPrice }</h6>
-								</div>
-							</div>
+				<div class="col-10">
+					<div class="giftOuter">
+						<br><br>
+						<div id="giftBtnArea">
+							<h3>선물 리스트&nbsp;&nbsp;</h3>
+							<button type="button" class="btn btn-primary" id="delGiftBtn" onclick="deleteGift();">선택 삭제</button>
+						    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertGift">추가하기</button>
 						</div>
-					</c:forEach>
-				</div>
+					
+						<br>
+						<br>
+						<div>
+							<div class="form-check giftListTop">
+								<input type="checkbox" class="form-check-input" id="giftChk">
+								<label class="form-check-label"	for="giftChk">전체 선택</label>
+							</div>
+							&nbsp;|&nbsp;
+							<div class="giftListTop" id="giftCategory">
+								<span>검색결과 <b id="giftCount"></b>개	</span>&nbsp;|&nbsp;
+								<span><a id="giftCtgry1">인기상품순</a></span>&nbsp;|&nbsp;
+								<span><a id="giftCtgry2">높은가격순</a></span>&nbsp;|&nbsp;
+								<span><a id="giftCtgry3">낮은가격순</a></span>
+							</div>
+							 &emsp;&emsp;
+						    <div class="giftListTop" id="searchGiftArea">
+						        <span><i class="fas fa-search"></i></span>
+						        <input type="text" id="search">        
+						    </div>
+						</div>
+						<hr>
+						<%-- 선택 삭제 modal --%>
+						<div class="modal fade" id="deleteGift" tabindex="-1" aria-hidden="true">
+					        <div class="modal-dialog modal-dialog-scrollable">
+					            <div class="modal-content">
+					                <div class="modal-header">
+					                    <div class="modal-title" id="deleteGiftHead">선택 삭제</div>
+					                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					                        <span aria-hidden="true">&times;</span>
+					                    </button>
+					                </div>
+					                <div class="modal-body" id="chosenGiftArea">
+					                	<div class="card h-100">
+					                	<%-- 이곳에 ajax로 가져온 리스트 출력(선택 삭제하기 위해 체크한 품목들 정보) --%>
+					                	</div>
+					                </div>
+					                <div class="modal-footer">
+					                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취 소</button>
+					                    <button type="submit" class="btn btn-primary" onclick="realDelGift();">삭 제</button>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+						<%-- 수정하기 modal --%>
+					    <div class="modal fade" id="updateGift" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+					        <div class="modal-dialog">
+					            <div class="modal-content">
+					                <div class="modal-header">
+					                    <div class="modal-title" id="updateGiftHead">선택 수정</div>
+					                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					                        <span aria-hidden="true">&times;</span>
+					                    </button>
+					                </div>
+					                <form id="updateGiftForm" method="post" action="updateGift.ho" enctype="multipart/form-data">
+					                	<input type="hidden" name="giftNo" id="updateGiftNo"/>
+					                	<div class="modal-body">
+						                	<div class="card h-100">
+						                        <div id="updateGiftImgDiv">
+						                            <img class="card-img-top" id="updateGiftImg" alt="이미지를 등록하세요">
+						                        </div>
+						                        <div id="updateFileArea">
+						                            <input type="file" name="updateImgFile" id="updateImgFile" accept="image/*" onchange="loadImg(this);">
+						                        </div>
+						                    </div>
+						                    <hr>
+						                    <div class="mb-3">
+											  <div class="input-group is-invalid">
+											    <div class="input-group-prepend">
+											      <span class="input-group-text">브랜드명</span>
+											    </div>
+											    <input type="text" class="form-control" id="giftBrand" name="giftBrand" required>
+											  </div>
+											</div>
+											<div class="mb-3">
+											  <div class="input-group is-invalid">
+											    <div class="input-group-prepend">
+											      <span class="input-group-text">상품명</span>
+											    </div>
+											    <input type="text" class="form-control" id="giftName" name="giftName" required>
+											  </div>
+											</div>
+											<div class="mb-3">
+											  <div class="input-group is-invalid">
+											    <div class="input-group-prepend">
+											      <span class="input-group-text">가격</span>
+											    </div>
+											    <input type="text" class="form-control" id="giftPrice" name="giftPrice" required onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+											  </div>
+											</div>
+						                </div>
+						                <div class="modal-footer">
+						                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취 소</button>
+						                    <button type="submit" class="btn btn-primary">수 정</button>
+						                </div>
+					                </form>
+					            </div>
+					        </div>
+					    </div>
+					    
+						<%-- 추가하기 modal --%>
+					    <div class="modal fade" id="insertGift" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+					        <div class="modal-dialog">
+					            <div class="modal-content">
+					                <div class="modal-header">
+					                    <div class="modal-title" id="updateGiftHead">추가하기</div>
+					                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					                        <span aria-hidden="true">&times;</span>
+					                    </button>
+					                </div>
+					                <form id="insertGiftForm" method="post" action="insertGift.ho" enctype="multipart/form-data">
+						                <div class="modal-body">
+						                    <div class="card h-100">
+						                        <div id="insertGiftImgDiv">
+						                            <img class="card-img-top" id="insertGiftImg" alt="이미지를 등록하세요">
+						                        </div>
+						                        <div id="insertFileArea">
+						                            <input type="file" name="insertImgFile" id="insertImgFile" accept="image/*" onchange="loadImg(this);">
+						                        </div>
+						                    </div>
+						                    <hr>
+						                    <div class="mb-3">
+											  <div class="input-group is-invalid">
+											    <div class="input-group-prepend">
+											      <span class="input-group-text">브랜드명</span>
+											    </div>
+											    <input type="text" class="form-control" id="giftBrand" name="giftBrand" required>
+											  </div>
+											</div>
+											<div class="mb-3">
+											  <div class="input-group is-invalid">
+											    <div class="input-group-prepend">
+											      <span class="input-group-text">상품명</span>
+											    </div>
+											    <input type="text" class="form-control" id="giftName" name="giftName" required>
+											  </div>
+											</div>
+											<div class="mb-3">
+											  <div class="input-group is-invalid">
+											    <div class="input-group-prepend">
+											      <span class="input-group-text">가격</span>
+											    </div>
+											    <input type="text" class="form-control" id="giftPrice" name="giftPrice" required onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+											  </div>
+											</div>
+						                </div>
+						                <div class="modal-footer">
+						                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취 소</button>
+						                    <button type="submit" class="btn btn-primary" id="insertGiftBtn">추 가</button>
+						                </div>
+					                </form>
+					            </div>
+					        </div>
+					    </div>
+						
+						<script>
+							$(function(){
+								<%-- 각 제품 영역에 마우스를 올리면 각 제품마다의 수정 버튼이 나타나도록 설정 --%>
+								$(".updateGiftBtn").css("opacity", "0");
+								
+								$(".cardWholeArea").each(function(index){
+									$(this).hover(function(){
+										$(this).children(index).children(index).eq(1).children().css("opacity", "1.0");
+										$(this).children(index).children(index).eq(1).children().attr("disabled", false);
+										//console.log($(this).children(index).children(index).eq(1).children());
+										
+										
+									}, function(){
+										$(this).children(index).children(index).eq(1).children().css("opacity", "0");
+										$(this).children(index).children(index).eq(1).children().attr("disabled", true);
+									});
+								});
+							});
+						</script>
+						<div class="row row-cols-1 row-cols-md-5" id="giftListArea">
+							<c:forEach items="${list }" var="giftList">
+								<div class="col mb-4 gift">
+									<div class="card h-100 cardWholeArea">
+										<div class="card-header giftCardHeader">
+										<div class="form-check checkArea">
+											<input type="checkbox" class="form-check-input" name="giftChk" value="${giftList.giftNo }">
+										</div>
+										<div class="updateGiftBtnDiv">
+											<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="${giftList.giftNo }" data-toggle="modal" data-target="#updateGift">수 정</button>
+										</div>
+										</div>
+										<div class="giftImage">
+											<img src="${ pageContext.servletContext.contextPath }/resources/images/${giftList.changeName}" class="card-img-top" alt="...">
+										</div>
+										
+										<div class="card-body">
+											<h5 class="card-title">${giftList.giftBrand }</h5>
+											<p class="card-text">${giftList.giftName }</p>
+											<h6 class="card-text">${giftList.giftPrice }</h6>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
+				
 				</div>
 			</div>
 		</div>
@@ -507,7 +521,7 @@
 		$(function(){
 			
 			$("#giftCtgry1").css("font-weight", "bolder");
-			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
+			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;인기상품순');
 			$("#giftCtgry2").css("font-weight", "normal");
 			$("#giftCtgry2").html('높은가격순');
 			$("#giftCtgry3").css("font-weight", "normal");
@@ -521,7 +535,7 @@
 				$("#giftCtgry2").css("font-weight", "normal");
 				$("#giftCtgry3").css("font-weight", "normal");
 				
-				$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
+				$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;인기상품순');
 				$("#giftCtgry2").html('높은가격순');
 				$("#giftCtgry3").html('낮은가격순');
 				
@@ -589,7 +603,7 @@
 				$("#giftCtgry2").css("font-weight", "bolder");
 				$("#giftCtgry3").css("font-weight", "normal");
 				
-				$("#giftCtgry1").html('추천상품순');
+				$("#giftCtgry1").html('인기상품순');
 				$("#giftCtgry2").html('<i class="fas fa-check"></i>&nbsp;높은가격순');
 				$("#giftCtgry3").html('낮은가격순');
 				
@@ -657,7 +671,7 @@
 				$("#giftCtgry2").css("font-weight", "normal");
 				$("#giftCtgry3").css("font-weight", "bolder");
 				
-				$("#giftCtgry1").html('추천상품순');
+				$("#giftCtgry1").html('인기상품순');
 				$("#giftCtgry2").html('높은가격순');
 				$("#giftCtgry3").html('<i class="fas fa-check"></i>&nbsp;낮은가격순');
 				

@@ -15,9 +15,9 @@ public class SendingStatusDao {
 		return sqlSession.selectOne("birthdayMapper.subscribeChk", comCode);
 	}
 	
-	public ArrayList<SendingStatus> sendingcursts(SqlSessionTemplate sqlSession, int sendingTime) {
+	public ArrayList<SendingStatus> sendingcursts(SqlSessionTemplate sqlSession, SendingStatus selectInfo) {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("birthdayMapper.sendingcursts", sendingTime);
+		return (ArrayList)sqlSession.selectList("birthdayMapper.sendingcursts", selectInfo);
 	}
 
 	public int deleteSendStatus(SqlSessionTemplate sqlSession, int cempSeq) {

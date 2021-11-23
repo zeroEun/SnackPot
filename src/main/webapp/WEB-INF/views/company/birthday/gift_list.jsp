@@ -5,10 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<%--
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
-<script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> --%>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 <link rel="shortcut icon" href="#">
 <title>Insert title here</title>
@@ -132,7 +133,7 @@
 				</div>
 				<div class="giftListTop" id="giftCategory">
 				 	<%-- 스크립트에서 a태그 안에 값을 넣기 때문에 a태그에 텍스트를 빼도 되긴함 --%>
-					<span><a id="giftCtgry1">추천상품순</a></span>&nbsp;|&nbsp;
+					<span><a id="giftCtgry1">인기상품순</a></span>&nbsp;|&nbsp;
 					<span><a id="giftCtgry2">높은가격순</a></span>&nbsp;|&nbsp;
 					<span><a id="giftCtgry3">낮은가격순</a></span>
 				</div>
@@ -553,7 +554,7 @@
 		$(function(){
 			
 			$("#giftCtgry1").css("font-weight", "bolder");
-			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
+			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;인기상품순');
 			$("#giftCtgry2").css("font-weight", "normal");
 			$("#giftCtgry2").html('높은가격순');
 			$("#giftCtgry3").css("font-weight", "normal");
@@ -618,7 +619,7 @@
 				$("#giftCtgry2").css("font-weight", "normal");
 				$("#giftCtgry3").css("font-weight", "normal");
 				
-				$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
+				$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;인기상품순');
 				$("#giftCtgry2").html('높은가격순');
 				$("#giftCtgry3").html('낮은가격순');
 				
@@ -637,7 +638,7 @@
 				$("#giftCtgry2").css("font-weight", "bolder");
 				$("#giftCtgry3").css("font-weight", "normal");
 				
-				$("#giftCtgry1").html('추천상품순');
+				$("#giftCtgry1").html('인기상품순');
 				$("#giftCtgry2").html('<i class="fas fa-check"></i>&nbsp;높은가격순');
 				$("#giftCtgry3").html('낮은가격순');
 				
@@ -656,7 +657,7 @@
 				$("#giftCtgry2").css("font-weight", "normal");
 				$("#giftCtgry3").css("font-weight", "bolder");
 				
-				$("#giftCtgry1").html('추천상품순');
+				$("#giftCtgry1").html('인기상품순');
 				$("#giftCtgry2").html('높은가격순');
 				$("#giftCtgry3").html('<i class="fas fa-check"></i>&nbsp;낮은가격순');
 				

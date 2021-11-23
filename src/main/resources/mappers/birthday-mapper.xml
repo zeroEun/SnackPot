@@ -48,7 +48,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="giftPrice" column="GIFT_PRICE"></result>
 		<result property="changeName" column="CHANGE_NAME"></result>
 	</resultMap>
-
+	
+	<!-- 선물리스트 관리 modal에서 첫 화면의 폴더 리스트를 나타내기 위한 resultMap -->
+	<resultMap type="GiftFolder" id="giftFolderMap">
+		<result property="glistNo" column="GLIST_NO"></result>
+		<result property="glistName" column="GLIST_NAME"></result>
+		<result property="folderGiftCount" column="GIFT_COUNT"></result>
+		<result property="cempSeq" column="CEMP_SEQ"></result>
+	</resultMap>
+	
 	<!-- 효은님 사용 쿼리 -->
 	<select id="selectBirthSub" parameterType="string" resultMap="bServiceResultSet">
       SELECT *
@@ -64,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="subscribe" parameterType="Birthday">
 		INSERT INTO BIRTHDAY_SERVICE VALUES
-		(BSERVICE_SEQ.NEXTVAL, #{per_amount}, #{sending_time}, #{notification_msg}, NULL, SYSDATE, DEFAULT, #{com_code})
+		(BSERVICE_SEQ.NEXTVAL, #{per_amount}, #{sending_time}, #{notification_msg}, NULL, DEFAULT, DEFAULT, #{com_code})
 	</insert>
 	
 	<select id="subscribeInfo" parameterType="String" resultMap="bServiceResultSet">
@@ -86,7 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- 구독회사용 -->
-	<select id="sendingcursts" resultMap="sendingStsResultSet">
+	<select id="sendingcursts" parameterType="SendingStatus" resultMap="sendingStsResultSet">
 		<![CDATA[
 			SELECT 
 			B.CEMP_SEQ, B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
@@ -95,6 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
 			WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(SYSDATE,'MM')
 			AND TO_CHAR(B.CEMP_BIRTH,'DD') > TO_CHAR(SYSDATE,'DD')+#{sendingTime}
+			AND A.COM_CODE=#{comCode}
 			AND B.CEMP_STATUS='Y'
 			ORDER BY SENDING_MESSAGE_DATE
 		]]>
@@ -159,6 +168,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM SENDING_LIST A
 		JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
 		WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE,'MM'),1),'MM')
+		AND B.COM_CODE=#{comCode}
 		AND B.CEMP_STATUS='Y'
 		ORDER BY SENDING_MESSAGE_DATE
 	</select>
@@ -188,13 +198,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</choose>
 	</select>
 	
-	<!-- 선물리스트 관리 modal에서 첫 화면의 폴더 리스트를 나타내기 위한 resultMap -->
-	<resultMap type="GiftFolder" id="giftFolderMap">
-		<result property="glistNo" column="GLIST_NO"></result>
-		<result property="glistName" column="GLIST_NAME"></result>
-		<result property="folderGiftCount" column="GIFT_COUNT"></result>
-	</resultMap>
-	
 	<!-- GIFT_LIST의 데이터 추출 - 폴더명에만 사용 -->
 	<select id="selectFolderList" resultMap="giftFolderMap">
 		SELECT A.GLIST_NO, A.GLIST_NAME, NVL(COUNT(B.GLIST_DETAIL_NO),0) AS GIFT_COUNT
@@ -212,6 +215,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO GIFT_LIST VALUES
 		('FOLDER'||GIFT_LIST_SEQ.NEXTVAL, #{folderName})
 	</insert>
+	
+	<!-- 발송리스트의 선물리스트 목록 조회 -->
+	<select id="selectGiftFolder" resultMap="giftFolderMap">
+		<![CDATA[
+			SELECT A.GLIST_NO, A.GLIST_NAME, NVL(COUNT(B.GLIST_DETAIL_NO),0) AS GIFT_COUNT
+			FROM GIFT_LIST A
+			LEFT OUTER JOIN GIFT_LIST_DETAIL B ON A.GLIST_NO = B.GLIST_NO
+			LEFT OUTER JOIN BIRTHDAY_GIFT C ON B.GIFT_NO = C.GIFT_NO
+			LEFT OUTER JOIN GIFT_ATTACHMENT D ON C.GIFT_NO = D.GIFT_REF_NO
+			AND D.CHANGE_NAME IS NOT NULL
+			GROUP BY A.GLIST_NO, A.GLIST_NAME
+			HAVING COUNT(B.GLIST_DETAIL_NO) > 0
+			ORDER BY TO_NUMBER(SUBSTR(GLIST_NO,7)) ASC
+		]]>
+	</select>
+	
+	<update id="updateGiftList" parameterType="GiftFolder">
+		UPDATE SENDING_LIST SET
+		GLIST_NO=#{glistNo}
+		WHERE CEMP_SEQ=#{cempSeq}
+	</update>
 	
 	<!-- 각 폴더의 정보 추출 -->
 	<select id="selectFolderInfo" parameterType="_int" resultMap="giftResultSet">

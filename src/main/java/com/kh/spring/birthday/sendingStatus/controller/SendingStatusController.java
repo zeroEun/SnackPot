@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.spring.birthday.sendingStatus.model.service.SendingStatusService;
 import com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus;
+import com.kh.spring.birthday_HO.sendingStatus_HO.model.vo.HO_SendingStatus;
 import com.kh.spring.companyMember.model.vo.CompanyMember;
 
 @Controller
@@ -35,12 +36,17 @@ public class SendingStatusController {
 		int sendingTime = selectSendingTime(comCode);
 		System.out.println("발송시점 sendingTime : " + sendingTime);
 		
+		SendingStatus selectInfo = new SendingStatus();
+		selectInfo.setSendingTime(sendingTime);
+		selectInfo.setComCode(comCode);
+		
+		
 		if(sendingTime < 0) {
 			model.addAttribute("msg", "구독 정보가 존재하지 않습니다.");
 			
 			return "common/alert";
 		}else {
-			ArrayList<SendingStatus> list = sendingStatusService.sendingcursts(sendingTime);
+			ArrayList<SendingStatus> list = sendingStatusService.sendingcursts(selectInfo);
 
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());

@@ -16,4 +16,6 @@ public class GiftFolder {
 	private String glistNo;
 	private String glistName;
 	private int folderGiftCount;
+	
+	private int cempSeq;
 }

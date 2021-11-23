@@ -14,7 +14,6 @@
 <style>
 	#birthContainer{
     	margin-top: 30px;
-    	
     }
     #birthCard{
     	height: 777px;
@@ -55,6 +54,9 @@
     .tableBody{
     	background: rgb(252, 248, 238);
     }
+    #saveGiftList{
+    	float: right;
+    }
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
@@ -87,6 +89,7 @@
 	                            <th scope="col">전화번호</th>
 	                            <th scope="col">생일날짜</th>
 	                            <th scope="col">발송예정일</th>
+	                            <th scope="col">선물리스트</th>
 	                        </tr>
 	                    </thead>
 	                    <tbody class="tableBody">
@@ -98,7 +101,7 @@
 		                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
 		                   			</c:when>
 		                   			<c:when test="${!empty sendListChk }">
-		                   				<c:forEach items="${ list }" var="sendList" varStatus="status">                   					                		
+		                   				<c:forEach items="${ list }" var="sendList" varStatus="status">
 											<c:set var="num" value="${ num+1 }" />
 					                        <tr>
 					                            <td><input type="checkbox" name="sendingChk" value="${sendList.cempSeq }"></td>
@@ -109,6 +112,15 @@
 								                <td>${sendList.cempPhone }</td>
 								                <td>${sendList.cempBirth }</td>
 								                <td>${sendList.sendMsgDate }</td>
+								                <td style="width:15%;">
+								                <select class="custom-select" name="selectGiftList">
+								                <c:forEach items="${ giftFolder }" var="folderList" varStatus="folderStatus">
+												<option value="${folderList.glistNo }"<c:if test="${folderList.glistNo eq sendList.glistNo }">selected="selected"</c:if>>
+												${folderList.glistName }(${folderList.folderGiftCount })
+												</option>
+												</c:forEach>
+												</select>
+								                </td>
 					                        </tr>
 		                   				</c:forEach>
 		                   				<c:if test="${empty num }">
@@ -122,7 +134,7 @@
 		                   	</c:if>
 	                    </tbody>
 	                </table>
-	
+	                
 	                <%-- 추가하기 --%>
 	                <div class="modal fade" id="sending_insert" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	                    <div class="modal-dialog">
@@ -242,6 +254,7 @@
 	        </div>    
 	    
 	        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+	        <button type="button" class="btn btn-dark" id="saveGiftList">선물리스트 저장</button>
     	</div>
     	
     	<input type="hidden" id="comCodeInput" name="comCode" value="${loginUser.comCode }">
@@ -264,6 +277,47 @@
 		    $("#sendingListTab").css("background", "rgb(218, 215, 208)");
 		    $("#tabArea").css("padding-bottom", 4);//추가탭 없으면 style로 변경
 		}
+		
+		$(function(){
+			
+			$(document).on('click','#saveGiftList', function(){
+
+				var selectArray = new Array();
+				
+				$("select[name='selectGiftList'] option:selected").each(function(index){
+					var glistNo = $(this).val();
+					var cempSeq = $(this).parents("td").siblings().eq(0).children().val();
+					console.log("sendingChk");
+					console.log($(this).parents("td").siblings().eq(0).children().val());
+					
+					console.log("선택값 : "+glistNo);
+					selectArray.push(glistNo);
+					selectArray.push(cempSeq);
+					console.log(selectArray);
+				});
+				
+				console.log(selectArray);
+				$.ajax({
+					url: "updateGiftList.birth",
+					type: "POST",
+					traditional: true,
+					data:{
+						selectArray: selectArray
+					},
+					success: function(result){
+						alert("선물리스트가 성공적으로 저장되었습니다.");
+						location.replace("sendList.birth");
+					},
+					error: function(error){
+						console.log(error);
+					}
+				});
+				
+				
+				
+			});
+			
+		});
 		
 		$(function(){
 			var chkRow = $("input[name='sendingChk']");

@@ -14,13 +14,18 @@ import lombok.ToString;
 @Getter
 @ToString
 public class HO_SendingStatus {
-
+	
+	private int cempSeq;
 	private int curStatusNo;
 	private String cempDept;
 	private String cempJob;
 	private String cempName;
 	private String cempPhone;
 	private Date cempBirth;
-	private Date sendingMsgDate;
+	private String sendingMsgDate;
 	private Date selectDate;
+	
+	private int sendingTime;
+	private String comCode;
+
 }

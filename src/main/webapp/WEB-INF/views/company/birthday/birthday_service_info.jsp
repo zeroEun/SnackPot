@@ -200,8 +200,10 @@
 			        <br><hr>
 
 			        <div class="form-group row">
-			        	<label class="col-md-3">결제일</label><span>
-			        	<b>매월 1일</b></span>
+			        	<label class="col-md-3">결제 예정일</label>
+			        	<div class="col-md-9 row">
+			        		<h5><b>${b.settlement_date }</b></h5>
+			        	</div>
 			        </div>
 			        <br><hr>
 			        

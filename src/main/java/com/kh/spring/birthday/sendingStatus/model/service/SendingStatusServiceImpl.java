@@ -27,9 +27,9 @@ public class SendingStatusServiceImpl implements SendingStatusService {
 	}
 	
 	@Override
-	public ArrayList<SendingStatus> sendingcursts(int sendingTime) {
+	public ArrayList<SendingStatus> sendingcursts(SendingStatus selectInfo) {
 		// TODO Auto-generated method stub
-		return sendingStatusDao.sendingcursts(sqlSession, sendingTime);
+		return sendingStatusDao.sendingcursts(sqlSession, selectInfo);
 	}
 
 	@Override

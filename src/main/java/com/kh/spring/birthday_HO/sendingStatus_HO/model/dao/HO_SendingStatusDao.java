@@ -10,9 +10,19 @@ import com.kh.spring.birthday_HO.sendingStatus_HO.model.vo.HO_SendingStatus;
 @Repository
 public class HO_SendingStatusDao {
 
-	public ArrayList<HO_SendingStatus> selectList(SqlSessionTemplate sqlSession) {
+	public ArrayList<HO_SendingStatus> selectList(SqlSessionTemplate sqlSession, HO_SendingStatus selectInfo) {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("birthdayMapper_HO.selectStatusList");
+		return (ArrayList)sqlSession.selectList("birthdayMapper_HO.selectStatusList", selectInfo);
+	}
+
+	public String selectSendingTime(SqlSessionTemplate sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("birthdayMapper_HO.selectSendingTime", comCode);
+	}
+ 
+	public int subscribeChk(SqlSessionTemplate sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("birthdayMapper_HO.subscribeChk", comCode);
 	}
 
 }

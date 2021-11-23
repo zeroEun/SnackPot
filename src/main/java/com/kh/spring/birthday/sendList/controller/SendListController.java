@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
 import com.kh.spring.birthday.sendList.model.service.SendListService;
 import com.kh.spring.birthday.sendList.model.vo.SendList;
 import com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus;
@@ -41,7 +42,7 @@ public class SendListController {
 			
 			return "common/alert";
 		}else {
-			ArrayList<SendList> list = sendListService.selectSendList();
+			ArrayList<SendList> list = sendListService.selectSendList(comCode);
 			System.out.println("list : " + list);
 			
 			Calendar cal = Calendar.getInstance();
@@ -58,7 +59,10 @@ public class SendListController {
 				list.get(i).setSendMsgDate(thisYear + (sdf.format(cal.getTime())).substring(4));
 			}
 
+			ArrayList<GiftFolder> giftFolder = sendListService.selectGiftFolder();
+			System.out.println("giftFolder : " + giftFolder);
 			model.addAttribute("birthSubsChk", birthSubsChk);
+			model.addAttribute("giftFolder", giftFolder);
 			model.addAttribute("list", list);
 			
 			return "company/birthday/sending_list";
@@ -159,6 +163,31 @@ public class SendListController {
 		
 		int result = sendListService.updateSendList(s);
 		System.out.println("수정result: " + result);
+		
+		return String.valueOf(result);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="updateGiftList.birth")
+	public String updateGiftList(String[] selectArray) {
+		
+		
+		GiftFolder gf = new GiftFolder();
+		
+		int result = 0;
+		for(int i=0; i<selectArray.length; i++) {
+			if(i%2==0) {
+				gf.setGlistNo(selectArray[i]);
+			}else {
+				gf.setCempSeq(Integer.parseInt(selectArray[i]));
+			}
+			System.out.println("gf : " + gf);
+			result += sendListService.updateGiftList(gf);
+		}
+		System.out.println("나누기 안 한  result : " + result);
+		result = result / (selectArray.length/2);
+		System.out.println("나누기 한 result : " + result);
 		
 		return String.valueOf(result);
 		

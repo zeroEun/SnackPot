@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type="HO_SendingStatus" id="curStsResultSet">
 		<id property="curStatusNo" column="SCSTATUS_NO"></id>
+		<result property="cempSeq" column="CEMP_SEQ"></result>
 		<result property="cempDept" column="CEMP_DEPT"></result>
 		<result property="cempJob" column="CEMP_JOB"></result>
 		<result property="cempName" column="CEMP_NAME"></result>
@@ -13,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="cempBirth" column="CEMP_BIRTH"></result>
 		<result property="sendingMsgDate" column="SENDING_MESSAGE_DATE"></result>
 		<result property="selectDate" column="SELECT_COMPLETE_DATE"></result>
+		<result property="comCode" column="COM_CODE"></result>
 	</resultMap>
 	
 	<resultMap type="HO_SendList" id="sendListResultSet">
@@ -45,24 +47,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<!-- 본사용 -->
-	<select id="selectStatusList" resultMap="curStsResultSet">
-		SELECT 
-		B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
-		, A.SENDING_MESSAGE_DATE, A.SELECT_COMPLETE_DATE
-		FROM SENDING_CURRENT_STATUS A
-		JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
-		WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(SYSDATE,'MM')
-		AND B.CEMP_STATUS='Y'
-		ORDER BY SENDING_MESSAGE_DATE
+	<select id="subscribeChk" parameterType="String" resultType="_int">
+		SELECT COUNT(*) FROM BIRTHDAY_SERVICE WHERE COM_CODE = #{com_code} AND BSERVICE_STATUS='Y'
 	</select>
 	
-	<select id="selectSendList" resultMap="sendListResultSet">
+	<select id="selectSendingTime" resultType="String">
+		SELECT SENDING_TIME	FROM BIRTHDAY_SERVICE
+		WHERE COM_CODE=#{comCode} AND BSERVICE_STATUS='Y'
+	</select>
+	
+	<select id="selectStatusList" parameterType="HO_SendingStatus" resultMap="curStsResultSet">
+		<![CDATA[
+			SELECT 
+			B.CEMP_SEQ, B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
+			, A.SENDING_MESSAGE_DATE, A.SELECT_COMPLETE_DATE
+			FROM SENDING_CURRENT_STATUS A
+			JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
+			JOIN SNACKPOT_EMP C ON A.COM_CODE = C.SEMP_COMCODE
+			WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(SYSDATE,'MM')
+			AND TO_CHAR(B.CEMP_BIRTH,'DD') > TO_CHAR(SYSDATE,'DD')+#{sendingTime}
+			AND A.COM_CODE=#{comCode}
+			AND B.CEMP_STATUS='Y'
+			ORDER BY SENDING_MESSAGE_DATE
+		]]>
+	</select>
+	
+	<select id="selectSendList" parameterType="String" resultMap="sendListResultSet">
 		SELECT 
 		B.CEMP_DEPT, B.CEMP_JOB, B.CEMP_NAME, B.CEMP_PHONE, B.CEMP_BIRTH
 		, A.SENDING_MESSAGE_DATE, A.GLIST_NO
 		FROM SENDING_LIST A
 		JOIN COMPANY_EMP B ON A.CEMP_SEQ = B.CEMP_SEQ
+		JOIN SNACKPOT_EMP C ON B.COM_CODE = C.SEMP_COMCODE
 		WHERE TO_CHAR(B.CEMP_BIRTH,'MM') = TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE,'MM'),1),'MM')
+		AND B.COM_CODE=#{comCode}
 		AND B.CEMP_STATUS='Y'
 		ORDER BY SENDING_MESSAGE_DATE
 	</select>

@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
 import com.kh.spring.birthday.sendList.model.dao.SendListDao;
 import com.kh.spring.birthday.sendList.model.vo.SendList;
 import com.kh.spring.birthday.sendingStatus.model.dao.SendingStatusDao;
@@ -30,9 +31,9 @@ public class SendListServiceImpl implements SendListService {
 	}
 	
 	@Override
-	public ArrayList<SendList> selectSendList() {
+	public ArrayList<SendList> selectSendList(String comCode) {
 		// TODO Auto-generated method stub
-		return sendListDao.selectSendList(sqlSession);
+		return sendListDao.selectSendList(sqlSession, comCode);
 	}
 
 	@Override
@@ -90,6 +91,24 @@ public class SendListServiceImpl implements SendListService {
 		
 		if(result < 0) {
 			throw new CommException("발송리스트2 추가하기 실패");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<GiftFolder> selectGiftFolder() {
+		// TODO Auto-generated method stub
+		return sendListDao.selectGiftFolder(sqlSession);
+	}
+
+	@Override
+	public int updateGiftList(GiftFolder gf) {
+
+		int result = sendListDao.updateGiftList(sqlSession, gf);
+		
+		if(result < 0) {
+			throw new CommException("발송리스트 선물리스트 저장 실패");
 		}
 		
 		return result;

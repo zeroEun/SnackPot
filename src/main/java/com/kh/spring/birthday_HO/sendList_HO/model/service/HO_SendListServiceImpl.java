@@ -19,9 +19,23 @@ public class HO_SendListServiceImpl implements HO_SendListService {
 	private HO_SendListDao sendListDao;
 	
 	@Override
-	public ArrayList<HO_SendList> selectSendingList() {
+	public ArrayList<HO_SendList> selectSendingList(String comCode) {
 		// TODO Auto-generated method stub
-		return sendListDao.selectList(sqlSession);
+		return sendListDao.selectList(sqlSession, comCode);
+	}
+
+	@Override
+	public int subscribeChk(String comCode) {
+
+		int result = sendListDao.subscribeChk(sqlSession, comCode);
+		
+		return result;
+	}
+
+	@Override
+	public String selectSendingTime(String comCode) {
+		// TODO Auto-generated method stub
+		return sendListDao.selectSendingTime(sqlSession, comCode);
 	}
 
 }

@@ -19,9 +19,23 @@ public class HO_SendingStatusServiceImpl implements HO_SendingStatusService {
 	private HO_SendingStatusDao sendingStsDao;
 	
 	@Override
-	public ArrayList<HO_SendingStatus> selectList() {
+	public ArrayList<HO_SendingStatus> selectList(HO_SendingStatus selectInfo) {
 		
-		return sendingStsDao.selectList(sqlSession);
+		return sendingStsDao.selectList(sqlSession, selectInfo);
+	}
+
+	@Override
+	public int subscribeChk(String comCode) {
+
+		int result = sendingStsDao.subscribeChk(sqlSession, comCode);
+		
+		return result;
+	}
+
+	@Override
+	public String selectSendingTime(String comCode) {
+		// TODO Auto-generated method stub
+		return sendingStsDao.selectSendingTime(sqlSession, comCode);
 	}
 
 }

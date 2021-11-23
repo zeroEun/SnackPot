@@ -8,7 +8,7 @@ public interface SendingStatusService {
 
 	int subscribeChk(String comCode);
 	
-	ArrayList<SendingStatus> sendingcursts(int sendingTime);
+	ArrayList<SendingStatus> sendingcursts(SendingStatus selectInfo);
 
 	int deleteSendStatus(int cempSeq);
 

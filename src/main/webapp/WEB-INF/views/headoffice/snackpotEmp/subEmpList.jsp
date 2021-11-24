@@ -56,9 +56,6 @@
 
 <div class="container" id="outer">
 <h5 id="title">사원 조회</h5><br><br><br><br>
-<div id="searchdiv">
-<input type="text" placeholder="검색어 입력"><button type="button" id="search"><img id="icon" src="${ pageContext.servletContext.contextPath }/resources/images/search.png"></button>
-</div>
 <div id="tdiv">
 <table class="table table-hover" id="empList">
     <thead>

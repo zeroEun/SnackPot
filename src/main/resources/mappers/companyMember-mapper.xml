@@ -109,4 +109,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET MEM_STATUS='N'
 		WHERE COM_CODE=#{comCode}
 	</update>
+	
+	<select id="checkMember" parameterType="CompanyMember" resultType="_int">
+		SELECT COUNT (*)
+		FROM COMPANY_MEMBER
+		WHERE MEM_ID=#{memId}
+		AND MEM_NAME=#{memName}
+		AND MEM_PHONE=#{memPhone}
+	</select>
+	
 </mapper>

@@ -1,8 +1,6 @@
 package com.kh.spring.snackpotEmp.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
@@ -67,11 +65,15 @@ public class SnackpotEmpController {
 	}
 	
 	@RequestMapping("loginEmp.sn")
-	public String loginEmp(SnackpotEmp se, Model model) {
-		String encPwd = bCryptPasswordEncoder.encode(se.getSempPw());	
-		System.out.println("비밀번호 암호화 : " + encPwd);
+	public String loginEmp(@ModelAttribute SnackpotEmp se, Model model) {
+		
+		String encPwd = bCryptPasswordEncoder.encode(se.getSempPw());
+		System.out.println("암호화 : " + encPwd);
 		
 		SnackpotEmp loginEmp = ses.loginEmp(bCryptPasswordEncoder, se);
+		
+		
+		
 		model.addAttribute("loginEmp", loginEmp);
 		
 		return "redirect:/mainPage.ho";
@@ -83,7 +85,6 @@ public class SnackpotEmpController {
 		//암호회된 비밀번호
 		String encPwd = bCryptPasswordEncoder.encode(se.getSempPw());
 		se.setSempPw(encPwd);
-		System.out.println("비밀번호 암호화 : " + encPwd);
 		
 		se.setSempStatus("Y");
 		ses.insertEmp(se);
@@ -488,23 +489,23 @@ public class SnackpotEmpController {
 		SnackpotEmp se = new SnackpotEmp(); 
 		SnackpotEmp loginEmp = (SnackpotEmp) session.getAttribute("loginEmp");
 		
-		if(bCryptPasswordEncoder.matches(originPw, loginEmp.getSempPw())) {
-			String encPw = bCryptPasswordEncoder.encode(sempPw);
-			se.setSempNum(loginEmp.getSempNum());
-			se.setSempPw(encPw);
-			ses.updatePw(se);
+			if(bCryptPasswordEncoder.matches(originPw, loginEmp.getSempPw())) {
+				String encPw = bCryptPasswordEncoder.encode(sempPw);
+				se.setSempNum(loginEmp.getSempNum());
+				se.setSempPw(encPw);
+				ses.updatePw(se);
+				
+				loginEmp.setSempPw(encPw);
+				
+				model.addAttribute("msg","비밀번호 변경에 성공하였습니다.");
+		        model.addAttribute("url","/mainPage.ho");
+		        
+			}else {
+				model.addAttribute("msg","비밀번호가 일치하지 않아 변경에 실패했습니다.");
+		        model.addAttribute("url","/modifyPw.sn");	
+				
+			}
 			
-			loginEmp.setSempPw(encPw);
-			
-			model.addAttribute("msg","비밀번호 변경에 성공하였습니다.");
-	        model.addAttribute("url","/mainPage.ho");
-	        
-		}else {
-			model.addAttribute("msg","비밀번호가 일치하지 않아 변경에 실패했습니다.");
-	        model.addAttribute("url","/modifyPw.co");	
-			
-		}
-		
 		return "common/alert";
 	}
 	

@@ -86,7 +86,7 @@
 <form id="insertEmpForm" action="insertEmp.em">
 <div id="outline">
 <div id="content">&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;
-<label>사원번호</label>&emsp;&emsp;&emsp;<input type="text" name="cempNum" placeholder="내용을 입력해주세요.">&emsp;
+<label>사원번호</label>&emsp;&emsp;&emsp;<input type="text" name="cempNum" placeholder="내용을 입력해주세요." onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">&emsp;
 <button type="button" id="checkNumBtn" onclick="checkNum();">중복확인</button><br><br>
 <label>사원이름</label>&emsp;&emsp;&emsp;<input type="text" name="cempName" placeholder="내용을 입력해주세요."><br><br>
 <label class="l1">부서</label>&emsp;&emsp;&emsp;<input class="i1" type="text" name="cempDept" placeholder="내용을 입력해주세요."><br><br>

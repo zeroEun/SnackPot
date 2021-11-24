@@ -29,13 +29,20 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 		
 		SnackpotEmp loginEmp = sed.loginEmp(sqlSession, se);
 		
-		if(loginEmp == null) {
+		if(loginEmp != null) {
+			
+			if(loginEmp.getSempNum() != 0) {
+			
+				if(!bCryptPasswordEncoder.matches(se.getSempPw(), loginEmp.getSempPw())) {
+				throw new CommException("암호 불일치");
+				}
+			}
+			
+		}else {
 			throw new CommException("회원정보가 존재하지 않습니다"); 
 		}
 		
-//		if(!bCryptPasswordEncoder.matches(se.getSempPw(), loginEmp.getSempPw())) {
-//			throw new CommException("암호 불일치");
-//		}
+		
 		
 		return loginEmp;
 	}

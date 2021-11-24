@@ -43,9 +43,7 @@ public class CompanyMemberDao {
 
 	public CompanyMember loginMember(SqlSessionTemplate sqlSession, CompanyMember m) {
 		
-		CompanyMember mem = sqlSession.selectOne("companyMemberMapper.loginMember", m);
-		
-		return mem;
+		return sqlSession.selectOne("companyMemberMapper.loginMember", m);
 	}
 
 	public String findId(SqlSessionTemplate sqlSession, String memName, String memPhone) {
@@ -132,6 +130,16 @@ public class CompanyMemberDao {
 	public int deleteAllMem(SqlSessionTemplate sqlSession, String comCode) {
 		
 		return sqlSession.update("companyMemberMapper.deleteAllMem", comCode);
+	}
+
+	public CompanyMember readMember(SqlSessionTemplate sqlSession, String memId) {
+		
+		return sqlSession.selectOne("companyMemberMapper.readMember", memId);
+	}
+
+	public int checkMember(SqlSessionTemplate sqlSession, CompanyMember m) {
+		
+		return sqlSession.selectOne("companyMemberMapper.checkMember", m);
 	}
 
 

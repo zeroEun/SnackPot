@@ -39,7 +39,7 @@
     	background-color: rgb(94, 94, 94);
     	color: white;
     	border-radius: 5px;
-    	margin-right: -80px;
+    	margin-right: -40px;
     }
     .empBtn{
     	width: 80px;

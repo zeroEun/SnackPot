@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.kh.spring.companyEmp.model.service.CompanyEmpService;
 import com.kh.spring.companyEmp.model.vo.CompanyEmp;
 import com.kh.spring.companyMember.model.vo.CompanyMember;
-import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -179,4 +177,5 @@ public class CompanyEmpController {
 		
 		return String.valueOf(result);
 	}
+	
 }

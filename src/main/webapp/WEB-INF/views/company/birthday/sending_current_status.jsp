@@ -574,7 +574,7 @@
 				console.log("thisMonth : " + thisMonth);
 				console.log("empMonth : " + empMonth);
 				
-				if(cempNum == "" ||cempDept == "" || cempJob == "" || cempName == "" || 
+				if(cempNum == "" || cempDept == "" || cempJob == "" || cempName == "" || 
 						cempPhone == "" || cempEmail == "" || cempBirth == ""){
 					alert("모든 항목을 입력해주세요.");
 				}else{

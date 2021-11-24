@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type="SendList" id="sListResultSet">
 		<id property="sListNo" column="SLIST_NO"></id>
+		<result property="cempNum" column="CEMP_NUM"></result>
 		<result property="cempDept" column="CEMP_DEPT"></result>
 		<result property="cempJob" column="CEMP_JOB"></result>
 		<result property="cempName" column="CEMP_NAME"></result>
@@ -162,7 +163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 발송 리스트 삽입, 수정 -->
 	<insert id="insertSendList" parameterType="SendList">
 		INSERT INTO COMPANY_EMP VALUES
-		(COM_EMP_SEQ.NEXTVAL, #{cempName}, #{cempDept}, #{cempJob}, #{cempEmail}, #{cempPhone}, #{cempBirth}, TEST_SEQ1.NEXTVAL, 'Y', #{comCode})
+		(COM_EMP_SEQ.NEXTVAL, #{cempName}, #{cempDept}, #{cempJob}, #{cempEmail}, #{cempPhone}, #{cempBirth}, #{cempNum}, 'Y', #{comCode})
 	</insert>
 	
 	<insert id="insertSendList2" parameterType="SendList">
@@ -172,7 +173,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="updateSendList" parameterType="SendList">
 		UPDATE COMPANY_EMP SET
-		CEMP_NAME=#{cempName}, CEMP_DEPT=#{cempDept}, CEMP_JOB=#{cempJob}, 
+		CEMP_NAME=#{cempName}, CEMP_DEPT=#{cempDept}, CEMP_JOB=#{cempJob}, CEMP_NUM=#{cempNum},
 		CEMP_EMAIL=#{cempEmail}, CEMP_PHONE=#{cempPhone}, CEMP_BIRTH=#{cempBirth} 
 		WHERE CEMP_SEQ=#{cempSeq}
 	</update>

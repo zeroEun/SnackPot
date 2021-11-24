@@ -17,6 +17,7 @@ public class SendList {
 
 	private String sListNo;
 	private int cempSeq;
+	private int cempNum;
 	private String cempDept;
 	private String cempJob;
 	private String cempName;

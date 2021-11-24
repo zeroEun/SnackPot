@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <script
@@ -142,18 +142,16 @@
 					                   			</c:when>
 					                   			<c:when test="${!empty sendListSts }">
 					                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
-					                   					<c:if test="${ sendingSts.selectDate == null }">                  		
 														<c:set var="num1" value="${ num1+1 }" />
-								                        <tr>
-								                           	<td>${ num1 }</td>
-															<td>${ sendingSts.cempDept }</td>
-															<td>${ sendingSts.cempJob }</td>
-															<td>${ sendingSts.cempName }</td>
-															<td>${ sendingSts.cempPhone }</td>
-															<td>${ sendingSts.cempBirth }</td>
-															<td>${ sendingSts.sendingMsgDate }</td>
-								                        </tr>			                        
-								                    	</c:if>			                    	
+									                        <tr>
+									                           	<td>${ num1 }</td>
+																<td>${ sendingSts.cempDept }</td>
+																<td>${ sendingSts.cempJob }</td>
+																<td>${ sendingSts.cempName }</td>
+																<td>${ sendingSts.cempPhone }</td>
+																<td>${ sendingSts.cempBirth }</td>
+																<td>${ sendingSts.sendingMsgDate }</td>
+									                        </tr>
 					                   				</c:forEach>
 					                   				<c:if test="${empty num1 }">
 					                   					<tr><td colspan="8">발송 예정인 사원이 없습니다.</td></tr>
@@ -180,10 +178,10 @@
 										<th scope="col">선택완료일</th>
 									</tr>
 								</thead>
-								<tbody class="tableBody">
-				                    	<c:set var="sendListSts" value="${list }"/>
+								<tbody class="tableBody" id="completeStatusList">
 				                    	<c:set var="birthSubsChk" value="${birthSubsChk }"/>
 				                    	<c:if test ="${birthSubsChk > 0}">
+				                    	<!-- 
 					                   		<c:choose>
 					                   			<c:when test="${empty sendListSts }">
 					                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
@@ -207,7 +205,7 @@
 					                   					<tr><td colspan="8">발송 완료인 사원이 없습니다.</td></tr>
 					                   				</c:if>
 					                   				</c:when>
-					                   		</c:choose>
+					                   		</c:choose> -->
 				                   		</c:if>
 				                   		<c:if test ="${birthSubsChk <= 0}">
 				                   			<tr><td colspan="8">구독 정보가 존재하지 않습니다.</td></tr>
@@ -221,7 +219,82 @@
 				</div>
 			</div>
 		</div>
-
+		
+		<input type="hidden" id="comCodeInput" name="comCode" value="${loginEmp.sempComCode }">
 	</section>
+	<script>
+		$(function(){
+			$(document).on('click', '#sending_complete', function(){
+				
+				var selectComplete = $("input[name='comCode']").val();
+				console.log(selectComplete);
+				
+				$.ajax({
+					url: "completeStatusList.ho",
+					type: "POST",
+					data:{
+						comCode : selectComplete
+					},
+					success: function(list){
+						console.log(list);
+						var result = '';
+	
+						$.each(list, function(index, item){
+							var parsedBirth = dateParse(item.cempBirth);
+							var parsedSelectDate = dateParse(item.selectDate);
+							//console.log(parsedBirth);
+							//console.log(parsedSelectDate);
+							result += '<tr>';
+							result += '<td>' + (index+1) + '</td>';
+							result += '<td>' + item.cempDept + '</td>';
+							result += '<td>' + item.cempJob + '</td>';
+							result += '<td>' + item.cempName + '</td>';
+							result += '<td>' + item.cempPhone + '</td>';
+							result += '<td>' + parsedBirth + '</td>';
+							result += '<td>' + parsedSelectDate + '</td>';
+							result += '</tr>';
+						});
+						$("#completeStatusList").html(result);
+						
+					},
+					error: function(error){
+						console.log(error);
+					}
+				});
+				
+			});
+		});
+		<%-- 날짜를 가져와서 년,월,일 추출하는 함수 --%>
+		function dateParse(value){
+			var y = value.substr(-4);
+			var m = value.substr(0,2)-1;
+			var d = value.substr(-8,2);
+			d = d.replace(" ","");
+
+			var parsed = new Date(y,m,d);
+
+			var result = toStringByFormatting(parsed);
+			//console.log(result);
+			//console.log(typeof result);
+			return result;
+		}
+		<%-- 월, 일이 10보다 작을 때 앞에 0붙여서 출력하기 위한 함수 --%>
+		function zeroPlus(value){
+			if(value >= 10){
+				return value;
+			}
+
+			return '0'+value;
+		}
+		<%-- 날짜를 yyyy-MM-dd 형식으로 출력하기 위한 함수 --%>
+		function toStringByFormatting(value){
+			const year = value.getFullYear();
+			const month = zeroPlus(value.getMonth() + 1);
+			const day = zeroPlus(value.getDate());
+			
+			return [year, month, day].join('-');
+			
+		}
+	</script>
 </body>
 </html>

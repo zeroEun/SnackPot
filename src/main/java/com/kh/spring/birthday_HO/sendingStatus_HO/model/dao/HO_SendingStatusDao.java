@@ -15,6 +15,12 @@ public class HO_SendingStatusDao {
 		return (ArrayList)sqlSession.selectList("birthdayMapper_HO.selectStatusList", selectInfo);
 	}
 
+	public ArrayList<HO_SendingStatus> completeStatusList(SqlSessionTemplate sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("birthdayMapper_HO.completeStatusList", comCode);
+	}
+
+	
 	public String selectSendingTime(SqlSessionTemplate sqlSession, String comCode) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("birthdayMapper_HO.selectSendingTime", comCode);

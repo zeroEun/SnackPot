@@ -17,6 +17,7 @@ public class SendingStatus {
 
 	private int curStatusNo;
 	private int cempSeq;
+	private int cempNum;
 	private String cempDept;
 	private String cempJob;
 	private String cempName;

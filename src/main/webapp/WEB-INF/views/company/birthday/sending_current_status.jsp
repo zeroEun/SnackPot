@@ -172,19 +172,17 @@
 			                   			</c:when>
 			                   			<c:when test="${!empty sendListSts }">
 			                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
-			                   					<c:if test="${ sendingSts.selectDate == null }">                  		
 												<c:set var="num1" value="${ num1+1 }" />
-						                        <tr>
-						                            <td><input type="checkbox" name="sendingChk" value="${sendingSts.cempSeq }"></td>
-						                           	<td>${ num1 }</td>
-													<td>${ sendingSts.cempDept }</td>
-													<td>${ sendingSts.cempJob }</td>
-													<td>${ sendingSts.cempName }</td>
-													<td>${ sendingSts.cempPhone }</td>
-													<td>${ sendingSts.cempBirth }</td>
-													<td>${ sendingSts.sendingMsgDate }</td>
-						                        </tr>			                        
-						                    	</c:if>			                    	
+							                        <tr>
+							                            <td><input type="checkbox" name="sendingChk" value="${sendingSts.cempSeq }"></td>
+							                           	<td>${ num1 }</td>
+														<td>${ sendingSts.cempDept }</td>
+														<td>${ sendingSts.cempJob }</td>
+														<td>${ sendingSts.cempName }</td>
+														<td>${ sendingSts.cempPhone }</td>
+														<td>${ sendingSts.cempBirth }</td>
+														<td>${ sendingSts.sendingMsgDate }</td>
+							                        </tr>
 			                   				</c:forEach>
 			                   				<c:if test="${empty num1 }">
 			                   					<tr><td colspan="8">발송 예정인 사원이 없습니다.</td></tr>
@@ -210,38 +208,44 @@
 		                            </div>
 		                            
 		                                <div class="modal-body">
+		                                	<div class="form-group row">
+		                                        <label for="" class="col-form-label col-sm-3">사원번호</label>
+		                                        <div class="col-sm-9">
+		                                            <input type="text" class="form-control" id="cempNum" required>
+		                                        </div>
+		                                    </div>
 		                                    <div class="form-group row">
-		                                        <label for="deptName" class="col-form-label col-sm-3">부서명</label>
+		                                        <label for="" class="col-form-label col-sm-3">부서명</label>
 		                                        <div class="col-sm-9">
 		                                            <input type="text" class="form-control" id="cempDept" required>
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
-		                                        <label for="deptName" class="col-form-label col-sm-3">직급명</label>
+		                                        <label for="" class="col-form-label col-sm-3">직급명</label>
 		                                        <div class="col-sm-9">
 		                                            <input type="text" class="form-control" id="cempJob" required>
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
-		                                        <label for="deptName" class="col-form-label col-sm-3">사원명</label>
+		                                        <label for="" class="col-form-label col-sm-3">사원명</label>
 		                                        <div class="col-sm-9">
 		                                            <input type="text" class="form-control" id="cempName" required>
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
-		                                        <label for="deptName" class="col-form-label col-sm-3">전화번호</label>
+		                                        <label for="" class="col-form-label col-sm-3">전화번호</label>
 		                                        <div class="col-sm-9">
 		                                            <input type="text" class="form-control" id="cempPhone" placeholder="'-' 빼고 입력" required>
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
-		                                        <label for="deptName" class="col-form-label col-sm-3">이메일</label>
+		                                        <label for="" class="col-form-label col-sm-3">이메일</label>
 		                                        <div class="col-sm-9">
 		                                            <input type="email" class="form-control" id="cempEmail" placeholder="example@email" required>
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
-		                                        <label for="deptName" class="col-form-label col-sm-3">생일날짜</label>
+		                                        <label for="" class="col-form-label col-sm-3">생일날짜</label>
 		                                        <div class="col-sm-9">
 		                                            <input type="date" class="form-control" id="cempBirth" required>
 		                                        </div>
@@ -267,7 +271,13 @@
 		                                </button>
 		                            </div>
 		                            	<input type="hidden" id="cSeq">
-		                                <div class="modal-body">                                
+		                                <div class="modal-body">
+		                                	<div class="form-group row">
+		                                        <label for="" class="col-form-label col-sm-3">사원번호</label>
+		                                        <div class="col-sm-9">
+		                                            <input type="text" class="form-control" id="cNum" required>
+		                                        </div>
+		                                    </div>                           
 		                                    <div class="form-group row">
 		                                        <label for="deptName" class="col-form-label col-sm-3">부서명</label>
 		                                        <div class="col-sm-9">
@@ -327,13 +337,15 @@
 		                            <th scope="col">선택완료일</th>
 		                        </tr>
 		                    </thead>
-		                    <tbody class="tableBody">
-		                    	<c:set var="sendListSts" value="${list }"/>
+		                    <!-- <tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr> -->
+		                    <tbody class="tableBody" id="completeCursts">
+		                    	<!--<c:set var="sendListSts" value="${list }"/>-->
 		                    	<c:set var="birthSubsChk" value="${birthSubsChk }"/>
 		                   		<c:if test ="${birthSubsChk > 0}">
-			                   		<c:choose>
+		                   		<!-- 
+		                   		<c:choose>
 			                   			<c:when test="${empty sendListSts }">
-			                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
+			                   				
 			                   			</c:when>
 			                   			<c:when test="${!empty sendListSts }">
 			                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
@@ -355,6 +367,8 @@
 			                   				</c:if>
 			                   				</c:when>
 			                   		</c:choose>
+		                   		 -->
+			                   		
 		                   		</c:if>
 		                   		<c:if test ="${birthSubsChk <= 0}">
 		                   			<tr><td colspan="8">구독 정보가 존재하지 않습니다.</td></tr>
@@ -369,10 +383,110 @@
     		<input type="hidden" id="comCodeInput" name="comCode" value="${loginUser.comCode }">
     	</section>
 		
-    
+    <!-- 
+		                   		<c:choose>
+			                   			<c:when test="${empty sendListSts }">
+			                   				
+			                   			</c:when>
+			                   			<c:when test="${!empty sendListSts }">
+			                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
+												<c:if test="${ sendingSts.selectDate != null }">
+													<c:set var="num2" value="${ num2+1 }" />
+														
+														<tr>
+															<td>${ num2 }</td>
+															<td>${ sendingSts.cempDept }</td>
+															<td>${ sendingSts.cempJob }</td>
+															<td>${ sendingSts.cempName }</td>
+															<td>${ sendingSts.cempPhone }</td>
+															<td>${ sendingSts.cempBirth }</td>
+															<td>${ sendingSts.sendingMsgDate }</td>
+														</tr>
+														
+												</c:if>
+											</c:forEach>
+			                   				<c:if test="${empty num2 }">
+			                   					<tr><td colspan="8">발송 완료인 사원이 없습니다.</td></tr>
+			                   				</c:if>
+			                   				</c:when>
+			                   		</c:choose>
+		                   		 -->
         
         
 	<script>
+		$(function(){
+			$(document).on('click', '#sending_complete', function(){
+				
+				var selectComplete = $("input[name='comCode']").val();
+				console.log(selectComplete);
+				
+				$.ajax({
+					url: "completeCursts.birth",
+					type: "POST",
+					data:{
+						comCode : selectComplete
+					},
+					success: function(list){
+						console.log(list);
+						var result = '';
+
+						$.each(list, function(index, item){
+							var parsedBirth = dateParse(item.cempBirth);
+							var parsedSelectDate = dateParse(item.selectDate);
+							//console.log(parsedBirth);
+							//console.log(parsedSelectDate);
+							result += '<tr>';
+							result += '<td>' + (index+1) + '</td>';
+							result += '<td>' + item.cempDept + '</td>';
+							result += '<td>' + item.cempJob + '</td>';
+							result += '<td>' + item.cempName + '</td>';
+							result += '<td>' + item.cempPhone + '</td>';
+							result += '<td>' + parsedBirth + '</td>';
+							result += '<td>' + parsedSelectDate + '</td>';
+							result += '</tr>';
+						});
+						$("#completeCursts").html(result);
+						
+					},
+					error: function(error){
+						console.log(error);
+					}
+				});
+				
+			});
+		});
+		<%-- 날짜를 가져와서 년,월,일 추출하는 함수 --%>
+		function dateParse(value){
+			var y = value.substr(-4);
+			var m = value.substr(0,2)-1;
+			var d = value.substr(-8,2);
+			d = d.replace(" ","");
+
+			var parsed = new Date(y,m,d);
+
+			var result = toStringByFormatting(parsed);
+			//console.log(result);
+			//console.log(typeof result);
+			return result;
+		}
+		<%-- 월, 일이 10보다 작을 때 앞에 0붙여서 출력하기 위한 함수 --%>
+		function zeroPlus(value){
+			if(value >= 10){
+				return value;
+			}
+
+			return '0'+value;
+		}
+		<%-- 날짜를 yyyy-MM-dd 형식으로 출력하기 위한 함수 --%>
+		function toStringByFormatting(value){
+			const year = value.getFullYear();
+			const month = zeroPlus(value.getMonth() + 1);
+			const day = zeroPlus(value.getDate());
+			
+			return [year, month, day].join('-');
+			
+		}
+		
 		<%-- 전체 체크 설정 --%>
 		$(function(){
 	    	var chkRow = $("input[name='sendingChk']");
@@ -447,6 +561,7 @@
 			
 			$("#insertSendStsBtn").click(function(){
 				
+				var cempNum = $("#cempNum").val();
 				var cempDept = $("#cempDept").val();
 				var cempJob = $("#cempJob").val();
 				var cempName = $("#cempName").val();
@@ -459,7 +574,7 @@
 				console.log("thisMonth : " + thisMonth);
 				console.log("empMonth : " + empMonth);
 				
-				if(cempDept == "" || cempJob == "" || cempName == "" || 
+				if(cempNum == "" ||cempDept == "" || cempJob == "" || cempName == "" || 
 						cempPhone == "" || cempEmail == "" || cempBirth == ""){
 					alert("모든 항목을 입력해주세요.");
 				}else{
@@ -468,6 +583,7 @@
 		    				url : "insSendSts.birth",
 		    				type : "POST",
 		    				data:{
+		    					cempNum : cempNum,
 		    					comCode : comCode,
 		    					cempDept : cempDept,
 		    					cempJob : cempJob,
@@ -531,6 +647,7 @@
 						console.log("result2 : " + cempSeq);
 						console.log("result3 : " + result.cempBirthSdf);
 						$("#cSeq").val(cempSeq);
+						$("#cNum").val(result.cempNum);
 						$("#cDept").val(result.cempDept);
 						$("#cJob").val(result.cempJob);
 						$("#cName").val(result.cempName);
@@ -569,6 +686,7 @@
 					type : "POST",
 					data:{
 						cempSeq : $("#cSeq").val(),
+						cempNum : $("#cNum").val(),
 						cempDept : $("#cDept").val(),
 						cempJob : $("#cJob").val(),
 						cempName : $("#cName").val(),

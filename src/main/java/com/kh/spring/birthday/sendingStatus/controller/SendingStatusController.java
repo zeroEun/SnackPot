@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.spring.birthday.giftList.model.vo.GiftList;
 import com.kh.spring.birthday.sendingStatus.model.service.SendingStatusService;
 import com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus;
 import com.kh.spring.birthday_HO.sendingStatus_HO.model.vo.HO_SendingStatus;
@@ -68,6 +69,20 @@ public class SendingStatusController {
 			return "company/birthday/sending_current_status";
 		}
 
+	}
+
+	@ResponseBody
+	@RequestMapping(value="completeCursts.birth")
+	public ArrayList<SendingStatus> completeCursts(String comCode) {
+	
+		System.out.println("발송완료 comCode : " + comCode);
+		
+		ArrayList<SendingStatus> list = new ArrayList<SendingStatus>();
+		
+		list = sendingStatusService.completeCursts(comCode);
+		System.out.println("completeCursts : " + list);
+		return list;
+		
 	}
 	
 	private int selectSendingTime(String comCode) {

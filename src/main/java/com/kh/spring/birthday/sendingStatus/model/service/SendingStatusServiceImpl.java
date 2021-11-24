@@ -33,6 +33,12 @@ public class SendingStatusServiceImpl implements SendingStatusService {
 	}
 
 	@Override
+	public ArrayList<SendingStatus> completeCursts(String comCode) {
+		// TODO Auto-generated method stub
+		return sendingStatusDao.completeCursts(sqlSession, comCode);
+	}
+
+	@Override
 	public int deleteSendStatus(int cempSeq) {
 		
 		int result = sendingStatusDao.deleteSendStatus(sqlSession, cempSeq);

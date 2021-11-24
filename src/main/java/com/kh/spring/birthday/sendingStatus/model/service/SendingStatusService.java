@@ -22,4 +22,6 @@ public interface SendingStatusService {
 
 	int insertSendStatus2(SendingStatus s);
 
+	ArrayList<SendingStatus> completeCursts(String comCode);
+
 }

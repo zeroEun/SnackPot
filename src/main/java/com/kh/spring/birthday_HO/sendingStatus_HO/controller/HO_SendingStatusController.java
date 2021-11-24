@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.spring.birthday.sendingStatus.model.vo.SendingStatus;
 import com.kh.spring.birthday_HO.sendingStatus_HO.model.service.HO_SendingStatusService;
 import com.kh.spring.birthday_HO.sendingStatus_HO.model.vo.HO_SendingStatus;
 import com.kh.spring.snackpotEmp.model.vo.SnackpotEmp;
@@ -66,6 +68,20 @@ public class HO_SendingStatusController {
 			return "headoffice/birthday_HO/sending_current_status_HO";
 		}
 
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="completeStatusList.ho")
+	public ArrayList<HO_SendingStatus> completeStatusList(String comCode) {
+	
+		System.out.println("발송완료 comCode : " + comCode);
+		
+		ArrayList<HO_SendingStatus> list = new ArrayList<HO_SendingStatus>();
+		
+		list = sendingStsService.completeStatusList(comCode);
+		System.out.println("completeStatusList : " + list);
+		return list;
+		
 	}
 	
 	private int selectSendingTime(String comCode) {

@@ -93,11 +93,13 @@ public class CompanyMemberController {
 	
 	@ResponseBody
 	@RequestMapping("selectId.co")
-	public String selectId(String memId) {
+	public String selectId(String memId, HttpSession session) {
+		
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		
 		String id = "";
 		try {
-		id = cms.selectId(memId);
+		id = cms.selectId(memId, loginUser.getComCode());
 		}catch(Exception e) {
 			id = null;
 		}
@@ -293,7 +295,7 @@ public class CompanyMemberController {
 		if(memType.equals("origin")) {
 			
 			//담당자로 변경
-			cms.updateNewAdmin(originMemId);
+			cms.updateNewAdmin(originMemId, loginUser.getComCode());
 			
 			//기존 담당자 권한 회수
 			String memId = loginUser.getMemId();

@@ -112,7 +112,6 @@
 <label class="bold">1인당 최대 금액</label>&emsp;&emsp;<label id="ll1">${bSub.per_amount }원</label><br>
 <label class="bold">발송 시점</label>&emsp;&emsp;<label id="ll2">${bSub.sending_time }</label><br>
 <label class="bold">선물 선택 알림 메세지</label>&emsp;&emsp;<input type="text" id="ll3" class="msg" value="${bSub.notification_msg }" readonly><br><br>
-<label class="bold">선물 도착 메세지</label>&emsp;&emsp;<input type="text" id="ll4" class="msg" value="${bSub.completion_msg }" readonly><br><br>
 <label class="bold">결제일</label>&emsp;&emsp;<label id="ll5">매월 ${setBDate }일</label>
 </c:when>
 </c:choose>

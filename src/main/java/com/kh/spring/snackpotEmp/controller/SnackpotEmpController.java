@@ -615,6 +615,7 @@ public class SnackpotEmpController {
 		ArrayList <CompanyEmp> list = ces.selectEmpList(comCode);
 		
 		model.addAttribute("list", list);
+		model.addAttribute("comName", comName);
 		
 		return "headoffice/snackpotEmp/subEmpList";
 	}

@@ -157,16 +157,16 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 	}
 
 	@Override
-	public String selectId(String memId) {
+	public String selectId(String memId, String comCode) {
 	
-		String id = cmd.selectId(sqlSession, memId);
+		String id = cmd.selectId(sqlSession, memId, comCode);
 		
 		return id;
 	}
 
 	@Override
-	public void updateNewAdmin(String originMemId) {
-		int result = cmd.updateNewAdmin(sqlSession, originMemId);
+	public void updateNewAdmin(String originMemId, String comCode) {
+		int result = cmd.updateNewAdmin(sqlSession, originMemId, comCode);
 		
 		if(result < 0) {
 			throw new CommException("담당자 권한 변경에 실패했습니다");

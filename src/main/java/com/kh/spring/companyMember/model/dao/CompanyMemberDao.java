@@ -102,16 +102,22 @@ public class CompanyMemberDao {
 		return sqlSession.update("companyMapper.updateCompanyAdmin", parameters);
 	}
 
-	public String selectId(SqlSessionTemplate sqlSession, String memId) {
+	public String selectId(SqlSessionTemplate sqlSession, String memId, String comCode) {
 		
-		String id = sqlSession.selectOne("companyMemberMapper.selectId", memId);
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("memId", memId);
+		parameters.put("comCode", comCode);
 		
-		return id;
+		return sqlSession.selectOne("companyMemberMapper.selectId", parameters);
 	}
 
-	public int updateNewAdmin(SqlSessionTemplate sqlSession, String memId) {
-	
-		return sqlSession.update("companyMemberMapper.updateNewAdmin", memId);
+	public int updateNewAdmin(SqlSessionTemplate sqlSession, String memId, String comCode) {
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("memId", memId);
+		parameters.put("comCode", comCode);
+		
+		return sqlSession.update("companyMemberMapper.updateNewAdmin", parameters);
 	}
 
 	public String selectSnackSubSta(SqlSessionTemplate sqlSession, String memId) {

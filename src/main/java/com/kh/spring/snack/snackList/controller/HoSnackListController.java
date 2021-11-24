@@ -343,7 +343,8 @@ public class HoSnackListController {
 		ArrayList<SnackDList> dList = new ArrayList<SnackDList>();
 		
 		int amount = defaultAmount;
-		int snackCount = hoSnackListService.selectSnackCount()-1;
+		//int snackCount = hoSnackListService.selectSnackCount()-1;
+		int snackCount = list.size();
 		System.out.println("snackCount" + snackCount);
 		
 		int budget = subs.getBudget();
@@ -399,7 +400,6 @@ public class HoSnackListController {
 			while(iter.hasNext()) {
 				
 				SnackDList s = iter.next();
-				
 				if(r == s.getRowNum()) {
 					System.out.println("------------일치----------");
 					

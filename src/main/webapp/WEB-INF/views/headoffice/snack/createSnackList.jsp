@@ -62,6 +62,11 @@
             width: 50px;
         }
 
+		.image{
+			width: 50px;
+			height: 50px;
+		}
+
 </style>
 </head>
 <body>
@@ -198,7 +203,7 @@
                             		<tr>
 	                                	<td>${list.categoryName}</td>
 	                                    <td>${list.subCategoryName}</td>
-	                                    <td></td>
+	                                    <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${list.imageName}"></td>
 	                                    <td>${list.snackName}</td>
 	                                    <td class="searchPrice" id="searchPrice${list.snackNo}">${list.releasePrice}</td>
 	                                    <td><input type="number" class="searchAmount" id="${list.snackNo}" min=1 max="${list.stock}" required></td>
@@ -249,7 +254,7 @@
 		                                </td>
 		                            	<td>${dList.categoryName}</td>
 		                                <td>${dList.subCategoryName}</td>
-		                                <td></td>
+		                                <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${dList.imageName}"></td>
 		                                <td>${dList.snackName}</td>
 		                                <td>${dList.releasePrice}</td>
 		                                <td><input type="number" class="amount" id="${dList.snackDNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>

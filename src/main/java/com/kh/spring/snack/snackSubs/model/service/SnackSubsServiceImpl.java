@@ -10,6 +10,9 @@ import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.vo.Aroma;
 import com.kh.spring.product.model.vo.SnackSubCategory;
 import com.kh.spring.product.model.vo.Taste;
+import com.kh.spring.snack.snackList.model.dao.HoSnackListDao;
+import com.kh.spring.snack.snackList.model.vo.SnackList;
+import com.kh.spring.snack.snackOrder.model.dao.SnackOrderDao;
 import com.kh.spring.snack.snackSubs.model.dao.SnackSubsDao;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
@@ -21,6 +24,12 @@ public class SnackSubsServiceImpl implements SnackSubsService {
 	
 	@Autowired
 	private SnackSubsDao snackSubsDao;
+	
+	@Autowired
+	private SnackOrderDao snackOrderDao;
+	
+	@Autowired
+	private HoSnackListDao hoSnackListDao;
 
 	
 	@Override
@@ -66,12 +75,24 @@ public class SnackSubsServiceImpl implements SnackSubsService {
 	}
 
 	@Override
-	public void cancelSnackSubs(int subsNo) {
+	public void cancelSnackSubs(int subsNo, String comCode) {
+		
+		int cancelListResult = hoSnackListDao.cancelSnackList(sqlSession, comCode);
+		
+		if(cancelListResult < 0 ) {
+			throw new CommException("cancelListResult 실패");
+		}
+		
+		int cancelOrderResult = snackOrderDao.cancelOrders(sqlSession, comCode);
+		
+		if(cancelOrderResult < 0 ) {
+			throw new CommException("cancelOrderResult 실패");
+		}
 		
 		int result = snackSubsDao.cancelSnackSubs(sqlSession, subsNo);
 		
 		if(result < 0 ) {
-			throw new CommException("구독 취소 실패");
+			throw new CommException("cancelSnackSubs 실패");
 		}
 	}
 

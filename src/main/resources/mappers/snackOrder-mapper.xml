@@ -258,5 +258,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 </if>
 		ORDER BY A.ORDER_DATE DESC, B.COM_NAME
 	</select>
+	
+	<delete id="cancelOrders" parameterType="String">
+		DELETE FROM ORDERS
+		WHERE ORDER_NO = (SELECT ORDER_NO
+		                  FROM ORDERS
+		                  WHERE COM_CODE = #{comCode}
+		                  AND ORDER_STATUS = 'N')
+	</delete>
 
 </mapper>

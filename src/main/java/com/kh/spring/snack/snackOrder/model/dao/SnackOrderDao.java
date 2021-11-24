@@ -94,4 +94,8 @@ public class SnackOrderDao {
 		return (ArrayList)sqlSession.selectList("snackOrderMapper.selectHoSearchOrder", search);
 	}
 
+	public int cancelOrders(SqlSessionTemplate sqlSession, String comCode) {
+		return sqlSession.delete("snackOrderMapper.cancelOrders", comCode);
+	}
+
 }

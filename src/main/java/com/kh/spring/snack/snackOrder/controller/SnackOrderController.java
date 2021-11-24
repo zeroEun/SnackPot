@@ -266,4 +266,11 @@ public class SnackOrderController {
 		
 	}
 	
+	public void deleteOrder(SessionStatus session) {
+		
+		session.setComplete();
+	}
+	
+	
+	
 }

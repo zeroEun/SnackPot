@@ -114,6 +114,10 @@ public class HoSnackListDao {
 		return (ArrayList)sqlSession.selectList("snackListMapper.selectWish", info);
 	}
 
+	public int cancelSnackList(SqlSessionTemplate sqlSession, String comCode) {
+		return sqlSession.delete("snackListMapper.cancelSnackList", comCode);
+	}
+
 
 
 }

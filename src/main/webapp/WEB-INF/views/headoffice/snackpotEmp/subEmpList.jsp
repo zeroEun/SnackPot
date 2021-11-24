@@ -55,7 +55,7 @@
 
 
 <div class="container" id="outer">
-<h5 id="title">사원 조회</h5><br><br><br><br>
+<h5 id="title">${comName} 사원 조회</h5><br><br><br><br>
 <div id="tdiv">
 <table class="table table-hover" id="empList">
     <thead>

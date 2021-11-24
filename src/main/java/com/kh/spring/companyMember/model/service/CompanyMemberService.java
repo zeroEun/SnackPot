@@ -39,9 +39,9 @@ public interface CompanyMemberService {
 
 	void updateCompanyAdmin(String newMemId, String comCode);
 
-	String selectId(String memId);
+	String selectId(String memId, String comCode);
 
-	void updateNewAdmin(String originMemId);
+	void updateNewAdmin(String originMemId, String comCode);
 
 	String selectSnackSubSta(String memId);
 

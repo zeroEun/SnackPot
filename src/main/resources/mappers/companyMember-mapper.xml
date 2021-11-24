@@ -76,16 +76,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE MEM_ID=#{memId}
 	</update>
 	
-	<select id="selectId" parameterType="string" resultType="string">
+	<select id="selectId" parameterType="hashMap" resultType="string">
 		SELECT MEM_ID
 		FROM COMPANY_MEMBER
 		WHERE MEM_ID=#{memId}
+		AND COM_CODE=#{comCode}
 	</select>
 	
-	<update id="updateNewAdmin" parameterType="string">
+	<update id="updateNewAdmin" parameterType="hashMap">
 		UPDATE COMPANY_MEMBER
 		SET ADMIN='Y'
 		WHERE MEM_ID=#{memId}
+		AND COM_CODE=#{comCode}
 	</update>
 	
 	<select id="selectSnackSubSta" parameterType="string" resultType="string">

@@ -146,7 +146,13 @@
 	                                </button>
 	                            </div>
 	                            
-	                                <div class="modal-body">                                
+	                                <div class="modal-body">
+	                                	<div class="form-group row">
+	                                        <label for="" class="col-form-label col-sm-3">사원번호</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cempNum" required>
+	                                        </div>
+	                                    </div>
 	                                    <div class="form-group row">
 	                                        <label for="deptName" class="col-form-label col-sm-3">부서명</label>
 	                                        <div class="col-sm-9">
@@ -204,7 +210,13 @@
 	                                </button>
 	                            </div>
 	                            	<input type="hidden" id="cSeq">
-	                                <div class="modal-body">                                
+	                                <div class="modal-body">
+	                                	<div class="form-group row">
+	                                        <label for="" class="col-form-label col-sm-3">사원번호</label>
+	                                        <div class="col-sm-9">
+	                                            <input type="text" class="form-control" id="cNum" required>
+	                                        </div>
+	                                    </div>                               
 	                                    <div class="form-group row">
 	                                        <label for="deptName" class="col-form-label col-sm-3">부서명</label>
 	                                        <div class="col-sm-9">
@@ -387,6 +399,7 @@
 			
 			$("#insertSendListBtn").click(function(){
 				
+				var cempNum = $("#cempNum").val();
 				var cempDept = $("#cempDept").val();
 				var cempJob = $("#cempJob").val();
 				var cempName = $("#cempName").val();
@@ -399,7 +412,7 @@
 				console.log("thisMonth : " + thisMonth);
 				console.log("empMonth : " + empMonth);
 				
-				if(cempDept == "" || cempJob == "" || cempName == "" || 
+				if(cempNum == "" || cempDept == "" || cempJob == "" || cempName == "" || 
 						cempPhone == "" || cempEmail == "" || cempBirth == ""){
 					alert("모든 항목을 입력해주세요.");
 				}else{
@@ -408,6 +421,7 @@
 							url : "insSendList.birth",
 							type : "POST",
 							data:{
+								cempNum : cempNum,
 								comCode: comCode,
 								cempDept : cempDept,
 								cempJob : cempJob,
@@ -471,6 +485,7 @@
 						console.log("result2 : " + cempSeq);
 						console.log("result3 : " + result.cempBirthSdf);
 						$("#cSeq").val(cempSeq);
+						$("#cNum").val(result.cempNum);
 						$("#cDept").val(result.cempDept);
 						$("#cJob").val(result.cempJob);
 						$("#cName").val(result.cempName);
@@ -508,6 +523,7 @@
 					type : "POST",
 					data:{
 						cempSeq : $("#cSeq").val(),
+						cempNum : $("#cNum").val(),
 						cempDept : $("#cDept").val(),
 						cempJob : $("#cJob").val(),
 						cempName : $("#cName").val(),

@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -225,35 +226,81 @@ public class InvenManagementController {
 		return "headoffice/invenManagement/invenList";
 	}
 	
-	@RequestMapping("searchInven.im")
-	private String searchInven(@RequestParam(value="category") int category, 
-								@RequestParam(value="search") String search,
+	@RequestMapping("searchSno.im")
+	private String searchSno(@RequestParam(value="category") int category, 
+								@RequestParam(value="search") String before,
 								@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
-		int listCount = 0;
-		ArrayList<Snack> list = new ArrayList<Snack>();
-		PageInfo pi = new PageInfo();
-		if(category == 0) {
-			
-			listCount = invenManagementService.sNoSearchCount(search);
-			pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-			list = invenManagementService.sNoSearch(pi, search);
-			
-		}else if(category == 1) {
-			
-			listCount = invenManagementService.sNameSearchCount(search);
-			pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-			list = invenManagementService.sNameSearch(pi, search);
-		}
+		
+		System.out.println("category 0 ========================== ");
+		
+		int search = Integer.parseInt(before);
+		int listCount = invenManagementService.sNoSearchCount(search);
+		
+		
+		PageInfo pi =Pagination.getPageInfo(listCount, currentPage, 10, 5);
+	
+		ArrayList<Snack> list = invenManagementService.sNoSearch(pi, search);
+		
 		
 		System.out.println(list);
 
+		
+		System.out.println("확인 1=====================");
 		model.addAttribute("search", search);
+		model.addAttribute("category", category);
+		model.addAttribute("searchList", list);
+		model.addAttribute("pi", pi);
+		
+		return "headoffice/invenManagement/invenSearchList";
+	}
+	
+	@RequestMapping("searchSname.im")
+	private String searchSname(@RequestParam(value="category") int category, 
+								@RequestParam(value="search") String search,
+								@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
+		
+		System.out.println("category 1 ========================== ");
+		int listCount = invenManagementService.sNameSearchCount(search);
+		
+		PageInfo pi =Pagination.getPageInfo(listCount, currentPage, 10, 5);
+	
+		ArrayList<Snack> list = invenManagementService.sNameSearch(pi, search);
+
+		
+		System.out.println(list);
+
+		
+		System.out.println("확인 2=====================");
+		model.addAttribute("search", search);
+		model.addAttribute("category", category);
 		model.addAttribute("searchList", list);
 		model.addAttribute("pi", pi);
 		
 		return "headoffice/invenManagement/invenSearchList";
 	}
 
+	
+	@RequestMapping("invenDetail.im")
+	private String invenDetail(@RequestParam(value="snackNo") int snackNo, Model model) {
+		
+		System.out.println("invenDetail" + snackNo);
+		
+		Snack snack = invenManagementService.invenDetail(snackNo);
+		ProductAttachment pa = invenManagementService.invenDetailAttach(snackNo);
+		
+		model.addAttribute("snack", snack);
+		model.addAttribute("pa", pa);
+		
+		return "headoffice/invenManagement/invenDetail";
+	}
+	
+	@RequestMapping("snackChart.im")
+	private String snackChart() {
+		
+		
+		return "headoffice/chart/snackChart";
+	}
+	
 	
 	
 }

@@ -32,13 +32,17 @@ public interface InvenManagementService {
 
 	ArrayList<Snack> invenList(PageInfo pi);
 
-	int sNoSearchCount(String search);
+	int sNoSearchCount(int search);
 
-	ArrayList<Snack> sNoSearch(PageInfo pi, String search);
+	ArrayList<Snack> sNoSearch(PageInfo pi, int search);
 
 	int sNameSearchCount(String search);
 
 	ArrayList<Snack> sNameSearch(PageInfo pi, String search);
+
+	Snack invenDetail(int snackNo);
+
+	ProductAttachment invenDetailAttach(int snackNo);
 	
 
 }

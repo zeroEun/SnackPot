@@ -106,13 +106,13 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 	}
 
 	@Override
-	public int sNoSearchCount(String search) {
+	public int sNoSearchCount(int search) {
 		// TODO Auto-generated method stub
 		return invenManagementDao.sNoSearchCount(sqlSession, search);
 	}
 
 	@Override
-	public ArrayList<Snack> sNoSearch(PageInfo pi, String search) {
+	public ArrayList<Snack> sNoSearch(PageInfo pi, int search) {
 		// TODO Auto-generated method stub
 		return invenManagementDao.sNoSearch(sqlSession, pi, search);
 	}
@@ -127,6 +127,18 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 	public ArrayList<Snack> sNameSearch(PageInfo pi, String search) {
 		// TODO Auto-generated method stub
 		return invenManagementDao.sNameSearch(sqlSession, pi, search);
+	}
+
+	@Override
+	public Snack invenDetail(int snackNo) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.invenDetail(sqlSession, snackNo);
+	}
+
+	@Override
+	public ProductAttachment invenDetailAttach(int snackNo) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.invenDetailAttach(sqlSession, snackNo);
 	}
 
 

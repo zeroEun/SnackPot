@@ -7,6 +7,19 @@
 <meta charset="UTF-8">
 <title>문의게시판</title>
 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style>
 #contentArea {
 	width: 100%
@@ -18,7 +31,10 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/menubar.jsp" />
+	<div class="container-fluid">
+		<div class="row flex-nowrap">
+
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
 	<div class="content">
 		<br>
@@ -88,7 +104,7 @@
                 <br>
 
                 <div align="center">
-                <input type="hidden" value="${q.qNo}" name="qNo">
+                <input type="hidden" value="${q.QNo}" name="qNo">
                     <button type="submit" class="btn btn-primary">등록하기</button>
                     <button type="reset" class="btn btn-danger" onclick="javascript:history.go(-1);">취소하기</button>
                 </div>
@@ -98,6 +114,8 @@
 			</div>
 			</div>
 			
-	<jsp:include page="../common/footer.jsp" />
+			
+	</div>
+	</div>
 </body>
 </html>

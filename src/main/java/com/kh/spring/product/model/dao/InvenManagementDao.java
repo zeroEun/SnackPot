@@ -76,26 +76,37 @@ public class InvenManagementDao {
 		return (ArrayList)sqlSession.selectList("invenMapper.invenList", null, rowBounds);
 	}
 
-	public int sNoSearchCount(SqlSessionTemplate sqlSession, String search) {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("invenMapper.invenListCount");
+	public int sNoSearchCount(SqlSessionTemplate sqlSession, int search) {
+		
+		
+		return sqlSession.selectOne("invenMapper.sNoSearchCount", search);
 	}
 
-	public ArrayList<Snack> sNoSearch(SqlSessionTemplate sqlSession, PageInfo pi, String search) {
+	public ArrayList<Snack> sNoSearch(SqlSessionTemplate sqlSession, PageInfo pi, int search) {
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("invenMapper.invenList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("invenMapper.sNoSearch", search, rowBounds);
 	}
 
 	public int sNameSearchCount(SqlSessionTemplate sqlSession, String search) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("invenMapper.invenListCount");
+		return sqlSession.selectOne("invenMapper.sNameSearchCount", search);
 	}
 
 	public ArrayList<Snack> sNameSearch(SqlSessionTemplate sqlSession, PageInfo pi, String search) {
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("invenMapper.invenList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("invenMapper.sNameSearch", search, rowBounds);
+	}
+
+	public Snack invenDetail(SqlSessionTemplate sqlSession, int snackNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.invenDetail", snackNo);
+	}
+
+	public ProductAttachment invenDetailAttach(SqlSessionTemplate sqlSession, int snackNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.invenDetailAttach", snackNo);
 	}
 	
 	

@@ -65,6 +65,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	Q_CONTENT,
 	CREATE_DATE,
 	A_TITLE,
+	A_CONTENT,
+	A_DATE,
 	CHANGE_NAME
 	FROM QNA
 	WHERE Q_NO = ${qno}
@@ -100,7 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	UPDATE QNA
 	SET
-	A_TITLE = '${aTitle}'
+	A_TITLE = '${aTitle}',
 	A_CONTENT = '${aContent}'
 	WHERE
 	Q_NO = ${qNo}	

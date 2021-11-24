@@ -44,6 +44,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="detail" property="detail" />
 
 	</resultMap>
+	
+	<resultMap type="ProductAttachment" id="ProductAttachmentResultMap">
+	
+	<id column="file_no" property="fileNo"/>
+	<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
+		<result column="file_path" property="filePath" />
+		<result column="snack_no" property="snackNo" />
+	
+	</resultMap>
 
 
 
@@ -156,8 +166,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		JOIN SNACK B
 		ON A.SNACK_NO =
 		B.SNACK_NO
-		WHERE TO_CHAR(RELEASE_DATE,'YYYYMMDD') =
-		TO_CHAR(TO_DATE(${date}, 'YYYYMMDD'),'YYYYMMDD')
+		WHERE
+		TO_CHAR(RELEASE_DATE,'YYYYMMDD') =
+		TO_CHAR(TO_DATE(${date},
+		'YYYYMMDD'),'YYYYMMDD')
 		ORDER BY RELEASE_NO
 		DESC
 
@@ -189,6 +201,99 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM
 		SNACK A
 		JOIN SNACK_CATEGORY B
+		ON
+		A.CATEGORY_NO = B.CATEGORY_NO
+		JOIN
+		SNACK_CATEGORY_DETAIL C
+		ON A.DETAIL_NO
+		= C.DETAIL_NO
+		JOIN TASTE D
+		ON
+		A.TASTE_NO = D.TASTE_NO
+		JOIN AROMA E
+		ON
+		A.AROMA_NO = E.AROMA_NO
+		WHERE
+		STATUS = 'Y'
+		ORDER BY SNACK_NO DESC
+
+	</select>
+
+
+	<select id="sNoSearchCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		SNACK
+		WHERE SNACK_NO = ${search}
+
+
+	</select>
+
+	<select id="sNameSearchCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		SNACK
+		WHERE SNACK_NAME LIKE '%${search}%'
+
+
+	</select>
+
+	<select id="sNoSearch" resultMap="snackResultSet">
+
+
+		SELECT
+		A.SNACK_NO,
+		A.SNACK_NAME,
+		A.PURCHASE_PRICE,
+		A.RELEASE_PRICE,
+		A.ENROLL_DATE,
+		A.STOCK,
+		A.UNIT,
+		B.CATEGORY,
+		C.DETAIL,
+		D.TASTE,
+		E.AROMA
+		FROM
+		SNACK A
+		JOIN SNACK_CATEGORY B
+		ON
+		A.CATEGORY_NO = B.CATEGORY_NO
+		JOIN
+		SNACK_CATEGORY_DETAIL C
+		ON A.DETAIL_NO
+		= C.DETAIL_NO
+		JOIN TASTE D
+		ON
+		A.TASTE_NO = D.TASTE_NO
+		JOIN AROMA E
+		ON
+		A.AROMA_NO = E.AROMA_NO
+		WHERE STATUS = 'Y'
+		AND A.SNACK_NO = ${search}
+		ORDER BY SNACK_NO DESC
+
+	</select>
+
+
+	<select id="sNameSearch" resultMap="snackResultSet">
+
+
+		SELECT
+		A.SNACK_NO,
+		A.SNACK_NAME,
+		A.PURCHASE_PRICE,
+		A.RELEASE_PRICE,
+		A.ENROLL_DATE,
+		A.STOCK,
+		A.UNIT,
+		B.CATEGORY,
+		C.DETAIL,
+		D.TASTE,
+		E.AROMA
+		FROM
+		SNACK A
+		JOIN
+		SNACK_CATEGORY B
 		ON A.CATEGORY_NO = B.CATEGORY_NO
 		JOIN
 		SNACK_CATEGORY_DETAIL C
@@ -199,28 +304,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		JOIN AROMA E
 		ON A.AROMA_NO = E.AROMA_NO
 		WHERE
-		STATUS = 'Y'
+		SNACK_NAME LIKE '%${search}%'
+		AND STATUS = 'Y'
 		ORDER BY SNACK_NO DESC
 
 	</select>
-
 	
-	<select id="sNoSearchCount" resultType="_int">
-		SELECT COUNT(*)
+	<select id="invenDetail" resultMap="snackResultSet">
+	
+	
+		SELECT
+		A.SNACK_NO,
+		A.SNACK_NAME,
+		A.PURCHASE_PRICE,
+		A.RELEASE_PRICE,
+		A.ENROLL_DATE,
+		A.STOCK,
+		A.UNIT,
+		B.CATEGORY,
+		C.DETAIL,
+		D.TASTE,
+		E.AROMA
 		FROM
-		SNACK
-		WHERE SNACK_NO = ${search}
-
+		SNACK A
+		JOIN
+		SNACK_CATEGORY B
+		ON A.CATEGORY_NO = B.CATEGORY_NO
+		JOIN
+		SNACK_CATEGORY_DETAIL C
+		ON A.DETAIL_NO = C.DETAIL_NO
+		JOIN TASTE D
+		ON
+		A.TASTE_NO = D.TASTE_NO
+		JOIN AROMA E
+		ON A.AROMA_NO = E.AROMA_NO
+		WHERE
+		SNACK_NO = ${snackNo}
 
 	</select>
 	
-	<select id="sNameSearchCount" resultType="_int">
-		SELECT COUNT(*)
-		FROM
-		SNACK
-		WHERE SNACK_NAME LIKE '%${search}%'
-
-
+	<select id="invenDetailAttach" resultMap="ProductAttachmentResultMap">
+	
+	SELECT *
+	FROM SNACK_ATTACHMENT
+	WHERE SNACK_NO = ${snackNo}
+	
+	
 	</select>
 
 

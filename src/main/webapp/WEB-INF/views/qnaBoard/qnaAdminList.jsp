@@ -26,12 +26,27 @@
     .searchBtn{Width:20%;}
 </style>
 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </head>
 <body>
 	 
+<div class="container-fluid">
+		<div class="row flex-nowrap">
 
-    <jsp:include page="../common/menubar.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
     <div class="content">
         <br><br>
@@ -59,7 +74,8 @@
 	                        </c:if>
 	                        </td>
 	                        <td>${ q.writer }</td>
-	                        <td>${ q.createDate }</td>
+	                        <td>${ q.createDate }
+	                        </td>
 	             
 	                    </tr>
                     </c:forEach>
@@ -102,9 +118,7 @@
             </div>
             
             <br>
-            <c:if test="${ !empty loginUser }">
-            	<a class="btn btn-secondary" style="float:right" href="enrollForm.qna">글쓰기</a>
-            </c:if>
+    
            
             <br clear="both"><br>
             
@@ -118,12 +132,13 @@
     	$(function(){
     		$("#boardList tbody tr").click(function(){
     			console.log($(this).children().eq(0).text());
-    			location.href="detail.qna?qno=" + $(this).children().eq(0).text();
+    			location.href="answerForm.qna?qno=" + $(this).children().eq(0).text();
     		});
     	});
     </script>
+</div>
+	</div>
 
-
-    <jsp:include page="../common/footer.jsp"/>
+    
 </body>
 </html>

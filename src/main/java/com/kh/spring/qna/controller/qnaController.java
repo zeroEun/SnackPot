@@ -200,6 +200,7 @@ public class qnaController {
 	
 	@RequestMapping("answerForm.qna")
 	public ModelAndView answerForm(int qno, ModelAndView mv) {
+		
 		Qna q = qnaService.detailQna(qno);
 
 		
@@ -218,10 +219,27 @@ public class qnaController {
 		
 
 		model.addAttribute("msg", "답변이 등록되었습니다.");
-		model.addAttribute("url", "/list.qna");
+		model.addAttribute("url", "/adminList.qna");
 
 		return "common/alert";
 	}
 	
+	@RequestMapping("adminList.qna")
+	private String adminList(@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+			Model model) {
+
+		int listCount = qnaService.selectListCount();
+		System.out.println(listCount);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+
+		ArrayList<Qna> list = qnaService.selectList(pi);
+
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+
+		return "qnaBoard/qnaAdminList";
+	}
+
 
 }

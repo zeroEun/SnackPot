@@ -54,16 +54,17 @@
 
 					<div class="search form-inline">
 						<!-- form-inline : 한줄에 배치 -->
-						<form action="searchInven.im" method="post" id="searchList">
-							<select class="search-select form-control" id="category"
-								name="category" required>
-								<option value="0">상품코드</option>
-								<option value="1">상품명</option>
-							</select> <input type="text" required name="search" id="search"><input hidden="hidden">
-							<!-- enter 눌렀을 때 submit 방지 -->
-
-							<button class="btn btn-primary" type="submit" id="searchBtn">검색</button>
-						</form>
+						<form method="post" id="searchList" name="searchList">
+									<select class="search-select form-control" id="category"
+										name="category" required  onchange="selectCategory()">
+										<option value="0" >상품코드</option>
+										<option value="1" >상품명</option>
+									</select> <input type="text" required name="search" id="search" value="${search}"><input
+										hidden="hidden">
+									<!-- enter 눌렀을 때 submit 방지 -->
+									<input class="btn btn-primary" id="searchBtn" type="button"
+										value="검색" onclick='return searchSubmit()'>
+								</form>
 					</div>
 					<br>
 					<table class="table table-bordered" id="invenList">
@@ -148,6 +149,58 @@
 
 
 		});
+		
+		 function searchSubmit(category) { 
+			 
+			 var category = $("#category").val();
+			 console.log(category);
+			 if(category == 0){
+				 
+				 document.searchList.action = "searchSno.im"; 
+				 
+				 
+			 }
+			if(category == 1){
+				 
+				 document.searchList.action = "searchSname.im"; 
+				 
+				 
+			 }
+
+			   document.searchList.submit(); 
+			   // return true; 
+		 }
+		 
+
+			function selectCategory() {
+				
+				var category = $("#category").val();
+				console.log(category);
+				if (category == 0) {
+					var search = $("#search").val();
+					console.log(search);
+					$( '#search' ).attr( 'onKeyup', "this.value=this.value.replace(/[^-0-9]/g,'');" );
+
+				}
+		
+				
+				
+			}
+			
+			$(document).ready(function() {
+				
+				var category = $("#category").val();
+				console.log(category);
+				if (category == 0) {
+					var search = $("#search").val();
+					console.log(search);
+					$( '#search' ).attr( 'onKeyup', "this.value=this.value.replace(/[^-0-9]/g,'');" );
+
+				}
+				
+				
+			   });
+		
 	</script>
 	
 	</div>

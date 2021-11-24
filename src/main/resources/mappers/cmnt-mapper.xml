@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="reGroupDept" column="RE_GROUPDEPT"/>
 		<result property="reWriter" column="RE_WRITER"/>
 		<result property="reContent" column="RE_CONTENT"/>
-		<result property="reDate" column="RE_DATE"/>
+		<result property="reDate" column="RE_WRITERDATE"/>
 	</resultMap> 	
 	
 <select id="CountComCode" resultType="_int">
@@ -210,7 +210,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </delete>
 
 <update id="updateRely">
-	UPDATE REPLY SET RE_CONTENT = #{reContent} , RE_DATE = SYSDATE
+	UPDATE REPLY SET RE_CONTENT = #{reContent} , RE_WRITERDATE = SYSDATE
 	WHERE RE_NO = #{reNo}
 </update>
 
@@ -224,6 +224,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	INSERT INTO REPLY
 	VALUES (REPLY_SEQ.NEXTVAL , #{communityNo} , #{reGroup} ,  1 ,  #{reGroupDept} , #{reWriter} , #{reContent} , SYSDATE)
 </insert>
-
 
 </mapper>

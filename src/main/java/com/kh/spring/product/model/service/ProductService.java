@@ -41,6 +41,8 @@ public interface ProductService {
 	int endWishList(String wishNo);
 
 
+
+
 	
 	
 	//스케줄러 테스트용

@@ -68,7 +68,7 @@ public class ProductController {
 	
 	@RequestMapping("insert.wish")
 	public String insertWishList(@RequestParam("wishSnackNo") String wishSnackNo , Product p ,HttpSession session) {
-		
+
 		/*로그인하면 사원 session에서 회사코드 가져와서 같이 insert해주기*/
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		
@@ -82,10 +82,25 @@ public class ProductController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		
+		/* 구독일 -7일이면 한달을 더 더해서 입력되게 
 		cal.set(Calendar.DAY_OF_MONTH, deliveryDate);
 		cal.add(Calendar.MONTH, +1);
 		cal.add(Calendar.DATE, -8); 
+		*/
 		
+		/* 구독일 -7일이면 한달을 더 더해서 입력되게 */
+		if (deliveryDate <= 7) {
+			cal.set(Calendar.DAY_OF_MONTH, deliveryDate);
+			cal.add(Calendar.MONTH, 2);
+			cal.add(Calendar.DATE, -8); 
+			
+		}else {
+			// 오늘 날짜 기준 해당월의 시작일 + dDay
+			cal.set(Calendar.DAY_OF_MONTH, deliveryDate);
+			cal.add(Calendar.MONTH, 1);
+			cal.add(Calendar.DATE, -8); 
+		}
+			
 		String wishEndDate = sdf.format(cal.getTime()); //위시리스트마감일(YYYY-MM-DD)
 		System.out.println("wishEndDate : " + wishEndDate );
 		
@@ -138,7 +153,7 @@ public class ProductController {
 	
 	}
 	
-/*===================================================================================================================*/
+/*=======================================================================================================================*/
 	
 	/*위시리스트 view*/
 	@RequestMapping("wishList")
@@ -214,21 +229,19 @@ public class ProductController {
 	 * 1. 현재 날짜를 가져와서 WISHLIST에 보내기
 	 * 2. 동일하면 WISHLIST STATUS를 'N'-> 'Y'로
 	 * */
-	//@Scheduled(cron = "*/10 * * * * *") 	// 10초마다
-	//@Scheduled(cron = "0 50 17 1/1 * ?") //매일 5시 50분 마다 실행 (0시0분으로 바꿔서 다시해보기)
+//	@Scheduled(cron = "*/10 * * * * *") 	// 10초마다
+//	@Scheduled(cron = "0 25 17 1/1 * ?") //매일 5시 50분 마다 실행 (0시0분으로 바꿔서 다시해보기)
 //	public void updateClosingDate() {
-//	
+	
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
 //		Calendar cal = Calendar.getInstance();
-//			
+			
 //		String today = sdf.format(cal.getTime());
 //		System.out.println("today 오늘의 날짜? : " + today); 
-//		
+		
 //		productService.updateClosingDate(today);
-//		
+		
 //		System.out.println("마감이 완료되었습니다 ."); 
-//		
+		
 //	}
-	
-	
 }

@@ -126,9 +126,9 @@ public class ProductServiceImpl implements ProductService {
 	//스케줄러 테스트용
 //	@Override
 //	public void updateClosingDate(String today) {
-//		
+		
 //		productDao.updateClosingDate(sqlSession , today);
-//		
+		
 //	}
 
 

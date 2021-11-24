@@ -32,6 +32,10 @@
             margin: 15px 0px;
             padding: 15px;
         }
+        .image{
+			width: 50px;
+			height: 50px;
+		}
 
 
 </style>
@@ -80,7 +84,7 @@
                         		<tr>
 	                                <td>${d.categoryName}</td>
 	                                <td>${d.subCategoryName}</td>
-	                                <td></td>
+	                                <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${d.imageName}"></td>
 	                                <td>${d.snackName}</td>
 	                                <td>${d.releasePrice}</td>
 	                                <td>${d.amount}</td>

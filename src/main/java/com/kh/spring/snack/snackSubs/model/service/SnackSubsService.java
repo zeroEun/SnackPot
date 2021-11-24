@@ -21,7 +21,7 @@ public interface SnackSubsService {
 
 	void updateSnackSubs(SnackSubs snackSubs);
 
-	void cancelSnackSubs(int subsNo);
+	void cancelSnackSubs(int subsNo, String comCode);
 
 	int checkSubsDup(String comCode);
 

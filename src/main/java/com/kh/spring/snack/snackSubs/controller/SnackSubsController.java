@@ -2,22 +2,32 @@ package com.kh.spring.snack.snackSubs.controller;
 
 import javax.servlet.http.HttpSession;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.kh.spring.companyMember.model.vo.CompanyMember;
+import com.kh.spring.snack.snackOrder.controller.SnackOrderController;
 import com.kh.spring.snack.snackSubs.model.service.SnackSubsService;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
+
+@SessionAttributes("o")
 @Controller
 public class SnackSubsController {
 	
 	@Autowired
 	private SnackSubsService snackSubsService;
+	
+	@Autowired
+	private SnackOrderController SnackOrderController;
+	
 
 	@RequestMapping("subsForm.sn")
 	public String snackSubsForm(Model model) {
@@ -75,9 +85,12 @@ public class SnackSubsController {
 	}
 	
 	@RequestMapping("cancelSubs.sn")
-	public String cancelSnackSubs(@RequestParam int subsNo) {
+	public String cancelSnackSubs(@RequestParam int subsNo, HttpSession session, SessionStatus sessionStatus) {
 		
-		snackSubsService.cancelSnackSubs(subsNo);
+		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
+		
+		snackSubsService.cancelSnackSubs(subsNo, comCode);
+		sessionStatus.setComplete();
 		
 		return "company/snack/snackSubsInfo";
 	}

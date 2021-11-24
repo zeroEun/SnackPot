@@ -150,8 +150,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		JOIN SNACK_CATEGORY_DETAIL D ON (A.DETAIL_NO = D.DETAIL_NO)
 		WHERE A.STATUS = 'Y'
 		AND A.DETAIL_NO IN (${snackCategory},${drinkCategory},${retortCategory})
-		AND A.TASTE_NO IN (${preferTaste})
-		AND A.AROMA_NO NOT IN (${dislikeFlavour})
+		AND (A.TASTE_NO IN (${preferTaste}) OR A.TASTE_NO IS NULL)
+		AND (A.AROMA_NO NOT IN (${dislikeFlavour}) OR A.AROMA_NO IS NULL)
 	</select>
 	
 	<update id="insertSnackDList" parameterType="java.util.List" >
@@ -332,5 +332,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		                   AND WISH_END_DATE = #{wishEndDate})
 	
 	</select>
+	
+	<delete id="cancelSnackList" parameterType="String">
+		DELETE FROM SNACK_LIST
+		WHERE SNACK_LIST_NO = (SELECT SNACK_LIST_NO
+							   FROM SNACK_LIST
+							   WHERE COM_CODE = #{comCode}
+							   AND TRANS_STATUS = 'N')
+	</delete>
 
 </mapper>

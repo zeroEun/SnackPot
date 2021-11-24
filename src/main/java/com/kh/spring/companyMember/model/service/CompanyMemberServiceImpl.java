@@ -18,6 +18,7 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 	
 	@Autowired
 	private CompanyMemberDao cmd;
+	
 
 	@Override
 	public int idCheck(String memId) {
@@ -69,9 +70,9 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 			throw new CommException("회원정보가 존재하지 않습니다"); 
 		}
 
-//		if(!bCryptPasswordEncoder.matches(m.getMemPw(), loginUser.getMemPw())) {
-//			throw new CommException("암호 불일치");
-//		}
+		if(!bCryptPasswordEncoder.matches(m.getMemPw(), loginUser.getMemPw())) {
+			throw new CommException("암호 불일치");
+		}
 		
 		return loginUser;
 	}
@@ -191,6 +192,16 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 		if(result < 0) {
 			throw new CommException("회원탈퇴에 실패했습니다");
 		}
+	}
+
+	@Override
+	public int checkMember(CompanyMember m) {
+		int result = cmd.checkMember(sqlSession, m);
+		
+		if(result < 0) {
+			throw new CommException("멤버찾기에 실패했습니다");
+		}
+		return result;
 	}
 	
 }

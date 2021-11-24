@@ -1,5 +1,7 @@
 package com.kh.spring.companyMember.model.service;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.kh.spring.company.model.vo.Company;
@@ -46,5 +48,9 @@ public interface CompanyMemberService {
 	String selectbirthSubSta(String memId);
 
 	void deleteAllMem(String comCode);
+
+	int checkMember(CompanyMember m);
+
+	
 
 }

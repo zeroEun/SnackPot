@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <title>본사 로그인</title>
 <style>
 #outer{
@@ -54,14 +55,31 @@
 		<div id="outer">
             <div id="inner">
             
-            	<form id="loginForm" method="POST">
+            	<form id="loginForm" action="loginEmp.sn" method="POST">
                 <h1 id="title">LOGIN</h1><br>
                 <input type="text" class="input" id="sempNum" name="sempNum" placeholder=" 사원번호" minlength="1" maxlength="8"><br>
                 <input type="password" class="input" id="sempPw" name="sempPw" placeholder=" 비밀번호" minlength="4" maxlength="10" autocomplete="new-password"><br>
                 <div id="find"><a href="findPw.co">비밀번호 찾기</a><br><br></div>
-                <button type="submit" id="loginBtn" formaction="loginEmp.sn">로그인</button><br>
+                <button type="button" id="loginBtn" onclick="login();">로그인</button><br>
                 </form>
             </div>
         </div>
 </body>
+<script>
+function login(){
+	var sempNum = $("input[name='sempNum']");
+	var sempPw = $("input[name='sempPw']");
+	if(sempNum.val().trim() == ""){
+		alert("사원번호를 입력하세요");
+		return false;
+	}else if(sempPw.val().trim() == ""){
+		alert("비밀번호를 입력하세요");
+		return false;
+	}else{
+		$("#loginForm").submit();
+		return true;
+	}
+	
+}
+</script>
 </html>

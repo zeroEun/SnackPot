@@ -3,6 +3,8 @@ package com.kh.spring.companyMember.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -28,6 +31,8 @@ public class CompanyMemberController {
 	
 	@Autowired
 	private Company co;
+	
+	private String memId;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -358,6 +363,44 @@ public class CompanyMemberController {
 		
 		model.addAttribute("msg","탈퇴가 완료되었습니다.");
         model.addAttribute("url","/logout.co");
+		
+		return "common/alert";	
+	}
+	
+	@ResponseBody
+	@RequestMapping("findMemPw.co")
+	public String findPwPOST(@ModelAttribute CompanyMember m, String memId, String memName, String memPhone) {
+		
+		m.setMemId(memId);
+		m.setMemName(memName);
+		m.setMemPhone(memPhone);
+		
+		int result = cms.checkMember(m);
+		
+		this.memId = memId;
+		
+		return String.valueOf(result);
+	}
+	
+	@RequestMapping("modifyNewPw.co")
+	public String modifyNewPw(@ModelAttribute CompanyMember m, Model model) {
+		
+		// 임시 비밀번호 생성
+		String pw = "";
+		for (int i = 0; i < 12; i++) {
+			pw += (char) ((Math.random() * 26) + 97);
+		}
+		
+		//암호회된 비밀번호
+		String encPwd = bCryptPasswordEncoder.encode(pw);
+		
+		m.setMemId(memId);
+		m.setMemPw(encPwd);
+		
+		cms.updatePw(m);
+		
+		model.addAttribute("msg","임시 비밀번호는 " + pw + " 입니다.");
+        model.addAttribute("url","/login.co");
 		
 		return "common/alert";	
 	}

@@ -55,13 +55,31 @@
                 <h1 id="title">MODIFY</h1><br>
                 <input type="password" class="input" id="originPw" name="originPw" placeholder=" 현재 비밀번호" minlength="10" maxlength="16"><br>
                 <input type="password" class="input" id="memPw" name="memPw" placeholder=" 새 비밀번호 (영문, 숫자 조합 8~16자)" minlength="8" maxlength="16"><br>
-                <input type="password" class="input" id="memPwCheck" name="memPwCheck" placeholder=" 새 비밀번호 확인" minlength="8" maxlength="16"><br>
+                <input type="password" class="input" id="memPwCheck" name="memPwCheck" placeholder=" 새 비밀번호 확인" minlength="8" maxlength="16" autocomplete="new-password"><br>
                 <button type="button" id="modifyBtn" onclick="updatePw();">비밀번호 변경하기</button><br>
              </form>
              <button type="button" id="exitBtn" onclick="location='<%=request.getContextPath()%>/main.co'">다음에 변경하기</button>
             </div>
         </div>
 <script>
+
+//비밀번호 
+$("input[name='originPw']").keyup(function(event){
+    var inputVal = $(this).val();
+    $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+});
+
+//비밀번호 
+$("input[name='memPw']").keyup(function(event){
+    var inputVal = $(this).val();
+    $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+});
+
+//비밀번호 확인
+$("input[name='memPwCheck']").keyup(function(event){
+    var inputVal = $(this).val();
+    $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+});
 
 //유효성 체크
 function updatePw(){

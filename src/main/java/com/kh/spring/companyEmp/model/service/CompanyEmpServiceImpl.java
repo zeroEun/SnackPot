@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.companyEmp.model.dao.CompanyEmpDao;
 import com.kh.spring.companyEmp.model.vo.CompanyEmp;
-import com.kh.spring.companyMember.model.vo.CompanyMember;
 
 @Service
 public class CompanyEmpServiceImpl implements CompanyEmpService {

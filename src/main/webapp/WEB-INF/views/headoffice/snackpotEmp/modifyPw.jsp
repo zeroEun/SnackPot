@@ -91,9 +91,9 @@
 <form id="modifyPwForm" action="updatePw.sn">
 <div id="outline">
 <div id="content">
-<label>현재 비밀번호</label>&emsp;&emsp;&emsp;<input id="i2" type="text" name="originPw" placeholder="내용을 입력해주세요."><br>
-<label id="l2">새 비밀번호</label>&emsp;&emsp;&emsp;<input type="text" name="sempPw" placeholder="내용을 입력해주세요."><br>
-<label id="l1">새 비밀번호 확인</label>&emsp;&emsp;<input id="i1" type="text" name="sempPwCheck" placeholder="내용을 입력해주세요."><br>
+<label>현재 비밀번호</label>&emsp;&emsp;&emsp;<input id="i2" type="password" name="originPw" placeholder="내용을 입력해주세요."><br>
+<label id="l2">새 비밀번호</label>&emsp;&emsp;&emsp;<input type="password" name="sempPw" placeholder="내용을 입력해주세요."><br>
+<label id="l1">새 비밀번호 확인</label>&emsp;&emsp;<input id="i1" type="password" name="sempPwCheck" placeholder="내용을 입력해주세요." autocomplete="new-password"><br>
 <div id="btnDiv">
 <input class="eBtn" id="cancel" type="button" value="취소" onclick="location='<%=request.getContextPath()%>/mainPage.ho'">&emsp;&emsp;&emsp;
 <input class="eBtn" id="enter" type="button"  value="변경" onclick="modify();">
@@ -108,6 +108,25 @@
 </div>
 </div>
 <script>
+
+//비밀번호 
+$("input[name='originPw']").keyup(function(event){
+    var inputVal = $(this).val();
+    $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+});
+
+//비밀번호 
+$("input[name='sempPw']").keyup(function(event){
+    var inputVal = $(this).val();
+    $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+});
+
+//비밀번호 확인
+$("input[name='sempPwCheck']").keyup(function(event){
+    var inputVal = $(this).val();
+    $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+});
+
 function modify(){
 	
 	var originPw = $("input[name='originPw']");

@@ -12,4 +12,6 @@ public interface HO_SendingStatusService {
 
 	String selectSendingTime(String comCode);
 
+	ArrayList<HO_SendingStatus> completeStatusList(String comCode);
+
 }

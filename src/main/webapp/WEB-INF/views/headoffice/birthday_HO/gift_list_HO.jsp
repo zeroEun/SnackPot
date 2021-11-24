@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,6 +90,13 @@
 .updateGiftBtn{
 	
 }
+#seeMoreItems{
+	width:250px;
+	margin: auto;
+	padding: 12px;
+	border-radius: 2rem;
+	box-shadow: none;
+}
 </style>
 <body id="giftListBody">
 	<section class="giftSection">
@@ -115,7 +123,7 @@
 							&nbsp;|&nbsp;
 							<div class="giftListTop" id="giftCategory">
 								<span>검색결과 <b id="giftCount"></b>개	</span>&nbsp;|&nbsp;
-								<span><a id="giftCtgry1">인기상품순</a></span>&nbsp;|&nbsp;
+								<span><a id="giftCtgry1">추천상품순</a></span>&nbsp;|&nbsp;
 								<span><a id="giftCtgry2">높은가격순</a></span>&nbsp;|&nbsp;
 								<span><a id="giftCtgry3">낮은가격순</a></span>
 							</div>
@@ -287,7 +295,7 @@
 											<input type="checkbox" class="form-check-input" name="giftChk" value="${giftList.giftNo }">
 										</div>
 										<div class="updateGiftBtnDiv">
-											<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="${giftList.giftNo }" data-toggle="modal" data-target="#updateGift">수 정</button>
+											<button type="button" class="btn btn-info updateGiftBtn" name="updateGiftBtn" value="${giftList.giftNo }" data-toggle="modal" data-target="#updateGift">수정하기</button>
 										</div>
 										</div>
 										<div class="giftImage">
@@ -297,20 +305,66 @@
 										<div class="card-body">
 											<h5 class="card-title">${giftList.giftBrand }</h5>
 											<p class="card-text">${giftList.giftName }</p>
-											<h6 class="card-text">${giftList.giftPrice }</h6>
+											<h6 class="card-text"><fmt:formatNumber value="${giftList.giftPrice }" pattern="#,###" />원</h6>
 										</div>
 									</div>
 								</div>
 							</c:forEach>
 						</div>
 					</div>
-				
+				<div style="width:250px; margin: auto;">
+					<button type="button" class="btn btn-outline-secondary btn-lg" id="seeMoreItems">더보기 <span id="itemsCount"></span> / <span id="wholeItemsCount"></span></button>
+				</div>
 				</div>
 			</div>
 		</div>
+		<br>
+		
+		<br><br><br>
 	</section>
 
 	<script type="text/javascript">
+		<%-- 더보기 버튼 클릭 시 실행 함수 --%>
+		function firstHideItems(){
+			var firstItems = 20;
+			const itemsLength = $(".gift").length;
+			console.log("전체 아이템 수 : "+itemsLength);
+			console.log($(".gift").eq(0));
+			$("#itemsCount").html(firstItems);
+			$("#wholeItemsCount").html(itemsLength);
+			
+			for(var i=0; i<itemsLength; i++){
+				if(i < firstItems){
+					$(".gift").eq(i).show();
+				}else{
+					$(".gift").eq(i).hide();
+				}
+			}
+
+		}
+		
+		$(function(){
+			firstHideItems();
+			var visibleItems = 20;
+			const itemsLnth = $(".gift").length;
+			
+			$(document).on('click', '#seeMoreItems',  function(){
+				if(visibleItems + 20 > itemsLnth){
+					visibleItems += (itemsLnth - visibleItems)
+				}else{
+					visibleItems += 20;
+				}
+				
+				$("#itemsCount").html(visibleItems);
+				for(var i=0; i<itemsLnth; i++){
+					if(i < visibleItems){
+						$(".gift").eq(i).show();
+					}else{
+						$(".gift").eq(i).hide();
+					}
+				}
+			});
+		});
 		<%-- 각 상품에 존재하는 수정 버튼 클릭 시 나타나는 modal에 출력할 정보 가져오기 --%>
 		$(function(){
 		<%--$(".updateGiftBtn").on('click', function(e){--%>
@@ -349,8 +403,15 @@
 		$(function(){
 	    	var chkRow = $("input[name='giftChk']");
 	    	var rowCount = chkRow.length;
-	    	console.log(rowCount);
-	    	
+	    	<%-- 선물 사진 클릭해도 체크박스 체크되게 설정 --%>
+	    	$(".giftImage").click(function(){
+	    		var imgClickforChk = $(this).siblings(".giftCardHeader").children().eq(0).children();
+	    		if(imgClickforChk.is(":checked")){
+	    			imgClickforChk.prop("checked", false);
+	    		}else{
+	    			imgClickforChk.prop("checked", true);
+	    		}
+	    	});
 	    	<%-- 전체 선택하면 모든 체크박스가 checked --%>
 	        $("#giftChk").click(function(){
 	            var chkList = $("input[name='giftChk']");
@@ -498,7 +559,9 @@
 	            var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
 	            var giftName = $(".card-body>p:contains('"+searchText+"')");
 	            var giftPrice = $(".card-body>h6:contains('"+searchText+"')");
-	
+				//console.log(giftBrand.parent().length);
+				//console.log(giftName.parent().length);
+				//console.log(giftPrice.parent().length);
 	            $(giftBrand).parent().parent().parent().show();
 	            $(giftName).parent().parent().parent().show();
 	            $(giftPrice).parent().parent().parent().show();
@@ -514,6 +577,14 @@
 				}
 		    	
 		    	$("#giftCount").html(newCount);
+		    	$("#seeMoreItems").hide();
+		    	
+		    	<%-- 검색어를 다 지웠을 때 초기 화면으로 리턴하기 위한 조건 --%>
+		    	if(searchText == ""){
+		    		firstHideItems();
+		    		$("#seeMoreItems").show();
+		    	}
+
 	        });
 	    });
 	    
@@ -521,7 +592,7 @@
 		$(function(){
 			
 			$("#giftCtgry1").css("font-weight", "bolder");
-			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;인기상품순');
+			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
 			$("#giftCtgry2").css("font-weight", "normal");
 			$("#giftCtgry2").html('높은가격순');
 			$("#giftCtgry3").css("font-weight", "normal");
@@ -535,7 +606,7 @@
 				$("#giftCtgry2").css("font-weight", "normal");
 				$("#giftCtgry3").css("font-weight", "normal");
 				
-				$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;인기상품순');
+				$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
 				$("#giftCtgry2").html('높은가격순');
 				$("#giftCtgry3").html('낮은가격순');
 				
@@ -603,7 +674,7 @@
 				$("#giftCtgry2").css("font-weight", "bolder");
 				$("#giftCtgry3").css("font-weight", "normal");
 				
-				$("#giftCtgry1").html('인기상품순');
+				$("#giftCtgry1").html('추천상품순');
 				$("#giftCtgry2").html('<i class="fas fa-check"></i>&nbsp;높은가격순');
 				$("#giftCtgry3").html('낮은가격순');
 				
@@ -671,7 +742,7 @@
 				$("#giftCtgry2").css("font-weight", "normal");
 				$("#giftCtgry3").css("font-weight", "bolder");
 				
-				$("#giftCtgry1").html('인기상품순');
+				$("#giftCtgry1").html('추천상품순');
 				$("#giftCtgry2").html('높은가격순');
 				$("#giftCtgry3").html('<i class="fas fa-check"></i>&nbsp;낮은가격순');
 				

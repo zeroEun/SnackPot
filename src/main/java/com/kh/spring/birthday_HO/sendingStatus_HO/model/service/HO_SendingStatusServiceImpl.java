@@ -25,6 +25,12 @@ public class HO_SendingStatusServiceImpl implements HO_SendingStatusService {
 	}
 
 	@Override
+	public ArrayList<HO_SendingStatus> completeStatusList(String comCode) {
+		// TODO Auto-generated method stub
+		return sendingStsDao.completeStatusList(sqlSession, comCode);
+	}
+	
+	@Override
 	public int subscribeChk(String comCode) {
 
 		int result = sendingStsDao.subscribeChk(sqlSession, comCode);

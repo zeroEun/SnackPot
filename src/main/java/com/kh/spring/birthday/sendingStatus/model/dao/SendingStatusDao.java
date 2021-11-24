@@ -19,6 +19,11 @@ public class SendingStatusDao {
 		// TODO Auto-generated method stub
 		return (ArrayList)sqlSession.selectList("birthdayMapper.sendingcursts", selectInfo);
 	}
+	
+	public ArrayList<SendingStatus> completeCursts(SqlSessionTemplate sqlSession, String comCode) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("birthdayMapper.completeCursts", comCode);
+	}
 
 	public int deleteSendStatus(SqlSessionTemplate sqlSession, int cempSeq) {
 		// TODO Auto-generated method stub

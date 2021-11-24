@@ -287,16 +287,16 @@
 				$("select[name='selectGiftList'] option:selected").each(function(index){
 					var glistNo = $(this).val();
 					var cempSeq = $(this).parents("td").siblings().eq(0).children().val();
-					console.log("sendingChk");
+					//console.log("sendingChk");
 					console.log($(this).parents("td").siblings().eq(0).children().val());
 					
-					console.log("선택값 : "+glistNo);
+					//console.log("선택값 : "+glistNo);
 					selectArray.push(glistNo);
 					selectArray.push(cempSeq);
-					console.log(selectArray);
+					//console.log(selectArray);
 				});
 				
-				console.log(selectArray);
+				//console.log(selectArray);
 				$.ajax({
 					url: "updateGiftList.birth",
 					type: "POST",

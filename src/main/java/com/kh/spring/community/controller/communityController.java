@@ -51,6 +51,12 @@ public class communityController {
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		String comCode = loginUser.getComCode();
 		cmnt.setComCode(comCode);
+		//1. 회사커뮤니티 글이 있는지 봐야한다
+		int comCodeChk = cmntService.CountComCode(comCode);
+		
+		if(comCodeChk == 0) {
+			return "company/community/newcommunityMainView";
+		}else {
 		
 		int listCount = cmntService.selectListCount(comCode);
 //		System.out.println("listCount글 갯수 : " + listCount);
@@ -67,8 +73,8 @@ public class communityController {
 		model.addAttribute("topList" , topList);
 		model.addAttribute("pi" , pi);
 		
-		return "company/community/communityMainView";
-		
+		return "company/community/communityMainView";	
+		}
 	}
 	// 내가쓴글 보기
 	@RequestMapping("myWriter.cm") //페이징처리 다시해야함 -- >페이지 따로 안만들어 줘도 될꺼같음

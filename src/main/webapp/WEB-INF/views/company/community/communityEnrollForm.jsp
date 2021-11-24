@@ -6,29 +6,24 @@
 <head>
 <meta charset="UTF-8">
   <title>커뮤니티 게시글 등록</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- smarteditor  
-    <script type="text/javascript" src="${ pageContext.servletContext.contextPath}/resources/static/smarteditor2/js/HuskyEZCreator.js" charset="utf-8"></script> -->
+    <!-- smarteditor -->
   <script type="text/javascript" src="${ pageContext.servletContext.contextPath}/resources/static/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 </head>
 <style>
+    /* 글작성 바탕 DIV*/
+    .contain{
+        background-color: rgba(10, 23, 78, 0.18);
+        padding: 30px 0 30px 0 ;
+    }
     .title{
         width:1250px;
-        height : 30px;
+        height : 40px;
         margin : 20px 0px 10px 0px;
     }
     ::placeholder{
         padding-left: 20px;
         padding-top: 40px;
-    }
-    .btn{
-        margin-left: 80px;
-        text-align: center;
-        
     }
     h4{
         text-align: left;
@@ -40,16 +35,39 @@
         height: 0.1px;
         background-color: black;
     }
-    .btn{
+    /*버튼*/
+    .wbtn{
+        padding: 50px 0 50px 42%;
         float: left;
-        margin-left: 150px;
     }
- 
+    .saveBtn{
+        background-color: rgb(10, 23, 78);
+        color: white;
+        border-style: none;
+        height: 40px;
+        width: 90px;
+        border-radius: 10px;
+    }
+    .backBtn{
+        background-color: rgb(245, 208, 66);
+        color: white;
+        border-style: none;
+        height: 40px;
+        width: 90px;
+        border-radius: 10px;
+    }
+    /*file*/
+    .upfile{
+       text-align: left;
+       margin-right: 954px;
+       margin-top: 10px;
+    }
+
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
-<br>
 
+<div class="contain" >
  <form action="insert.cm" method="post" id="frm" style="text-align:center;" enctype="multipart/form-data" >
         <h4>글쓰기</h4>
         <hr>
@@ -58,17 +76,17 @@
       <textarea name="seContent" id="smarteditor" rows="100" cols="100" style="width:1250px; height:450px;" placeholder="내용을 입력해주세요."></textarea>
     </div>
       <div>
-      <input type="file" name="uploadFile">
+      <input type="file" name="uploadFile" class="upfile">
       </div>
-       <div class="btn">
-           <input type="button" onclick="save()" value="등록">&nbsp;&nbsp;
-           <input type="button" onclick="back()" value="취소">
+       <div class="wbtn">
+           <input type="button" onclick="save()" value="등록" class="saveBtn">&nbsp;&nbsp;
+           <input type="button" onclick="back()" value="취소" class="backBtn">
       </div>
     </form>
-   
+</div>
  
 </body>
-<!--  -->
+
  <script type="text/javascript">
  		//전역변수선언 , 
 	    var oEditors = [];
@@ -81,7 +99,7 @@
 	      	 // sSkinURI: "${ pageContext.servletContext.contextPath }/resources/static/smarteditor2/SmartEditor2Skin.html", 
 	        htParams : {
 	            bUseToolbar : true,             // 툴바 사용 여부 (true:사용/ false:사용하지 않음)        
-	            bUseVerticalResizer : true,    // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+	            bUseVerticalResizer : false,    // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
 	            bUseModeChanger : false         // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
 	        }
 	    });
@@ -104,4 +122,4 @@
  	
 </html>
 
-    	
+	

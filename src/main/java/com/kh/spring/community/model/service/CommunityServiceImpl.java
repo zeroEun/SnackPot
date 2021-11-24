@@ -213,6 +213,13 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 
+	@Override
+	public int CountComCode(String comCode) {
+	
+		return cmntDao.CountComCode(sqlSession , comCode);
+	}
+
+
 
 
 

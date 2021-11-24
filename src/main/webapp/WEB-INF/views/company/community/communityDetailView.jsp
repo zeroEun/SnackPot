@@ -6,9 +6,6 @@
 <head>
 <meta charset="UTF-8">
   <title>communityDetail</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 </head>
 <style>
@@ -41,14 +38,15 @@
         height: 0.1px;
         background-color: black;
     }
-    .btn{
+    .dbtn{
         float: left;
-        margin-left: 150px;
+        margin-left: 80px;
+        margin-top: 7px;
     }
     .topLine{
         margin-bottom: -12px;
         text-align: right;
-        margin-right: 145px;
+        margin-right: 80px;
     }
     /*조회수*/
     .views{
@@ -82,24 +80,59 @@
        width: 200px;
 
     }
-     /*댓글*/
-    .replyIcon{
-        margin-left: 130px;
-        background-color: lightgreen;
+ 
+    /*수정 삭제btn*/
+    .update ,#addReply{
+        background-color: rgb(10, 23, 78);
+        color: white;
+        border-style: none;
+        height: 40px;
+        width: 90px;
+        border-radius: 10px;
+    }
+    .deleteCmnt{
+        background-color: rgb(245, 208, 66);
+        color: white;
+        border-style: none;
+        height: 40px;
+        width: 90px;
+        border-radius: 10px;
+    }
+    .back{
+        background-color: rgb(245, 208, 66);
+        margin-top: 7px;
+        color: white;
+        border-style: none;
+        height: 40px;
+        width: 90px;
+        border-radius: 10px;
+    }
+    #addReply{
+        margin-left: 165px;
+    }
+    /*댓글창*/
+    .form-control{
+        margin-left: 100px;
     }
     .fa-comment-dots{
         font-size: 20px;
-        padding-right: 5px;
-      
+        background-color: rgba(10, 23, 78, 0.18);
+        color: black;
+        border-style: none;
+        height: 30px;
+        width: 120px;
+        border-radius: 4px;
+        text-align: center;
+        padding: 0 10px 0 10px;
     }
    
-  
     
+
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 	<br>
-
+<div class="content" style="padding-left: 5%; padding-right: 5%;">
 	<form action="insert.cm" method="post" id="frm" style="text-align: center;" enctype="multipart/form-data">
 	
 		<div class="views" >
@@ -122,7 +155,7 @@
 		</form>
 		<div>
 			<c:if test="${ loginUser.memId eq dlist.writer }">
-				<div class="btn"><!-- form에다 넣으면 안된다 inser.cm탐 -->
+				<div class="dbtn"><!-- form에다 넣으면 안된다 inser.cm탐 -->
 					<button class="update" value="${dlist.communityNo }" onclick="update(this.value)">수정</button>
 					<button class="deleteCmnt" value="${dlist.communityNo }" onclick="deleteCmnt(this.value)">삭제</button>
 				</div>
@@ -147,14 +180,14 @@
 	<br>
 	<br>
 	<!-- 댓글!! -->
-	<button class="far fa-comment-dots" onclick="selectReplyList()">댓글(<span id="rcount">0</span>)</button>
- 		<table id="replyArea" class="table" align="center">
+	<button class="far fa-comment-dots" onclick="selectReplyList()">댓글</button>
+ 		<table id="replyArea" class="table">
                 <thead>
-                    <tr>
-	                        <th colspan="4" style="width:75%">
-	                            <textarea class="form-control" id="replyContent" rows="1" style="resize:none; width:100%"></textarea>
+                    <tr style="background-color: rgba(10, 23, 78, 0.18);">
+	                        <th colspan="4" style="width:75%" >
+	                            <input type="text" class="form-control" id="replyContent"  style="resize:none; width:100%" placeholder="댓글을 입력해주세요.">
 	                        </th>
-	                        <th style="vertical-align: middle"><button class="btn btn-secondary" id="addReply" onclick="addReply()">등록하기</button></th>
+	                        <th style="vertical-align: middle"><button id="addReply" onclick="addReply()">등록하기</button></th>
                     </tr>
                 </thead>
                 <tbody>  
@@ -169,7 +202,7 @@
 	</div>
 </div>
 	<br><br><br><br>
-
+</div>
 </body>
 <script>
 	/*수정폼으로*/
@@ -340,7 +373,7 @@
 					 console.log("답글달 댓글 reGroup : " + reGroup);
 					
 					 
-					    <!-- 답글 모달 -->
+					   
 						value  =  "<div class='modal fade' id='myModal"+index+"'>"
 						value +=  "<div class='modal-dialog'>" +
 					         	 "<div class='modal-content'>";
@@ -467,4 +500,4 @@
 
 </html>
 
-    	
+        	

@@ -11,11 +11,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-<!-- <link rel="stylesheet" href="/css/community.css"> -->
 </head>
 <style>
 .top-img{
-    background-color: skyblue;
     text-align: center;
 }
 /*검색box 포지션*/
@@ -58,36 +56,66 @@
 }
 /*글쓰기 , 조회 버튼*/
 .writerBtn{
-    background-color: rgb(10, 23, 78);
+  background-color: rgb(10, 23, 78);
     color: white;
     border-style: none;
+    height: 45px;
+    width: 90px;
+    border-radius: 10px;
 }
 .readBtn{
     background-color: rgb(245, 208, 66);
-    border-color:  rgb(245, 208, 66);
+    color: white;
     border-style: none;
+    height: 45px;
+    width: 90px;
+    border-radius: 10px;
 
 }
+/*댓글 색깔*/
+
+.recolor{
+  color: red;
+}
+/*페이지*/
+#pagingArea{
+  padding-left: 590px;
+
+}
+.page-link{
+  border-color: white;
+  color: rgb(10, 23, 78);
+}
+.page-link:hover{
+  border-color: white;
+  color: rgb(245, 208, 66);
+  background-color: white;
+}
+.CmntBtn{
+    background-color: rgb(245, 208, 66);
+    color: white;
+    border-style: none;
+    height: 45px;
+    width: 30px;
+    border-radius: 10px;
+}
+
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
-	<div class="container-fluid">
-		
+    <div class="content" style="padding-left: 3%; padding-right: 3%;">		
 		<div class="top-img">
-			<label><h4>${loginUser.comCode}</h4></label>
+            <label><h4>${loginUser.comName}&nbsp;&nbsp;&nbsp;COMMUNITY</h4></label>
 		</div>
-
-		<br>
-
 		<!--인기글-->
 		<div class="hotBoard">
-			<i class="fas fa-fire-alt"></i> <label><h4>HOT.인기 게시글</h4></label>
+			<i class="fas fa-fire-alt"></i> <label><h4>인기 게시글</h4></label>
 		</div>
 
 		<!--인기글 table-->
 		<table class="table table-borderless" id="cmnt">
 			<thead>
-				<tr>
+				<tr style="text-align: center;">
 					<th>no.</th>
 					<th>제목</th>
 					<th>내용</th>
@@ -97,7 +125,7 @@
 			</thead>
 			<tbody id="topBoardBody">
 				<c:forEach items="${topList}" var="t">
-				<tr>
+				<tr style="text-align: center;">
 					<td>${t.communityNo}</td>
 					<td>${t.title}</td>
 					<th>${t.content}</th>
@@ -111,17 +139,19 @@
 		<br>
 
 		<!--제목 찾기 부트스트랩(filter)-->
+    
 		<form action="search.cm" method="post" id="searchForm"> 
 		<div class="search-box">
 			<input class="form-control" id="myInput" name="title" type="text" placeholder="제목" >
 			<a class="searchBtn"><i class="fas fa-search" onclick="document.getElementById('searchForm').submit();"></i></a>
 		</div>
 		</form>
+        
 					
 		<!--커뮤니티 게시판-->
 		<table class="table" id="cmnt">
 			<thead>
-				<tr>
+				<tr style="text-align: center;">
 					<th>No.</th>
 					<th>제목</th>
 					<th>작성일</th>
@@ -133,7 +163,7 @@
 			<tbody id="myTable">
 			<c:forEach items="${list}" var="c">
 		<!-- <c:if test="${c.comCode eq loginUser.comCode }">	</c:if> -->	
-				<tr>
+				<tr style="text-align: center;">
 					<td>${c.communityNo }</td>
 					<c:if  test="${ !empty c.originName }">
 					<td>${c.title}<label>[댓글수]</label>&nbsp;&nbsp;<i class="far fa-image"></i></td>
@@ -153,8 +183,9 @@
 		<div class="board-Btn">
 			<button class="writerBtn" onclick="writer()">글쓰기</button>
 			<button class="readBtn" onclick="myWriter()">내글보기</button>
-			<button class="CmntBtn" onclick="CmntBtn()"><i class="fas fa-home"></i></button>
+            <button class="CmntBtn" onclick="CmntBtn()"><i class="fas fa-home"></i></button>
 		</div>
+       
 		
 		 <div id="pagingArea">
                 <ul class="pagination">

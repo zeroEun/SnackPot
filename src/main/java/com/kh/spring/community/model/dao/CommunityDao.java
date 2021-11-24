@@ -199,6 +199,13 @@ public class CommunityDao {
 
 
 
+	public int CountComCode(SqlSession sqlSession, String comCode) {
+		
+		return sqlSession.selectOne("cmntMapper.CountComCode" , comCode);
+	}
+
+
+
 
 
 

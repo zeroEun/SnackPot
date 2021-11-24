@@ -21,7 +21,7 @@ public class Community {
 	private int recommend;
 	private int n_recommend;
 	private Date writerDate;
-	private String status;
+	private String communityStatus;
 	private String writer;
 	private String title;
 	private String originName;

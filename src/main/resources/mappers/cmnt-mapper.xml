@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="recommend" column="RECOMMEND"/>
 		<result property="n_recommend" column="N_RECOMMEND"/>
 		<result property="writerDate" column="WRITER_DATE"/>
-		<result property="status" column="STATUS"/>
+		<result property="communityStatus" column="COMMUNITY_STATUS"/>
 		<result property="writer" column="WRITER"/>
 		<result property="title" column="TITLE"/>
 		<result property="comCode" column="COM_CODE" />
@@ -37,17 +37,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="reDate" column="RE_DATE"/>
 	</resultMap> 	
 	
+<select id="CountComCode" resultType="_int">
+	SELECT COUNT(COM_CODE)
+	FROM COMMUNITY
+	WHERE COM_CODE = #{comCode}
+</select>	
+		
 <select id="selectListCount" resultType="_int">
 	SELECT COUNT(*)
 	FROM COMMUNITY
-	WHERE STATUS = 'Y'
+	WHERE COMMUNITY_STATUS = 'Y'
     AND COM_CODE= #{comCode}
 </select>
 
 <select id="selectWriterListCount" resultType="_int">
 	SELECT COUNT(*)
 	FROM COMMUNITY
-	WHERE STATUS = 'Y'
+	WHERE COMMUNITY_STATUS = 'Y'
     AND WRITER= #{writer}
     AND COM_CODE =#{comCode}
 </select>
@@ -58,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME
 	FROM COMMUNITY A 
 	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
-	WHERE A.STATUS='Y'
+	WHERE A.COMMUNITY_STATUS='Y'
 	AND A.COM_CODE = #{comCode}
 	ORDER BY A.COMMUNITY_NO DESC
 </select>
@@ -68,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT *
 		FROM(SELECT *
 		 FROM COMMUNITY
-		WHERE STATUS ='Y'
+		WHERE COMMUNITY_STATUS ='Y'
 		AND COM_CODE = #{comCode}
 		ORDER BY RECOMMEND DESC
 		)
@@ -81,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME
 	FROM COMMUNITY A 
 	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
-	WHERE A.STATUS='Y'
+	WHERE A.COMMUNITY_STATUS='Y'
 	AND A.WRITER = #{writer}
 	AND A.COM_CODE = #{comCode}
 	ORDER BY A.COMMUNITY_NO DESC
@@ -98,14 +104,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND A.TITLE LIKE '%' || #{title} || '%'
 		</if>
 		</trim>
-		AND A.STATUS='Y'
+		AND A.COMMUNITY_STATUS='Y'
 		AND A.COM_CODE = #{comCode}
 		ORDER BY A.COMMUNITY_NO DESC
 </select>
 
 <insert id="insertCommunity" parameterType="Community">
-	INSERT INTO COMMUNITY
-	VALUES (CMNT_SEQ.NEXTVAL , #{content} , 0 , 0 , 0 , SYSDATE , 'Y' , #{writer} , #{title} , #{comCode} )
+	INSERT INTO COMMUNITY       
+	VALUES (CMNT_SEQ.NEXTVAL , #{writer} , #{title} , #{content} , 0 , 0 , 0 , SYSDATE , 'Y' ,  #{comCode})
 </insert>
 
 <select id="selectCmntNo" resultType="_int">
@@ -126,7 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	FROM COMMUNITY A
 	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
 	WHERE A.COMMUNITY_NO = #{cno}
-	AND A.STATUS = 'Y'
+	AND A.COMMUNITY_STATUS = 'Y'
 </select>
 
 <update id="updateCmnt" parameterType="Community">

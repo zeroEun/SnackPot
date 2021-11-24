@@ -145,7 +145,7 @@
 							<a class="nav-link"data-toggle="dropdown"></a><label class="snackpotName">${ sessionScope.loginUser.memName}님</label>
 							<a href="logout.co" class="logOut">로그아웃</a>
 								<div class=" dropdown-menuDiv dropdown-menu ">
-									<a class="dropdownItem dropdown-item" href="modifyMember.co">회원정보 수정</a>
+									<a class="dropdownItem dropdown-item" href=" modifyAdmin.co">회원정보 수정</a>
 									<a class="dropdownItem dropdown-item" href="empManage.em">사원관리</a>
 								</div>
 							</li>

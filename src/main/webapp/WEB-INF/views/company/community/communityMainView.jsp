@@ -11,11 +11,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-<!-- <link rel="stylesheet" href="/css/community.css"> -->
+
 </head>
 <style>
 .top-img{
-    background-color: skyblue;
     text-align: center;
 }
 /*검색box 포지션*/
@@ -58,36 +57,60 @@
 }
 /*글쓰기 , 조회 버튼*/
 .writerBtn{
-    background-color: rgb(10, 23, 78);
+  background-color: rgb(10, 23, 78);
     color: white;
     border-style: none;
+    height: 45px;
+    width: 90px;
+    border-radius: 10px;
 }
 .readBtn{
     background-color: rgb(245, 208, 66);
-    border-color:  rgb(245, 208, 66);
+    color: white;
     border-style: none;
+    height: 45px;
+    width: 90px;
+    border-radius: 10px;
 
 }
+/*댓글 색깔*/
+
+.recolor{
+  color: red;
+}
+/*페이지*/
+#pagingArea{
+  padding-left: 590px;
+
+}
+.page-link{
+  border-color: white;
+  color: rgb(10, 23, 78);
+}
+.page-link:hover{
+  border-color: white;
+  color: rgb(245, 208, 66);
+  background-color: white;
+}
+
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 	<div class="container-fluid">
-		
+    <div class="content" style="padding-left: 3%; padding-right: 3%;">		
 		<div class="top-img">
-			<label><h4>${loginUser.comName}의  커뮤니티입니다.</h4></label>
+			<label><h4>${loginUser.comName}&nbsp;&nbsp;&nbsp;COMMUNITY</h4></label>
 		</div>
-
-		<br>
-
+	
 		<!--인기글-->
 		<div class="hotBoard">
-			<i class="fas fa-fire-alt"></i> <label><h4>HOT.인기 게시글</h4></label>
+			<i class="fas fa-fire-alt"></i> <label><h4>인기 게시글</h4></label>
 		</div>
 
 		<!--인기글 table-->
 		<table class="table table-borderless" id="cmnt">
 			<thead>
-				<tr>
+				<tr style="text-align: center;">
 					<th>no.</th>
 					<th>제목</th>
 					<th>내용</th>
@@ -97,7 +120,7 @@
 			</thead>
 			<tbody id="topBoardBody">
 				<c:forEach items="${topList}" var="t">
-				<tr>
+				<tr style="text-align: center; ">
 					<td>${t.communityNo}</td>
 					<td>${t.title}</td>
 					<th>${t.content}</th>
@@ -121,31 +144,29 @@
 		<!--커뮤니티 게시판-->
 		<table class="table" id="cmnt">
 			<thead>
-				<tr>
+				<tr style="text-align: center; ">
 					<th>No.</th>
 					<th>제목</th>
 					<th>작성일</th>
-					<th>추천</th>
-					<th>조회</th>
-					<th>작성자</th>
+					<th>추천수</th>
+					<th>조회수</th>
 				</tr>
 			</thead>
 			<tbody id="myTable">
 			<c:forEach items="${list}" var="c">
 		<!-- <c:if test="${c.comCode eq loginUser.comCode }">	</c:if> -->	
-				<tr>
+				<tr style="text-align: center; ">
 					<td>${c.communityNo }</td>
 					<c:if  test="${ !empty c.originName }">
-					<td>${c.title}<label>[댓글수]</label>&nbsp;&nbsp;<i class="far fa-image"></i></td>
+					<td >${c.title}<label class="recolor">[댓글수]</label>&nbsp;&nbsp;<i class="far fa-image"></i></td>
 					</c:if>
 					
 					<c:if  test="${ empty c.originName }">
-					<td>${c.title}<label>[댓글수]</label></td>
+					<td>${c.title}<label class="recolor">[댓글수]</label></td>
 					</c:if>		
 					<td>${c.writerDate }</td>
 					<td>${c.recommend }</td>
 					<td>${c.views }</td>
-					<td>${c.writer}</td>
 				</tr>
 			</c:forEach>
 			</tbody>
@@ -159,10 +180,10 @@
                 <ul class="pagination">
                 	<c:choose>
                 		<c:when test="${ pi.currentPage ne 1 }">
-                			<li class="page-item"><a class="page-link" href="list.cm?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+                			<li class="page-item"><a class="page-link" href="list.cm?currentPage=${ pi.currentPage-1 }"><i class="fas fa-angle-double-left"></i></a></li>
                 		</c:when>
                 		<c:otherwise>
-                			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+                			<li class="page-item disabled"><a class="page-link" href=""><i class="fas fa-angle-double-left"></i></a></li>
                 		</c:otherwise>
                 	</c:choose>
                     <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
@@ -177,16 +198,17 @@
                     </c:forEach>
                     <c:choose>
                 		<c:when test="${ pi.currentPage ne pi.maxPage }">
-                			<li class="page-item"><a class="page-link" href="list.cm?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                			<li class="page-item"><a class="page-link" href="list.cm?currentPage=${ pi.currentPage+1 }"><i class="fas fa-angle-double-right"></i></a></li>
                 		</c:when>
                 		<c:otherwise>
-                			<li class="page-item disabled"><a class="page-link" href="list.cm?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                			<li class="page-item disabled"><a class="page-link" href="list.cm?currentPage=${ pi.currentPage+1 }"><i class="fas fa-angle-double-right"></i></a></li>
                 		</c:otherwise>
                 	</c:choose>
                 </ul>
             </div>
             <br clear="both"><br>
 	</div>
+  </div>
 </body>
 <script>
     	$(function(){

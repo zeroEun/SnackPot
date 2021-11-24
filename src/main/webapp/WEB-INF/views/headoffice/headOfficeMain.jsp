@@ -70,59 +70,38 @@
       dayMaxEvents: true, // allow "more" link when too many events
       events: [
         {
-          title: 'All Day Event',
+          title: '간식 이벤트',
           start: '2021-11-01'
         },
         {
-          title: 'Long Event',
-          start: '2021-11-07',
+          title: '개인 휴무',
+          start: '2021-11-08',
           end: '2021-11-10'
         },
         {
           groupId: 999,
-          title: 'Repeating Event',
-          start: '2021-11-09T16:00:00'
+          title: '주간 회의',
+          start: '2021-11-15T16:30:00'
         },
         {
           groupId: 999,
-          title: 'Repeating Event',
-          start: '2021-11-16T16:00:00'
+          title: '월간 실적 보고 회의',
+          start: '2021-11-29T16:00:00'
         },
         {
-          title: 'Conference',
-          start: '2021-11-11',
-          end: '2021-11-13'
-        },
-        {
-          title: 'Meeting',
+          title: '거래처 방문',
           start: '2021-11-12T10:30:00',
           end: '2021-11-12T12:30:00'
         },
         {
-          title: 'Lunch',
+          title: '점심 만찬',
           start: '2021-11-12T12:00:00'
         },
         {
-          title: 'Meeting',
+          title: '팀 미팅',
           start: '2021-11-12T14:30:00'
         },
-        {
-          title: 'Happy Hour',
-          start: '2021-11-12T17:30:00'
-        },
-        {
-          title: 'Dinner',
-          start: '2021-11-12T20:00:00'
-        },
-        {
-          title: 'Birthday Party',
-          start: '2021-11-13T07:00:00'
-        },
-        {
-          title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2021-11-28'
-        }
+        
       ]
     });
 

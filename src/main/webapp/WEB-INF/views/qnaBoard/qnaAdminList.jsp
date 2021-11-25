@@ -62,20 +62,22 @@
                     <th>제목</th>
                     <th>작성자</th>
                     <th>작성일자</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
                 	<c:forEach items="${list}" var="q">
 	                    <tr>
 	                        <td>${ q.QNo }</td>
-	                        <td>${ q.QTitle }
-	                         <c:if test="${not empty q.ATitle}">
-	                        답변완료
-	                        </c:if>
-	                        </td>
+	                        <td>${ q.QTitle }</td>
 	                        <td>${ q.writer }</td>
 	                        <td>${ q.createDate }
 	                        </td>
+	                        <td>
+	             			 <c:if test="${not empty q.ATitle}">
+	                        답변완료
+	                        </c:if>
+	             			</td>
 	             
 	                    </tr>
                     </c:forEach>
@@ -87,7 +89,7 @@
                 <ul class="pagination">
                 	<c:choose>
                 		<c:when test="${ pi.currentPage ne 1 }">
-                			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+                			<li class="page-item"><a class="page-link" href="adminList.qna?currentPage=${ pi.currentPage-1 }">Previous</a></li>
                 		</c:when>
                 		<c:otherwise>
                 			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
@@ -97,7 +99,7 @@
                     <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
                     	<c:choose>
 	                		<c:when test="${ pi.currentPage ne p }">
-                    			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ p }">${ p }</a></li>
+                    			<li class="page-item"><a class="page-link" href="adminList.qna?currentPage=${ p }">${ p }</a></li>
 	                		</c:when>
 	                		<c:otherwise>
 	                			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
@@ -108,10 +110,10 @@
                     
                     <c:choose>
                 		<c:when test="${ pi.currentPage ne pi.maxPage }">
-                			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                			<li class="page-item"><a class="page-link" href="adminList.qna?currentPage=${ pi.currentPage+1 }">Next</a></li>
                 		</c:when>
                 		<c:otherwise>
-                			<li class="page-item disabled"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                			<li class="page-item disabled"><a class="page-link" href="adminList.qna?currentPage=${ pi.currentPage+1 }">Next</a></li>
                 		</c:otherwise>
                 	</c:choose>
                 </ul>

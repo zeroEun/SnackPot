@@ -47,20 +47,23 @@
                     <th>제목</th>
                     <th>작성자</th>
                     <th>작성일자</th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
                 	<c:forEach items="${list}" var="q">
 	                    <tr>
 	                        <td>${ q.QNo }</td>
-	                        <td>${ q.QTitle }
-	                         <c:if test="${not empty q.ATitle}">
+	                        <td>${ q.QTitle }</td>
+	                        <td>${ q.name }</td>
+	                        <td>${ q.createDate }</td>
+	             			<td>
+	             			 <c:if test="${not empty q.ATitle}">
 	                        답변완료
 	                        </c:if>
-	                        </td>
-	                        <td>${ q.writer }</td>
-	                        <td>${ q.createDate }</td>
-	             
+	             			</td>
+	             			<td>${q.writer}</td>
 	                    </tr>
                     </c:forEach>
                 </tbody>
@@ -114,15 +117,32 @@
         <br><br>
     </div>
     
-     <script>
+    <c:if test="${ !empty loginUser }">
+    
+    
+    <script>
+    
+	var writer = $("#boardList tbody tr").children().eq(5).text();
+	var loginUser = '${loginUser.getMemId()}';
+	console.log(loginUser);
+	console.log(writer);
+     
     	$(function(){
+    		
     		$("#boardList tbody tr").click(function(){
+    			if(writer == loginUser){
     			console.log($(this).children().eq(0).text());
     			location.href="detail.qna?qno=" + $(this).children().eq(0).text();
+    		}
     		});
     	});
     </script>
-
+    
+    
+    
+    </c:if>
+    
+     
 
     <jsp:include page="../common/footer.jsp"/>
 </body>

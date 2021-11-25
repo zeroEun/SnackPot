@@ -18,7 +18,8 @@
     #birthCard{
     	height: 777px;
     	overflow: scroll;
-    	margin-bottom: 5px;
+    	margin-bottom: 10px;
+    	background: rgb(241, 251, 255);
     }
     #sendingTab>li>p {
        	cursor: pointer;
@@ -46,7 +47,7 @@
         margin-right: 3px;
     }
     #birthCard > .card-body{
-        background: rgb(218, 215, 208);
+        height: 100%;
     }
     .tableHead{
     	background: rgb(255, 227, 114);
@@ -263,8 +264,7 @@
 	                    </div>
 	                </div>
 	            </div>
-	        </div>    
-	    
+	        </div>
 	        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
 	        <button type="button" class="btn btn-dark" id="saveGiftList">선물리스트 저장</button>
     	</div>
@@ -286,7 +286,7 @@
 		    $("#insertBtn").show();
 		    $("#deleteBtn").show();
 		    */
-		    $("#sendingListTab").css("background", "rgb(218, 215, 208)");
+		    $("#sendingListTab").css("background-color", "rgb(161, 214, 236)").css("color","rgb(10, 23, 78)");
 		    $("#tabArea").css("padding-bottom", 4);//추가탭 없으면 style로 변경
 		}
 		
@@ -302,13 +302,14 @@
 					//console.log("sendingChk");
 					console.log($(this).parents("td").siblings().eq(0).children().val());
 					
-					//console.log("선택값 : "+glistNo);
+					console.log("선택값1 : "+glistNo);
+					console.log("선택값2 : "+cempSeq);
 					selectArray.push(glistNo);
 					selectArray.push(cempSeq);
 					//console.log(selectArray);
 				});
-				
-				//console.log(selectArray);
+				console.log("선택값3");
+				console.log(selectArray);
 				$.ajax({
 					url: "updateGiftList.birth",
 					type: "POST",

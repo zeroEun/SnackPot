@@ -18,12 +18,20 @@
 <title>Insert title here</title>
 </head>
 <style>
+#giftContainer{
+	height: 100vh;
+}
+#giftContainer>div{
+	border-bottom: 1px solid lightgray;
+}
 .giftOuter{
 	margin: auto;
 	width: 90%;
 }
-#giftListBody{
+#giftArea{
+	height: 100vh;
 	overflow: scroll;
+	/*background-color: rgb(241, 251, 255);*/
 }
 #giftCount{
 	color: red;
@@ -34,6 +42,9 @@
 #searchGiftArea{
 	float: right;
 	margin-right: 10px;
+}
+.cardWholeArea{
+	background-color: rgb(255, 255, 238)
 }
 .giftImage{
 	border-bottom: 1px solid rgb(236, 236, 236);
@@ -49,7 +60,6 @@
 .giftCardHeader{
 	clear: both;
 	padding: 0;
-	background: white;
 	text-decoration: none;
 	border:0;
 }
@@ -96,6 +106,21 @@
 	padding: 12px;
 	border-radius: 2rem;
 	box-shadow: none;
+	border: 1px solid lightgray;
+	background-color: rgb(41, 62, 155);
+	color: rgb(245, 208, 66);
+}
+#seeMoreItems:hover{
+	background-color: rgb(56, 80, 189);
+	color: yellow;
+}
+#goTop{
+	text-decoration: none;
+	color: rgb(10, 23, 78);
+	display:scroll;
+	position:fixed;
+	bottom:22px;
+	right:22px;
 }
 </style>
 <body id="giftListBody">
@@ -104,11 +129,11 @@
 			<div class="row flex-nowrap">
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 				
-				<div class="col-10">
+				<div class="col-10" id="giftArea">
 					<div class="giftOuter">
-						<br><br>
+						<br id="top"><br>
 						<div id="giftBtnArea">
-							<h3>선물 리스트&nbsp;&nbsp;</h3>
+							<h3>선물 리스트&emsp;</h3>
 							<button type="button" class="btn btn-primary" id="delGiftBtn" onclick="deleteGift();">선택 삭제</button>
 						    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertGift">추가하기</button>
 						</div>
@@ -303,24 +328,23 @@
 										</div>
 										
 										<div class="card-body">
-											<h5 class="card-title">${giftList.giftBrand }</h5>
-											<p class="card-text">${giftList.giftName }</p>
-											<h6 class="card-text"><fmt:formatNumber value="${giftList.giftPrice }" pattern="#,###" />원</h6>
+											<p class="card-title" style="font-size: large">${giftList.giftBrand }</p>
+											<p class="card-text" style="height: 35%">${giftList.giftName }</p><hr>
+											<p class="card-text"><b><fmt:formatNumber value="${giftList.giftPrice }" pattern="#,###" />원</b></p><br>
 										</div>
 									</div>
 								</div>
 							</c:forEach>
 						</div>
 					</div>
-				<div style="width:250px; margin: auto;">
-					<button type="button" class="btn btn-outline-secondary btn-lg" id="seeMoreItems">더보기 <span id="itemsCount"></span> / <span id="wholeItemsCount"></span></button>
-				</div>
+					<div style="width:250px; margin: auto;">
+						<button type="button" class="btn btn-outline-secondary btn-lg" id="seeMoreItems">더보기 <span id="itemsCount"></span> / <span id="wholeItemsCount"></span></button>
+					</div>
+            		<a id="goTop" href="#top" data-toggle="tooltip" data-placement="top" title="맨 위로 이동"><i class="fas fa-arrow-alt-circle-up fa-3x"></i></a>
 				</div>
 			</div>
 		</div>
-		<br>
-		
-		<br><br><br>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	</section>
 
 	<script type="text/javascript">
@@ -591,12 +615,20 @@
 	    <%-- 상품 정렬 --%>
 		$(function(){
 			
+			<%-- footer 설정 --%>
+			$("#footer").css("width","100%");
+			$("#footer-1").css("width","100%").css("text-align","center").css("margin","auto");
+			$("#footer-2").css("width","40%").css("text-align","left").css("margin","auto");
+			$("#footer-2>p").css("padding-left","60px");
+			
 			$("#giftCtgry1").css("font-weight", "bolder");
 			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
 			$("#giftCtgry2").css("font-weight", "normal");
 			$("#giftCtgry2").html('높은가격순');
 			$("#giftCtgry3").css("font-weight", "normal");
 			$("#giftCtgry3").html('낮은가격순');
+			
+			$("#seeMoreItems").show();
 			
 			var ctgryNum;
 			
@@ -611,6 +643,8 @@
 				$("#giftCtgry3").html('낮은가격순');
 				
 				$("#giftListArea").children().hide();
+				
+				$("#seeMoreItems").hide();
 				ctgryNum = 1;
 				
 				console.log($("#giftListArea").children());
@@ -641,14 +675,16 @@
 							
 							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
 							result += '<div class="card-body">';
-							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
-							result += '<p class="card-text">' + item.giftName + '</p>';
-							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
+							result += '<p class="card-title" style="font-size: large">' + item.giftBrand + '</p>';
+							result += '<p class="card-text" style="height: 35%">' + item.giftName + '</p><hr>';
+							result += '<p class="card-text"><b>' + item.giftPrice + '</b></p><br>';
 							result += '</div>';
 							result += '</div>';
 							result += '</div>';
 						});
 						$("#giftListArea").html(result);
+						
+						$("#seeMoreItems").show();
 						
 						$(".updateGiftBtn").css("opacity", "0");
 						
@@ -660,7 +696,9 @@
 								$(this).children(index).children(index).eq(1).children().css("opacity", "0");
 								$(this).children(index).children(index).eq(1).children().attr("disabled", true);
 							});
-						});	
+						});
+						
+						firstHideItems();
 					},
 					error: function(error){
 						alert(error);
@@ -679,6 +717,8 @@
 				$("#giftCtgry3").html('낮은가격순');
 				
 				$("#giftListArea").children().hide();
+				
+				$("#seeMoreItems").hide();
 				ctgryNum = 2;
 				
 				console.log($("#giftListArea").children());
@@ -708,14 +748,16 @@
 							
 							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
 							result += '<div class="card-body">';
-							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
-							result += '<p class="card-text">' + item.giftName + '</p>';
-							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
+							result += '<p class="card-title" style="font-size: large">' + item.giftBrand + '</p>';
+							result += '<p class="card-text" style="height: 35%">' + item.giftName + '</p><hr>';
+							result += '<p class="card-text"><b>' + item.giftPrice + '</b></p><br>';
 							result += '</div>';
 							result += '</div>';
 							result += '</div>';
 						});
 						$("#giftListArea").html(result);
+						
+						$("#seeMoreItems").show();
 						
 						$(".updateGiftBtn").css("opacity", "0");
 						
@@ -729,6 +771,8 @@
 								$(this).children(index).children(index).eq(1).children().attr("disabled", true);
 							});
 						});	
+						
+						firstHideItems();
 					},
 					error: function(error){
 						alert(error);
@@ -747,6 +791,8 @@
 				$("#giftCtgry3").html('<i class="fas fa-check"></i>&nbsp;낮은가격순');
 				
 				$("#giftListArea").children().hide();
+				
+				$("#seeMoreItems").hide();
 				ctgryNum = 3;
 				
 				console.log($("#giftListArea").children());
@@ -776,14 +822,16 @@
 							
 							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
 							result += '<div class="card-body">';
-							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
-							result += '<p class="card-text">' + item.giftName + '</p>';
-							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
+							result += '<p class="card-title" style="font-size: large">' + item.giftBrand + '</p>';
+							result += '<p class="card-text" style="height: 35%">' + item.giftName + '</p><hr>';
+							result += '<p class="card-text"><b>' + item.giftPrice + '</b></p><br>';
 							result += '</div>';
 							result += '</div>';
 							result += '</div>';
 						});
 						$("#giftListArea").html(result);
+						
+						$("#seeMoreItems").show();
 						
 						$(".updateGiftBtn").css("opacity", "0");
 						
@@ -796,7 +844,9 @@
 								$(this).children(index).children(index).eq(1).children().css("opacity", "0");
 								$(this).children(index).children(index).eq(1).children().attr("disabled", true);
 							});
-						});	
+						});
+						
+						firstHideItems();
 					},
 					error: function(error){
 						alert(error);

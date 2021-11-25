@@ -39,6 +39,10 @@
 	display: inline-block;
 	height: 100%;
 	width: 60%;
+	border: 1px solid lightgray;
+}
+#searchDiv:focus{
+	border: 1px solid red;
 }
 #searchDiv>span{
 	width: 20%;
@@ -64,15 +68,19 @@
 #giftCategory a{
 	cursor: pointer;
 }
-
-#cardWholeArea{
-    position: relative;
+.cardWholeArea>.card-body{
+	background-color: rgb(255, 255, 238);
+	border-top: 1px solid lightgray;
+}
+#cardHeader{
+	background-color: rgb(255, 255, 238);
+	border-bottom: 1px solid lightgray;
+	margin-bottom: 0;
 }
 #cardOuter{
     position: absolute;
     width: 100%;
     height: 100%;
-
 	display: flex;
     justify-content: center;
     align-items: center;
@@ -115,6 +123,21 @@
 	padding: 12px;
 	border-radius: 2rem;
 	box-shadow: none;
+	border: 1px solid lightgray;
+	background-color: rgb(41, 62, 155);
+	color: rgb(245, 208, 66);
+}
+#seeMoreItems:hover{
+	background-color: rgb(56, 80, 189);
+	color: yellow;
+}
+#goTop{
+	text-decoration: none;
+	color: rgb(10, 23, 78);
+	display:scroll;
+	position:fixed;
+	bottom:22px;
+	right:22px;
 }
 </style>
 <body id="giftListBody">
@@ -154,11 +177,15 @@
 				<c:forEach items="${list }" var="giftList">
 					<div class="col mb-4 gift">
 						<div class="card h-100 cardWholeArea">
+							<div>
+							<h5 id="cardHeader" style="text-align: center;">&emsp;</h5>
 							<img src="${ pageContext.servletContext.contextPath }/resources/images/${giftList.changeName}" class="card-img-top" alt="...">
+							</div>
+							
 							<div class="card-body">
-								<h5 class="card-title">${giftList.giftBrand }</h5>
-								<p class="card-text">${giftList.giftName }</p>
-								<h6 class="card-text"><fmt:formatNumber value="${giftList.giftPrice }" pattern="#,###" />원</h6>
+								<p class="card-title" style="font-size: large">${giftList.giftBrand }</p>
+								<p class="card-text" style="height: 35%">${giftList.giftName }</p><hr>
+								<p class="card-text"><b><fmt:formatNumber value="${giftList.giftPrice }" pattern="#,###" />원</b></p><br>
 							</div>
 							<div class="cardOuter" id="cardOuter">
 								<div class="cardInner">
@@ -206,10 +233,20 @@
 		<div style="width:250px; margin: auto;">
 			<button type="button" class="btn btn-outline-secondary btn-lg" id="seeMoreItems">더보기 <span id="itemsCount"></span> / <span id="wholeItemsCount"></span></button>
 		</div>
+		<a id="goTop" href="#top" data-toggle="tooltip" data-placement="top" title="맨 위로 이동"><i class="fas fa-arrow-alt-circle-up fa-3x"></i></a>
 		<br><br><br>
 	</section>
 
 	<script>
+		$(function(){
+			$("#searchInput").focus(function(){
+				$("#searchDiv").css("border","2px solid gray");
+			});
+			
+			$("#searchInput").blur(function(){
+				$("#searchDiv").css("border","1px solid lightgray");
+			});
+		});
 		<%-- # modal에 폴더 리스트 출력 --%>
 		function selectFolderList(){
 			//console.log("순서2");
@@ -266,7 +303,7 @@
 			<%-- 화면 로딩 시 상품 리스트 데이터 조회하여 나열 --%>
 			selectFolderList();
 			
-			console.log($(".folderTimes").siblings(".folderNo").val());
+			//console.log($(".folderTimes").siblings(".folderNo").val());
 	    	<%-- (1) 각 상품 클릭하면 해당 GIFT_NO 값을 giftNo에 삽입 --%>
 	    	var giftNo;
 	    	$(document).on('click', '.addGift', function(e){
@@ -569,10 +606,11 @@
 	    });
 	    	
 	    <%-- 더보기 버튼 클릭 시 실행 함수 --%>
-		$(function(){
-			
+	    function firstHideItems(){
 			var firstItems = 20;
 			const itemsLength = $(".gift").length;
+			console.log("전체 아이템 수 : "+itemsLength);
+			console.log($(".gift").eq(0));
 			$("#itemsCount").html(firstItems);
 			$("#wholeItemsCount").html(itemsLength);
 			
@@ -583,18 +621,24 @@
 					$(".gift").eq(i).hide();
 				}
 			}
+
+		}
+	    
+	    $(function(){
+			firstHideItems();
+			var visibleItems = 20;
+			const itemsLnth = $(".gift").length;
 			
 			$(document).on('click', '#seeMoreItems',  function(){
-				//console.log("순서1");
-				if(firstItems + 20 > itemsLength){
-					firstItems += (itemsLength - firstItems)
+				if(visibleItems + 20 > itemsLnth){
+					visibleItems += (itemsLnth - visibleItems)
 				}else{
-					firstItems += 20;
+					visibleItems += 20;
 				}
 				
-				$("#itemsCount").html(firstItems);
-				for(var i=0; i<itemsLength; i++){
-					if(i < firstItems){
+				$("#itemsCount").html(visibleItems);
+				for(var i=0; i<itemsLnth; i++){
+					if(i < visibleItems){
 						$(".gift").eq(i).show();
 					}else{
 						$(".gift").eq(i).hide();
@@ -605,6 +649,66 @@
 	</script>
 
 	<script type="text/javascript">
+	
+		<%-- 카테고리별 상품 리스트 출력 함수 --%>
+		function selectCategory(categoryNum){
+			//console.log("순서11");
+			//console.log("categoryNum : " + categoryNum);
+			$.ajax({
+				url: "selectCtgry.birth",
+				type: "POST",
+				data: {
+					ctgryNum : categoryNum
+				},
+				success: function(data){
+					var result = '';
+	
+					$.each(data, function(index, item){
+						result += '<div class="col mb-4 gift">';
+						result += '<div class="card h-100 cardWholeArea">';
+						result += '<div>';
+						result += '<h5 id="cardHeader" style="text-align: center;">&emsp;</h5>';
+						result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
+						result += '</div>';
+						result += '<div class="card-body">';
+						result += '<p class="card-title" style="font-size: large">' + item.giftBrand + '</p>';
+						result += '<p class="card-text" style="height: 35%">' + item.giftName + '</p><hr>';
+						result += '<p class="card-text"><b>' + (item.giftPrice).toLocaleString() + '원</b></p><br>';
+						result += '</div>';
+						
+						result += '<div class="cardOuter" id="cardOuter">';
+						result += '<div class="cardInner">';
+						result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
+						result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
+						result += '</button></div>';
+						result += '</div></div>';
+						
+						result += '</div>';
+						result += '</div>';
+					});
+					$("#giftListArea").html(result);
+					
+					$("#seeMoreItems").show();
+					
+					$(".cardOuter").css("opacity","0");
+					
+					<%-- 각 상품에 마우스 올리면 선물리스트 추가하는 아이콘 보이게 설정 --%>
+					$(".gift").each(function(index){
+						$(this).hover(function(){
+							$(this).children(index).children(index).eq(2).css("opacity","1.0");
+						}, function(){
+							$(this).children(index).children(index).eq(2).css("opacity","0");
+						});
+					});
+					
+					firstHideItems();
+				},
+				error: function(error){
+					alert(error);
+				}
+			});
+		}
+
 		<%-- 상품 정렬 --%>
 		$(function(){
 			
@@ -615,56 +719,8 @@
 			$("#giftCtgry3").css("font-weight", "normal");
 			$("#giftCtgry3").html('낮은가격순');
 			
-			<%-- 카테고리별 상품 리스트 출력 함수 --%>
-			function selectCategory(categoryNum){
-				//console.log("순서11");
-				//console.log("categoryNum : " + categoryNum);
-				$.ajax({
-					url: "selectCtgry.birth",
-					type: "POST",
-					data: {
-						ctgryNum : categoryNum
-					},
-					success: function(data){
-						var result = '';
-
-						$.each(data, function(index, item){
-							result += '<div class="col mb-4 gift">';
-							result += '<div class="card h-100 cardWholeArea">';
-							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
-							result += '<div class="card-body">';
-							result += '<h5 class="card-title">' + item.giftBrand + '</h5>';
-							result += '<p class="card-text">' + item.giftName + '</p>';
-							result += '<h6 class="card-text">' + item.giftPrice + '</h6>';
-							result += '</div>';
-							
-							result += '<div class="cardOuter" id="cardOuter">';
-							result += '<div class="cardInner">';
-							result += '<div><button type="button" class="addGift" value="' + item.giftNo + '" data-toggle="modal" data-target="#addGiftModal">';
-							result += '<i class="fas fa-folder-plus fa-3x" data-toggle="tooltip" data-placement="top" title="폴더에 저장"></i>';
-							result += '</button></div>';
-							result += '</div></div>';
-							
-							result += '</div>';
-							result += '</div>';
-						});
-						$("#giftListArea").html(result);
-						
-						$(".cardOuter").css("opacity","0");
-						
-						$(".gift").each(function(index){
-							$(this).hover(function(){
-								$(this).children(index).children(index).eq(2).css("opacity","1.0");
-							}, function(){
-								$(this).children(index).children(index).eq(2).css("opacity","0");
-							});
-						});
-					},
-					error: function(error){
-						alert(error);
-					}
-				});
-			}
+			$("#seeMoreItems").show();
+			//selectCategory(categoryNum);
 
 			var ctgryNum;
 			<%-- (1) 추천상품순 --%>
@@ -679,6 +735,8 @@
 				$("#giftCtgry3").html('낮은가격순');
 				
 				$("#giftListArea").children().hide();
+				
+				$("#seeMoreItems").hide();
 				ctgryNum = 1;
 				
 				//console.log($("#giftListArea").children());
@@ -698,6 +756,8 @@
 				$("#giftCtgry3").html('낮은가격순');
 				
 				$("#giftListArea").children().hide();
+				
+				$("#seeMoreItems").hide();
 				ctgryNum = 2;
 				
 				//console.log($("#giftListArea").children());
@@ -717,6 +777,8 @@
 				$("#giftCtgry3").html('<i class="fas fa-check"></i>&nbsp;낮은가격순');
 				
 				$("#giftListArea").children().hide();
+				
+				$("#seeMoreItems").hide();
 				ctgryNum = 3;
 				
 				//console.log($("#giftListArea").children());
@@ -726,12 +788,6 @@
 				
 				selectCategory(ctgryNum);
 			});
-		});
-	
-		<%-- 검색창 아이콘 가시 여부 설정 --%>
-		$(function(){
-			<%--$("#searchReset>i").css("opacity","0"); //일단 자리 채우기용으로 사용--%>
-			$("#searchDiv").css("border", "1px solid gray");
 		});
 		
 	    <%-- 선물 검색 관련 --%>
@@ -767,6 +823,13 @@
 				}
 		    	
 		    	$("#giftCount").html(newCount);
+				$("#seeMoreItems").hide();
+		    	
+		    	<%-- 검색어를 다 지웠을 때 초기 화면으로 리턴하기 위한 조건 --%>
+		    	if(searchText == ""){
+		    		firstHideItems();
+		    		$("#seeMoreItems").show();
+		    	}
 	        });
 	    });
 	    

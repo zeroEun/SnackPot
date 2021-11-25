@@ -176,14 +176,15 @@ public class SendListController {
 		GiftFolder gf = new GiftFolder();
 		
 		int result = 0;
+
 		for(int i=0; i<selectArray.length; i++) {
 			if(i%2==0) {
 				gf.setGlistNo(selectArray[i]);
 			}else {
 				gf.setCempSeq(Integer.parseInt(selectArray[i]));
+				System.out.println("gf : " + gf);
+				result += sendListService.updateGiftList(gf);
 			}
-			System.out.println("gf : " + gf);
-			result += sendListService.updateGiftList(gf);
 		}
 		System.out.println("나누기 안 한  result : " + result);
 		result = result / (selectArray.length/2);

@@ -458,7 +458,7 @@
 						
 						var category = $("<td>").text(obj.categoryName);
 						var subCategory = $("<td>").text(obj.subCategoryName);
-						var image = $("<td>").text(obj.changeName);
+						var image = $("<td>").append($("<img>").attr('src', "${ pageContext.servletContext.contextPath }/resources/images/"+obj.changeName ).attr('class', "image"))
 						var name = $("<td>").text(obj.snackName);
 						var price = $("<td>").text(obj.releasePrice);
 						var count = $("<td>").text(obj.count);

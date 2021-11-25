@@ -26,6 +26,7 @@ public class Qna {
 	private Date aDate;
 	private String changeName;
 	private String status;
+	private String name;
 	
 	
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,9 +95,9 @@
 					
                     <span class="company-name">${i.comName}</span>
                     <br><br>
-                    <span class="">예산 : ${i.budget}원</span>&nbsp;&nbsp;&nbsp;
-                    <span class="">총 금액 : ${i.totalPrice}원</span>&nbsp;&nbsp;&nbsp;
-                 	<span class="">주문 마감일 : ${i.orderDeadline}</span>
+                                             예산 : <span class="" id="budgetInfo"><fmt:formatNumber value="${i.budget}" groupingUsed="true"/></span>원&nbsp;&nbsp;&nbsp;
+                                             총 금액 : <span class="" id="totalPriceInfo"><fmt:formatNumber value="${i.totalPrice}" groupingUsed="true"/></span>원&nbsp;&nbsp;&nbsp;
+                 	주문 마감일 : <span class="">${i.orderDeadline}</span>
 
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wishModal" id="wishBtn">위시리스트 조회</button>
                   	<button type="button" class="btn btn-primary" id="createListBtn">리스트 생성</button>
@@ -205,10 +206,13 @@
 	                                    <td>${list.subCategoryName}</td>
 	                                    <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${list.imageName}"></td>
 	                                    <td>${list.snackName}</td>
-	                                    <td class="searchPrice" id="searchPrice${list.snackNo}">${list.releasePrice}</td>
+	                                    <td class="searchPrice" id="">
+		                                    <input type="hidden" id="searchPrice${list.snackNo}" value="${list.releasePrice}">
+		                                    <fmt:formatNumber value="${list.releasePrice}" groupingUsed="true"/>
+	                                    </td>
 	                                    <td><input type="number" class="searchAmount" id="${list.snackNo}" min=1 max="${list.stock}" required></td>
 	                                    <td>${list.stock}<input type="hidden" id="searchStock${list.snackNo}" value="${list.stock}"></td>
-	                                    <td class="searchTotalPrice" id="searchTotalPrice${list.snackNo}">${list.releasePrice * list.amount}</td>
+	                                    <td class="searchTotalPrice" id="searchTotalPrice${list.snackNo}"></td>
 	                                    <td><button type="button" class="addBtn" value="${list.snackNo}">추가</button></td>
                                 	</tr>
                             	</c:forEach>
@@ -256,10 +260,10 @@
 		                                <td>${dList.subCategoryName}</td>
 		                                <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${dList.imageName}"></td>
 		                                <td>${dList.snackName}</td>
-		                                <td>${dList.releasePrice}</td>
+		                                <td><fmt:formatNumber value="${dList.releasePrice}" groupingUsed="true"/></td>
 		                                <td><input type="number" class="amount" id="${dList.snackDNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>
 		                                <td>${dList.stock}<input type="hidden" id="dListStock" value="${dList.stock}"></td>
-		                                <td>${dList.releasePrice * dList.amount}</td>
+		                                <td><fmt:formatNumber value="${dList.releasePrice * dList.amount}" groupingUsed="true"/></td>
 	                                </tr>
 	                                
 	                            </c:forEach>
@@ -300,6 +304,10 @@
 <script type="text/javascript">
 
 	$(function(){
+		
+		function addCommas(c){
+			return c.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 		
 		<%-- select option 값 선택시 이벤트 : on change  --%>
 		$('#category').on('change', function(){
@@ -358,8 +366,8 @@
 			var amount = $(this).val();
 			var snackNo = $(this).attr('id');
 			var stock = Number($('#searchStock' + snackNo).val());
-			var price = $('#searchPrice' + snackNo).text();
-			
+			var price = $('#searchPrice' + snackNo).val();
+
 			if(amount < 1){
 				alert("최소 수량은 1입니다.");
 				$(this).val(1);
@@ -370,7 +378,8 @@
 				$(this).val(stock);
 			}
 			
-			$('#searchTotalPrice' + snackNo).text($(this).val()*price);
+			
+			$('#searchTotalPrice' + snackNo).text(addCommas($(this).val()*price));
 			
 		})
 		
@@ -454,20 +463,16 @@
 				data: {comCode:comCode},
 				success: function(wishList){
 					
-					console.log(wishList);
-					
 					$.each(wishList, function(index, obj){
-						
-						console.log(obj);
 						
 						var category = $("<td>").text(obj.categoryName);
 						var subCategory = $("<td>").text(obj.subCategoryName);
-						var image = $("<td>").text(obj.changeName);
+						var image = $("<td>").append($("<img>").attr('src', "${ pageContext.servletContext.contextPath }/resources/images/"+obj.changeName ).attr('class', "image"))
 						var name = $("<td>").text(obj.snackName);
-						var price = $("<td>").text(obj.releasePrice);
+						var price = $("<td>").text(addCommas(obj.releasePrice));
 						var count = $("<td>").text(obj.count);
 						var stock = $("<td>").text(obj.stock);
-						var totalPrice = $("<td>").text(obj.releasePrice*obj.count);
+						var totalPrice = $("<td>").text(addCommas(obj.releasePrice*obj.count));
 						var tr = $("<tr>").append(category, subCategory, image, name, price, count, stock, totalPrice);
 						
 						$('#wish-table tbody').append(tr);

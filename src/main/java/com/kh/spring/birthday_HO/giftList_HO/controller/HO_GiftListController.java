@@ -40,22 +40,22 @@ public class HO_GiftListController {
 	
 	@ResponseBody
 	@RequestMapping(value="checkedGiftList.ho")
-	public ArrayList<HO_GiftList> checkedGiftList(HttpServletRequest request){
+	public ArrayList<HO_GiftList> checkedGiftList(String[] chkArr){
 		
-		String[] chkArr = request.getParameterValues("chkArr");
-		//System.out.println("chkArr : " + chkArr);
+		//String[] chkArr = request.getParameterValues("chkArr");
+		
 		ArrayList<HO_GiftList> list = new ArrayList<HO_GiftList>();
 		HO_GiftList giftOne = new HO_GiftList();
 		
 		for(int i=0; i<chkArr.length; i++) {
-			
+			System.out.println("chkArr[i] : " + chkArr[i]);
 			giftOne = giftListService.checkedGiftList(chkArr[i]);
-			//System.out.println("giftOne : " + giftOne);
+			System.out.println("giftOne : " + giftOne);
 			
 			list.add(giftOne);
 		}
 
-		//System.out.println("gglist : " + list);
+		System.out.println("gglist : " + list);
 		
 		return list;
 	}

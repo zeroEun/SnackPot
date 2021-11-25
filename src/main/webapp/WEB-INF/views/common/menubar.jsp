@@ -122,7 +122,14 @@
             </div>
         </li>
            <!--소통 , 랭킹 ,문의-->
-           <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="list.cm">소통팟</a></li>
+           <c:choose>
+           	 <c:when test="${ empty sessionScope.loginUser}">
+           		<li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" onclick="cmnt(0)">소통팟</a></li>
+          	 </c:when>
+            	<c:when test="${ !empty sessionScope.loginUser}">
+           		<li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" onclick="cmnt(1)">소통팟</a></li>
+           </c:when>
+           </c:choose>
            <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="#">랭킹팟</a></li>
            <li class="nav-item "><a class="nav-linkLi nav-link nav-menuTitle" href="list.qna">문의</a></li>
     </ul>  
@@ -170,5 +177,18 @@
 </header>
 <br clear="both">
 </body>
+<script type="text/javascript">
+	function cmnt(val){
+		const chk = val;
+		if(chk == 0){
+			alert("로그인후 이용 가능합니다.")
+			location.href="login.co?";
+		}else{
+			location.href="list.cm?";		
+		}
+	}
+	
+	
 
+</script>
 </html>

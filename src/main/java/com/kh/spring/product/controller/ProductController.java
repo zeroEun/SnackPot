@@ -32,6 +32,8 @@ public class ProductController {
 	@RequestMapping("list.pro")
 	public String selectList(Model model ,@RequestParam(value="dtc")int dtc) {
 		
+		
+		
 		ArrayList<Product> list = productService.selectList(dtc);
 //		System.out.println("product list : " + list);
 		model.addAttribute("list", list);
@@ -82,14 +84,9 @@ public class ProductController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		
-		/* 구독일 -7일이면 한달을 더 더해서 입력되게 
-		cal.set(Calendar.DAY_OF_MONTH, deliveryDate);
-		cal.add(Calendar.MONTH, +1);
-		cal.add(Calendar.DATE, -8); 
-		*/
 		
 		/* 구독일 -7일이면 한달을 더 더해서 입력되게 */
-		if (deliveryDate <= 7) {
+		if (deliveryDate <= 7){
 			cal.set(Calendar.DAY_OF_MONTH, deliveryDate);
 			cal.add(Calendar.MONTH, 2);
 			cal.add(Calendar.DATE, -8); 

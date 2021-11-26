@@ -9,17 +9,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 </head>
 <style>
+
     #smarteditor{
          border : 1px solid;
          height:450px;
          width: 1250px; 
          margin: 0 auto;
     }
-     .title{
-        width:900px;
-        height : 30px;
-        margin : 20px 90px 10px 0px;
-    }
+
     ::placeholder{
         padding-left: 20px;
         padding-top: 40px;
@@ -28,16 +25,15 @@
         margin-left: 80px;
         text-align: center;
     }
-    h4{
-        text-align: left;
-        margin-left: 150px;
-    }
+ 
     hr{
         width: 1250px;
-        margin-bottom: -20px;
         height: 0.1px;
+        margin-top: 10px;
         background-color: black;
     }
+      
+        
     .dbtn{
         float: left;
         margin-left: 80px;
@@ -48,17 +44,20 @@
         text-align: right;
         margin-right: 80px;
     }
+    /*커뮤니티 제목라벨*/
+	.titleLb{
+		float: left;
+		margin-left: 100px;
+	}
     /*조회수*/
-    .views{
-        margin-top: 15px;
-        margin-bottom: -20px;
-        text-align: right;
-        margin-right: 180px;
-
-    }
+	.viewsDiv{
+		display: inline-block;
+		margin-left: 55%;
+		margin-bottom: -10px;
+		padding-top: 6px;
+	} 
      /*추천,비추천 버튼*/
     .recommendBtn{
-
         text-align: center;
         margin-top: 60px;
     }
@@ -76,8 +75,10 @@
     }
      /*첨부파일*/
     .attachmentfile{
-       margin-left: 10px;
+       margin-left: 75%;
        width: 200px;
+
+       
 
     }
  
@@ -86,25 +87,26 @@
         background-color: rgb(10, 23, 78);
         color: white;
         border-style: none;
-        height: 40px;
-        width: 90px;
+      	height: 30px;
+   		width: 90px;
         border-radius: 10px;
     }
     .deleteCmnt{
         background-color: rgb(245, 208, 66);
         color: white;
         border-style: none;
-        height: 40px;
-        width: 90px;
+       	height: 30px;
+   		width: 90px;
         border-radius: 10px;
+        margin-top: 8px;
     }
     .back{
         background-color: rgb(245, 208, 66);
-        margin-top: 7px;
+        margin-top: 15px;
         color: white;
         border-style: none;
-        height: 40px;
-        width: 90px;
+        height: 30px;
+    	width: 90px;
         border-radius: 10px;
     }
     #addReply{
@@ -125,26 +127,27 @@
         text-align: center;
         padding: 0 10px 0 10px;
     }
+    .updateReply{
+    	background-color: aqua;
+    }
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 	<br>
 <div class="content" style="padding-left: 5%; padding-right: 5%;">
 	<form action="insert.cm" method="post" id="frm" style="text-align: center;" enctype="multipart/form-data">
+	<br><br>
+			<div class="titleDiv"><label class="titleLb"><h5>${dlist.title}</h5></label></div>
+			<div class="viewsDiv"><label class="viewsLb1">조회</label>&nbsp;&nbsp;<label class="viewsLb2">${dlist.views}</label>&nbsp;&nbsp;<label>||&nbsp;&nbsp;${dlist.writerDate}</label></div>
 	
-		<div class="views" >
-			<label>조회</label>&nbsp;&nbsp;<label>${dlist.views}</label>
-		</div>
 		<hr>
 		<div>
-			<input type="text" class="title" name="title" value="${dlist.title}">
 			 	<c:if test="${ !empty dlist.originName }">
                     <label class="attachmentfile">
-                     <lable>[파일]</lable>
-                     <a href="${ pageContext.servletContext.contextPath }/resources/upload_files/cmntAttachment/${dlist.changeName}" download="${ dlist.originName }" class="attachmentfile">${ dlist.originName }</a>
+                     [파일]
+                     <a href="${ pageContext.servletContext.contextPath }/resources/upload_files/cmntAttachment/${dlist.changeName}" download="${ dlist.originName }">${ dlist.originName }</a>
                   </label> 
                  </c:if>
-		<!-- <input type="file" name="uploadFile" class="attachmentfile"> -->	
 		</div>
 		<div class="tarea">
 			<div name="seContent" id="smarteditor">${dlist.content}</div>
@@ -209,8 +212,16 @@
 	/*게시글 삭제하기*/
 	function deleteCmnt(val) {
 		const cno = val;
-		if(comfirm("정말 삭제하시겠습니가?")){
+		if(confirm("정말 삭제하시겠습니가?")){
 			location.href = "delete.cm?cno=" + cno;
+			$.ajax({
+				url : "delete.cm",
+				type : "post",
+				data : {cno : cno},
+				success:function(){
+					alert("삭제되었습니다.")
+				}
+			})
 		}else{
 			return;
 		}
@@ -258,12 +269,12 @@
 				var value="";
 				$.each(list, function(index, obj){
 					
-					if("${loginUser.memId}" == obj.reWriter && obj.reGroups == 0){
+					if("${loginUser.memId}" == obj.reWriter && obj.reGroups == 0){ //글작성자가 본인 && 부모댓글
 						value += "<tr>";
-					    value += "<th>" + '익명' + "</th>" + 
-								 "<td>" + obj.reContent + "</td>" + 
-								 "<td>" + obj.reDate + "</td>" + 
-								 "<td><input type='button' value='수정' class='updateReply' data_num='"+obj.reNo+"'data_text='"+obj.reContent+"'data_index='"+index+"'>"+
+					    value += "<th class='col-md-1'>" + '익명' + "</th>" + 
+								 "<td class='col-md-8'>" + obj.reContent + "</td>" + 
+								 "<td class='col-md-1'>" + obj.reDate + "</td>" + 
+								 "<td class='col-md-2'><input type='button' value='수정' class='updateReply' data_num='"+obj.reNo+"'data_text='"+obj.reContent+"'data_index='"+index+"'>"+
 								 "<input type='button' value='삭제' class='deleteReply' data_num="+obj.reNo+">"+
 								 "<input type='button' value='답글' class='reReplyAdd' data_num="+obj.reNo+" data_index="+index+" data_text="+obj.reContent+" data_reGroup="+obj.reGroup+" data_reGroupDept="+obj.reGroupDept+" data-toggle='modal' data-target='#myModal"+index+"'></td>"+
 						 	  	 "</tr>";
@@ -271,12 +282,11 @@
 								 value += "<tr>";
 								 value += "<td colspan='4'><div id='updateCommentFormDiv"+index+"'></div></td>";
 								 console.log(obj.reContent)
-					}else if(obj.reGroups == 1){
+					}else if(obj.reGroups == 1 && "${loginUser.memId}" != obj.reWriter){ //자식댓글
 						value += "<tr  style='background-color: pink;'>";
 					    value += "<th>" + '익명' + "</th>" + 
 								 "<td>"+'->' + obj.reContent + "</td>" + 
 								 "<td>" + obj.reDate + "</td>"+ 
-								 "<td><input type='button' value='삭제' class='deleteReReplyBtn' data_num="+obj.reNo+"></td>" + 
 						 	  	 "</tr>";	 
 						}else if("${loginUser.memId}" != obj.reWriter && obj.reGroups == 0){
 							value += "<tr>";
@@ -290,9 +300,16 @@
 									 value += "<tr>";
 									 value += "<td colspan='4'><div id='updateCommentFormDiv"+index+"'></div></td>";
 									 console.log(obj.reContent)
+							}else if("${loginUser.memId}" == obj.reWriter && obj.reGroups == 1){ //자식댓글 이고 작성자가 본인일때
+								value += "<tr  style='background-color: pink;'>";
+							    value += "<th>" + '익명' + "</th>" + 
+										 "<td>"+'->' + obj.reContent + "</td>" + 
+										 "<td>" + obj.reDate + "</td>"+ 
+										 "<td><input type='button' value='삭제' class='deleteReReplyBtn' data_num="+obj.reNo+"></td>" + 
+								 	  	 "</tr>";	
 							}
 					});
-				$("#replyArea tbody").html(value);
+				$("#replyArea tbody").html(value).trigger("create");
 				
 				//댓글 삭제
 				 $('.deleteReply').on('click', function(){

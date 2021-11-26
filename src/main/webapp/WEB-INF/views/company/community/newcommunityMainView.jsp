@@ -11,11 +11,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-
 </head>
 <style>
 .top-img{
-    text-align: center;
+   margin-left: 130px;
 }
 /*검색box 포지션*/
 .search-box{
@@ -41,16 +40,16 @@
 /*인기 게시글*/
 .fa-fire-alt{
     color: red;
-    margin-right: 5px;
-    margin-top: 20px;
-    font-size: 30px;
+    font-size: 20px;
 }
 .hotBoard{
-    text-align: center;
+  	margin-left: 130px;
+
 }
 .hotBoard > label > h3{
     font-weight: bold;
     margin-bottom: 20px;
+  
 }
 #topBoardBody{
     border: 1px solid lightgray;
@@ -71,23 +70,19 @@
 	<div class="content" style="padding-left: 3%; padding-right: 3%;">
 		
 		<div class="top-img">
-			<label><h4>${loginUser.comName}&nbsp;&nbsp;&nbsp;COMMUNITY</h4></label>
+			<label><h4>[ ${loginUser.comName} ]</h4></label>
 		</div>
-
-		<br>
-
 		<!--인기글-->
 		<div class="hotBoard">
-			<i class="fas fa-fire-alt"></i> <label><h4>인기 게시글</h4></label>
+			<i class="fas fa-fire-alt"></i> <label><h5>인기 게시글</h5></label>
 		</div>
 
 		<!--인기글 table-->
 		<table class="table table-borderless" id="cmnt" style=" margin: auto;">
 			<thead>
 				<tr style="text-align: center;">
-					<th >no.</th>
+					<th >No.</th>
 					<th>제목</th>
-					<th>내용</th>
 					<th>조회수</th>
 					<th>추천수</th>
 				</tr>
@@ -122,7 +117,7 @@
 			</thead>
 			<tbody id="myTable">
 				<tr>
-					<td colspan="5"><div style="height: 150px; text-align: center; padding-top: 70px;" ><h3>게시글을 등록해주세요</h3></div></td>
+					<td colspan="5"><div style="height: 150px; text-align: center; padding-top: 70px;" ><h3>게시글을 등록해주세요.</h3></div></td>
 				</tr>
 			</tbody>
 		</table>

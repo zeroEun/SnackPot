@@ -121,6 +121,13 @@ public class ProductServiceImpl implements ProductService {
 		return result;
 	}
 
+	@Override
+	public int chkEmpSub(String comCode) {
+		
+		int result = productDao.chkEmpSub(sqlSession , comCode);
+		return result;
+	}
+
 
 
 	//스케줄러 테스트용

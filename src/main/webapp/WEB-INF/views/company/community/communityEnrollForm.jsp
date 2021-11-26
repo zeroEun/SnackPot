@@ -13,7 +13,7 @@
 <style>
     /* 글작성 바탕 DIV*/
     .contain{
-        background-color: rgba(10, 23, 78, 0.18);
+        background-color: rgba(245, 208, 66, 0.08);
         padding: 30px 0 30px 0 ;
     }
     .title{
@@ -44,7 +44,7 @@
         background-color: rgb(10, 23, 78);
         color: white;
         border-style: none;
-        height: 40px;
+        height: 30px;
         width: 90px;
         border-radius: 10px;
     }
@@ -52,7 +52,7 @@
         background-color: rgb(245, 208, 66);
         color: white;
         border-style: none;
-        height: 40px;
+        height: 30px;
         width: 90px;
         border-radius: 10px;
     }

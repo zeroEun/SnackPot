@@ -15,7 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="title" column="TITLE"/>
 		<result property="comCode" column="COM_CODE" />
 		<result property="changeName" column="CHANGE_NAME"/>
-		<result property="originName" column="ORIGIN_NAME"/>		
+		<result property="originName" column="ORIGIN_NAME"/>	
+		<result property="reCount" column="RE_COUNT"/>		
 	</resultMap>
 
 	<resultMap type="ComtyAttachment" id="ComtyAttachmentResultSet">
@@ -60,8 +61,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <select id="selectList" resultMap="communityResultSet">
-	SELECT A.COMMUNITY_NO , A.CONTENT, A.VIEWS, A.RECOMMEND , A.N_RECOMMEND , A.WRITER_DATE , A.TITLE , A.COM_CODE,
-       	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME
+    SELECT A.COMMUNITY_NO , A.CONTENT, A.VIEWS, A.RECOMMEND , A.N_RECOMMEND , A.WRITER_DATE , A.TITLE , A.COM_CODE,
+       	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME,
+       	    (
+            SELECT COUNT(*)
+            FROM REPLY C
+            WHERE C.COMMUNITY_NO = A.COMMUNITY_NO
+            )AS "RE_COUNT"
 	FROM COMMUNITY A 
 	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
 	WHERE A.COMMUNITY_STATUS='Y'
@@ -84,7 +90,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <select id="selectMyWriter" resultMap="communityResultSet">
 	SELECT A.COMMUNITY_NO , A.CONTENT, A.VIEWS, A.RECOMMEND , A.N_RECOMMEND , A.WRITER_DATE , A.TITLE , A.COM_CODE,
-       	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME
+       	   A.WRITER , B.CHANGE_NAME ,B.ORIGIN_NAME,   
+       	   (
+            SELECT COUNT(*)
+            FROM REPLY C
+            WHERE C.COMMUNITY_NO = A.COMMUNITY_NO
+            )AS "RE_COUNT"
 	FROM COMMUNITY A 
 	LEFT OUTER JOIN COMTY_ATTACHMENT B ON (A.COMMUNITY_NO = B.COMMUNITY_NO)
 	WHERE A.COMMUNITY_STATUS='Y'
@@ -154,7 +165,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <update id="deleteCmnt" parameterType="Community">
 	UPDATE COMMUNITY
-	SET STATUS='N'
+	SET COMMUNITY_STATUS='N'
 	WHERE COMMUNITY_NO =#{communityNo}
 </update>
 

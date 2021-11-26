@@ -44,14 +44,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="detail" property="detail" />
 
 	</resultMap>
-	
-	<resultMap type="ProductAttachment" id="ProductAttachmentResultMap">
-	
-	<id column="file_no" property="fileNo"/>
-	<result column="origin_name" property="originName" />
+
+	<resultMap type="ProductAttachment"
+		id="ProductAttachmentResultMap">
+
+		<id column="file_no" property="fileNo" />
+		<result column="origin_name" property="originName" />
 		<result column="change_name" property="changeName" />
 		<result column="file_path" property="filePath" />
 		<result column="snack_no" property="snackNo" />
+
+	</resultMap>
+	
+	<resultMap type="Chart" id="ChartResultMap">
+	
+	<id column="SNACK_NAME" property="snackName"/>
+	<result column="AMOUNT" property="amount"/>
 	
 	</resultMap>
 
@@ -309,10 +317,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY SNACK_NO DESC
 
 	</select>
-	
+
 	<select id="invenDetail" resultMap="snackResultSet">
-	
-	
+
+
 		SELECT
 		A.SNACK_NO,
 		A.SNACK_NAME,
@@ -342,15 +350,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SNACK_NO = ${snackNo}
 
 	</select>
+
+	<select id="invenDetailAttach"
+		resultMap="ProductAttachmentResultMap">
+
+		SELECT *
+		FROM SNACK_ATTACHMENT
+		WHERE SNACK_NO = ${snackNo}
+
+
+	</select>
+
+
+	<select id="snackChart" resultMap="ChartResultMap">
+
+		SELECT *
+		FROM
+		(SELECT
+		B.SNACK_NAME,
+		SUM(A.AMOUNT) AS AMOUNT
+		FROM RELEASE A
+		JOIN SNACK B
+		ON A.SNACK_NO = B.SNACK_NO
+		GROUP BY B.SNACK_NAME
+		ORDER BY AMOUNT DESC)
+		WHERE ROWNUM BETWEEN 1 AND 30
+
+	</select>
+
+
+	<select id="checkAmount">
 	
-	<select id="invenDetailAttach" resultMap="ProductAttachmentResultMap">
-	
-	SELECT *
-	FROM SNACK_ATTACHMENT
+	SELECT
+	STOCK
+	FROM SNACK
 	WHERE SNACK_NO = ${snackNo}
 	
 	
 	</select>
-
-
 </mapper>

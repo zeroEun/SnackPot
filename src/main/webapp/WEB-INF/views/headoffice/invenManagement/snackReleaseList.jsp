@@ -68,7 +68,7 @@
 }
 
 .btn {
-	width: 50px;
+	width: 70px;
 	background-color: rgb(245, 208, 66);
 	color: rgb(10, 23, 78);
 }
@@ -103,19 +103,22 @@
 						<h2>출고등록</h2>
 					</div>
 					<div class="close-area">X</div>
-					<form id="arrivalEnroll" action="releaseInsert.im" method="post">
+					<form id="releaseEnroll" action="releaseInsert.im" method="post">
 						<div class="content">
 							<p>
 								<label class="inputLabel">제품코드</label> <input type="number"
-									name="snackNo">
+									name="snackNo"  id="snackNo">
 							</p>
+							<div id="checkSnackNo"></div>
 							<p>
 								<label class="inputLabel">수량</label> <input type="number"
-									name="amount">
+									name="amount" id="amount" readonly>
+								
 							</p>
+							<div id="checkAmount"></div>
 							<p>
 								<label class="inputLabel">비고</label> <input type="text"
-									name="remark">
+									name="remark" maxlength="20" readonly>
 							</p>
 							<br> <br> <input type="submit" value="등록하기" class="btn">
 						</div>
@@ -293,6 +296,78 @@
 	</div>
 
 	<script>
+	
+	$('#snackNo').blur(function() {
+		var snackNo = $('#snackNo').val();
+		console.log(amount);
+		$.ajax({
+			url : 'checkSnackNo.im',
+			type : 'post',
+			data: {'snackNo' : $('#snackNo').val()},
+			success : function (data) {
+				console.log("출고 가능 여부: " + snackNo);
+				if (data === 1) {
+					
+					$("#checkSnackNo").text("존재하지 않는 상품코드입니다");
+					$("#checkSnackNo").css("color", "red");
+					$("#releaseEnroll").attr("disabled", true);
+				} else if(snackNo == ""){
+					
+					$('#checkSnackNo').text('상품코드를 입력해주세요');
+					$('#checkSnackNo').css('color', 'red');
+					$("#releaseEnroll").attr("disabled", true);				
+					
+				} else{
+					
+					$("#checkAmount").removeAttr( 'readonly' );
+					
+				}
+				
+			},
+			error : function() {
+				console.log("통신실패");
+			}
+			
+			
+		})
+	})
+	
+	
+	$('#amount').blur(function() {
+		var amount = $('#amount').val();
+		console.log(amount);
+		$.ajax({
+			url : 'checkAmount.im',
+			type : 'post',
+			data: {'amount' : $('#amount').val(),
+					'snackNo' : $('#snackNo').val()	},
+			success : function (data) {
+				console.log("출고 가능 여부: " + amount);
+				if (data === 1) {
+					
+					$("#checkAmount").text("재고가 충분하지 않습니다");
+					$("#checkAmount").css("color", "red");
+					$("#releaseEnroll").attr("disabled", true);
+				} else if(amount == ""){
+					
+					$('#checkAmount').text('수량을 입력해주세요');
+					$('#checkAmount').css('color', 'red');
+					$("#releaseEnroll").attr("disabled", true);				
+					
+				} else{
+					
+					$("#remark").removeAttr( 'readonly' );
+					
+				}
+				
+			},
+			error : function() {
+				console.log("통신실패");
+			}
+			
+			
+		})
+	})
        
     
                 const modal = document.getElementById("modal")

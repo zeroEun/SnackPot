@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,13 +33,32 @@
 
 
 			<div class="content">
-			
 
-			
-			<h2>인기 간식 통계</h2>
-			<br>
-			 <div id="bar_chart_div"></div>
-			
+
+
+				<h2>인기 간식 통계</h2>
+				<br>
+				<div id="bar_chart_div"></div>
+				<br>
+				<table  id="snackChart" class="table table-hover" align="center">
+				
+				 <thead>
+                  <tr>
+                    <th>제품명</th>
+                    <th>출고수량</th>
+                  </tr>
+                </thead>
+                <tbody>
+                	<c:forEach items="${chart}" var="c">
+	                    <tr>
+	                        <td>${ c.snackName }</td>
+	                        <td>${ c.amount }</td>
+	                    </tr>
+                    </c:forEach>
+                </tbody>
+				
+				</table>
+
 
 			</div>
 
@@ -47,52 +67,58 @@
 		</div>
 	</div>
 
-<script>
-google.charts.load('current', {'packages':['bar','corechart']});
- 
-    function schedulerSuccessAndFailChart() {
-        var data = google.visualization.arrayToDataTable([
-               ["Title","성공", {role:'annotation'}, "실패", {role:'annotation'}],
-                        [""
-                ,413, 413 //성공데이터
-                ,24, 24] //실패데이터
-       ]);
- 
-       var barChartOption = {
-               bars: 'vertical',
-               height :260,
-               width :'100%',
-               legend: { position: "top" },
-               isStacked: false,
-               tooltip:{textStyle : {fontSize:12}, showColorCode : true},
-               animation: { //차트가 뿌려질때 실행될 애니메이션 효과
-                 startup: true,
-                 duration: 1000,
-                 easing: 'linear' },
-               annotations: {
-                   textStyle: {
-                     fontSize: 15,
-                     bold: true,
-                     italic: true,
-                     color: '#871b47',
-                     auraColor: '#d799ae',
-                     opacity: 0.8
-                   }
-              }
-        };
- 
-       var chart = new google.visualization.BarChart(document.getElementById('bar_chart_div'));
- 
-       chart.draw(data, barChartOption);
-       //반응형 그래프 출력 
-       //window.addEventListener('resize', function() { chart.draw(data, barChartOption); }, false);
-    }
- 
-    google.charts.setOnLoadCallback(schedulerSuccessAndFailChart);
- 
- 
- 
-</script>
+	<script>
+		google.charts.load('current', {
+			'packages' : [ 'bar', 'corechart' ]
+		});
+
+		function topSnackChart() {
+			var data = google.visualization.arrayToDataTable([
+					[ 'Test', ${name} ], 
+					[ "", ${amount}] 
+			]);
+
+			var barChartOption = {
+				bars : 'vertical',
+				height : '100%',
+				width : '100%',
+				legend : {
+					position : "bottom"
+				},
+				isStacked : false,
+				tooltip : {
+					textStyle : {
+						fontSize : 12
+					},
+					showColorCode : false
+				},
+				animation : { //차트가 뿌려질때 실행될 애니메이션 효과
+					startup : true,
+					duration : 1000,
+					easing : 'linear'
+				},
+				annotations : {
+					textStyle : {
+						fontSize : 15,
+						bold : true,
+						italic : true,
+						color : '#0A174E',
+						auraColor : '#F5D042',
+						opacity : 0.8
+					}
+				}
+			};
+
+			var chart = new google.visualization.BarChart(document
+					.getElementById('bar_chart_div'));
+
+			chart.draw(data, barChartOption);
+			//반응형 그래프 출력 
+			//window.addEventListener('resize', function() { chart.draw(data, barChartOption); }, false);
+		}
+
+		google.charts.setOnLoadCallback(topSnackChart);
+	</script>
 
 
 

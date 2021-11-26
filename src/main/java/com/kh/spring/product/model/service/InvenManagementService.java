@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import com.kh.spring.product.arrival.model.vo.Arrival;
+import com.kh.spring.product.model.vo.Chart;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
 import com.kh.spring.product.model.vo.Snack;
@@ -43,6 +44,10 @@ public interface InvenManagementService {
 	Snack invenDetail(int snackNo);
 
 	ProductAttachment invenDetailAttach(int snackNo);
+
+	ArrayList<Chart> snackChart();
+
+	int checkAmount(int snackNo);
 	
 
 }

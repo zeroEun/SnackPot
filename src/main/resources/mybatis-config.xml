@@ -33,7 +33,7 @@
 		<typeAlias type="com.kh.spring.product.arrival.model.vo.Arrival" alias="Arrival"/>
 		<typeAlias type="com.kh.spring.product.release.model.vo.Release" alias="Release"/>
 		<typeAlias type="com.kh.spring.product.model.vo.WishListDtail" alias="WishListDtail"/>
-				<typeAlias type="com.kh.spring.product.model.vo.Snack" alias="Snack"/>
+		<typeAlias type="com.kh.spring.product.model.vo.Snack" alias="Snack"/>
 		
 		<!-- snack -->
 		<typeAlias type="com.kh.spring.snack.snackSubs.model.vo.SnackSubs" alias="SnackSubs"/>
@@ -54,6 +54,8 @@
 		<typeAlias type="com.kh.spring.community.model.vo.Reply" alias="Reply"/>
 		<typeAlias type="com.kh.spring.community.model.vo.ComtyAttachment" alias="ComtyAttachment"/>
 		
+		<!-- chart -->
+		<typeAlias type="com.kh.spring.product.model.vo.Chart" alias="Chart"/>
 		
 	</typeAliases>
 

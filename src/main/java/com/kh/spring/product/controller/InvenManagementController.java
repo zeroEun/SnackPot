@@ -6,15 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.service.InvenManagementService;
+import com.kh.spring.product.model.vo.Chart;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
 import com.kh.spring.product.model.vo.Snack;
@@ -64,13 +65,13 @@ public class InvenManagementController {
 		invenManagementService.insertSnack(p);
 		invenManagementService.insertSnackAttach(pa);
 
-		model.addAttribute("msg","상품 등록이 완료되었습니다.");
-        model.addAttribute("url","/");
-        
-        return "common/alert";	
+		model.addAttribute("msg", "상품 등록이 완료되었습니다.");
+		model.addAttribute("url", "/");
+
+		return "common/alert";
 	}
 
-	//상품 등록 첨부파일
+	// 상품 등록 첨부파일
 	private ProductAttachment saveFile(MultipartFile file, HttpServletRequest request, int snackNo) {
 
 		ProductAttachment pa = new ProductAttachment();
@@ -98,7 +99,6 @@ public class InvenManagementController {
 			pa.setOriginName(originName);
 
 		} catch (IllegalStateException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new CommException("file upload error");
 		}
@@ -106,201 +106,249 @@ public class InvenManagementController {
 		return pa;
 	}
 
-	//출고 리스트로 이동
+	// 출고 리스트로 이동
 	@RequestMapping("releaseList.im")
-	private String ReleaseList(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
-
-
+	private String ReleaseList(
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
 
 		return "headoffice/invenManagement/snackReleaseList";
 	}
-	//입고 리스트로 이동
-	@RequestMapping("arrivalList.im")
-	private String todayArrivalList(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
-	
-		//int listCount = invenManagementService.todayArrivalCount();
-		//System.out.println(listCount);
-		
-		//PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		
-		//ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
-		
-		//System.out.println(list);
-		
-		//model.addAttribute("list", list);
-		//model.addAttribute("pi", pi);
 
+	// 입고 리스트로 이동
+	@RequestMapping("arrivalList.im")
+	private String todayArrivalList(
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
+
+		// int listCount = invenManagementService.todayArrivalCount();
+		// System.out.println(listCount);
+
+		// PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+
+		// ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi);
+
+		// System.out.println(list);
+
+		// model.addAttribute("list", list);
+		// model.addAttribute("pi", pi);
 
 		return "headoffice/invenManagement/snackArrivalList";
 	}
 
-	//출고 등록
+	// 출고 등록
 	@RequestMapping("releaseInsert.im")
 	private String ReleaseEnrollForm(Release r, Model model) {
 
-
 		System.out.println(r);
-		
+
 		invenManagementService.releaseInsert(r);
 
-		model.addAttribute("msg","출고 등록이 완료되었습니다.");
-        model.addAttribute("url","/releaseList.im");
+		model.addAttribute("msg", "출고 등록이 완료되었습니다.");
+		model.addAttribute("url", "/releaseList.im");
 
-		return "common/alert";	
+		return "common/alert";
 	}
 
-	//입고 등록
+	// 입고 등록
 	@RequestMapping("arrivalInsert.im")
 	private String ArrivalEnrollForm(Arrival a, Model model) {
-			//@RequestParam(name = "remark", required = false) String remark) {
-		
+		// @RequestParam(name = "remark", required = false) String remark) {
+
 		System.out.println(a);
-		
+
 		invenManagementService.arrivalInsert(a);
 
-		model.addAttribute("msg","입고 등록이 완료되었습니다.");
-        model.addAttribute("url","/arrivalList.im");
+		model.addAttribute("msg", "입고 등록이 완료되었습니다.");
+		model.addAttribute("url", "/arrivalList.im");
 
-		return "common/alert";	
+		return "common/alert";
 	}
-	
-	
-	//입고 목록 Ajax
+
+	// 입고 목록 Ajax
 	@ResponseBody
-	@RequestMapping(value="arrivalListAjax.im", produces="application/json; charset=utf-8")
-	private String arrivalListajax(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage,
-			@RequestParam(value="date") Date beforeDate) {
-		
+	@RequestMapping(value = "arrivalListAjax.im", produces = "application/json; charset=utf-8")
+	private String arrivalListajax(
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+			@RequestParam(value = "date") Date beforeDate) {
+
 		System.out.println("넘어온 날짜 ==================== " + beforeDate);
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
 
 		String date = transFormat.format(beforeDate);
-		
 
 		int listCount = invenManagementService.todayArrivalCount(date);
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		
+
 		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi, date);
-		
-		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
+
+		return new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
 	}
-	
-	//출고목록Ajax
+
+	// 출고목록Ajax
 	@ResponseBody
-	@RequestMapping(value="releaseListAjax.im", produces="application/json; charset=utf-8")
-	private String releaseListAjax(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage,
-			@RequestParam(value="date") Date beforeDate) {
-		
+	@RequestMapping(value = "releaseListAjax.im", produces = "application/json; charset=utf-8")
+	private String releaseListAjax(
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+			@RequestParam(value = "date") Date beforeDate) {
+
 		System.out.println("넘어온 날짜 ==================== " + beforeDate);
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
 
 		String date = transFormat.format(beforeDate);
-		
 
 		int listCount = invenManagementService.todayReleaseCount(date);
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		
+
 		ArrayList<Release> list = invenManagementService.todayReleaseList(pi, date);
-		
-		return  new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
+
+		return new GsonBuilder().setDateFormat("yyyy년 MM월 dd일").create().toJson(list);
 	}
-	
-	
+
 	@RequestMapping("invenList.pm")
-	private String invenList(@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
-		
+	private String invenList(@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+			Model model) {
 
 		int listCount = invenManagementService.invenListCount();
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		
+
 		ArrayList<Snack> list = invenManagementService.invenList(pi);
-		
+
 		System.out.println(list);
 
 		model.addAttribute("invenList", list);
 		model.addAttribute("pi", pi);
-		
+
 		return "headoffice/invenManagement/invenList";
 	}
-	
+
 	@RequestMapping("searchSno.im")
-	private String searchSno(@RequestParam(value="category") int category, 
-								@RequestParam(value="search") String before,
-								@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
-		
+	private String searchSno(@RequestParam(value = "category") int category,
+			@RequestParam(value = "search") String before,
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
+
 		System.out.println("category 0 ========================== ");
-		
+
 		int search = Integer.parseInt(before);
 		int listCount = invenManagementService.sNoSearchCount(search);
-		
-		
-		PageInfo pi =Pagination.getPageInfo(listCount, currentPage, 10, 5);
-	
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+
 		ArrayList<Snack> list = invenManagementService.sNoSearch(pi, search);
-		
-		
+
 		System.out.println(list);
 
-		
 		System.out.println("확인 1=====================");
 		model.addAttribute("search", search);
 		model.addAttribute("category", category);
 		model.addAttribute("searchList", list);
 		model.addAttribute("pi", pi);
-		
+
 		return "headoffice/invenManagement/invenSearchList";
 	}
-	
+
 	@RequestMapping("searchSname.im")
-	private String searchSname(@RequestParam(value="category") int category, 
-								@RequestParam(value="search") String search,
-								@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
-		
+	private String searchSname(@RequestParam(value = "category") int category,
+			@RequestParam(value = "search") String search,
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage, Model model) {
+
 		System.out.println("category 1 ========================== ");
 		int listCount = invenManagementService.sNameSearchCount(search);
-		
-		PageInfo pi =Pagination.getPageInfo(listCount, currentPage, 10, 5);
-	
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+
 		ArrayList<Snack> list = invenManagementService.sNameSearch(pi, search);
 
-		
 		System.out.println(list);
 
-		
 		System.out.println("확인 2=====================");
 		model.addAttribute("search", search);
 		model.addAttribute("category", category);
 		model.addAttribute("searchList", list);
 		model.addAttribute("pi", pi);
-		
+
 		return "headoffice/invenManagement/invenSearchList";
 	}
 
-	
 	@RequestMapping("invenDetail.im")
-	private String invenDetail(@RequestParam(value="snackNo") int snackNo, Model model) {
-		
+	private String invenDetail(@RequestParam(value = "snackNo") int snackNo, Model model) {
+
 		System.out.println("invenDetail" + snackNo);
-		
+
 		Snack snack = invenManagementService.invenDetail(snackNo);
 		ProductAttachment pa = invenManagementService.invenDetailAttach(snackNo);
-		
+
 		model.addAttribute("snack", snack);
 		model.addAttribute("pa", pa);
-		
+
 		return "headoffice/invenManagement/invenDetail";
 	}
-	
+
 	@RequestMapping("snackChart.im")
-	private String snackChart() {
+	private String snackChart(Model model) {
+
+		// 데이터 호출
+		ArrayList<Chart> chart = invenManagementService.snackChart();
+
+		// 데이터 가공
+
+		String nameResult = "";
+		String amountResult = "";
+
+		for (int i = 0; i < chart.size(); i++) {
+			
+			if( i != 0 && chart.size() > i) {
+				nameResult += ",";
+				amountResult += ",";
+			}
+			nameResult += "'" + chart.get(i).getSnackName() + "', {role : 'annotation'}";
+			amountResult +=  chart.get(i).getAmount() + "," + chart.get(i).getAmount() ;
+			
+		}
 		
+		System.out.println(nameResult);
+		System.out.println(amountResult);
 		
+		model.addAttribute("chart", chart);
+		model.addAttribute("name", nameResult);
+		model.addAttribute("amount", amountResult);
+
 		return "headoffice/chart/snackChart";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "checkAmount.im", produces = "application/json; charset=utf-8")
+	private int checkAmount(@RequestParam(value = "amount") int amount,
+				@RequestParam(value = "snackNo") int snackNo) {
+		
+		int result = 1;
+		System.out.println("넘어온 값 : " + amount);
+		
+		int stock = invenManagementService.checkAmount(snackNo);
+		
+		System.out.println("재고 : " + stock);
+		
+		if((stock - amount) >= 0) {
+			
+			result = 0;
+			
+		}
+		
+		
+		return result;
+	}
 	
 	
+	/*@ResponseBody
+	@RequestMapping(value = "checkSnackNo.im", produces = "application/json; charset=utf-8")
+	private int checkSnackNo(@RequestParam(value = "snackNo") int snackNo) {
+		
+		System.out.println("넘어온 값 : " + snackNo);
+		
+		//int amount = 
+		
+		
+		return 1;
+	}*/
 }

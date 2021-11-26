@@ -24,6 +24,7 @@
     .select{width:20%;}
     .text{width:53%;}
     .searchBtn{Width:20%;}
+    .hidden{display:none; visibility: collapse;}
 </style>
 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
@@ -48,7 +49,7 @@
                     <th>작성자</th>
                     <th>작성일자</th>
                     <th></th>
-                    <th></th>
+                    <th class="hidden"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -63,7 +64,7 @@
 	                        답변완료
 	                        </c:if>
 	             			</td>
-	             			<td>${q.writer}</td>
+	             			<td class="hidden">${q.writer}</td>
 	                    </tr>
                     </c:forEach>
                 </tbody>

@@ -1,6 +1,7 @@
 package com.kh.spring.birthday.giftList.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
 import com.kh.spring.birthday.giftList.model.vo.GiftFolderDetail;
@@ -8,9 +9,11 @@ import com.kh.spring.birthday.giftList.model.vo.GiftList;
 
 public interface GiftListService {
 
-	ArrayList<GiftList> selectGiftList();
+	String selectPerAmount(String comCode);
+	
+	ArrayList<GiftList> selectGiftList(int perAmountMax);
 
-	ArrayList<GiftList> selectCtgry(int ctgryNum);
+	ArrayList<GiftList> selectCtgry(Map<String,Integer> map);
 	
 	//ArrayList<GiftFolder> selectFolderArr();
 	

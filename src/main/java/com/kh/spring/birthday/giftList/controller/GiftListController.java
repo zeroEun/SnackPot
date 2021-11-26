@@ -1,6 +1,10 @@
 package com.kh.spring.birthday.giftList.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +17,7 @@ import com.kh.spring.birthday.giftList.model.service.GiftListService;
 import com.kh.spring.birthday.giftList.model.vo.GiftFolder;
 import com.kh.spring.birthday.giftList.model.vo.GiftFolderDetail;
 import com.kh.spring.birthday.giftList.model.vo.GiftList;
+import com.kh.spring.companyMember.model.vo.CompanyMember;
 
 @Controller
 public class GiftListController {
@@ -21,24 +26,39 @@ public class GiftListController {
 	private GiftListService giftListService;
 	
 	@RequestMapping(value="giftList.birth")
-	public String selectGiftList(Model model) {
+	public String selectGiftList(Model model, HttpSession session) {
 		
-		//메인 화면에 나타나는 상품 정보
-		ArrayList<GiftList> list = giftListService.selectGiftList();
+		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
+		String perAmount = giftListService.selectPerAmount(comCode);
 		
-		model.addAttribute("list", list);
-		
-		//modal창에 나타나는 선물리스트 폴더명
-		//List에 String, Object 형식인 Map으로 데이터 삽입 -> 필드명이 key, 데이터값이 value
-		//ArrayList<HashMap<String, GiftFolderList>> folderArr = giftListService.selectFolderArr();
-		//ArrayList<GiftFolder> folder = giftListService.selectFolderArr();
-		
-		System.out.println("list : " + list);
-		//System.out.println("folder : " + folder);		
-		
-		//model.addAttribute("folder", folder);
-		
-		return "company/birthday/gift_list";
+		if(perAmount != "") {
+			int perAmountMax = Integer.parseInt(perAmount);
+			
+			//메인 화면에 나타나는 상품 정보
+			ArrayList<GiftList> list = giftListService.selectGiftList(perAmountMax);
+			
+			model.addAttribute("list", list);
+			
+			//modal창에 나타나는 선물리스트 폴더명
+			//List에 String, Object 형식인 Map으로 데이터 삽입 -> 필드명이 key, 데이터값이 value
+			//ArrayList<HashMap<String, GiftFolderList>> folderArr = giftListService.selectFolderArr();
+			//ArrayList<GiftFolder> folder = giftListService.selectFolderArr();
+			
+			System.out.println("list : " + list);
+			System.out.println("최대금액comCode : " + comCode);
+			System.out.println("최대금액perAmount : " + perAmount);
+			//System.out.println("folder : " + folder);		
+			
+			//model.addAttribute("folder", folder);
+			return "company/birthday/gift_list";
+			
+		}else {
+			//perAmount값이 없으면 구독을 안 하고 있는 것
+			model.addAttribute("msg", "구독 정보가 존재하지 않습니다.");
+			
+			return "common/alert";
+		}
+	
 	}
 	
 	@ResponseBody
@@ -53,14 +73,25 @@ public class GiftListController {
 	
 	@ResponseBody
 	@RequestMapping(value="selectCtgry.birth")
-	public ArrayList<GiftList> selectCtgry(int ctgryNum){
+	public ArrayList<GiftList> selectCtgry(int ctgryNum, HttpSession session){
+		
+		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
+		String perAmount = giftListService.selectPerAmount(comCode);
+		int perAmountMax = Integer.parseInt(perAmount);
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("perAmountMax", perAmountMax);
+		map.put("ctgryNum", ctgryNum);
 		
 		System.out.println("넘겨받은 ctgryNum : " + ctgryNum);
+		System.out.println("넘겨받은 map : " + map);
 		
 		ArrayList<GiftList> list = new ArrayList<GiftList>();
 		
-		list = giftListService.selectCtgry(ctgryNum);
+		list = giftListService.selectCtgry(map);
 		System.out.println("카테고리list : " + list);
+		System.out.println("카테고리comCode : " + comCode);
+		System.out.println("카테고리perAmount : " + perAmount);
 		
 		return list;
 	}

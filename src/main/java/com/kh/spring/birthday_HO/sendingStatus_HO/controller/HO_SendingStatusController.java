@@ -42,6 +42,7 @@ public class HO_SendingStatusController {
 		
 		if(sendingTime < 0) {
 			model.addAttribute("msg", "생일 구독을 신청하지 않은 회사입니다.");
+			model.addAttribute("url", "/mainPage.ho");
 			
 			return "common/alert";
 		}else {

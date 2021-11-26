@@ -1,6 +1,7 @@
 package com.kh.spring.birthday.giftList.model.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,9 +13,14 @@ import com.kh.spring.birthday.giftList.model.vo.GiftList;
 @Repository
 public class GiftListDao {
 
-	public ArrayList<GiftList> selectGiftList(SqlSessionTemplate sqlSession) {
+	public String selectPerAmount(SqlSessionTemplate sqlSession, String comCode) {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("birthdayMapper.selectGiftList");
+		return sqlSession.selectOne("birthdayMapper.selectPerAmount", comCode);
+	}
+	
+	public ArrayList<GiftList> selectGiftList(SqlSessionTemplate sqlSession, int perAmountMax) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("birthdayMapper.selectGiftList", perAmountMax);
 	}
 	/*
 	public ArrayList<GiftFolder> selectFolderArr(SqlSessionTemplate sqlSession) {
@@ -28,9 +34,9 @@ public class GiftListDao {
 	}
 
 	
-	public ArrayList<GiftList> selectCtgry(SqlSessionTemplate sqlSession, int ctgryNum) {
+	public ArrayList<GiftList> selectCtgry(SqlSessionTemplate sqlSession, Map<String,Integer> map) {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("birthdayMapper.selectCtgry", ctgryNum);
+		return (ArrayList)sqlSession.selectList("birthdayMapper.selectCtgry", map);
 	}
 
 	public int addGiftFolder(SqlSessionTemplate sqlSession, String folderName) {

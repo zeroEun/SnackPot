@@ -1,6 +1,7 @@
 package com.kh.spring.birthday.giftList.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,15 @@ public class GiftListServiceImpl implements GiftListService {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public ArrayList<GiftList> selectGiftList() {
+	public String selectPerAmount(String comCode) {
 		// TODO Auto-generated method stub
-		return giftListDao.selectGiftList(sqlSession);
+		return giftListDao.selectPerAmount(sqlSession, comCode);
+	}
+	
+	@Override
+	public ArrayList<GiftList> selectGiftList(int perAmountMax) {
+		// TODO Auto-generated method stub
+		return giftListDao.selectGiftList(sqlSession, perAmountMax);
 	}
 	/*
 	@Override
@@ -40,9 +47,9 @@ public class GiftListServiceImpl implements GiftListService {
 	}
 	
 	@Override
-	public ArrayList<GiftList> selectCtgry(int ctgryNum) {
+	public ArrayList<GiftList> selectCtgry(Map<String,Integer> map) {
 		// TODO Auto-generated method stub
-		return giftListDao.selectCtgry(sqlSession, ctgryNum);
+		return giftListDao.selectCtgry(sqlSession, map);
 	}
 
 	@Override
@@ -106,5 +113,5 @@ public class GiftListServiceImpl implements GiftListService {
 		
 		return result;
 	}
-	
+
 }

@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>    
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<title>Insert title here</title>
+<link rel="shortcut icon" href="#">
+<title>생일 구독 신청</title>
 </head>
 <style>
     #birthContainer{
@@ -78,6 +79,22 @@
 		color: rgb(10, 23, 78);
 
 	}
+	
+	/*footer 조절*/
+	html, body{
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	section{
+		height: auto;
+		min-height: 100%;
+		padding-bottom: 200px;
+	}
+	#footer{
+		position: relative;
+		transform: translateY(-100%);
+	}
 </style>
 <body>
 
@@ -85,6 +102,10 @@
 
 	<%-- 생일 구독을 이미 하고 있는지 체크 --%>
 	<script>
+		$(function(){
+			$("#footer").css("margin-top","150px");
+		});
+	
 		$(function(){
 			
 			var chkResult = ${chkResult};
@@ -177,8 +198,8 @@
 			        	<div class="col-md-9 row">
 			        		<select class="custom-select custom-select-md" id="sendMsg">
 				                <option value="0" selected>선택</option>
-				                <option value="1">선택1 메시지에요~</option>
-				                <option value="2">선택2 메시지에요~</option>
+				                <option value="1">귀하의 생일을 맞아 선물을 준비했어요. 아래 링크를 통해 원하는 선물을 직접 골라보세요!</option>
+				                <option value="2">귀하의 생일을 진심으로 축하드립니다~! 저희가 준비한 작은 선물을 링크를 통해 직접 골라보세요!</option>
 				                <option value="3">직접 입력</option>
 				            </select>
 				            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요." disabled></textarea>
@@ -230,9 +251,10 @@
 			    </form>
 			</div>
 		</div>
+		
 	</section>
 	
-	
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
     
 	<script>
 		function goToSubsInfo(){

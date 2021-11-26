@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>    
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<title>Insert title here</title>
+<title>생일 구독 조회</title>
 </head>
 <style>
 	#birthBody{
@@ -57,11 +57,15 @@
 	.per_amount_div, .sending_time_div{
 		width: 15%;
 	}
+	#deleteBirthBtn{
+		float: right;
+	}
 	#updateBirthSubs{
 		float: right;
 		background: rgb(10, 23, 78);
 		color: rgb(245, 208, 66);
 		font-weight: bolder;
+		margin-left: 20px;
 	}
 	#updateBirthSubs:hover{
 		float: right;
@@ -70,8 +74,27 @@
 		color: rgb(10, 23, 78);
 
 	}
+	
+	/*footer 조절*/
+	html, body{
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	section{
+		height: auto;
+		min-height: 100%;
+		padding-bottom: 200px;
+	}
+	#footer{
+		position: relative;
+		transform: translateY(-100%);
+	}
 </style>
 <script>
+	$(function(){
+		$("#footer").css("margin-top","150px");
+	});
 	<%-- 구독 정보 조회 시 불러온 객체의 정보를 바탕으로 radio태그 체크 설정 --%>
 	$(function(){
 		
@@ -209,8 +232,8 @@
 			        
 			        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
 			        
-			        <button type="button" class="btn btn-outline-primary" onclick="deleteBirthSubs();">구독 취소하기</button>
-			        <button type="submit" class="btn btn-outline-primary" id="updateBirthSubs">구독 수정하기</button>
+			        <button type="submit" class="btn" id="updateBirthSubs">구독 수정하기</button>
+			        <button type="button" class="btn btn-dark" id="deleteBirthBtn" onclick="deleteBirthSubs();">구독 취소하기</button>
 			    </form>
 			    <form id="deleteSubs" action="deleteSubscribe.birth" method="post">
 			    	<input type="hidden" name="bservice_no" value="${b.bservice_no }"/>
@@ -218,6 +241,8 @@
 			</div>
 		</div>
 	</section>
+    
+    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
     
 	<script>
 		<%-- 선물 선택 알림 메시지 옵션에 따른 태그 속성 설정 --%>

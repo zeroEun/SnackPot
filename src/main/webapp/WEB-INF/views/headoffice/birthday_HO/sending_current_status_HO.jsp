@@ -17,18 +17,18 @@
 </head>
 <style>
 	#birthCard{
-		margin-top: 1rem;
-    	height: 90%;
-    	overflow: scroll;
-    	margin-bottom: 5px;
+    	height: 86%;
+    	width: 96%;
+    	margin: auto;
+    	overflow-y: scroll;
     }
 	#sendingTab{
-        float: left;
-        width: 30%;
+
+        width: 40%;
     }
     #sendingTab>li>p {
         cursor: pointer;
-        margin-left: 0;
+        
         
     }
     #sendingTab>li{
@@ -41,22 +41,28 @@
     #sending_expected, #sending_complete{
 		display: inline-block;
         margin-right: 10px;
+        margin-left: 10px;
+        float: left;
     }
     #tabArea{
     	padding-top: 20px;
-    	padding-left: 10px;
+    	padding-left: 0;
+    	padding-bottom: 0;
+    	border-bottom: 0;
+    	overflow: hidden;
     }
      #birthCard > .card-body{
-        background: rgb(218, 215, 208);
+        
     }
-    .tableHead{
-    	background: rgb(255, 227, 114);
+    #sending_expected_table, #sending_complete_table{
+    	border: 1px solid lightgray;
     }
-    .tableBody{
-    	background: rgb(252, 248, 238);
+    #btnArea{
+    	width: 96%;
+    	margin: auto;
     }
-    #prevBtn{
-    	margin-top: 6px;
+    #btnArea button{
+    	margin-top: 12px;
     	float: right;
     }
 </style>
@@ -64,12 +70,14 @@
 
 	<script>
 		window.onload = function() {
-			$("#sending_expected").css("background", "rgb(218, 215, 208)")
-            $("#sending_complete").css("background", "rgb(124, 123, 121)")
+			$("#sending_expected").css("background", "rgb(194, 192, 192)");
+            $("#sending_complete").css("background", "rgb(223, 223, 223)");
             $("#sending_expected").css("font-weight", "bold");
             $("#sending_complete").css("font-weight", "normal");
             $("#sending_expected").css("color", "black");
-            $("#sending_complete").css("color", "white");
+            $("#sending_complete").css("color", "black");
+            $("#sending_expected").css("box-shadow", "1px 0 1px 1px whitesmoke inset");
+            $("#sending_complete").css("box-shadow", "1px 0 1px 1px whitesmoke inset");
 
 			$("#sending_expected_table").show();
 			$("#sending_complete_table").hide();
@@ -77,12 +85,14 @@
 
 		$(document).ready(function() {
 			$("#sending_expected").click(function() {
-				$("#sending_expected").css("background", "rgb(218, 215, 208)")
-                $("#sending_complete").css("background", "rgb(124, 123, 121)")
+				$("#sending_expected").css("background", "rgb(194, 192, 192)");
+	            $("#sending_complete").css("background", "rgb(223, 223, 223)");
                 $("#sending_expected").css("font-weight", "bold");
                 $("#sending_complete").css("font-weight", "normal");
                 $("#sending_expected").css("color", "black");
-                $("#sending_complete").css("color", "white");
+                $("#sending_complete").css("color", "black");
+                $("#sending_expected").css("box-shadow", "1px 0 1px 1px whitesmoke inset");
+                $("#sending_complete").css("box-shadow", "1px 0 1px 1px whitesmoke inset");
 
 				$("#sending_expected_table").show();
 				$("#sending_complete_table").hide();
@@ -90,12 +100,14 @@
 		});
 		$(document).ready(function() {
 			$("#sending_complete").click(function() {
-				$("#sending_complete").css("background", "rgb(218, 215, 208)")
-                $("#sending_expected").css("background", "rgb(124, 123, 121)")
+				$("#sending_complete").css("background", "rgb(194, 192, 192)");
+                $("#sending_expected").css("background", "rgb(223, 223, 223)");
                 $("#sending_complete").css("font-weight", "bold");
                 $("#sending_expected").css("font-weight", "normal");
                 $("#sending_complete").css("color", "black");
-                $("#sending_expected").css("color", "white");
+                $("#sending_expected").css("color", "black");
+                $("#sending_complete").css("box-shadow", "1px 0 1px 1px whitesmoke inset");
+                $("#sending_expected").css("box-shadow", "1px 0 1px 1px whitesmoke inset");
 
 				$("#sending_expected_table").hide();
 				$("#sending_complete_table").show();
@@ -108,8 +120,10 @@
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 				
 				<div class="col-10">
+					<br><br>
 					<div class="card text-center" id="birthCard">
 						<div class="card-header" id="tabArea">
+							<h5>11월 발송리스트</h5>
 							<ul class="nav nav-tabs card-header-tabs" id="sendingTab">
 								<li class="nav-item" id="sending_expected">
 									<p class="nav-link">발송 예정</p>
@@ -121,7 +135,7 @@
 						</div>
 						<div class="card-body">
 							<table class="table" id="sending_expected_table">
-								<thead class="tableHead">
+								<thead style="background-color:rgb(194, 192, 192);">
 									<tr>
 										<th scope="col">번호</th>
 										<th scope="col">부서명</th>
@@ -132,7 +146,7 @@
 										<th scope="col">발송예정일</th>
 									</tr>
 								</thead>
-								<tbody class="tableBody">
+								<tbody>
 				                   		<c:set var="sendListSts" value="${list }"/>
 				                   		<c:set var="birthSubsChk" value="${birthSubsChk }"/>
 				                   		<c:if test ="${birthSubsChk > 0}">
@@ -167,7 +181,7 @@
 				
 				
 							<table class="table" id="sending_complete_table">
-								<thead class="tableHead">
+								<thead style="background-color:rgb(194, 192, 192);">
 									<tr>
 										<th scope="col">번호</th>
 										<th scope="col">부서명</th>
@@ -178,7 +192,7 @@
 										<th scope="col">선택완료일</th>
 									</tr>
 								</thead>
-								<tbody class="tableBody" id="completeStatusList">
+								<tbody id="completeStatusList">
 				                    	<c:set var="birthSubsChk" value="${birthSubsChk }"/>
 				                    	<c:if test ="${birthSubsChk > 0}">
 				                    	<!-- 
@@ -214,8 +228,9 @@
 							</table>
 						</div>
 					</div>
-				
-					<button type="button" id="prevBtn" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+					<div id="btnArea">
+						<button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+					</div>
 				</div>
 			</div>
 		</div>

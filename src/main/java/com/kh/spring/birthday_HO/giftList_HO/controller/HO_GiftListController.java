@@ -39,6 +39,21 @@ public class HO_GiftListController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value="selectCtgry.ho")
+	public ArrayList<HO_GiftList> selectCtgry(int ctgryNum){
+		
+		System.out.println("넘겨받은 ctgryNum : " + ctgryNum);
+		
+		ArrayList<HO_GiftList> list = new ArrayList<HO_GiftList>();
+		
+		list = giftListService.selectCtgry(ctgryNum);
+		
+		return list;
+		
+	}
+	
+	
+	@ResponseBody
 	@RequestMapping(value="checkedGiftList.ho")
 	public ArrayList<HO_GiftList> checkedGiftList(String[] chkArr){
 		

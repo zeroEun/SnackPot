@@ -9,6 +9,8 @@ public interface HO_GiftListService {
 
 	ArrayList<HO_GiftList> selectGiftList();
 
+	ArrayList<HO_GiftList> selectCtgry(int ctgryNum);
+	
 	HO_GiftList checkedGiftList(String giftNo);
 
 	void insertGift(HO_GiftList gl);

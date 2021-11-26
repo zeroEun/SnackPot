@@ -43,16 +43,13 @@
 	float: right;
 	margin-right: 10px;
 }
-.cardWholeArea{
-	background-color: rgb(255, 255, 238)
-}
 .giftImage{
 	border-bottom: 1px solid rgb(236, 236, 236);
 }
 #giftBtnArea button{
 	float: left;
-	margin-left: 2px;
-    margin-right: 2px;
+	margin-left: 5px;
+    margin-right: 5px;
 }
 #giftBtnArea h3{
 	float:left;
@@ -62,6 +59,7 @@
 	padding: 0;
 	text-decoration: none;
 	border:0;
+	background-color: white;
 }
 .checkArea{
 	float:left;
@@ -97,9 +95,6 @@
 #giftCategory a{
 	cursor: pointer;
 }
-.updateGiftBtn{
-	
-}
 #seeMoreItems{
 	width:250px;
 	margin: auto;
@@ -107,11 +102,11 @@
 	border-radius: 2rem;
 	box-shadow: none;
 	border: 1px solid lightgray;
-	background-color: rgb(41, 62, 155);
+	background-color: rgb(19, 36, 114);
 	color: rgb(245, 208, 66);
 }
 #seeMoreItems:hover{
-	background-color: rgb(56, 80, 189);
+	background-color: rgb(10, 23, 78);
 	color: yellow;
 }
 #goTop{
@@ -134,8 +129,8 @@
 						<br id="top"><br>
 						<div id="giftBtnArea">
 							<h3>선물 리스트&emsp;</h3>
-							<button type="button" class="btn btn-primary" id="delGiftBtn" onclick="deleteGift();">선택 삭제</button>
-						    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertGift">추가하기</button>
+							<button type="button" class="btn btn-dark" id="delGiftBtn" onclick="deleteGift();">선택 삭제</button>
+						    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#insertGift">추가하기</button>
 						</div>
 					
 						<br>
@@ -320,7 +315,7 @@
 											<input type="checkbox" class="form-check-input" name="giftChk" value="${giftList.giftNo }">
 										</div>
 										<div class="updateGiftBtnDiv">
-											<button type="button" class="btn btn-info updateGiftBtn" name="updateGiftBtn" value="${giftList.giftNo }" data-toggle="modal" data-target="#updateGift">수정하기</button>
+											<button type="button" class="btn btn-dark updateGiftBtn" name="updateGiftBtn" value="${giftList.giftNo }" data-toggle="modal" data-target="#updateGift">수정하기</button>
 										</div>
 										</div>
 										<div class="giftImage">
@@ -651,7 +646,7 @@
 				console.log(typeof(ctgryNum));
 				
 				$.ajax({
-					url: "selectCtgry.birth",
+					url: "selectCtgry.ho",
 					type: "POST",
 					data: {
 						ctgryNum : ctgryNum
@@ -725,7 +720,7 @@
 				console.log(typeof(ctgryNum));
 				
 				$.ajax({
-					url: "selectCtgry.birth",
+					url: "selectCtgry.ho",
 					type: "POST",
 					data: {
 						ctgryNum : ctgryNum
@@ -799,7 +794,7 @@
 				console.log(typeof(ctgryNum));
 				
 				$.ajax({
-					url: "selectCtgry.birth",
+					url: "selectCtgry.ho",
 					type: "POST",
 					data: {
 						ctgryNum : ctgryNum

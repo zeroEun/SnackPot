@@ -27,6 +27,12 @@ public class HO_GiftListServiceImpl implements HO_GiftListService {
 	}
 
 	@Override
+	public ArrayList<HO_GiftList> selectCtgry(int ctgryNum) {
+		// TODO Auto-generated method stub
+		return giftListDao.selectCtgry(sqlSession, ctgryNum);
+	}
+
+	@Override
 	public HO_GiftList checkedGiftList(String giftNo) {
 		// TODO Auto-generated method stub
 		return giftListDao.checkedGiftList(sqlSession, giftNo);

@@ -20,7 +20,7 @@
 .dropdown:hover .wish-menu { 
    display: block;
    margin-top: 0;
-   margin-left: 180px;
+   margin-left: 150px;
 }
 .wish-nav-link {
   color: black;
@@ -31,20 +31,24 @@
   justify-content: center;
 }
 /*스낵류 ,음료 , 간편식 드롭다운 메뉴바*/
-.nav-item>label{
-	margin-left: 150px;	
+.nav-item.dropdown.snack>label{
+	margin-left: 190px;	
 }
 /*스낵류 ,음료 , 간편식 드롭다운 메뉴바 색*/
-.nav-item>label>.wish-nav-link{
+.nav-item.dropdown.snack>label>.wish-nav-link{
 	color : black;
 }
 /*스낵류 ,음료 , 간편식 드롭다운 메뉴바 마우스 오버*/
-.nav-item>label>.wish-nav-link:hover{
+.nav-item.dropdown.snack>label>.wish-nav-link:hover{
 	color :rgb(245, 208, 66);
 }
 /*상세보기 메뉴바 (상위 카테고리 안의 하위 카테고리)*/
 .detail-menu{
   text-align: center;
+}
+.dropdown-menu.wish-menu>.dropdown-item:hover{
+	background-color: rgb(245, 208, 66);
+	
 }
 .btn-group> .btn-outline{
 border-color : lightgray;
@@ -56,44 +60,48 @@ background-color: rgb(245, 208, 66);
 
 /*간식리스트 card*/
 .row{
-padding: 0 40px;
+padding: 20px 60px;
 }
 .col{
-padding: 5px;
+	padding: 4px;
+
 }
 .card{
 border: none;
 position: relative;
-
 }
+.prodContain{
+	padding: 0 3% 0 3%;
+}
+
 /*간식 이미지*/
 .card-img-top{
-width: 100px;
-height: 200px;
-padding-left : 30px;
-padding-right : 30px;
-padding-top: 10px;
+width: 50px;
+height: 185px;
+padding-left : 20px;
+padding-right : 20px;
 }
 .card-img-top:hover{
   opacity: 0.5;
 }
 .card-body{
-width: 250px;
 height:70px;
-padding: 5%;
+margin-bottom : -10px;
 }
 .card-title{
 font-weight: bold;
-height:10px;
+}
+.card-text{
+	margin-left:21px;
 }
 
 /*간식위시리스트 버튼*/
 .wishBtn{
 position: absolute;
 width: 80px;
-height: 80px;
+height: 75px;
 left: 34%;
-top: 77px;
+top: 70px;
 text-align: center;
 opacity: 0;
 transition: opacity .35e ease;
@@ -148,7 +156,7 @@ text-align: center;
 	<!-- 메뉴바 아래  큰 드롭 카테고리-->
  <nav class="navbar navbar-expand-xl bg-light wi " >
   <ul class="navbar-nav mr-auto justify-content-center ">
-      <li class="nav-item dropdown"> 
+      <li class="nav-item dropdown snack"> 
       <label><a class="nav-link wish-nav-link" data-toggle="dropdown" href="#" role="button" >스낵류</a></label>
     <label class="ctg">
         <div class="dropdown-menu wish-menu"> 
@@ -162,7 +170,7 @@ text-align: center;
       </div>
   </label>  
     </li>
-    <li class="nav-item dropdown"> <!-- 큰카테고리 : 2 -->
+    <li class="nav-item dropdown snack"> <!-- 큰카테고리 : 2 -->
      <label><a class="nav-link wish-nav-link" data-toggle="dropdown" href="#" role="button" >음료</a></label>
   <label class="ctg">
       <div class="dropdown-menu wish-menu "> 
@@ -175,7 +183,7 @@ text-align: center;
       </div>
   </label>
     </li>
-    <li class="nav-item dropdown">  <!-- 큰카테고리 : 3 -->
+    <li class="nav-item dropdown snack">  <!-- 큰카테고리 : 3 -->
       <label><a class="nav-link wish-nav-link" data-toggle="dropdown" href="#" role="button" >간편식</a></label>
   <label class="ctg">
       <div class="dropdown-menu wish-menu"> 
@@ -243,7 +251,7 @@ text-align: center;
       
   <br><br>
  <!-- 상품정렬 -->
- <div class="container-fluid">
+ <div class="prodContain" >
   <div class="row row-cols-xl-5">
    <c:forEach items="${list}" var="p">
       <div class="col">
@@ -251,8 +259,8 @@ text-align: center;
           <img class="card-img-top" src="${ pageContext.servletContext.contextPath }/resources/images/${p.changeName}">
           <div class="card-body">
             <P class="card-title">${p.snackName }</P>
-            <p class="card-text">${p.releasePrice}원</p>
           </div>
+           <p class="card-text">${p.releasePrice}원</p>
            <span class="wishButton">
   			    <!--<button class="wishBtn" value="${p.snackNo}" onclick="wishAdd(this.value)">위시</button>--> 
            <button class="wishBtn" value="${p.snackNo}" onclick="wishAdd(this.value)"><i class="blank far fa-heart"></i></button>     
@@ -275,11 +283,9 @@ text-align: center;
        wishSnackNo : wishSnackNo
      },
      type : "post",
-     success : alert('ajax성공')
+     success : alert('위시리스트에  담았습니다.')
    })
  } 	
- 
- 
 </script>
 </html>
   

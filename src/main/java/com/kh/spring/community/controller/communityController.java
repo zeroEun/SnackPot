@@ -67,7 +67,7 @@ public class communityController {
 		ArrayList<Community> topList = cmntService.selectTopList(comCode); //인기글 가져오기
 		
 //		System.out.println("topList *****" + topList);
-//		System.out.println("list====> " + list);
+		System.out.println("list====> " + list);
 		
 		model.addAttribute("list" , list);
 		model.addAttribute("topList" , topList);
@@ -271,7 +271,7 @@ public class communityController {
 		deleteFile.delete();
 	}
 	
-	//파일 삭제하기
+	//게시글 삭제하기
 	@RequestMapping("delete.cm")
 	public String deleteCmnt(Community cmnt , ComtyAttachment att,   int cno) {
 		cmnt.setCommunityNo(cno);

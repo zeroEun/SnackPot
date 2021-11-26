@@ -40,6 +40,8 @@ public interface ProductService {
 
 	int endWishList(String wishNo);
 
+	int chkEmpSub(String comCode);
+
 
 
 

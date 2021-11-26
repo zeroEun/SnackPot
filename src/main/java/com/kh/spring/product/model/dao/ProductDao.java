@@ -96,6 +96,11 @@ public class ProductDao {
 	
 		return sqlSession.update("productMapper.endWishList" , wishNo);
 	}
+
+	public int chkEmpSub(SqlSessionTemplate sqlSession, String comCode) {
+		
+		return sqlSession.selectOne("productMapper.chkEmpSub" , comCode);
+	}
 	
 	
 	//스케줄러 테스트용

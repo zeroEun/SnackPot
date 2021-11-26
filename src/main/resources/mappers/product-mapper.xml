@@ -147,6 +147,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE WISH_NO=#{wishNo}
 </update>
 
+<select id="chkEmpSub" resultType="_int">
+	SELECT COUNT(SUBS_NO)
+	FROM SNACK_SUBS
+	WHERE COM_CODE=#{comCode}
+	AND SUBS_STATUS ='Y'
+</select>
 
 <!-- 스케줄러 테스트 
 <update id="updateClosingDate">

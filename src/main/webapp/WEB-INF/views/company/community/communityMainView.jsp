@@ -6,16 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>snackPotCommunity</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-
 </head>
 <style>
 .top-img{
-    text-align: center;
+    margin-left: 80px;
 }
 /*검색box 포지션*/
 .search-box{
@@ -40,13 +35,11 @@
 }
 /*인기 게시글*/
 .fa-fire-alt{
-    color: red;
-    margin-right: 5px;
-    margin-top: 20px;
-    font-size: 30px;
+	color: red;
+    font-size: 20px;
 }
 .hotBoard{
-    text-align: center;
+    margin-left: 80px;
 }
 .hotBoard > label > h3{
     font-weight: bold;
@@ -60,7 +53,7 @@
   background-color: rgb(10, 23, 78);
     color: white;
     border-style: none;
-    height: 45px;
+  	height: 30px;
     width: 90px;
     border-radius: 10px;
 }
@@ -68,7 +61,7 @@
     background-color: rgb(245, 208, 66);
     color: white;
     border-style: none;
-    height: 45px;
+  	height: 30px;
     width: 90px;
     border-radius: 10px;
 
@@ -99,7 +92,7 @@
 	<div class="container-fluid">
     <div class="content" style="padding-left: 3%; padding-right: 3%;">		
 		<div class="top-img">
-			<label><h4>${loginUser.comName}&nbsp;&nbsp;&nbsp;COMMUNITY</h4></label>
+			<label><h4>[ ${loginUser.comName} ]</h4></label>
 		</div>
 	
 		<!--인기글-->
@@ -111,11 +104,11 @@
 		<table class="table table-borderless" id="cmnt">
 			<thead>
 				<tr style="text-align: center;">
-					<th>no.</th>
-					<th>제목</th>
-					<th>내용</th>
-					<th>조회수</th>
-					<th>추천수</th>
+					<th style="width: 10%">no.</th>
+					<th style="width: 57%">제목</th>
+					<th style="width: 10%">조회수</th>
+					<th style="width: 5.5%">추천수</th>
+					<th style="width: 10%">비추천수</th>
 				</tr>
 			</thead>
 			<tbody id="topBoardBody">
@@ -123,9 +116,9 @@
 				<tr style="text-align: center; ">
 					<td>${t.communityNo}</td>
 					<td>${t.title}</td>
-					<th>${t.content}</th>
 					<td>${t.views}</td>
 					<td>${t.recommend}</td>
+					<td>${t.n_recommend}</td>
 				</tr>
 				</c:forEach>
 			</tbody>
@@ -145,11 +138,11 @@
 		<table class="table" id="cmnt">
 			<thead>
 				<tr style="text-align: center; ">
-					<th>No.</th>
-					<th>제목</th>
-					<th>작성일</th>
-					<th>추천수</th>
-					<th>조회수</th>
+					<th style="width: 10%">no.</th>
+					<th style="width: 57%">제목</th>
+					<th style="width: 5.5%">추천수</th>
+					<th style="width: 5.5%">조회수</th>
+					<th style="width: 10%">작성일</th>
 				</tr>
 			</thead>
 			<tbody id="myTable">
@@ -158,19 +151,20 @@
 				<tr style="text-align: center; ">
 					<td>${c.communityNo }</td>
 					<c:if  test="${ !empty c.originName }">
-					<td >${c.title}<label class="recolor">[댓글수]</label>&nbsp;&nbsp;<i class="far fa-image"></i></td>
+					<td >${c.title}&nbsp;&nbsp;<label class="recolor">[${c.reCount}]</label>&nbsp;&nbsp;<i class="far fa-image"></i></td>
 					</c:if>
 					
 					<c:if  test="${ empty c.originName }">
-					<td>${c.title}<label class="recolor">[댓글수]</label></td>
+					<td>${c.title}&nbsp;&nbsp;<label class="recolor">[${c.reCount}]</label></td>
 					</c:if>		
-					<td>${c.writerDate }</td>
 					<td>${c.recommend }</td>
 					<td>${c.views }</td>
+					<td>${c.writerDate }</td>
 				</tr>
 			</c:forEach>
 			</tbody>
 		</table>
+		<br><br>
 		<div class="board-Btn">
 			<button class="writerBtn" onclick="writer()">글쓰기</button>
 			<button class="readBtn" onclick="myWriter()">내글보기</button>

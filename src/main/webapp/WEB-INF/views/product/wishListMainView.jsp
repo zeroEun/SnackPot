@@ -29,17 +29,21 @@
 .companyName {
 	font-size: 20px;
 }
+
 /*위시리스트 기본정보*/
+.wishContain{
+	padding: 0 3% 0 3%;
+}
 .row {
 	padding: 0 40px;
 }
 
 .col {
-	padding: 5px;
+	padding: 10px;
 }
 
-.card {
-	border: none;
+.card.snack {
+	border:none;
 	position: relative;
 }
 /*위시리스트 나열*/
@@ -48,14 +52,14 @@
 	height: 30px;
 	outline: none;
 	border-radius: 4px;
+	text-align: center;
 }
 
 .card-img-top {
-	width: 100px;
-	height: 200px;
-	padding-left: 30px;
-	padding-right: 30px;
-	padding-top: 20px;
+	width: 50px;
+	height: 185px;
+	padding-left : 20px;
+	padding-right : 20px;	
 }
 
 .minus, .plus {
@@ -127,13 +131,15 @@
 		    <i class="far fa-clock"></i><div id="D-day"></div>
 		<!--<fmt:formatDate value="${list[0].wishEndDate}" pattern="yyyy-MM-dd"/>-->
 	</div>
-	<div class="container-fluid">
+	<br>
+	<div class="wishContain" >
 		<div class="snackTitle">Snack</div>
+		<hr>
 		<div class="row row-cols-xl-5">
 			<c:forEach items="${list}" var="w">
 				<c:if test="${w.categoryNo eq '1' }">
 					<div class="col">
-						<div class="card">
+						<div class="card snack">
 						   <div class="close" id="closeBtn" value1="${w.snackNo}" value2="${w.wishNo}"></div>
 							<img class="card-img-top"
 								src="${ pageContext.servletContext.contextPath }/resources/images/${w.changeName}">
@@ -162,7 +168,7 @@
 			<c:forEach items="${list}" var="w">
 				<c:if test="${w.categoryNo eq '2' }">
 					<div class="col">
-						<div class="card">
+						<div class="card snack">
 						   <div class="close" id="closeBtn" value1="${w.snackNo}" value2="${w.wishNo}"></div>
 							<img class="card-img-top"
 								src="${ pageContext.servletContext.contextPath }/resources/images/${w.changeName}">
@@ -191,7 +197,7 @@
 			<c:forEach items="${list}" var="w">
 				<c:if test="${w.categoryNo eq '3' }">
 					<div class="col">
-						<div class="card">
+						<div class="card snack">
 						   <div class="close" id="closeBtn" value1="${w.snackNo}" value2="${w.wishNo}"></div>
 							<img class="card-img-top"
 								src="${ pageContext.servletContext.contextPath }/resources/images/${w.changeName}">
@@ -312,9 +318,11 @@
 	//관리자가 마감버튼 클릭
 	function endBtn(val){
 		const endWish = val;
-		
-		location.href="end.wish?wishNo=" + endWish;
-		
+		if(confirm("마감하시겠습니까?")){
+			location.href="end.wish?wishNo=" + endWish;
+		}else{
+			return;
+		}
 	}
 	
 

@@ -30,18 +30,32 @@ public class ProductController {
 	
 	//스낵류(1)
 	@RequestMapping("list.pro")
-	public String selectList(Model model ,@RequestParam(value="dtc")int dtc) {
+	public String selectList(Model model ,@RequestParam(value="dtc")int dtc , HttpSession session) {
+	
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
+		String comCode = loginUser.getComCode();
 		
+		int result = productService.chkEmpSub(comCode);
 		
+		if(result == 0) {
+			
+			//System.out.println("간식구독후 이용이 가능합니다.");
+			model.addAttribute("msg" , "간식구독후 이용이 가능합니다.");
+			model.addAttribute("url" ,"/");
+			return "common/alert";
+		}else {
 		
 		ArrayList<Product> list = productService.selectList(dtc);
-//		System.out.println("product list : " + list);
+
 		model.addAttribute("list", list);
 		model.addAttribute("ctdNo" , "1");
 		System.out.println(model.toString());
 		
 		return "product/productSnackView";
+		
+		}
 	}
+
 	
 	//음료류 (2)
 	@RequestMapping("list.drink")
@@ -71,11 +85,10 @@ public class ProductController {
 	@RequestMapping("insert.wish")
 	public String insertWishList(@RequestParam("wishSnackNo") String wishSnackNo , Product p ,HttpSession session) {
 
-		/*로그인하면 사원 session에서 회사코드 가져와서 같이 insert해주기*/
-		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
-		
+	
+		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");	
 		String comCode = loginUser.getComCode();
-//		System.out.println("회사코드 ? : " + comCode);
+
 		
 		/*마감날짜를 간식구독 테이블에서 가져오기*/
 		int deliveryDate =  Integer.parseInt(productService.selectDeliveryDate(comCode)); //11
@@ -156,7 +169,6 @@ public class ProductController {
 	@RequestMapping("wishList")
 	public String wishListView(Model model, HttpSession session ) {
 		
-		/*로그인한 유저의 회사*/
 		CompanyMember loginUser = (CompanyMember) session.getAttribute("loginUser");
 		String comCode = loginUser.getComCode();
 		
@@ -165,7 +177,9 @@ public class ProductController {
 		if(companyChk == 0 ) {
 		
 			session.setAttribute("msg", "위시리스트가 존재하지 않습니다. 간식을 담아주세요");
-			return "redirect:/";	
+			model.addAttribute("url" ,"/");
+			return "common/alert";
+			
 		}else {
 		
 			ArrayList<Product> list = productService.selectWishDetailList(comCode);
@@ -207,18 +221,19 @@ public class ProductController {
 	
 	//위시리스트 마감
 	@RequestMapping("end.wish")
-	public String endWishList(@RequestParam("wishNo") String wishNo , HttpSession session) {
+	public String endWishList(@RequestParam("wishNo") String wishNo , HttpSession session , Model model) {
 		
 		System.out.println("마감할 wishNo는?? : " + wishNo);
 		
 		int result = productService.endWishList(wishNo);
 		
 		if(result > 0) {
-			session.setAttribute("msg", "위시리스트를 마감했습니다.");
+			
+			session.setAttribute("msg", "위시리스트마감이 성공적으로 처리되었습니다.");
+			model.addAttribute("url" ,"/");
+			
 		}
-		
-		
-		return "redirect:/"; 
+		return "common/alert";
 	}
 	
 	// 스케줄러 테스트

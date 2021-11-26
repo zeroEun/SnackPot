@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,24 +17,8 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<style>
-
-        /*본문 부분*/
-        .content{
-            height: 100vh;
-            padding: 50px 0px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-y: auto;
-        }
-
-        .search{
-            margin: 15px 0px;
-            
-            
-        }
-
-</style>
+		 <!-- css style -->
+		<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 
 </head>
 <body>
@@ -65,7 +50,7 @@
 	                        <input type="date" class="form-control" name="startDate" id="startDate">
 	                        <input type="date" class="form-control" name="endDate" id="endDate">
 	
-	                        <button class="btn btn-primary" type="button" id="searchBtn">검색</button>
+	                        <button class="btn btn-warning yellowBtn" type="button" id="searchBtn">검색</button>
                         </form>
                     </div>
                     
@@ -89,8 +74,8 @@
                         			<td>${o.orderDate}</td>
 	                                <td>${o.orderNo}</td>
 	                                <td>${o.comName}</td>
-	                                <td>${o.budget}</td>
-	                                <td>${o.totalPrice}</td>
+	                                <td><fmt:formatNumber value="${o.budget}" groupingUsed="true"/></td>
+	                                <td><fmt:formatNumber value="${o.totalPrice}" groupingUsed="true"/></td>
 	                                <td>${o.deliveryDate}</td>
 	                                <td>${o.status}</td>
                             	</tr>

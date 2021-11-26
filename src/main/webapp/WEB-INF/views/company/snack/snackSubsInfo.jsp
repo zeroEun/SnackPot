@@ -7,37 +7,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<style>
-   .content{
-        margin: auto;
-        margin-top: 30px;
-        margin-bottom: 50px;
-    }
-
-    #subsEnroll  label{
-        min-width: 100px;
-    }
-
-    #category-menu{
-    	
-        padding: 0px;
-    }
-
-    .category-sub{
-        margin-bottom: 0.8rem;
-    }
-    
-    #delivery p, #settlement p, #snack-budget p{
-    	width: 50px;
-    	min-width: 50px;
-    	margin: auto;
-    }
-    
-    #ratio p{
-    	margin: auto;
-    }
-    
-</style>
+<!-- css style -->
+<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 
 </head>
 <body>
@@ -223,7 +194,7 @@
 							<p>※ 간식 리스트가 발송 된 후에는 수정된 내용이 반영되지 않습니다.</p>
 						</div>
 						
-                        <button type="submit" class="btn btn-warning mr-2 float-right" id="updateBtn">내용 수정하기</button>
+                        <button type="submit" class="btn btn-warning yellowBtn mr-2 float-right" id="updateBtn">내용 수정하기</button>
 						<button type="button" class="btn btn-secondary mr-2 float-right" id="cancelBtn">구독 취소하기</button>
 
                     </form>

@@ -17,58 +17,8 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         
-<style>
-
-        /*본문 부분*/
-        .content{
-            height: 100vh;
-            padding: 50px 0px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-y: auto;
-        }
-
-        .company-name{
-            background: rgb(245, 208, 66);
-            padding: 10px 15px;
-            border-radius: 0.25rem;
-            text-align: center;
-        }
-
-        .btn-primary{
-            float: right;
-            margin-left: 5px;
-        }
-
-        .search-list{
-            max-height: 300px;
-            padding: 20px;
-            background: seashell;
-            overflow-y: auto;
-            
-        }
-
-        .search-sub{
-            margin-bottom: 10px;
-            padding: 0px;
-        }
-
-        .search-table{
-            background: white;
-            margin: auto;
-            
-        }
-
-        .amount, .searchAmount{
-            width: 50px;
-        }
-
-		.image{
-			width: 50px;
-			height: 50px;
-		}
-
-</style>
+        <!-- css style -->
+		<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 </head>
 <body>
 
@@ -84,8 +34,7 @@
                     <hr>
 
 					<!--  화면에 항상 있어야 할 정보 
-						    회사명, 예산, 주문 마감일, 리스트 번호      
-					 -->
+						    회사명, 예산, 주문 마감일, 리스트 번호      -->
 					 
 					<form action="createList.sn" method="post" id="submitForm">
 						<input type="hidden" name="comCode" value="${i.comCode}">
@@ -95,12 +44,12 @@
 					
                     <span class="company-name">${i.comName}</span>
                     <br><br>
-                                             예산 : <span class="" id="budgetInfo"><fmt:formatNumber value="${i.budget}" groupingUsed="true"/></span>원&nbsp;&nbsp;&nbsp;
-                                             총 금액 : <span class="" id="totalPriceInfo"><fmt:formatNumber value="${i.totalPrice}" groupingUsed="true"/></span>원&nbsp;&nbsp;&nbsp;
-                 	주문 마감일 : <span class="">${i.orderDeadline}</span>
+                    <span>주문 마감일 : ${i.orderDeadline}</span><br>
+                    <span>예산 : <fmt:formatNumber value="${i.budget}" groupingUsed="true"/>원</span>&nbsp;&nbsp;&nbsp;
+                    <span>총 금액 : <fmt:formatNumber value="${i.totalPrice}" groupingUsed="true"/>원</span>&nbsp;&nbsp;&nbsp;
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wishModal" id="wishBtn">위시리스트 조회</button>
-                  	<button type="button" class="btn btn-primary" id="createListBtn">리스트 생성</button>
+                    <button type="button" class="btn commBtn" data-toggle="modal" data-target="#wishModal" id="wishBtn">위시리스트 조회</button>
+                  	<button type="button" class="btn commBtn" id="createListBtn">리스트 생성</button>
                    
 					<!-- The Modal -->
 					<div class="modal" id="wishModal">
@@ -168,7 +117,7 @@
 	                            </select>
 	                            
 	                            <input type="text" class="form-control" placeholder="검색어 입력" name="search" aria-describedby="searchBtn">
-	                            <button class="btn btn-warning" type="submit" id="searchBtn">검색</button>
+	                            <button class="btn btn-warning yellowBtn" type="submit" id="searchBtn">검색</button>
 	
 							</form>
                         </div>
@@ -206,14 +155,17 @@
 	                                    <td>${list.subCategoryName}</td>
 	                                    <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${list.imageName}"></td>
 	                                    <td>${list.snackName}</td>
-	                                    <td class="searchPrice" id="">
+	                                    <td class="searchPrice">
 		                                    <input type="hidden" id="searchPrice${list.snackNo}" value="${list.releasePrice}">
 		                                    <fmt:formatNumber value="${list.releasePrice}" groupingUsed="true"/>
 	                                    </td>
 	                                    <td><input type="number" class="searchAmount" id="${list.snackNo}" min=1 max="${list.stock}" required></td>
-	                                    <td>${list.stock}<input type="hidden" id="searchStock${list.snackNo}" value="${list.stock}"></td>
+	                                    <td>
+	                                    	<fmt:formatNumber value="${list.stock}" groupingUsed="true"/>
+	                                    	<input type="hidden" id="searchStock${list.snackNo}" value="${list.stock}">
+	                                    </td>
 	                                    <td class="searchTotalPrice" id="searchTotalPrice${list.snackNo}"></td>
-	                                    <td><button type="button" class="addBtn" value="${list.snackNo}">추가</button></td>
+	                                    <td><button type="button" class="btn addBtn" value="${list.snackNo}">추가</button></td>
                                 	</tr>
                             	</c:forEach>
                             	
@@ -262,7 +214,10 @@
 		                                <td>${dList.snackName}</td>
 		                                <td><fmt:formatNumber value="${dList.releasePrice}" groupingUsed="true"/></td>
 		                                <td><input type="number" class="amount" id="${dList.snackDNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>
-		                                <td>${dList.stock}<input type="hidden" id="dListStock" value="${dList.stock}"></td>
+		                                <td>
+			                                <fmt:formatNumber value="${dList.stock}" groupingUsed="true"/>
+			                                <input type="hidden" id="dListStock" value="${dList.stock}">
+		                                </td>
 		                                <td><fmt:formatNumber value="${dList.releasePrice * dList.amount}" groupingUsed="true"/></td>
 	                                </tr>
 	                                
@@ -291,8 +246,8 @@
 		            
                     <!-- list end-->
 
-                    <button type="button" class="btn btn-primary" id="sendBtn">리스트 발송</button>
-                    <button type="button" class="btn btn-primary" id="deleteBtn" >선택 항목 삭제</button>
+                    <button type="button" class="btn commBtn" id="sendBtn">리스트 발송</button>
+                    <button type="button" class="btn commBtn" id="deleteBtn" >선택 항목 삭제</button>
 
                 </div>
 
@@ -478,9 +433,8 @@
 						$('#wish-table tbody').append(tr);
 					})
 					
-					
 				},error:function(){
-					console.log("댓글 작성 ajax 통신 실패");
+					console.log("ajax 통신 실패");
 				}
 				
 			});

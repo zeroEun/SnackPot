@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,29 +17,9 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         
-<style>
+        <!-- css style -->
+		<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 
-        /*본문 부분*/
-        .content{
-            height: 100vh;
-            padding: 50px 0px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-y: auto;
-        }
-
-        .company{
-            background-color: seashell;
-            margin: 15px 0px;
-            padding: 15px;
-        }
-        .image{
-			width: 50px;
-			height: 50px;
-		}
-
-
-</style>
 </head>
 <body>
 
@@ -52,19 +33,20 @@
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
             
                 <div class="content col-8">
-                    <h5>간식 리스트 발송 내역</h5>
+                    <h5>간식 리스트 상세 내역</h5>
                     <hr>
 
                     <div class="company">
                        
-                        <div class="company-name">${sList.comName}</div>
-
-                        <span class="">리스트 발송일: ${sList.transDate}</span>
-                        <span class="">예산: ${sList.budget} </span>
-                        <span class="">총 금액: ${sList.totalPrice}</span>
-
+                        <span class="com-name">${sList.comName}</span><br>
+						
+						<span>리스트 번호: ${sList.snackListNo}</span>
+                        <span>리스트 발송일: ${sList.transDate}</span><br>
+                        <span>예산: <fmt:formatNumber value="${sList.budget}" groupingUsed="true"/>원 </span>
+                        <span>총 금액: <fmt:formatNumber value="${sList.totalPrice}" groupingUsed="true"/>원 </span>
 
                     </div>
+                    <hr>
 
                     <table class="table table-bordered ">
                         <thead class="thead-light">
@@ -86,9 +68,9 @@
 	                                <td>${d.subCategoryName}</td>
 	                                <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${d.imageName}"></td>
 	                                <td>${d.snackName}</td>
-	                                <td>${d.releasePrice}</td>
+	                                <td><fmt:formatNumber value="${d.releasePrice}" groupingUsed="true"/></td>
 	                                <td>${d.amount}</td>
-	                                <td>${d.releasePrice*d.amount}</td>
+	                                <td><fmt:formatNumber value="${d.releasePrice*d.amount}" groupingUsed="true"/></td>
                            		</tr>
                         	</c:forEach>
 
@@ -96,7 +78,7 @@
 
                     </table>
 
-                    <button type="button" class="btn btn-primary" onclick="location.href='sendingList.sn'">목록으로</button>
+                    <button type="button" class="btn commBtn" onclick="location.href='sendingList.sn'">목록으로</button>
 
                 </div>
             </div>

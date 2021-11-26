@@ -16,6 +16,11 @@ public class HO_GiftListDao {
 		return (ArrayList)sqlSession.selectList("birthdayMapper_HO.selectGiftList");
 	}
 
+	public ArrayList<HO_GiftList> selectCtgry(SqlSessionTemplate sqlSession, int ctgryNum) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("birthdayMapper_HO.selectCtgry", ctgryNum);
+	}
+	
 	public HO_GiftList checkedGiftList(SqlSessionTemplate sqlSession, String giftNo) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("birthdayMapper_HO.checkedGiftList", giftNo);

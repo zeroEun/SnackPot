@@ -9,17 +9,24 @@
     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<title>Insert title here</title>
+<title>발송 리스트</title>
 </head>
 <style>
 	#birthContainer{
-    	margin-top: 30px;
+    	margin-top: 12px;
     }
     #birthCard{
     	height: 777px;
-    	overflow: scroll;
-    	margin-bottom: 10px;
-    	background: rgb(241, 251, 255);
+    	overflow-y: scroll;
+    	width: 96%;
+    	margin: auto;
+    }
+    #btnArea{
+    	width: 96%;
+    	margin: auto;
+    }
+    #btnArea button{
+    	margin-top: 12px;
     }
     #sendingTab>li>p {
        	cursor: pointer;
@@ -28,7 +35,7 @@
     }
     #sendingTab{
         float: left;
-        width: 12%;
+        width: 16%;
     }
     #sendingTab p {
     	border: none;
@@ -40,6 +47,7 @@
     #tabArea{
     	padding-top: 20px;
     	padding-left: 10px;
+    	border:0;
     }
     #tabArea button{
         float: right;
@@ -49,6 +57,9 @@
     #birthCard > .card-body{
         height: 100%;
     }
+    #sending_expected_table{
+    	border: 1px solid lightgray;
+    }
     .tableHead{
     	background: rgb(255, 227, 114);
     }
@@ -57,18 +68,63 @@
     }
     #saveGiftList{
     	float: right;
+    	border: none;
+   		outline: none;
+    	background-color: rgb(10, 23, 78);
+    	color: rgb(245, 208, 66);
     }
+    #saveGiftList:hover{
+    	border: none;
+   		outline: none;
+    	background-color: rgb(245, 208, 66);
+    	color: rgb(10, 23, 78);
+    	font-weight: bold;
+    }
+    
+    #sendListTitle{
+		width: 92%;
+		margin: auto;
+		color: rgb(10, 23, 78);
+    }
+    /*footer 조절*/
+	html, body{
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	section{
+		height: auto;
+		min-height: 100%;
+		padding-bottom: 200px;
+	}
+	#footer{
+		position: relative;
+		transform: translateY(-100%);
+	}
 </style>
+<script>
+	$(function(){
+		$("#footer").css("margin-top","150px");
+		
+		var presentDate = new Date();
+		var presentYear = presentDate.getFullYear();
+		var presentMonth = presentDate.getMonth()+1;
+		console.log(presentMonth);
+		
+		$("#sendListTitle").html(presentYear + "년 " + (presentMonth+1) + "월 발송 예정 리스트");
+	});
+</script>
 <body>
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 
+	<div><h4 id="sendListTitle"></h4></div>
 	<section id="birthSection">
     	<div class="container-fluid" id="birthContainer">
     		<div class="card text-center" id="birthCard">
 	            <div class="card-header" id="tabArea">
 	                <ul class="nav nav-tabs card-header-tabs" id="sendingTab">
 	                    <li class="nav-item" id="sendingListTab">
-	                        <p class="nav-link">발송 리스트</p>
+	                        <p class="nav-link"><b>발송 리스트</b></p>
 	                    </li>
 	                    
 	                </ul>
@@ -134,7 +190,7 @@
 		                   		<tr><td colspan="8">구독 정보가 존재하지 않습니다.</td></tr>
 		                   	</c:if>
 	                    </tbody>
-	                </table>
+	                </table><br>
 	                
 	                <%-- 추가하기 --%>
 	                <div class="modal fade" id="sending_insert" data-backdrop="static" data-keyboard="false" aria-hidden="true">
@@ -265,14 +321,17 @@
 	                </div>
 	            </div>
 	        </div>
-	        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
-	        <button type="button" class="btn btn-dark" id="saveGiftList">선물리스트 저장</button>
+	        <div id="btnArea">
+		        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+		        <button type="button" class="btn btn-dark" id="saveGiftList">선물리스트 저장</button>
+	        </div>
+	        
     	</div>
     	
     	<input type="hidden" id="comCodeInput" name="comCode" value="${loginUser.comCode }">
     </section>
 
-        
+    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
         
 	<script>
 		window.onload = function() {
@@ -286,7 +345,8 @@
 		    $("#insertBtn").show();
 		    $("#deleteBtn").show();
 		    */
-		    $("#sendingListTab").css("background-color", "rgb(161, 214, 236)").css("color","rgb(10, 23, 78)");
+		    $("#sendingListTab").css("background-color", "rgb(250, 211, 55)").css("color","black");
+		    $("#sendingListTab").css("box-shadow", "1px 0 15px 1px whitesmoke inset");
 		    $("#tabArea").css("padding-bottom", 4);//추가탭 없으면 style로 변경
 		}
 		

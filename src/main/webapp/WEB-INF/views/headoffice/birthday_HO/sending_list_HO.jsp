@@ -13,10 +13,10 @@
 </head>
 <style>
     #birthCard{
-    	margin-top: 1rem;
-    	height: 90%;
+    	height: 86%;
+    	width: 96%;
+    	margin: auto;
     	overflow: scroll;
-    	margin-bottom: 5px;
     }
 	#sendingTab>li>p {
 		font-weight: bold;
@@ -24,8 +24,6 @@
         width: 100%;
     }
     #sendingTab{
-        float: left;
-        margin-left: 10px;
         width: 16%;
     }
     #sendingTab p {
@@ -34,26 +32,26 @@
     }
     #sendingTab>li{
     	width: 100%;
+    	float: left;
+    	margin-left: 10px;
     }
 	#tabArea{
 		padding-top: 20px;
-    	padding-left: 10px;
-    	padding-bottom: 11px;
+    	padding-left: 0;
+    	padding-bottom: 0;
+    	border-bottom: 0;
 	}
 	#sendingListTab{
-		background: rgb(218, 215, 208);
+		background-color: rgb(194, 192, 192);
+		color: black;
+		box-shadow: 1px 0 2px 1px whitesmoke inset;
 	}
-	#birthCard > .card-body{
-        background: rgb(218, 215, 208);
+	#btnArea{
+    	width: 96%;
+    	margin: auto;
     }
-    .tableHead{
-    	background: rgb(255, 227, 114);
-    }
-    .tableBody{
-    	background: rgb(252, 248, 238);
-    }
-    #prevBtn{
-    	margin-top: 6px;
+    #btnArea button{
+    	margin-top: 12px;
     	float: right;
     }
 </style>
@@ -64,6 +62,7 @@
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 				
 				<div class="col-10">
+					<br><br>
 					<div class="card text-center" id="birthCard">
 						<div class="card-header" id="tabArea">
 					        <ul class="nav nav-tabs card-header-tabs" id="sendingTab">
@@ -74,7 +73,7 @@
 					    </div>
 					    <div class="card-body">
 						    <table class="table">
-						        <thead class="tableHead">
+						        <thead style="background-color:rgb(194, 192, 192);">
 						            <tr>
 						                <th scope="col">번호</th>
 						                <th scope="col">부서명</th>
@@ -85,7 +84,7 @@
 						                <th scope="col">발송예정일</th>
 						            </tr>            
 						        </thead>
-						        <tbody class="tableBody">
+						        <tbody>
 						       		<c:set var="sendListChk" value="${list }"/>
 						       		<c:set var="birthSubsChk" value="${birthSubsChk }"/>
 						       		<c:if test ="${birthSubsChk > 0}">
@@ -119,8 +118,9 @@
 						    </table>
 						</div>
 					</div>
-					
-					<button type="button" id="prevBtn" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+					<div id="btnArea">
+						<button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+					</div>
 				</div>
 			</div>
 		</div>

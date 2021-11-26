@@ -12,7 +12,7 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<title>Insert title here</title>
+<title>발송 현황</title>
 </head>
 <style>
 	#birthBody{
@@ -22,13 +22,22 @@
 	
 	}
 	#birthContainer{
-    	margin-top: 30px;
+    	margin-top: 12px;
     	
     }
     #birthCard{
-    	height: 777px;
-    	overflow: scroll;
-    	margin-bottom: 5px;
+    	height: 722px;
+    	overflow-y: scroll;
+    	/*background: rgb(241, 251, 255);*/
+    	width: 96%;
+    	margin: auto;
+    }
+    #btnArea{
+    	width: 96%;
+    	margin: auto;
+    }
+    #btnArea button{
+    	margin-top: 12px;
     }
     #sendingTab>li>p {
         cursor: pointer;
@@ -37,7 +46,7 @@
     }
     #sendingTab{
         float: left;
-        width: 30%;
+        width: 40%;
     }
     #sendingTab>li{
     	width: 40%;
@@ -53,6 +62,7 @@
     #tabArea{
     	padding-top: 20px;
     	padding-left: 10px;
+    	border:0;
     }
     #tabArea button{
         float: right;
@@ -63,8 +73,8 @@
     	opacity: 0;
     	cursor: default;
     }
-    #birthCard > .card-body{
-        background: rgb(218, 215, 208);
+    #sending_expected_table, #sending_complete_table{
+    	border: 1px solid lightgray;
     }
     .tableHead{
     	background: rgb(255, 227, 114);
@@ -72,18 +82,53 @@
     .tableBody{
     	background: rgb(252, 248, 238);
     }
+    
+    #sendListTitle{
+		width: 92%;
+		margin: auto;
+		color: rgb(10, 23, 78);
+    }
+    /*footer 조절*/
+	html, body{
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	section{
+		height: auto;
+		min-height: 100%;
+		padding-bottom: 200px;
+	}
+	#footer{
+		position: relative;
+		transform: translateY(-100%);
+	}
 </style>
+<script>
+	$(function(){
+		$("#footer").css("margin-top","150px");
+		
+		var presentDate = new Date();
+		var presentYear = presentDate.getFullYear();
+		var presentMonth = presentDate.getMonth()+1;
+		console.log(presentMonth);
+		
+		$("#sendListTitle").html(presentYear + "년 " + presentMonth + "월 발송 현황");
+	});
+</script>
 <body id="birthBody">
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 		<%-- 화면 로딩 시 발송 예정 리스트가 먼저 나타나도록 설정, 발송 완료 탭 클릭 시 서로 색 변경 --%>
         <script>
             window.onload = function() {
-            	$("#sending_expected").css("background", "rgb(218, 215, 208)")
-                $("#sending_complete").css("background", "rgb(124, 123, 121)")
+            	$("#sending_expected").css("background", "rgb(250, 211, 55)");
+                $("#sending_complete").css("background", "rgb(250, 233, 165)");
                 $("#sending_expected").css("font-weight", "bold");
                 $("#sending_complete").css("font-weight", "normal");
                 $("#sending_expected").css("color", "black");
-                $("#sending_complete").css("color", "white");
+                $("#sending_complete").css("color", "black");
+                $("#sending_expected").css("box-shadow", "1px 0 15px 1px whitesmoke inset");
+                $("#sending_complete").css("box-shadow", "1px 0 15px 1px whitesmoke inset");
     
                 $("#sending_expected_table").show();
                 $("#sending_complete_table").hide();
@@ -96,12 +141,14 @@
     
             $(document).ready(function() {
                 $("#sending_expected").click(function() {
-                	$("#sending_expected").css("background", "rgb(218, 215, 208)")
-                    $("#sending_complete").css("background", "rgb(124, 123, 121)")
+                	$("#sending_expected").css("background", "rgb(250, 211, 55)");
+                    $("#sending_complete").css("background", "rgb(250, 233, 165)");
                     $("#sending_expected").css("font-weight", "bold");
                     $("#sending_complete").css("font-weight", "normal");
                     $("#sending_expected").css("color", "black");
-                    $("#sending_complete").css("color", "white");
+                    $("#sending_complete").css("color", "black");
+                    $("#sending_expected").css("box-shadow", "1px 0 15px 1px whitesmoke inset");
+                    $("#sending_complete").css("box-shadow", "1px 0 15px 1px whitesmoke inset");
     
                     $("#sending_expected_table").show();
                     $("#sending_complete_table").hide();
@@ -112,12 +159,14 @@
             });
             $(document).ready(function() {
                 $("#sending_complete").click(function() {
-                	$("#sending_complete").css("background", "rgb(218, 215, 208)")
-                    $("#sending_expected").css("background", "rgb(124, 123, 121)")
+                	$("#sending_complete").css("background", "rgb(250, 211, 55)");
+                    $("#sending_expected").css("background", "rgb(250, 233, 165)");
                     $("#sending_complete").css("font-weight", "bold");
                     $("#sending_expected").css("font-weight", "normal");
                     $("#sending_complete").css("color", "black");
-                    $("#sending_expected").css("color", "white");
+                    $("#sending_expected").css("color", "black");
+                    $("#sending_complete").css("box-shadow", "1px 0 15px 1px whitesmoke inset");
+                    $("#sending_expected").css("box-shadow", "1px 0 15px 1px whitesmoke inset");
     
                     $("#sending_expected_table").hide();
                     $("#sending_complete_table").show();
@@ -127,7 +176,7 @@
                 });
             });
         </script>
-    
+    	<div><h4 id="sendListTitle"></h4></div>
     	<section id="birthSection">
     		<div class="container-fluid" id="birthContainer">
     			<div class="card text-center" id="birthCard">
@@ -377,41 +426,15 @@
 		                </table>
 		            </div>
 		        </div>
-		        <button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+		        <div id="btnArea">
+		        	<button type="button" class="btn btn-dark" onclick="history.back(-1)">이전으로</button>
+		        </div>
     		</div>
     		
     		<input type="hidden" id="comCodeInput" name="comCode" value="${loginUser.comCode }">
     	</section>
 		
-    <!-- 
-		                   		<c:choose>
-			                   			<c:when test="${empty sendListSts }">
-			                   				
-			                   			</c:when>
-			                   			<c:when test="${!empty sendListSts }">
-			                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
-												<c:if test="${ sendingSts.selectDate != null }">
-													<c:set var="num2" value="${ num2+1 }" />
-														
-														<tr>
-															<td>${ num2 }</td>
-															<td>${ sendingSts.cempDept }</td>
-															<td>${ sendingSts.cempJob }</td>
-															<td>${ sendingSts.cempName }</td>
-															<td>${ sendingSts.cempPhone }</td>
-															<td>${ sendingSts.cempBirth }</td>
-															<td>${ sendingSts.sendingMsgDate }</td>
-														</tr>
-														
-												</c:if>
-											</c:forEach>
-			                   				<c:if test="${empty num2 }">
-			                   					<tr><td colspan="8">발송 완료인 사원이 없습니다.</td></tr>
-			                   				</c:if>
-			                   				</c:when>
-			                   		</c:choose>
-		                   		 -->
-        
+   		<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
         
 	<script>
 		$(function(){

@@ -107,6 +107,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE GIFT_STATUS='Y'
 	</select>
 	
+	<select id="selectCtgry" parameterType="_int" resultMap="giftListResultSet">
+			SELECT A.GIFT_NO, A.GIFT_BRAND, A.GIFT_NAME, A.GIFT_PRICE, B.CHANGE_NAME
+			FROM BIRTHDAY_GIFT A
+			JOIN GIFT_ATTACHMENT B ON A.GIFT_NO = B.GIFT_REF_NO
+			WHERE GIFT_STATUS='Y'
+			<choose>
+				<when test="ctgryNum == 1">
+					
+				</when>
+				<when test="ctgryNum == 2">
+					ORDER BY GIFT_PRICE DESC
+				</when>
+				<when test="ctgryNum == 3">
+					ORDER BY GIFT_PRICE ASC
+				</when>
+			</choose>
+	</select>
+	
 	<!-- 선택된 상품 리스트 조회(선택 삭제용) -->
 	<select id="checkedGiftList" parameterType="String" resultMap="giftListResultSet">
 		SELECT A.GIFT_NO, A.GIFT_BRAND, A.GIFT_NAME, A.GIFT_PRICE, B.CHANGE_NAME

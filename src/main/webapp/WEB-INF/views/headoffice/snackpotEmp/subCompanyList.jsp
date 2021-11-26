@@ -88,11 +88,11 @@
 <c:when test="${sSub ne null }">
 <label class="bold">간식 예산</label>&emsp;&emsp;<label class="l1">${sSub.budget }원</label><br>
 <label class="bold">간식 비율</label>&emsp;&emsp;<label class="l1">스낵 ${sSub.snackRatio }% 음료  ${sSub.drinkRatio }% 간편식  ${sSub.retortRatio }% </label><br>
-<label class="bold">선택 카테고리</label>&emsp;&emsp;<label id="l2">스낵류 - ${sSub.snackCategory }</label><br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label class="l3">음료 - ${sSub.drinkCategory }</label><br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label class="l3">간편식 - ${sSub.retortCategory }</label><br>
-<label class="bold">선호하는 맛</label>&emsp;&emsp;<label class="l4">${sSub.preferTaste }</label><br>
-<label class="bold">싫어하는 향</label>&emsp;&emsp;<label class="l4">${sSub.dislikeFlavour }</label><br>
+<label class="bold">선택 카테고리</label>&emsp;&emsp;<label id="l2">스낵류 - ${changeKor.snackCategory }</label><br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label class="l3">음료 - ${changeKor.drinkCategory }</label><br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label class="l3">간편식 - ${changeKor.retortCategory }</label><br>
+<label class="bold">선호하는 맛</label>&emsp;&emsp;<label class="l4">${changeKor.preferTaste }</label><br>
+<label class="bold">싫어하는 향</label>&emsp;&emsp;<label class="l4">${changeKor.dislikeFlavour }</label><br>
 <label class="bold">배송 예정일</label>&emsp;&emsp;<label class="l4">매월 ${sSub.deliveryDate }일</label><br>
 <label class="bold">결제일</label>&emsp;&emsp;<label id="l5">매월 ${setSDate }일</label>
 </c:when>

@@ -125,7 +125,7 @@ public class CompanyMemberController {
 		id = cms.findId(memName, memPhone);
 		}catch(Exception e) {
 			id = null;
-		}
+		} 
 		
 		return id;
 	}

@@ -178,7 +178,7 @@ public class CompanyMemberServiceImpl implements CompanyMemberService {
 		String snackStatus = cmd.selectSnackSubSta(sqlSession, memId);
 		return snackStatus;
 	}
-
+ 
 	@Override
 	public String selectbirthSubSta(String memId) {
 		String birthStatus = cmd.selectbirthSubSta(sqlSession, memId);

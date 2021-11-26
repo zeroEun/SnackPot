@@ -1,6 +1,7 @@
 package com.kh.spring.snackpotEmp.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpSession;
 
@@ -578,6 +579,7 @@ public class SnackpotEmpController {
 		
 		String setSDate = "";
 		String setBDate = "";
+		SnackSubs changeKor = new SnackSubs();
 		
 		if(sSub != null && bSub != null) {
 			if(sSub.getSubsStatus().equals("N") && bSub.getBservice_status().equals("Y")) {
@@ -585,21 +587,24 @@ public class SnackpotEmpController {
 			 setBDate = String.valueOf(bSub.getSettlement_date()).substring(8,10);
 			}else if(bSub.getBservice_status().equals("N") && sSub.getSubsStatus().equals("Y")) {
 				bSub = null;
-				 setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);	
+				 setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);
+				 changeKor = changeKor(sSub);
 			}else if(sSub.getSubsStatus().equals("Y") && bSub.getBservice_status().equals("Y")) {
 				 setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);
-				 setBDate = String.valueOf(bSub.getSettlement_date()).substring(8,10);		
+				 setBDate = String.valueOf(bSub.getSettlement_date()).substring(8,10);	
+				 changeKor = changeKor(sSub);
 			}else {
 				sSub = null;
 				bSub = null;
 			}
 		}else if(sSub != null && bSub == null) {
 			setSDate = String.valueOf(sSub.getSettleDate()).substring(8,10);	
+			changeKor = changeKor(sSub);
 		}else if(sSub == null && bSub != null) {
 			setBDate = String.valueOf(bSub.getSettlement_date()).substring(8,10);
 		}
 		
-		
+		model.addAttribute("changeKor", changeKor);
 		model.addAttribute("setSDate", setSDate);
 		model.addAttribute("setBDate", setBDate);
 		model.addAttribute("sSub", sSub);
@@ -607,6 +612,306 @@ public class SnackpotEmpController {
 		model.addAttribute("comName", comName);
 		
 		return "headoffice/snackpotEmp/subCompanyList";
+	}
+	
+	public SnackSubs changeKor(SnackSubs sSub) {
+		
+		String sc = "";
+		String dc = "";
+		String rc = "";
+		String pt = "";
+		String df = "";
+		 
+		//스낵
+		//여러 개일 때
+		if(sSub.getSnackCategory().contains(",")) {
+			String temp [] = sSub.getSnackCategory().split(",");
+		
+			for(int i=0; i<temp.length; i++) {
+				
+				switch(temp[i]) {
+				case "1": temp[i] = "스낵"; 
+				break;
+				case "2": temp[i] = "파이 및 비스킷"; 
+				break;
+				case "3": temp[i] = "초콜릿"; 
+				break;
+				case "4": temp[i] = "캔디"; 
+				break;
+				case "5": temp[i] = "젤리"; 
+				break;
+				case "6": temp[i] = "껌"; 
+				break;
+				case "7": temp[i] = "시리얼바"; 
+				break;
+				}
+				
+				if(i == temp.length-1) {
+					sc += temp [i];
+				}else if(i == 0){
+					sc += temp [i] + ", ";
+				}else {
+					sc += temp [i] + ", ";
+				}
+			}
+			
+			sSub.setSnackCategory(sc);
+			
+		//한 개일 때	
+		}else {
+			
+			switch(sSub.getSnackCategory()) {
+			case "1": sSub.setSnackCategory("스낵");
+			break;
+			case "2": sSub.setSnackCategory("파이 및 비스킷"); 
+			break;
+			case "3": sSub.setSnackCategory("초콜릿");  
+			break;
+			case "4": sSub.setSnackCategory("캔디"); 
+			break;
+			case "5": sSub.setSnackCategory("젤리"); 
+			break;
+			case "6": sSub.setSnackCategory("껌"); 
+			break;
+			case "7": sSub.setSnackCategory("시리얼바"); 
+			break;
+			}
+		}
+		
+		//음료
+		//여러 개일 때
+		if(sSub.getDrinkCategory().contains(",")) {
+			String temp [] = sSub.getDrinkCategory().split(",");
+		
+			for(int i=0; i<temp.length; i++) {
+				
+				switch(temp[i]) {
+				case "8": temp[i] = "탄산음료"; 
+				break;
+				case "9": temp[i] = "이옴음료"; 
+				break;
+				case "10": temp[i] = "과일음료"; 
+				break;
+				case "11": temp[i] = "에너지음료"; 
+				break;
+				case "12": temp[i] = "유산균음료"; 
+				break;
+				case "13": temp[i] = "커피"; 
+				break;
+				}
+				
+				if(i == temp.length-1) {
+					dc += temp [i];
+				}else if(i == 0){
+					dc += temp [i] + ", ";
+				}else {
+					dc += temp [i] + ", ";
+				}
+			}
+			
+			sSub.setDrinkCategory(dc);
+			
+		//한 개일 때	
+		}else {
+			
+			switch(sSub.getDrinkCategory()) {
+			case "8": sSub.setDrinkCategory("탄산음료");
+			break;
+			case "9": sSub.setDrinkCategory("이옴음료"); 
+			break;
+			case "10": sSub.setDrinkCategory("과일음료");  
+			break;
+			case "11": sSub.setDrinkCategory("에너지음료"); 
+			break;
+			case "12": sSub.setDrinkCategory("유산균음료"); 
+			break;
+			case "13": sSub.setDrinkCategory("커피"); 
+			break;
+			}
+		}
+	
+
+		//음료
+		//여러 개일 때
+		if(sSub.getRetortCategory().contains(",")) {
+			String temp [] = sSub.getRetortCategory().split(",");
+		
+			for(int i=0; i<temp.length; i++) {
+				
+				switch(temp[i]) {
+				case "14": temp[i] = "컵라면"; 
+				break;
+				case "15": temp[i] = "핫도그 및 소시지"; 
+				break;
+				case "16": temp[i] = "계란"; 
+				break;
+				case "17": temp[i] = "시리얼"; 
+				break;
+				case "18": temp[i] = "컵밥"; 
+				break;
+				}
+				
+				if(i == temp.length-1) {
+					rc += temp [i];
+				}else if(i == 0){
+					rc += temp [i] + ", ";
+				}else {
+					rc += temp [i] + ", ";
+				}
+			}
+			
+			sSub.setRetortCategory(rc);
+			
+		//한 개일 때	
+		}else {
+			
+			switch(sSub.getRetortCategory()) {
+			case "14": sSub.setRetortCategory("탄산음료");
+			break;
+			case "15": sSub.setRetortCategory("이옴음료"); 
+			break;
+			case "16": sSub.setRetortCategory("과일음료");  
+			break;
+			case "17": sSub.setRetortCategory("에너지음료"); 
+			break;
+			case "18": sSub.setRetortCategory("유산균음료"); 
+			break;
+			}
+		}
+
+		//선호하는 맛
+		//여러 개일 때
+		if(sSub.getPreferTaste().contains(",")) {
+			String temp [] = sSub.getPreferTaste().split(",");
+		
+			for(int i=0; i<temp.length; i++) {
+				
+				switch(temp[i]) {
+				case "1": temp[i] = "달콤"; 
+				break;
+				case "2": temp[i] = "짭잘"; 
+				break;
+				case "3": temp[i] = "담백"; 
+				break;
+				case "4": temp[i] = "고소"; 
+				break;
+				case "5": temp[i] = "새콤"; 
+				break;
+				case "6": temp[i] = "매콤"; 
+				break;
+				}
+				
+				if(i == temp.length-1) {
+					pt += temp [i];
+				}else if(i == 0){
+					pt += temp [i] + ", ";
+				}else {
+					pt += temp [i] + ", ";
+				}
+			}
+			
+			sSub.setPreferTaste(pt);
+			
+		//한 개일 때	
+		}else {
+			
+			switch(sSub.getPreferTaste()) {
+			case "1": sSub.setPreferTaste("달콤");
+			break;
+			case "2": sSub.setPreferTaste("짭잘"); 
+			break;
+			case "3": sSub.setPreferTaste("담백");  
+			break;
+			case "4": sSub.setPreferTaste("고소"); 
+			break;
+			case "5": sSub.setPreferTaste("새콤"); 
+			break;
+			case "6": sSub.setPreferTaste("매콤"); 
+			break;
+			}
+		}
+		
+		//싫어하는 향
+		//여러 개일 때
+		if(sSub.getDislikeFlavour().contains(",")) {
+			String temp [] = sSub.getDislikeFlavour().split(",");
+		
+			for(int i=0; i<temp.length; i++) {
+				
+				switch(temp[i]) {
+				case "1": temp[i] = "꿀"; 
+				break;
+				case "2": temp[i] = "녹차"; 
+				break;
+				case "3": temp[i] = "커피"; 
+				break;
+				case "4": temp[i] = "초코"; 
+				break;
+				case "5": temp[i] = "바닐라"; 
+				break;
+				case "6": temp[i] = "요거트"; 
+				break;
+				case "7": temp[i] = "치즈"; 
+				break;
+				case "8": temp[i] = "감자"; 
+				break;
+				case "9": temp[i] = "고구마"; 
+				break;
+				case "10": temp[i] = "곡물"; 
+				break;
+				case "11": temp[i] = "와사비"; 
+				break;
+				case "12": temp[i] = "양파"; 
+				break;
+				case "13": temp[i] = "해물"; 
+				break;
+				}
+				
+				if(i == temp.length-1) {
+					df += temp [i];
+				}else if(i == 0){
+					df += temp [i] + ", ";
+				}else {
+					df += temp [i] + ", ";
+				}
+			}
+			
+			sSub.setDislikeFlavour(df);
+			
+		//한 개일 때	
+		}else {
+			
+			switch(sSub.getDislikeFlavour()) {
+			case "1": sSub.setDislikeFlavour("꿀");
+			break;
+			case "2": sSub.setDislikeFlavour("녹차"); 
+			break;
+			case "3": sSub.setDislikeFlavour("커피");  
+			break;
+			case "4": sSub.setDislikeFlavour("초코"); 
+			break;
+			case "5": sSub.setDislikeFlavour("바닐라"); 
+			break;
+			case "6": sSub.setDislikeFlavour("요거트"); 
+			break;
+			case "7": sSub.setDislikeFlavour("치즈");
+			break;
+			case "8": sSub.setDislikeFlavour("감자"); 
+			break;
+			case "9": sSub.setDislikeFlavour("고구마");  
+			break;
+			case "10": sSub.setDislikeFlavour("곡물"); 
+			break;
+			case "11": sSub.setDislikeFlavour("와사비"); 
+			break;
+			case "12": sSub.setDislikeFlavour("양파"); 
+			break;
+			case "13": sSub.setDislikeFlavour("해물"); 
+			break;
+			}
+		}
+		
+		return sSub;
 	}
 	
 	@RequestMapping("selectEmp.sn")

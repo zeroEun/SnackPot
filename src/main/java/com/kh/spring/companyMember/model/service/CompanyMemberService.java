@@ -51,6 +51,6 @@ public interface CompanyMemberService {
 
 	int checkMember(CompanyMember m);
 
-	
+	 
 
 }

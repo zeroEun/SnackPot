@@ -118,7 +118,7 @@ public class CompanyMemberDao {
 		parameters.put("comCode", comCode);
 		
 		return sqlSession.update("companyMemberMapper.updateNewAdmin", parameters);
-	}
+	} 
 
 	public String selectSnackSubSta(SqlSessionTemplate sqlSession, String memId) {
 		

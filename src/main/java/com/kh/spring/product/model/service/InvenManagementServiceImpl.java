@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.arrival.model.vo.Arrival;
 import com.kh.spring.product.model.dao.InvenManagementDao;
+import com.kh.spring.product.model.vo.Chart;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
 import com.kh.spring.product.model.vo.Snack;
@@ -139,6 +140,18 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 	public ProductAttachment invenDetailAttach(int snackNo) {
 		// TODO Auto-generated method stub
 		return invenManagementDao.invenDetailAttach(sqlSession, snackNo);
+	}
+
+	@Override
+	public ArrayList<Chart> snackChart() {
+		// TODO Auto-generated method stub
+		return invenManagementDao.snackChart(sqlSession);
+	}
+
+	@Override
+	public int checkAmount(int snackNo) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.checkAmount(sqlSession, snackNo);
 	}
 
 

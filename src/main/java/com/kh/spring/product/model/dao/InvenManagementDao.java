@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring.product.arrival.model.vo.Arrival;
+import com.kh.spring.product.model.vo.Chart;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.ProductAttachment;
 import com.kh.spring.product.model.vo.Snack;
@@ -107,6 +108,16 @@ public class InvenManagementDao {
 	public ProductAttachment invenDetailAttach(SqlSessionTemplate sqlSession, int snackNo) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("invenMapper.invenDetailAttach", snackNo);
+	}
+
+	public ArrayList<Chart> snackChart(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("invenMapper.snackChart");
+	}
+
+	public int checkAmount(SqlSessionTemplate sqlSession, int snackNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.checkAmount", snackNo);
 	}
 	
 	

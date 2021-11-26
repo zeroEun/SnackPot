@@ -621,7 +621,7 @@ public class SnackpotEmpController {
 		String rc = "";
 		String pt = "";
 		String df = "";
-		
+		 
 		//스낵
 		//여러 개일 때
 		if(sSub.getSnackCategory().contains(",")) {

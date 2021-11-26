@@ -97,7 +97,7 @@
 <label class="bold">결제일</label>&emsp;&emsp;<label id="l5">매월 ${setSDate }일</label>
 </c:when>
 </c:choose>
-
+ 
 </div>
 
 <div id="birthDiv" style="display: none;">

@@ -64,7 +64,7 @@
                 </form>
             </div>
         </div>
-</body>
+</body> 
 <script>
 function login(){
 	var sempNum = $("input[name='sempNum']");

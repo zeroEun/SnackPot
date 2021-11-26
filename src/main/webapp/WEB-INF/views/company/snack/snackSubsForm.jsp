@@ -6,39 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-<style>
-    .content{
-        margin: auto;
-        margin-top: 30px;
-        margin-bottom: 50px;
-    }
-
-    #subsEnroll  label{
-        min-width: 100px;
-    }
-
-    #category-menu{
-    	
-        padding: 0px;
-    }
-
-    .category-sub{
-        margin-bottom: 0.8rem;
-    }
-    
-    #delivery p, #settlement p, #snack-budget p{
-    	width: 50px;
-    	min-width: 50px;
-    	margin: auto;
-    }
-    
-    #ratio p{
-    	margin: auto;
-    }
-    
-    
-</style>
+<!-- css style -->
+<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 
 </head>
 <body>
@@ -58,7 +27,7 @@
         <div class="container-fluid">
             <div class="row">
 
-                <div class="content  col-10">
+                <div class="com-content  col-10">
                     <h4>간식 구독 신청</h4>
                     <hr>
 
@@ -209,9 +178,12 @@
             
                         </div>
                         
+                        <hr>
+                        <div class="col-md-12">
+                            <p id="ratioInfo">※ 구독 신청일 기준 다음 달부터 간식 발송이 시작됩니다. 단, 배송 예정일이 8일 이전 일 경우 2달 뒤부터 발송이 시작됩니다.</p>
+                        </div>
 
-                        <button type="submit" class="btn btn-warning mr-2 float-right"  id="subsBtn">구독 신청하기</button>
-
+                        <button type="submit" class="btn btn-warning yellowBtn float-right"  id="subsBtn">구독 신청하기</button>
 
                     </form>
 

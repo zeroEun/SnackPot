@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,33 +17,8 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         
-<style>
-
-        /*본문 부분*/
-        .content{
-            height: 100vh;
-            padding: 50px 0px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-y: auto;
-        }
-
-        .company{
-            background-color: seashell;
-            margin: 15px 0px;
-            padding: 15px;
-        }
-
-		.btn-primary{
-            float: right;
-            margin: 10px 5px;
-        }
-        .image{
-			width: 50px;
-			height: 50px;
-		}
-
-</style>
+  		<!-- css style -->
+		<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 </head>
 <body>
 
@@ -61,22 +37,23 @@
 
                     <div class="company">
                        
-                        <div class="company-name">${orders.comName}</div>
+                        <div class="com-name">${orders.comName}</div>
 
-						<span class="">주문 번호: ${orders.orderNo}</span>
-                        <span class="">예산: ${orders.budget} </span>
-                        <span class="">총 금액: ${orders.totalPrice}</span>
+						<span>주문 번호: ${orders.orderNo}</span>
                         <br>
-                        <span class="">주문일: ${orders.orderDate}</span>
-                        <span class="">발송 예정일: ${orders.deliveryDate}</span>
-                        <span class="">발송일: ${orders.releaseDate}</span>
+                        <span>주문일: ${orders.orderDate}</span>
+                        <span>발송 예정일: ${orders.deliveryDate}</span>
+                        <span>발송일: ${orders.releaseDate}</span>
+                        <br>
+                        <span>예산: <fmt:formatNumber value="${orders.budget}" groupingUsed="true"/>원 </span>
+                        <span>총 금액: <fmt:formatNumber value="${orders.totalPrice}" groupingUsed="true"/>원</span>
 
                     </div>
-                    
-                    <button type="button" class="btn btn-primary" id="releaseBtn">간식 출고</button>
-                    <button type="button" class="btn btn-primary" id="orderCancelBtn">주문 취소</button>
-                    
                     <hr>
+                    <div>
+	                    <button type="button" class="btn commBtn" id="releaseBtn">간식 출고</button>
+	                    <button type="button" class="btn commBtn" id="orderCancelBtn">주문 취소</button>
+                    </div>
 					
                     <table class="table table-bordered ">
                         <thead class="thead-light">
@@ -99,17 +76,17 @@
 	                                <td>${d.subCategoryName}</td>
 	                                <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${d.imageName}"></td>
 	                                <td>${d.snackName}</td>
-	                                <td>${d.releasePrice}</td>
+	                                <td><fmt:formatNumber value="${d.releasePrice}" groupingUsed="true"/></td>
 	                                <td>${d.amount}</td>
-	                                <td>${d.stock}</td>
-	                                <td>${d.releasePrice * d.amount}</td>
+	                                <td><fmt:formatNumber value="${d.stock}" groupingUsed="true"/></td>
+	                                <td><fmt:formatNumber value="${d.releasePrice * d.amount}" groupingUsed="true"/></td>
                            		</tr>
                         	</c:forEach>
                         </tbody>
 
                     </table>
 
-                    <button type="button" class="btn btn-primary" onclick="location.href='hoOrderList.sn'">목록으로</button>
+                    <button type="button" class="btn commBtn" onclick="location.href='hoOrderList.sn'">목록으로</button>
                     
                     <form action="" method="post" id="submitForm">
 						<input type="hidden" name="orderNo" value="${orders.orderNo}">
@@ -195,7 +172,7 @@ $(function(){
 					}
 					
 				},error:function(){
-					console.log("댓글 작성 ajax 통신 실패");
+					console.log("ajax 통신 실패");
 				}
 			});
 			

@@ -1,68 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-        
-<style>
-
-        /*본문 부분*/
-        .content{
-            height: 100vh;
-            padding: 50px 0px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-y: auto;
-        }
-
-        .company-name{
-            background: rgb(245, 208, 66);
-            padding: 10px 15px;
-            border-radius: 0.25rem;
-            text-align: center;
-        }
-
-        .btn-primary{
-            float: right;
-            margin-left: 5px;
-        }
-
-        .search-list{
-            max-height: 300px;
-            padding: 20px;
-            background: seashell;
-            overflow-y: auto;
-            
-        }
-
-        .search-sub{
-            display: inline-flex;
-            margin-bottom: 10px;
-            padding: 0px;
-        }
-
-        .search-table{
-            background: white;
-            margin: auto;
-            
-        }
-
-        .search-select{
-            margin-right: 10px;
-        }
-
-        .amount, .searchAmount{
-            width: 50px;
-        }
-        .image{
-			width: 50px;
-			height: 50px;
-		}
-
-</style>
+<!-- css style -->
+		<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
@@ -86,14 +32,16 @@
 					
 					<c:if test="${ !empty o }">
 					
+					
                     <span class="company-name">${o.comName}</span>
                     <br><br>
-                    <span class="">예산 : ${o.budget}원</span>&nbsp;&nbsp;&nbsp;
-                    <span class="" id="totalPrice"></span>&nbsp;&nbsp;&nbsp;
-                 	<span class="">주문 마감일 : ${o.orderDeadline}</span>&nbsp;&nbsp;&nbsp;
-					<span class="">배송 예정일 : ${o.deliveryDate}</span>
+                    <span>주문 마감일 : ${o.orderDeadline}</span>&nbsp;&nbsp;&nbsp;
+					<span>배송 예정일 : ${o.deliveryDate}</span><br>
+                    <span>예산 : <fmt:formatNumber value="${o.budget}" groupingUsed="true"/>원</span>&nbsp;&nbsp;&nbsp;
+                    <span id="totalPrice"></span>
+                 	
 					
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wishModal" id="wishBtn">위시리스트 조회</button>
+                    <button type="button" class="btn commBtn" data-toggle="modal" data-target="#wishModal" id="wishBtn">위시리스트 조회</button>
                     
 					<!-- The Modal -->
 					<div class="modal fade" id="wishModal">
@@ -198,7 +146,7 @@
 	                                    <td class="searchPrice" id="searchPrice${list.snackNo}">${list.releasePrice}</td>
 	                                    <td><input type="number" class="searchAmount" id="${list.snackNo}" min=1 max="${list.stock}" required></td>
 	                                    <td class="searchTotalPrice" id="searchTotalPrice${list.snackNo}">${list.releasePrice * list.amount}</td>
-	                                    <td><button type="button" class="addBtn" value="${list.snackNo}">추가</button></td>
+	                                    <td><button type="button" class="btn addBtn" value="${list.snackNo}">추가</button></td>
                                 	</tr>
                             	</c:forEach>
                             	
@@ -266,8 +214,8 @@
 		            
                     <!-- list end-->
 
-                    <button type="button" class="btn btn-primary" id="orderBtn">주문 하기</button>
-                    <button type="button" class="btn btn-primary" id="deleteBtn" >선택 항목 삭제</button>
+                    <button type="button" class="btn commBtn" id="orderBtn">주문 하기</button>
+                    <button type="button" class="btn commBtn" id="deleteBtn" >선택 항목 삭제</button>
 					</c:if>
 					
                 </div>
@@ -281,6 +229,10 @@
 	$(function(){
 		
 		selectTotalPrice();
+		
+		function addCommas(c){
+			return c.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 		
 		<%-- select option 값 선택시 이벤트 : on change  --%>
 		$('#category').on('change', function(){
@@ -305,7 +257,7 @@
 					})
 					
 				},error:function(){
-					console.log("댓글 작성 ajax 통신 실패");
+					console.log("ajax 통신 실패");
 				}
 				
 			});
@@ -371,7 +323,7 @@
 							alert("추가되었습니다.");
 						}
 					},error:function(){
-						console.log("댓글 작성 ajax 통신 실패");
+						console.log("ajax 통신 실패");
 					}
 				});
 			}
@@ -430,7 +382,7 @@
 						}
 						
 					},error:function(){
-						console.log("댓글 작성 ajax 통신 실패");
+						console.log("ajax 통신 실패");
 					}
 				});
 				
@@ -470,7 +422,7 @@
 					
 					
 				},error:function(){
-					console.log("댓글 작성 ajax 통신 실패");
+					console.log("ajax 통신 실패");
 				}
 				
 			});
@@ -488,10 +440,10 @@
 			data:{orderNo:orderNo},
 			success: function(totalPrice){
 				
-				$('#totalPrice').text('총 금액 : ' + totalPrice + '원');
+				$('#totalPrice').text('총 금액 : ' + addCommas(totalPrice) + '원');
 				
 			},error:function(){
-				console.log("댓글 작성 ajax 통신 실패");
+				console.log("ajax 통신 실패");
 			}
 		});
 			

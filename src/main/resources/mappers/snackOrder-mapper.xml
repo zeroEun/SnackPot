@@ -65,16 +65,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectComOrderedList" parameterType="String" resultMap="ordersResultSet">
-		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS,
-		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
-           			WHEN A.ORDER_STATUS = 'R' THEN '발송 완료'
-            		WHEN A.ORDER_STATUS = 'C' THEN '주문 취소'
-       		   END AS STATUS
-		FROM ORDERS A
-		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
-		WHERE A.COM_CODE = #{comCode}
-		AND ORDER_STATUS != 'N'
-		ORDER BY ORDER_DATE DESC
+			SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS,
+			       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
+	           			WHEN A.ORDER_STATUS = 'R' THEN '발송 완료'
+	            		WHEN A.ORDER_STATUS = 'C' THEN '주문 취소'
+	       		   END AS STATUS
+			FROM ORDERS A
+			LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+			WHERE A.COM_CODE = #{comCode}
+			AND ORDER_STATUS != 'N'
+			ORDER BY ORDER_DATE DESC
 	</select>
 	
 	<select id="selectHoOrderedList" parameterType="java.util.HashMap" resultMap="ordersResultSet">
@@ -199,7 +199,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE ORDER_NO = #{orderNo}
 	</insert>
 	
-	<select id="selectComSearchOrder" parameterType="com.kh.spring.snack.snackList.model.vo.SearchList" resultMap="ordersResultSet">
+	<select id="selectComSearchOrder" parameterType="SearchList" resultMap="ordersResultSet">
 		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS,
 		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
            			WHEN A.ORDER_STATUS = 'R' THEN '발송 완료'
@@ -227,7 +227,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
 	
-	<select id="selectHoSearchOrder" parameterType="com.kh.spring.snack.snackList.model.vo.SearchList" resultMap="ordersResultSet">
+	<select id="selectListCountForComSearch" parameterType="SearchList" resultType="_int">
+		SELECT COUNT(*)
+		FROM ORDERS A
+		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		WHERE A.COM_CODE = #{comCode}
+		AND ORDER_STATUS != 'N'
+		<if test="startDate != null">
+		 	<![CDATA[
+		 		AND A.ORDER_DATE >= #{startDate}
+		 	]]>
+		</if>
+		<if test="endDate != null">
+		 	<![CDATA[
+		 		AND A.ORDER_DATE < #{endDate}+1
+		 	]]>
+		 </if>
+		 <if test="category != 2">
+			ORDER BY A.ORDER_DATE DESC
+		</if>
+		<if test="category == 2">
+			ORDER BY A.TOTAL_PRICE DESC
+		</if>
+	</select>
+	
+	
+	<select id="selectHoSearchOrder" parameterType="SearchList" resultMap="ordersResultSet">
 		SELECT A.ORDER_NO, A.COM_CODE, B.COM_NAME, A.ORDER_DEADLINE, A.ORDER_DATE, A.DELIVERY_DATE, A.BUDGET, A.TOTAL_PRICE, A.ORDER_STATUS,
 		       CASE WHEN A.ORDER_STATUS = 'Y' THEN '주문 완료'
            			WHEN A.ORDER_STATUS = 'R' THEN '발송 완료'
@@ -259,6 +284,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY A.ORDER_DATE DESC, B.COM_NAME
 	</select>
 	
+	<select id="selectListCountForHoSearch" parameterType="SearchList" resultType="_int">
+		SELECT COUNT(*)
+		FROM ORDERS A
+		LEFT JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		WHERE A.COM_CODE IN(
+			<foreach collection="comArr" item="item" separator=",">
+				#{item}
+			</foreach>)
+		AND ORDER_STATUS != 'N'
+		<if test="startDate != null">
+		 	<![CDATA[
+		 		AND A.ORDER_DATE >= #{startDate}
+		 	]]>
+		</if>
+		<if test="endDate != null">
+		 	<![CDATA[
+		 		AND A.ORDER_DATE < #{endDate}+1
+		 	]]>
+		 </if>
+		 <if test="category == 1">
+	 		AND A.ORDER_NO = #{search}
+		 </if>
+		 <if test="category == 2">
+		 	AND B.COM_NAME LIKE '%'|| #{search} ||'%'
+		 </if>
+	</select>	
+	
 	<delete id="cancelOrders" parameterType="String">
 		DELETE FROM ORDERS
 		WHERE ORDER_NO = (SELECT ORDER_NO
@@ -266,5 +318,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		                  WHERE COM_CODE = #{comCode}
 		                  AND ORDER_STATUS = 'N')
 	</delete>
+	
+	<select id="selectListCountForString" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM ORDERS
+		WHERE COM_CODE = #{comCode}
+		AND ORDER_STATUS != 'N'
+	</select>
+	
+	<select id="selectListCountForMap" parameterType="java.util.HashMap" resultType="_int">
+		SELECT COUNT(*)
+		FROM ORDERS
+		WHERE COM_CODE IN(
+			<foreach collection="comArr" item="item" separator=",">
+				#{item}
+			</foreach>)
+		AND ORDER_STATUS != 'N'
+	</select>
 
 </mapper>

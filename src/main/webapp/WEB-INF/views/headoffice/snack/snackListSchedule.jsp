@@ -7,34 +7,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+<script   src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
-        <!-- Latest compiled JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        
-<style>
+<!-- css style -->
+<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 
-        /*본문 부분*/
-        .content{
-            height: 100vh;
-            padding: 50px 0px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-y: auto;
-        }
-
-        .month{
-            background: rgb(245, 208, 66);
-            padding: 10px 15px;
-            border-radius: 0.25rem;
-            
-        }
-
-</style>
 </head>
 <body>
 

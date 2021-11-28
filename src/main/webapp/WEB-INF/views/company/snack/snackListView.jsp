@@ -12,7 +12,13 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
-
+	
+	<c:if test="${ !empty m }">
+		<script>
+			alert("${m}");
+		</script>
+		<c:remove var="m" scope="session" />
+	</c:if>	
 
     <section class="snacklist-view">
     
@@ -143,9 +149,12 @@
 	                                    <td>${list.subCategoryName}</td>
 	                                    <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${list.imageName}"></td>
 	                                    <td>${list.snackName}</td>
-	                                    <td class="searchPrice" id="searchPrice${list.snackNo}">${list.releasePrice}</td>
+	                                    <td class="searchPrice">
+		                                    <input type="hidden" id="searchPrice${list.snackNo}" value="${list.releasePrice}">
+		                                    <fmt:formatNumber value="${list.releasePrice}" groupingUsed="true"/>
+	                                    </td>
 	                                    <td><input type="number" class="searchAmount" id="${list.snackNo}" min=1 max="${list.stock}" required></td>
-	                                    <td class="searchTotalPrice" id="searchTotalPrice${list.snackNo}">${list.releasePrice * list.amount}</td>
+	                                    <td class="searchTotalPrice" id="searchTotalPrice${list.snackNo}"></td>
 	                                    <td><button type="button" class="btn addBtn" value="${list.snackNo}">추가</button></td>
                                 	</tr>
                             	</c:forEach>
@@ -192,9 +201,9 @@
 		                                <td>${dList.subCategoryName}</td>
 		                                <td><img class="image" src="${ pageContext.servletContext.contextPath }/resources/images/${dList.imageName}"></td>
 		                                <td>${dList.snackName}</td>
-		                                <td>${dList.releasePrice}</td>
+		                                <td><fmt:formatNumber value="${dList.releasePrice}" groupingUsed="true"/></td>
 		                                <td><input type="number" class="amount" id="${dList.orderDNo}" value="${dList.amount}" min=1 max="${dList.stock}"></td>
-		                                <td>${dList.releasePrice * dList.amount}</td>
+		                                <td><fmt:formatNumber value="${dList.releasePrice * dList.amount}" groupingUsed="true"/></td>
 	                                </tr>
 	                                
 	                            </c:forEach>
@@ -229,10 +238,6 @@
 	$(function(){
 		
 		selectTotalPrice();
-		
-		function addCommas(c){
-			return c.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
 		
 		<%-- select option 값 선택시 이벤트 : on change  --%>
 		$('#category').on('change', function(){
@@ -278,7 +283,7 @@
 			var amount = $(this).val();
 			var snackNo = $(this).attr('id');
 			var stock = Number($('#searchStock').val());
-			var price = $('#searchPrice' + snackNo).text();
+			var price = $('#searchPrice' + snackNo).val();
 			
 			if(amount < 1){
 				alert("최소 수량은 1입니다.");
@@ -290,7 +295,7 @@
 				$(this).val(stock);
 			}
 			
-			$('#searchTotalPrice' + snackNo).text($(this).val()*price);
+			$('#searchTotalPrice' + snackNo).text(addCommas($(this).val()*price));
 			
 		})
 		
@@ -412,9 +417,9 @@
 						var subCategory = $("<td>").text(obj.subCategoryName);
 						var image = $("<td>").append($("<img>").attr('src', "${ pageContext.servletContext.contextPath }/resources/images/"+obj.changeName ).attr('class', "image"))
 						var name = $("<td>").text(obj.snackName);
-						var price = $("<td>").text(obj.releasePrice);
+						var price = $("<td>").text(addCommas(obj.releasePrice));
 						var count = $("<td>").text(obj.count);
-						var totalPrice = $("<td>").text(obj.releasePrice*obj.count);
+						var totalPrice = $("<td>").text(addCommas(obj.releasePrice*obj.count));
 						var tr = $("<tr>").append(category, subCategory, image, name, price, count, totalPrice);
 						
 						$('#wish-table tbody').append(tr);
@@ -431,6 +436,10 @@
 	
 	})
 	
+	function addCommas(c){
+			return c.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
 	function selectTotalPrice(){
 		var orderNo =  ${o.orderNo};
 		
@@ -440,7 +449,9 @@
 			data:{orderNo:orderNo},
 			success: function(totalPrice){
 				
-				$('#totalPrice').text('총 금액 : ' + addCommas(totalPrice) + '원');
+				var totalPrice = addCommas(totalPrice);
+				
+				$('#totalPrice').text('총 금액 : ' + totalPrice + '원');
 				
 			},error:function(){
 				console.log("ajax 통신 실패");

@@ -3,9 +3,11 @@ package com.kh.spring.snack.snackList.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring.common.PageInfo;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
@@ -77,10 +79,6 @@ public class HoSnackListDao {
 	public ArrayList<WishListDtail> selectWishList(SqlSessionTemplate sqlSession, ComListInfo info) {
 		return (ArrayList)sqlSession.selectList("snackListMapper.selectWishList", info);
 	}
-	
-	public int selectSnackCount(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("snackListMapper.selectSnackCount");
-	}
 
 	public int insertOrder(SqlSessionTemplate sqlSession, ComListInfo info) {
 		return sqlSession.insert("snackListMapper.insertOrder", info);
@@ -94,8 +92,12 @@ public class HoSnackListDao {
 		return sqlSession.update("snackListMapper.updateTransStatus", info);
 	}
 
-	public ArrayList<SnackList> selectSendingList(SqlSessionTemplate sqlSession, HashMap map) {
-		return (ArrayList)sqlSession.selectList("snackListMapper.selectSendingList", map);
+	public ArrayList<SnackList> selectSendingList(SqlSessionTemplate sqlSession, HashMap map, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("snackListMapper.selectSendingList", map, rowBounds);
 	}
 
 	public SnackList selectSnackList(SqlSessionTemplate sqlSession, int snackListNo) {
@@ -106,8 +108,12 @@ public class HoSnackListDao {
 		return sqlSession.selectOne("snackListMapper.selectOrderNo");
 	}
 
-	public ArrayList<SnackList> searchSendingList(SqlSessionTemplate sqlSession, SearchList searchList) {
-		return (ArrayList)sqlSession.selectList("snackListMapper.searchSendingList", searchList);
+	public ArrayList<SnackList> searchSendingList(SqlSessionTemplate sqlSession, SearchList searchList, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("snackListMapper.searchSendingList", searchList, rowBounds);
 	}
 
 	public ArrayList<SnackDList> selectWish(SqlSessionTemplate sqlSession, ComListInfo info) {
@@ -116,6 +122,14 @@ public class HoSnackListDao {
 
 	public int cancelSnackList(SqlSessionTemplate sqlSession, String comCode) {
 		return sqlSession.delete("snackListMapper.cancelSnackList", comCode);
+	}
+
+	public int selectListCount(SqlSessionTemplate sqlSession, HashMap map) {
+		return sqlSession.selectOne("snackListMapper.selectListCount", map);
+	}
+
+	public int selectSearchListCount(SqlSessionTemplate sqlSession, SearchList searchList) {
+		return sqlSession.selectOne("snackListMapper.selectSearchListCount", searchList);
 	}
 
 

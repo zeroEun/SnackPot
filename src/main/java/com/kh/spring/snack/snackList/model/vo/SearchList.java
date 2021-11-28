@@ -22,6 +22,6 @@ public class SearchList {
 	private Date startDate;
 	private Date endDate;
 	private String comCode;
-	private HashMap<String, String> comArr;
+	private HashMap comArr;
 	
 }

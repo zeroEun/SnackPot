@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.kh.spring.common.PageInfo;
+import com.kh.spring.common.Pagination;
 import com.kh.spring.companyMember.model.vo.CompanyMember;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.WishListDtail;
@@ -126,37 +129,46 @@ public class SnackOrderController {
 	
 	
 	@RequestMapping("snackOrder.sn")
-	public String updateSnackOrder(int orderNo, SessionStatus session) {
+	public String updateSnackOrder(int orderNo, SessionStatus sessionStatus, HttpSession session) {
 		
 		snackOrderService.updateSnackOrder(orderNo);
-		session.setComplete();
+		sessionStatus.setComplete();
 		
+		session.setAttribute("m", "주문이 완료되었습니다. 주문 내역을 확인해 주세요.");
 		return "redirect:comSnackList.sn";
 	}
 	
 	@RequestMapping("comOrderList.sn")
-	public String selectComOrderedList(HttpSession session, Model model) {
+	public String selectComOrderedList(@RequestParam(value="currentPage", required = false , defaultValue = "1") int currentPage, HttpSession session, Model model) {
 		
 		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
 		
-		ArrayList<Orders> orderList = snackOrderService.selectComOrderedList(comCode);
+		int listCount = snackOrderService.selectListCountForString(comCode);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Orders> orderList = snackOrderService.selectComOrderedList(comCode, pi);
 		
 		model.addAttribute("orderList", orderList);
+		model.addAttribute("pi", pi);
 		
 		return "company/snack/comOrderList";
 	}
 	
 	@RequestMapping("comSearchOrder.sn")
-	public String selectComSearchOrder(SearchList search, HttpSession session, Model model) {
+	public String selectComSearchOrder(@RequestParam(value="currentPage", required = false , defaultValue = "1") int currentPage, SearchList search, HttpSession session, Model model) {
 		
 		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
 		search.setComCode(comCode);
 		
-		ArrayList<Orders> orderList = snackOrderService.selectComSearchOrder(search);
+		int listCount = snackOrderService.selectListCountForComSearch(search);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Orders> orderList = snackOrderService.selectComSearchOrder(search, pi);
 		
 		model.addAttribute("orderList", orderList);
+		model.addAttribute("pi", pi);
 		
-		return "company/snack/comOrderList";
+		return "company/snack/comSearchOrderList";
 	}
 	
 	
@@ -174,24 +186,27 @@ public class SnackOrderController {
 	
 	
 	@RequestMapping("hoOrderList.sn")
-	public String selectHoOrderedList(HttpSession session, Model model) {
+	public String selectHoOrderedList(@RequestParam(value="currentPage", required = false , defaultValue = "1") int currentPage, HttpSession session, Model model) {
 		
-		//String comCode = "k2111151557,k2111151730";
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
 		HashMap map = new HashMap();
 		String[] comArr = comCode.split("/");
 		map.put("comArr", comArr);
 		
-		ArrayList<Orders> orderList = snackOrderService.selectHoOrderedList(map);
+		int listCount = snackOrderService.selectListCountForMap(map);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Orders> orderList = snackOrderService.selectHoOrderedList(map, pi);
 		
 		model.addAttribute("orderList", orderList);
+		model.addAttribute("pi", pi);
 		
 		return "headoffice/snack/hoOrderList";
 	}
 	
 	@RequestMapping("hoSearchOrder.sn")
-	public String selectHoSearchOrder(SearchList search, HttpSession session, Model model) {
+	public String selectHoSearchOrder(@RequestParam(value="currentPage", required = false , defaultValue = "1") int currentPage, SearchList search, HttpSession session, Model model) {
 		
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
@@ -203,11 +218,15 @@ public class SnackOrderController {
 		}
 		search.setComArr(comArr);
 		
-		ArrayList<Orders> orderList = snackOrderService.selectHoSearchOrder(search);
+		int listCount = snackOrderService.selectListCountForHoSearch(search);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Orders> orderList = snackOrderService.selectHoSearchOrder(search, pi);
 		
 		model.addAttribute("orderList", orderList);
+		model.addAttribute("pi", pi);
 		
-		return "headoffice/snack/hoOrderList";
+		return "headoffice/snack/hoSearchOrderList";
 	}
 	
 	@RequestMapping("hoOrderDetail.sn")
@@ -223,7 +242,7 @@ public class SnackOrderController {
 	}
 	
 	@RequestMapping("orderRelease.sn")
-	public String orderRelease(int orderNo, Model model) {
+	public String orderRelease(int orderNo, Model model, HttpSession session) {
 		
 		snackOrderService.orderRelease(orderNo);
 		
@@ -233,6 +252,7 @@ public class SnackOrderController {
 		model.addAttribute("orders", orders);
 		model.addAttribute("dList", dList);
 		
+		session.setAttribute("m", "간식 출고가 완료되었습니다.");
 		return "headoffice/snack/hoOrderDetail";
 	}
 	
@@ -265,12 +285,6 @@ public class SnackOrderController {
 		snackOrderService.orderCancel(order);
 		
 	}
-	
-	public void deleteOrder(SessionStatus session) {
-		
-		session.setComplete();
-	}
-	
 	
 	
 }

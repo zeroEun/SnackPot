@@ -217,13 +217,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 ORDER BY B.CATEGORY_NO, B.DETAIL_NO, B.SNACK_NAME
 	</select>
 	
-	<select id="selectSnackCount" resultType="_int">
-		SELECT COUNT(SNACK_NO)
-		FROM SNACK
-	</select>
-	
 	<select id="selectOrderNo" resultType="_int">
-		SELECT ORDER_NO_SEQ.NEXTVAL FROM DUAL
+		SELECT TO_CHAR(SYSDATE, 'YYMM') || ORDER_NO_SEQ.NEXTVAL FROM DUAL
 	</select>
 	
 	<insert id="insertOrder" parameterType="ComListInfo">
@@ -264,6 +259,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 												FROM SNACK_LIST A
 												JOIN SNACK_D_LIST B ON (A.SNACK_LIST_NO = B.SNACK_LIST_NO)
 										        GROUP BY A.SNACK_LIST_NO)
+		ORDER BY A.TRANS_DATE DESC, B.COM_NAME							   
 	</select>
 
 	<select id="selectSnackList" parameterType="_int" resultMap="snackListResultSet">
@@ -274,7 +270,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE SNACK_LIST_NO = #{snackListNo}
 	</select>
 	
-	<select id="searchSendingList" parameterType="com.kh.spring.snack.snackList.model.vo.SearchList" resultMap="snackListResultSet">
+	<select id="searchSendingList" parameterType="SearchList" resultMap="snackListResultSet">
 	 	SELECT *
 	 	FROM
 	 	(
@@ -316,6 +312,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 												FROM SNACK_LIST A
 												JOIN SNACK_D_LIST B ON (A.SNACK_LIST_NO = B.SNACK_LIST_NO)
 										        GROUP BY A.SNACK_LIST_NO)
+		ORDER BY TRANS_DATE DESC, COM_NAME								        
+	</select>
+	
+	<select id="selectSearchListCount" parameterType="SearchList" resultType="_int">
+		SELECT COUNT(*)
+		FROM SNACK_LIST A
+		JOIN COMPANY B ON (A.COM_CODE = B.COM_CODE)
+		WHERE A.COM_CODE IN(
+		<foreach collection="comArr" item="item" separator=",">
+			#{item}
+		</foreach>
+		)
+		AND A.TRANS_STATUS = 'Y'
+		<if test="category == 1">
+			AND A.SNACK_LIST_NO = #{search}
+		</if>
+		<if test="category == 2">
+			AND B.COM_NAME LIKE '%'|| #{search} ||'%'
+		</if>
+		<if test="category == 3">
+			AND A.SNACK_LIST_NO IN (SELECT A.SNACK_LIST_NO
+									FROM SNACK_D_LIST A
+									JOIN SNACK B ON (A.SNACK_NO = B.SNACK_NO)
+									WHERE B.SNACK_NAME LIKE '%'|| #{search} ||'%'
+									)
+		</if>
+		<if test="startDate != null">
+			<![CDATA[
+				AND A.TRANS_DATE >= #{startDate}
+			]]>
+		</if>
+		<if test="endDate != null">
+			<![CDATA[
+				AND A.TRANS_DATE < #{endDate}+1
+			]]>
+		</if>
+		ORDER BY TRANS_DATE DESC, COM_NAME
 	</select>
 	
 	<select id="selectWish" parameterType="ComListInfo" resultMap="WishDetailResultSet">
@@ -340,5 +373,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							   WHERE COM_CODE = #{comCode}
 							   AND TRANS_STATUS = 'N')
 	</delete>
+	
+	<select id="selectListCount" parameterType="java.util.HashMap" resultType="_int">
+		SELECT COUNT(*)
+		FROM SNACK_LIST
+		WHERE COM_CODE IN(
+			<foreach collection="comArr" item="item" separator=",">
+				#{item}
+			</foreach>)
+		AND TRANS_STATUS = 'Y'
+	</select>
 
 </mapper>

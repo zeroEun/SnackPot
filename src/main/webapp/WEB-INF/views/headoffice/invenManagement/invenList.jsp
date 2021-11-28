@@ -25,14 +25,18 @@
 
 <style type="text/css">
   
- /* .content{
+ .content{
             height: 100vh;
             padding: 50px 0px;
             margin-left: auto;
             margin-right: auto;
             overflow-y: auto;
-        }*/
-
+        }
+        
+        
+ 
+ 
+    #pagingArea{width:fit-content;margin:auto;}
 
 </style>
 </head>
@@ -43,13 +47,10 @@
 
 	<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
-	<section class="order-list">
 
-		<div class="container-fluid">
-			<div class="row flex-nowrap">
 
 				<div class="content col-8">
-					<h5>재고조회</h5>
+					<h2>재고조회</h2>
 					<hr>
 
 					<div class="search form-inline">
@@ -95,7 +96,7 @@
 						</tbody>
 
 					</table>
-	<div id="pagingArea">
+			<div id="pagingArea" class="content col-8" align="center">
 					<ul class="pagination">
 						<c:choose>
 							<c:when test="${ pi.currentPage ne 1 }">
@@ -137,7 +138,7 @@
 			</div>
 		</div>
 
-	</section>
+
 
 	<script>
 		$(function() {
@@ -181,6 +182,11 @@
 					console.log(search);
 					$( '#search' ).attr( 'onKeyup', "this.value=this.value.replace(/[^-0-9]/g,'');" );
 
+				}else if (category == 1) {
+					var search = $("#search").val();
+					console.log(search);
+					$( '#search' ).removeAttr( 'onKeyup' );
+
 				}
 		
 				
@@ -203,8 +209,7 @@
 		
 	</script>
 	
-	</div>
-	</div>
+
 
 </body>
 </html>

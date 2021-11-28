@@ -119,6 +119,17 @@ public class InvenManagementDao {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("invenMapper.checkAmount", snackNo);
 	}
+
+	public int checkSnackNo(SqlSessionTemplate sqlSession, int snackNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.checkSnackNo", snackNo);
+	}
+
+	public String getsnackName(SqlSessionTemplate sqlSession, int snackNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("invenMapper.getsnackName", snackNo);
+	}
+
 	
 	
 	

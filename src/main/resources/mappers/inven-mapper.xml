@@ -55,12 +55,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="snack_no" property="snackNo" />
 
 	</resultMap>
-	
+
 	<resultMap type="Chart" id="ChartResultMap">
-	
-	<id column="SNACK_NAME" property="snackName"/>
-	<result column="AMOUNT" property="amount"/>
-	
+
+		<id column="SNACK_NAME" property="snackName" />
+		<result column="AMOUNT" property="amount" />
+
 	</resultMap>
 
 
@@ -371,7 +371,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SUM(A.AMOUNT) AS AMOUNT
 		FROM RELEASE A
 		JOIN SNACK B
-		ON A.SNACK_NO = B.SNACK_NO
+		ON
+		A.SNACK_NO = B.SNACK_NO
 		GROUP BY B.SNACK_NAME
 		ORDER BY AMOUNT DESC)
 		WHERE ROWNUM BETWEEN 1 AND 30
@@ -379,13 +380,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 
-	<select id="checkAmount">
+	<select id="checkAmount" resultType="_int">
+
+		SELECT
+		STOCK
+		FROM SNACK
+		WHERE SNACK_NO = ${snackNo}
+
+
+	</select>
+
+
+	<select id="checkSnackNo" resultType="_int">
+
+		SELECT COUNT(*)
+		FROM
+		SNACK
+		WHERE SNACK_NO = ${snackNo}
+
+	</select>
 	
-	SELECT
-	STOCK
-	FROM SNACK
+	<select id="getsnackName" resultType="String">
+	
+	SELECT SNACK_NAME
+	FROM SNACK 
 	WHERE SNACK_NO = ${snackNo}
-	
 	
 	</select>
 </mapper>

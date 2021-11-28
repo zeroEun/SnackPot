@@ -31,6 +31,13 @@
 	margin-right: auto;
 	overflow-y: auto;
 }
+
+.image{
+
+width: "200px";
+height: "200px";
+
+}
 </style>
 </head>
 <body>
@@ -40,8 +47,8 @@
 
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
-				<div class="content col-12">
-					<h5>재고조회</h5>
+				<div class="content col-8">
+					<h2>재고조회</h2>
 					<hr>
 
 
@@ -49,9 +56,10 @@
 
 						<div class="row">
 
-							<div class="productPicture col-sm-4">
+							<div class="productPicture col-sm-4" class="image">
 								<img
-									src="${ pageContext.servletContext.contextPath }/resources/images/${pa.changeName}">
+									src="${ pageContext.servletContext.contextPath }/resources/images/${pa.changeName}" class="image"
+									width="250px" height="250px">
 							</div>
 
 
@@ -77,13 +85,14 @@
 								<span><label><b>향</b></label>&nbsp;<label>${snack.aroma}</label></span>
 
 							</div>
-							<div class="btn">
+							<!--  <div class="btn">
 
 								<button class="btn btn-primary">수정</button>
 								<button class="btn btn-danger">삭제</button>
 
 
 							</div>
+							-->
 							<!-- <div class="select">
                             <input type="radio" id="1" name="option" value="1"> 
                             <label for="1">입고</label>

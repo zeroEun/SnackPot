@@ -14,6 +14,25 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <style>
+      .content{
+            height: 100vh;
+            padding: 50px 0px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-y: auto;
+        }
+        
+        #submitBtn{
+        
+        float: right;
+        color: #F5D042;
+        background-color: #0A174E;
+        
+        }
+    
+    </style>
 </head>
 <body>
 
@@ -22,7 +41,7 @@
 
 		<jsp:include page="../../common/sidebar.jsp"/>
 		
-	    <div id="formWrap">
+	    <div id="formWrap" class="content col-8">
 
         <h2>간식품목등록</h2>
 
@@ -30,45 +49,45 @@
 
 
 
-            <table border="1px">
+            <table>
                <tr>
-                   <td rowspan="10">사진등록
+                   <td rowspan="10">
                        <br>
-                       <input type="file" name="uploadFile">
+                       <input type="file" name="uploadFile" required="required">
                 </td>
                </tr>
                <tr>
-                   <td>상품명
+                   <td><b>상품명</b>
                     <br>
                     <input type="text" name="snackName" class="inputForm">
                     </td>
                </tr>
                  <tr>
-                   <td>상품코드
+                   <td><b>상품코드</b>
                     <br>
-                    <input type="text" name="snackNo" class="inputForm">
+                    <input type="number" name="snackNo" class="inputForm" id="snackNo">
                    </td>
                </tr>
                <tr>
-                   <td>상품단위
+                   <td><b>상품단위</b>
                     <br>
                     <input type="text" name="unit" class="inputForm">
                    </td>
                </tr>
                <tr>
-                    <td>구입가
+                    <td><b>구입가</b>
                     <br>
                     <input type="text" name="purchasePrice" class="inputForm">
                     </td>     
                </tr>
                <tr>
-                     <td>공급가액
+                     <td><b>공급가액</b>
                         <br>
                         <input type="text" name="releasePrice" class="inputForm">
                      </td>
                </tr>
                <tr>
-                    <td>카테고리<br>
+                    <td><b>카테고리</b><br>
                         <select name="categoryNo">
                             <option value="1">스낵류</option>
                             <option value="2">음료류</option>
@@ -131,7 +150,7 @@
                     
                </tr>
                <tr>
-                    <td>맛
+                    <td><b>맛</b>
                         <br>
                         <input type="radio" id ="1"name="tasteNo" value="1">
                         <label for="1">달콤</label>
@@ -149,7 +168,7 @@
                     </td>
                </tr>
                <tr>
-                <td>향
+                <td><b>향</b>
                     <br>
                         <input type="radio" id ="1"name="aromaNo" value="1">
                         <label for="1">꿀</label>
@@ -184,16 +203,57 @@
                 </tr>
             </table>
 
+			<div>
+
+           <input type="submit" value="등록하기" disabled="disabled" id="submitBtn" class="btn btn-primary">
 
 
-           <input type="submit" value="등록하기">
-
+			</div>
         </form>
 
     </div>
     
     	</div>
 	</div>
+	
+	
+	<script>
+	
+	$('#snackNo').blur(function() {
+		var snackNo = $('#snackNo').val();
+		console.log(snackNo);
+		$.ajax({
+			url : 'enrollSnackNo.im',
+			type : 'post',
+			data: {'snackNo' : $('#snackNo').val()	},
+			success : function (data) {
+				if (data === 1) {
+					console.log("check1");
+					alert("이미 존재하는 상품코드 입니다");
+					$("#submitBtn").attr("disabled", true);
+				} else if(snackNo == ""){
+					console.log("check2");
+					alert("상품 코드를 입력해주세요");
+					$("#submitBtn").attr("disabled", true);				
+					
+				} else{
+					$("#submitBtn").removeAttr( 'disabled' );
+					
+				}
+				
+			},
+			error : function() {
+				console.log("통신실패");
+			}
+			
+			
+		})
+	})
+	
+	
+	
+	
+	</script>
 
 </body>
 </html>

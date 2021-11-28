@@ -72,6 +72,34 @@
 	background-color: rgb(245, 208, 66);
 	color: rgb(10, 23, 78);
 }
+
+  
+ .content{
+            height: 100vh;
+            padding: 50px 0px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-y: auto;
+        }
+        
+             
+ #addBtn{
+ 
+        float: right;
+        color: #F5D042;
+        background-color: #0A174E;
+ }
+ 
+ 
+ .datepicker{
+ 
+ margin: 20px 0px;
+ 
+ }
+        
+       
+        
+        
 </style>
 
 <!-- Latest compiled and minified CSS -->
@@ -97,39 +125,12 @@
 
 			<jsp:include page="../../common/sidebar.jsp" />
 
-			<div id="modal" class="modal-overlay">
-				<div class="modal-window">
-					<div class="title">
-						<h2>출고등록</h2>
-					</div>
-					<div class="close-area">X</div>
-					<form id="releaseEnroll" action="releaseInsert.im" method="post">
-						<div class="content">
-							<p>
-								<label class="inputLabel">제품코드</label> <input type="number"
-									name="snackNo"  id="snackNo">
-							</p>
-							<div id="checkSnackNo"></div>
-							<p>
-								<label class="inputLabel">수량</label> <input type="number"
-									name="amount" id="amount" readonly>
-								
-							</p>
-							<div id="checkAmount"></div>
-							<p>
-								<label class="inputLabel">비고</label> <input type="text"
-									name="remark" maxlength="20" readonly>
-							</p>
-							<br> <br> <input type="submit" value="등록하기" class="btn">
-						</div>
-					</form>
-				</div>
-			</div>
+		
 
-			<div id="arrivalWrap">
+			<div id="releaseWrap" class="content col-8">
 
 
-				<h3>출고목록</h3>
+				<h2>출고목록</h2>
 
 				 <input type="text" id="datepicker" name="datepicker" class="datepicker">
 	
@@ -169,15 +170,7 @@
         });
     </script>
  <br>
-				<form name="search">
-					<select name="searchType">
-						<option value="1">상품코드</option>
-						<option value="2">상품명</option>
-						<option value="3">출고번호</option>
-					</select> <input type="text" name="searchInput"> <input
-						type="submit" name="searchBtn">
-				</form>
-				<br> <br>
+				
 
 
 				<table id="boardList" class="table table-hover" align="center">
@@ -206,7 +199,7 @@
 				})
 				
 				
-		function topList(){
+		function releaseList(){
 			$.ajax({
 				url: 'releaseListAjax.im',
 				data: {'date' : $( "#datepicker" ).datepicker( "getDate" )},
@@ -240,19 +233,19 @@
 		}
 		
 		$(function(){
-			topList();
+			releaseList();
 			<%--setInterval(function(){
 				topList();
 			}, 5000);--%>
 		})
 	</script>
 
-				<div id="pagingArea">
+		<!-- 		<div id="pagingArea">
 					<ul class="pagination">
 						<c:choose>
 							<c:when test="${ pi.currentPage ne 1 }">
 								<li class="page-item"><a class="page-link"
-									href="list.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+									href="releaseListAjax.im?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
@@ -263,7 +256,7 @@
 							<c:choose>
 								<c:when test="${ pi.currentPage ne p }">
 									<li class="page-item"><a class="page-link"
-										href="list.bo?currentPage=${ p }">${ p }</a></li>
+										href="releaseListAjax.im?currentPage=${ p }">${ p }</a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item disabled"><a class="page-link"
@@ -276,17 +269,50 @@
 						<c:choose>
 							<c:when test="${ pi.currentPage ne pi.maxPage }">
 								<li class="page-item"><a class="page-link"
-									href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+									href="releaseListAjax.im?currentPage=${ pi.currentPage+1 }">Next</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item disabled"><a class="page-link"
-									href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+									href="releaseListAjax.im?currentPage=${ pi.currentPage+1 }">Next</a></li>
 							</c:otherwise>
 						</c:choose>
 					</ul>
 				</div>
-				<button id="addBtn">출고 등록</button>
+				
+				 -->
+				<button id="addBtn" class="btn btn-primary">출고 등록</button>
 
+			</div>
+			
+			
+			
+				<div id="modal" class="modal-overlay">
+				<div class="modal-window">
+					<div class="title">
+						<h2>출고등록</h2>
+					</div>
+					<div class="close-area">X</div>
+					<form id="releaseEnroll" action="releaseInsert.im" method="post">
+						<div class="content">
+							<p>
+								<label class="inputLabel">제품코드</label> <input type="number"
+									name="snackNo"  id="snackNo" required="required">
+							</p>
+							<div id="checkSnackNo"></div>
+							<p>
+								<label class="inputLabel">수량</label> <input type="number"
+									name="amount" id="amount" required="required">
+								
+							</p>
+							<div id="checkAmount"></div>
+							<p>
+								<label class="inputLabel">비고</label> <input type="text"
+									name="remark" maxlength="20" >
+							</p>
+							<br> <br> <input type="submit" value="등록하기" class="btn" id="submitBtn">
+						</div>
+					</form>
+				</div>
 			</div>
 
 
@@ -299,26 +325,29 @@
 	
 	$('#snackNo').blur(function() {
 		var snackNo = $('#snackNo').val();
-		console.log(amount);
+		console.log(snackNo);
 		$.ajax({
 			url : 'checkSnackNo.im',
 			type : 'post',
 			data: {'snackNo' : $('#snackNo').val()},
 			success : function (data) {
-				console.log("출고 가능 여부: " + snackNo);
-				if (data === 1) {
-					
+				console.log("스낵 번호: " + snackNo);
+				if (data.snackName === "") {
+					console.log("확인");
 					$("#checkSnackNo").text("존재하지 않는 상품코드입니다");
 					$("#checkSnackNo").css("color", "red");
-					$("#releaseEnroll").attr("disabled", true);
+					$("#submitBtn").attr("disabled", true);
 				} else if(snackNo == ""){
-					
+					console.log("확인");
 					$('#checkSnackNo').text('상품코드를 입력해주세요');
 					$('#checkSnackNo').css('color', 'red');
-					$("#releaseEnroll").attr("disabled", true);				
+					$("#submitBtn").attr("disabled", true);				
 					
 				} else{
-					
+					console.log("확인");
+					$('#checkSnackNo').html('상품명 : ' + data.snackName + '<br>' + '재고량 : ' + data.stock);
+
+					$('#checkSnackNo').css('color', 'blue');
 					$("#checkAmount").removeAttr( 'readonly' );
 					
 				}
@@ -339,24 +368,25 @@
 		$.ajax({
 			url : 'checkAmount.im',
 			type : 'post',
-			data: {'amount' : $('#amount').val(),
+			data: {'amount' : amount,
 					'snackNo' : $('#snackNo').val()	},
 			success : function (data) {
 				console.log("출고 가능 여부: " + amount);
 				if (data === 1) {
-					
+					console.log("check1");
 					$("#checkAmount").text("재고가 충분하지 않습니다");
 					$("#checkAmount").css("color", "red");
-					$("#releaseEnroll").attr("disabled", true);
+					$("#submitBtn").attr("disabled", true);
 				} else if(amount == ""){
-					
+					console.log("check2");
 					$('#checkAmount').text('수량을 입력해주세요');
 					$('#checkAmount').css('color', 'red');
-					$("#releaseEnroll").attr("disabled", true);				
+					$("#submitBtn").attr("disabled", true);				
 					
 				} else{
-					
-					$("#remark").removeAttr( 'readonly' );
+					$('#checkAmount').text('출고 가능');
+					$('#checkAmount').css('color', 'blue');
+					$("#submitBtn").removeAttr( 'disabled' );
 					
 				}
 				
@@ -368,6 +398,9 @@
 			
 		})
 	})
+	
+	
+	
        
     
                 const modal = document.getElementById("modal")

@@ -154,5 +154,18 @@ public class InvenManagementServiceImpl implements InvenManagementService {
 		return invenManagementDao.checkAmount(sqlSession, snackNo);
 	}
 
+	@Override
+	public int checkSnackNo(int snackNo) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.checkSnackNo(sqlSession, snackNo);
+	}
+
+	@Override
+	public String getsnackName(int snackNo) {
+		// TODO Auto-generated method stub
+		return invenManagementDao.getsnackName(sqlSession, snackNo);
+	}
+
+	
 
 }

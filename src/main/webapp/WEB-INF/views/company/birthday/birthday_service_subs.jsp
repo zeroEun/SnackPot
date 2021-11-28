@@ -99,13 +99,14 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
-
-	<%-- 생일 구독을 이미 하고 있는지 체크 --%>
+	
 	<script>
+		<%-- footer 설정 --%>
 		$(function(){
 			$("#footer").css("margin-top","150px");
 		});
-	
+		
+		<%-- 생일 구독을 이미 하고 있는지 체크 --%>
 		$(function(){
 			
 			var chkResult = ${chkResult};
@@ -198,7 +199,7 @@
 			        	<div class="col-md-9 row">
 			        		<select class="custom-select custom-select-md" id="sendMsg">
 				                <option value="0" selected>선택</option>
-				                <option value="1">귀하의 생일을 맞아 선물을 준비했어요. 아래 링크를 통해 원하는 선물을 직접 골라보세요!</option>
+				                <option value="1">당신을 위한 생일 선물이 도착했어요. 아래 링크를 통해 원하는 선물을 직접 골라보세요!</option>
 				                <option value="2">귀하의 생일을 진심으로 축하드립니다~! 저희가 준비한 작은 선물을 링크를 통해 직접 골라보세요!</option>
 				                <option value="3">직접 입력</option>
 				            </select>
@@ -257,13 +258,13 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
     
 	<script>
+		<%-- 구독 정보 페이지로 이동 --%>
 		function goToSubsInfo(){
 			location.href="subscribeInfo.birth";
 		}
 		<%-- 선택 알림 메시지 항목에서 메시지 내용을 선택하는 부분 --%>
 		$(function(){
 		    $("#sendMsg").on('change', function(){
-		        //console.log($("#sendMsg").val());
 		        var sendMsgNum = $("#sendMsg").val();
 		        var sendMsg = $("#sendMsg option:checked").text();
 		        
@@ -356,8 +357,8 @@
 		<%-- 사원 등록이 아직 완료되지 않은 경우 사원 등록 페이지로 이동할 수 있게 설정 --%>
 		$(function(){
 			$("#moveRegisterPage").click(function(){
-	    		location.href=""; /* 사원 등록 페이지로 이동 */
-	    	})
+	    		location.href="insertEmp.em"; /* 사원 등록 페이지로 이동 */
+	    	});
 		});
 		<%-- 구독 신청 버튼을 누르면 신청 정보를 확인할 수 있는 모달창을 통해 submit을 수행 --%>
 		$(function(){
@@ -376,7 +377,6 @@
 			});
 			
 		});
-
 	</script>
 </body>
 </html>

@@ -13,11 +13,11 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<title>Insert title here</title>
+<title>발송 현황(본사)</title>
 </head>
 <style>
 	#birthCard{
-    	height: 86%;
+    	height: 84%;
     	width: 96%;
     	margin: auto;
     	overflow-y: scroll;
@@ -64,6 +64,15 @@
     #btnArea button{
     	margin-top: 12px;
     	float: right;
+    }
+    
+    #sListTitleDiv{
+    	margin-bottom: 5px;
+    }
+    #sendListTitle{
+		width: 94%;
+		margin: auto;
+		color: rgb(10, 23, 78);
     }
 </style>
 <body>
@@ -113,7 +122,16 @@
 				$("#sending_complete_table").show();
 			});
 		});
+		
+		$(function(){
+			var presentDate = new Date();
+			var presentYear = presentDate.getFullYear();
+			var presentMonth = presentDate.getMonth()+1;
+			
+			$("#sendListTitle").html(presentYear + "년 " + presentMonth + "월 발송 현황");
+		});
 	</script>
+	
 	<section class="birthSection">
 		<div class="container-fluid" id="birthContainer">
 			<div class="row flex-nowrap">
@@ -121,9 +139,9 @@
 				
 				<div class="col-10">
 					<br><br>
+					<div id="sListTitleDiv"><h4 id="sendListTitle"></h4></div>
 					<div class="card text-center" id="birthCard">
 						<div class="card-header" id="tabArea">
-							<h5>11월 발송리스트</h5>
 							<ul class="nav nav-tabs card-header-tabs" id="sendingTab">
 								<li class="nav-item" id="sending_expected">
 									<p class="nav-link">발송 예정</p>
@@ -195,31 +213,7 @@
 								<tbody id="completeStatusList">
 				                    	<c:set var="birthSubsChk" value="${birthSubsChk }"/>
 				                    	<c:if test ="${birthSubsChk > 0}">
-				                    	<!-- 
-					                   		<c:choose>
-					                   			<c:when test="${empty sendListSts }">
-					                   				<tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr>
-					                   			</c:when>
-					                   			<c:when test="${!empty sendListSts }">
-					                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
-														<c:if test="${ sendingSts.selectDate != null }">
-															<c:set var="num2" value="${ num2+1 }" />
-																<tr>
-																	<td>${ num2 }</td>
-																	<td>${ sendingSts.cempDept }</td>
-																	<td>${ sendingSts.cempJob }</td>
-																	<td>${ sendingSts.cempName }</td>
-																	<td>${ sendingSts.cempPhone }</td>
-																	<td>${ sendingSts.cempBirth }</td>
-																	<td>${ sendingSts.sendingMsgDate }</td>
-																</tr>
-														</c:if>
-													</c:forEach>
-					                   				<c:if test="${empty num1 }">
-					                   					<tr><td colspan="8">발송 완료인 사원이 없습니다.</td></tr>
-					                   				</c:if>
-					                   				</c:when>
-					                   		</c:choose> -->
+				                    	<%-- 발송 완료 목록 출력되는 곳 --%>
 				                   		</c:if>
 				                   		<c:if test ="${birthSubsChk <= 0}">
 				                   			<tr><td colspan="8">구독 정보가 존재하지 않습니다.</td></tr>
@@ -242,7 +236,6 @@
 			$(document).on('click', '#sending_complete', function(){
 				
 				var selectComplete = $("input[name='comCode']").val();
-				console.log(selectComplete);
 				
 				$.ajax({
 					url: "completeStatusList.ho",
@@ -251,14 +244,12 @@
 						comCode : selectComplete
 					},
 					success: function(list){
-						console.log(list);
 						var result = '';
 	
 						$.each(list, function(index, item){
 							var parsedBirth = dateParse(item.cempBirth);
 							var parsedSelectDate = dateParse(item.selectDate);
-							//console.log(parsedBirth);
-							//console.log(parsedSelectDate);
+
 							result += '<tr>';
 							result += '<td>' + (index+1) + '</td>';
 							result += '<td>' + item.cempDept + '</td>';
@@ -270,15 +261,14 @@
 							result += '</tr>';
 						});
 						$("#completeStatusList").html(result);
-						
 					},
 					error: function(error){
 						console.log(error);
 					}
 				});
-				
 			});
 		});
+		
 		<%-- 날짜를 가져와서 년,월,일 추출하는 함수 --%>
 		function dateParse(value){
 			var y = value.substr(-4);
@@ -289,8 +279,7 @@
 			var parsed = new Date(y,m,d);
 
 			var result = toStringByFormatting(parsed);
-			//console.log(result);
-			//console.log(typeof result);
+
 			return result;
 		}
 		<%-- 월, 일이 10보다 작을 때 앞에 0붙여서 출력하기 위한 함수 --%>
@@ -308,7 +297,6 @@
 			const day = zeroPlus(value.getDate());
 			
 			return [year, month, day].join('-');
-			
 		}
 	</script>
 </body>

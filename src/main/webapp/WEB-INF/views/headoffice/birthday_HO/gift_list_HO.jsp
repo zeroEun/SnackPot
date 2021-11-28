@@ -15,7 +15,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet"
 	href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
-<title>Insert title here</title>
+<title>선물 리스트(본사)</title>
 </head>
 <style>
 #giftContainer{
@@ -296,9 +296,6 @@
 									$(this).hover(function(){
 										$(this).children(index).children(index).eq(1).children().css("opacity", "1.0");
 										$(this).children(index).children(index).eq(1).children().attr("disabled", false);
-										//console.log($(this).children(index).children(index).eq(1).children());
-										
-										
 									}, function(){
 										$(this).children(index).children(index).eq(1).children().css("opacity", "0");
 										$(this).children(index).children(index).eq(1).children().attr("disabled", true);
@@ -332,23 +329,25 @@
 							</c:forEach>
 						</div>
 					</div>
+					<br>
 					<div style="width:250px; margin: auto;">
 						<button type="button" class="btn btn-outline-secondary btn-lg" id="seeMoreItems">더보기 <span id="itemsCount"></span> / <span id="wholeItemsCount"></span></button>
 					</div>
             		<a id="goTop" href="#top" data-toggle="tooltip" data-placement="top" title="맨 위로 이동"><i class="fas fa-arrow-alt-circle-up fa-3x"></i></a>
+            		<br><br>
 				</div>
 			</div>
 		</div>
-		<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+		
+		<%-- <jsp:include page="/WEB-INF/views/common/footer.jsp"/>--%>
 	</section>
 
 	<script type="text/javascript">
-		<%-- 더보기 버튼 클릭 시 실행 함수 --%>
+		<%-- 화면 로딩 시 정해진 개수의 상품만 출력(20개) --%>
 		function firstHideItems(){
 			var firstItems = 20;
 			const itemsLength = $(".gift").length;
-			console.log("전체 아이템 수 : "+itemsLength);
-			console.log($(".gift").eq(0));
+
 			$("#itemsCount").html(firstItems);
 			$("#wholeItemsCount").html(itemsLength);
 			
@@ -359,17 +358,16 @@
 					$(".gift").eq(i).hide();
 				}
 			}
-
 		}
 		
 		$(function(){
 			firstHideItems();
 			var visibleItems = 20;
 			const itemsLnth = $(".gift").length;
-			
+			<%-- 더보기 버튼 클릭 시 실행 함수 --%>
 			$(document).on('click', '#seeMoreItems',  function(){
 				if(visibleItems + 20 > itemsLnth){
-					visibleItems += (itemsLnth - visibleItems)
+					visibleItems += (itemsLnth - visibleItems);
 				}else{
 					visibleItems += 20;
 				}
@@ -384,11 +382,10 @@
 				}
 			});
 		});
-		<%-- 각 상품에 존재하는 수정 버튼 클릭 시 나타나는 modal에 출력할 정보 가져오기 --%>
+		
 		$(function(){
-		<%--$(".updateGiftBtn").on('click', function(e){--%>
+			<%-- 각 상품에 존재하는 수정 버튼 클릭 시 나타나는 modal에 출력할 정보 가져오기 --%>
 			$(document).on('click','.updateGiftBtn', function(e){
-				console.log(e.target.value);
 				
 				var clickVal = e.target.value;
 				$("#updateGiftNo").val(clickVal);
@@ -400,12 +397,9 @@
 						giftNo : clickVal
 					},
 					success : function(result){
-						console.log("result:" + result);
-						console.log(result);
 						var fileRoute = "${ pageContext.servletContext.contextPath }" + "/resources/images/" + result.changeName;
-						console.log(fileRoute);
 						
-						//$("#updateImgFile").val(result.changeName); //DOM 오류 발생
+						<%--$("#updateImgFile").val(result.changeName); //DOM 오류 발생--%>
 						$("#updateGiftImg").attr("src", fileRoute)
 						$("#giftBrand").val(result.giftBrand);
 						$("#giftName").val(result.giftName);
@@ -417,20 +411,23 @@
 				});
 			});
 		});
-
+		
 		<%-- 전체 체크 설정 --%>
 		$(function(){
 	    	var chkRow = $("input[name='giftChk']");
 	    	var rowCount = chkRow.length;
+	    	
 	    	<%-- 선물 사진 클릭해도 체크박스 체크되게 설정 --%>
-	    	$(".giftImage").click(function(){
+	    	$(document).on('click','.giftImage', function(){
 	    		var imgClickforChk = $(this).siblings(".giftCardHeader").children().eq(0).children();
+	    		
 	    		if(imgClickforChk.is(":checked")){
 	    			imgClickforChk.prop("checked", false);
 	    		}else{
 	    			imgClickforChk.prop("checked", true);
 	    		}
 	    	});
+	    	
 	    	<%-- 전체 선택하면 모든 체크박스가 checked --%>
 	        $("#giftChk").click(function(){
 	            var chkList = $("input[name='giftChk']");
@@ -438,17 +435,17 @@
 	                chkList[i].checked = this.checked;
 	            }
 	        });
-	
-	        $("input[name='giftChk']").click(function(){
-	             if($("input[name='giftChk']:checked").length == rowCount){ /*각각 체크해서 전체를 다 체크했을 때*/
+
+	        <%-- 상품 하나씩 체크했을 경우 - 하나씩 전체 다 체크했을 때 --%>
+	        $(document).on('click', 'input[name="giftChk"]', function(){
+	             if($("input[name='giftChk']:checked").length == rowCount){ <%--각각 체크해서 전체를 다 체크했을 때--%>
 	                 $("#giftChk")[0].checked = true;
 	             }else{
 	                 $("#giftChk")[0].checked = false;
 	             }
 	        });
 	    });
-		
-		//var delArr = new Array();
+
 		<%-- 선택 삭제한 항목 데이터list modal에 불러오기 --%>
 		function deleteGift(){
 
@@ -466,8 +463,7 @@
 				alert("선택된 항목이 없습니다.");
 			}else{
 				$("#delGiftBtn").attr("data-toggle","modal").attr("data-target","#deleteGift");
-				//$("#checkedGiftNum").html(chkArr.length);
-				console.log("선택된 상품 개수 : "+chkArr.length);
+
 				$.ajax({
 					url : "checkedGiftList.ho",
 					type: "POST",
@@ -476,14 +472,11 @@
 						chkArr : chkArr
 					},
 					success : function(data){
-						console.log("data : " + data);
-						console.log("data길이 : " + data.length);
 						var result = '';
 						
 						result += '<h5>총 <span id="checkedGiftNum">' + data.length + '</span>개 상품을 선택하셨습니다. 해당 상품들을 삭제하시겠습니까?</h5>';
+						
 						$.each(data, function(index, item){
-							//delArr.push(item.giftNo);
-							
 							result += '<input type="hidden" name="delGiftNo" value="' + item.giftNo + '"/>';
 							result += '<div>';
 							result += '<div class="card-body">';
@@ -504,14 +497,11 @@
 		<%-- modal 데이터를 바탕으로 선택한 선물 항목 삭제하기 --%>
 		function realDelGift(){
 			<%-- input 히든으로 준 거 가져와볼 것!!! --%>
-			console.log("realDelGift!!");
 			var delArr = new Array();
 			
 			$("input[name='giftChk']:checked").each(function(){
 				delArr.push($(this).val());
-			})
-			
-			console.log(delArr);
+			});
  
 			$.ajax({
 				url : "deleteGift.ho",
@@ -520,16 +510,17 @@
 				data : {
 					delArr : delArr
 				},
-				success : function(data){
-					console.log(data);
-					console.log("삭제 성공!");
-					location.replace("giftList.ho");
+				success : function(result){
+					if(result>0){
+						location.replace("giftList.ho");
+					}else{
+						alert("선물 삭제에 실패했습니다.")
+					}
 				},
 				error : function(error){
 					alert(error);
 				}
 			});
-			
 		}
 		
 		<%-- 선물 사진 관련 --%>
@@ -537,7 +528,7 @@
 	        $("#updateFileArea").hide();
 	        $("#insertFileArea").hide();
 	    });
-	    
+	    <%-- 선물 이미지 클릭하면 파일 등록할 수 있도록 설정--%>
 	    $("#updateGiftImgDiv").click(function(){
 	        $("#updateImgFile").click();
 	    });
@@ -554,7 +545,6 @@
 				reader.readAsDataURL(imgFile.files[0]);
 				
 				reader.onload = function(e) {
-					console.log(e);
 					$("#insertGiftImg").attr("src", e.target.result);
 					$("#updateGiftImg").attr("src", e.target.result);
 				}
@@ -578,9 +568,7 @@
 	            var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
 	            var giftName = $(".card-body>p:contains('"+searchText+"')");
 	            var giftPrice = $(".card-body>h6:contains('"+searchText+"')");
-				//console.log(giftBrand.parent().length);
-				//console.log(giftName.parent().length);
-				//console.log(giftPrice.parent().length);
+
 	            $(giftBrand).parent().parent().parent().show();
 	            $(giftName).parent().parent().parent().show();
 	            $(giftPrice).parent().parent().parent().show();
@@ -607,14 +595,15 @@
 	        });
 	    });
 	    
-	    <%-- 상품 정렬 --%>
+	    <%-- 상품 정렬(구독회사 giftList에는 세 개에서 각각 실행하는 ajax를 하나로 합쳐놓음) --%>
 		$(function(){
 			
 			<%-- footer 설정 --%>
+			<%-- 
 			$("#footer").css("width","100%");
 			$("#footer-1").css("width","100%").css("text-align","center").css("margin","auto");
 			$("#footer-2").css("width","40%").css("text-align","left").css("margin","auto");
-			$("#footer-2>p").css("padding-left","60px");
+			$("#footer-2>p").css("padding-left","60px");--%>
 			
 			$("#giftCtgry1").css("font-weight", "bolder");
 			$("#giftCtgry1").html('<i class="fas fa-check"></i>&nbsp;추천상품순');
@@ -642,9 +631,6 @@
 				$("#seeMoreItems").hide();
 				ctgryNum = 1;
 				
-				console.log($("#giftListArea").children());
-				console.log(typeof(ctgryNum));
-				
 				$.ajax({
 					url: "selectCtgry.ho",
 					type: "POST",
@@ -664,15 +650,16 @@
 							result += '<input type="checkbox" class="form-check-input" name="giftChk" value="' + item.giftNo + '">';
 							result += '</div>';
 							result += '<div class="updateGiftBtnDiv">';
-							result += '<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정</button>';
+							result += '<button type="button" class="btn btn-dark updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정하기</button>';
 							result += '</div>';
 							result += '</div>';
-							
+							result += '<div class="giftImage">'
 							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
+							result += '</div>';
 							result += '<div class="card-body">';
 							result += '<p class="card-title" style="font-size: large">' + item.giftBrand + '</p>';
 							result += '<p class="card-text" style="height: 35%">' + item.giftName + '</p><hr>';
-							result += '<p class="card-text"><b>' + item.giftPrice + '</b></p><br>';
+							result += '<p class="card-text"><b>' + (item.giftPrice).toLocaleString() + '원</b></p><br>';
 							result += '</div>';
 							result += '</div>';
 							result += '</div>';
@@ -694,6 +681,8 @@
 						});
 						
 						firstHideItems();
+						
+						$("#giftChk")[0].checked = false;<%-- 카테고리 누르면 전체체크 해제되도록 설정(전체체크만 초기화 안되므로) --%>
 					},
 					error: function(error){
 						alert(error);
@@ -716,9 +705,6 @@
 				$("#seeMoreItems").hide();
 				ctgryNum = 2;
 				
-				console.log($("#giftListArea").children());
-				console.log(typeof(ctgryNum));
-				
 				$.ajax({
 					url: "selectCtgry.ho",
 					type: "POST",
@@ -737,15 +723,16 @@
 							result += '<input type="checkbox" class="form-check-input" name="giftChk" value="' + item.giftNo + '">';
 							result += '</div>';
 							result += '<div class="updateGiftBtnDiv">';
-							result += '<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정</button>';
+							result += '<button type="button" class="btn btn-dark updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정하기</button>';
 							result += '</div>';
 							result += '</div>';
-							
+							result += '<div class="giftImage">'
 							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
+							result += '</div>';
 							result += '<div class="card-body">';
 							result += '<p class="card-title" style="font-size: large">' + item.giftBrand + '</p>';
 							result += '<p class="card-text" style="height: 35%">' + item.giftName + '</p><hr>';
-							result += '<p class="card-text"><b>' + item.giftPrice + '</b></p><br>';
+							result += '<p class="card-text"><b>' + (item.giftPrice).toLocaleString() + '원</b></p><br>';
 							result += '</div>';
 							result += '</div>';
 							result += '</div>';
@@ -768,6 +755,8 @@
 						});	
 						
 						firstHideItems();
+						
+						$("#giftChk")[0].checked = false;
 					},
 					error: function(error){
 						alert(error);
@@ -789,10 +778,7 @@
 				
 				$("#seeMoreItems").hide();
 				ctgryNum = 3;
-				
-				console.log($("#giftListArea").children());
-				console.log(typeof(ctgryNum));
-				
+
 				$.ajax({
 					url: "selectCtgry.ho",
 					type: "POST",
@@ -811,15 +797,16 @@
 							result += '<input type="checkbox" class="form-check-input" name="giftChk" value="' + item.giftNo + '">';
 							result += '</div>';
 							result += '<div class="updateGiftBtnDiv">';
-							result += '<button type="button" class="btn btn-primary updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정</button>';
+							result += '<button type="button" class="btn btn-dark updateGiftBtn" name="updateGiftBtn" value="' + item.giftNo + '" data-toggle="modal" data-target="#updateGift">수정하기</button>';
 							result += '</div>';
 							result += '</div>';
-							
+							result += '<div class="giftImage">'
 							result += '<img src="${ pageContext.servletContext.contextPath }/resources/images/' + item.changeName + '" class="card-img-top" alt="...">';
+							result += '</div>';
 							result += '<div class="card-body">';
 							result += '<p class="card-title" style="font-size: large">' + item.giftBrand + '</p>';
 							result += '<p class="card-text" style="height: 35%">' + item.giftName + '</p><hr>';
-							result += '<p class="card-text"><b>' + item.giftPrice + '</b></p><br>';
+							result += '<p class="card-text"><b>' + (item.giftPrice).toLocaleString() + '원</b></p><br>';
 							result += '</div>';
 							result += '</div>';
 							result += '</div>';
@@ -842,6 +829,8 @@
 						});
 						
 						firstHideItems();
+						
+						$("#giftChk")[0].checked = false;
 					},
 					error: function(error){
 						alert(error);

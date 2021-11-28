@@ -21,18 +21,26 @@ public class BirthdayController {
 	@RequestMapping("subscribeForm.birth")
 	public ModelAndView subscribeForm(ModelAndView mv, HttpSession session) {
 		
-		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
-		
-		//사원리스트 불러오기 버튼 눌렀을 때 사원 등록이 되어있는지 유무를 확인하기 위해 가져오는 데이터
-		int empCount = bService.countEmp(comCode);		
+		try {
+			String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
+			
+			//사원리스트 불러오기 버튼 눌렀을 때 사원 등록이 되어있는지 유무를 확인하기 위해 가져오는 데이터
+			int empCount = bService.countEmp(comCode);		
 
-		//현재 생일 구독 서비스를 이용중인지 체크하기 위한 데이터
-		int chkResult = bService.subscribeChk(comCode);
-		
-		mv.addObject("countEmp", empCount);
-		mv.addObject("chkResult", chkResult);
-		mv.setViewName("company/birthday/birthday_service_subs");
-		
+			//현재 생일 구독 서비스를 이용중인지 체크하기 위한 데이터
+			int chkResult = bService.subscribeChk(comCode);
+			
+			mv.addObject("countEmp", empCount);
+			mv.addObject("chkResult", chkResult);
+			mv.setViewName("company/birthday/birthday_service_subs");
+			
+		} catch(NullPointerException e) {
+			
+			mv.addObject("msg", "로그인 후 이용가능한 서비스입니다.");
+			mv.addObject("url", "/login.co");
+			mv.setViewName("common/alert");
+		}
+
 		return mv;
 	}
 	

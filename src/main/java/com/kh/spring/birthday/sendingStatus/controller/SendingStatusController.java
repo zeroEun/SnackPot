@@ -32,15 +32,12 @@ public class SendingStatusController {
 		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
 		
 		int birthSubsChk = sendingStatusService.subscribeChk(comCode);
-		System.out.println("birthSubsChk : " + birthSubsChk);
 		
 		int sendingTime = selectSendingTime(comCode);
-		System.out.println("발송시점 sendingTime : " + sendingTime);
 		
 		SendingStatus selectInfo = new SendingStatus();
 		selectInfo.setSendingTime(sendingTime);
 		selectInfo.setComCode(comCode);
-		
 		
 		if(sendingTime < 0) {
 			model.addAttribute("msg", "구독 정보가 존재하지 않습니다.");
@@ -74,15 +71,12 @@ public class SendingStatusController {
 	@ResponseBody
 	@RequestMapping(value="completeCursts.birth")
 	public ArrayList<SendingStatus> completeCursts(String comCode) {
-	
-		System.out.println("발송완료 comCode : " + comCode);
 		
 		ArrayList<SendingStatus> list = new ArrayList<SendingStatus>();
 		
 		list = sendingStatusService.completeCursts(comCode);
-		System.out.println("completeCursts : " + list);
+
 		return list;
-		
 	}
 	
 	private int selectSendingTime(String comCode) {
@@ -150,37 +144,20 @@ public class SendingStatusController {
 		s.setSendingMsgDate(thisYear + (sdf.format(cal.getTime())).substring(4));
 
 		int result2 = sendingStatusService.insertSendStatus2(s);
-		System.out.println("result2 : " + result2);
 		
 		return String.valueOf(result + result2);
 		
 	}
 	
-	/*
-	@RequestMapping(value="selectEmpOne.birth")
-	public ModelAndView selectEmpOne(int cempSeq, ModelAndView mv) {
-		System.out.println("cempSeq : " + cempSeq);
-		SendingStatus s = sendingStatusService.selectEmpOne(cempSeq);
-		System.out.println("선택 수정 선택 객체 : " + s);
-		mv.addObject("s", s).setViewName("redirect:/");
-		
-		return mv;
-		
-		
-	}*/
-	
 	@ResponseBody
 	@RequestMapping(value="selectEmpOne.birth")
 	public SendingStatus selectEmpOne(int cempSeq) {
-		System.out.println("cempSeq : " + cempSeq);
+
 		SendingStatus s = sendingStatusService.selectEmpOne(cempSeq);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println("cempBirth : " + s.getCempBirth());
 		
-		s.setCempBirthSdf(sdf.format(s.getCempBirth()));
-		System.out.println("cempBirth2 : " + s.getCempBirthSdf());
-		System.out.println("선택 수정 선택 객체 : " + s);		
+		s.setCempBirthSdf(sdf.format(s.getCempBirth()));	
 		
 		return s;
 		
@@ -191,7 +168,6 @@ public class SendingStatusController {
 	public String updateSendStatus(SendingStatus s) {
 		
 		int result = sendingStatusService.updateSendStatus(s);
-		System.out.println("수정result: " + result);
 		
 		return String.valueOf(result);
 		

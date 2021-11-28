@@ -49,6 +49,10 @@
     	color: white;
     	border-radius: 5px;
     }
+    #empty{
+    	text-align: center;
+    	margin-top: 50px;
+    }
 </style>
 </head>
 <body>
@@ -58,6 +62,8 @@
 
 <div class="container" id="outer">
 <h5 id="title">구독회사 정보</h5><br><br><br><br>
+
+
 <div id="tdiv">
 <table class="table table-hover" id="empList">
     <thead>
@@ -70,6 +76,7 @@
         </tr>
     </thead>
     <tbody>
+    
     <c:forEach items="${list}" var="com" varStatus="st">
         <tr>
             <td>${st.index +1}</td>
@@ -81,8 +88,14 @@
         </tr>
      </c:forEach>
     </tbody>
+    
 </table>
+<c:if test="${empty list }">
+    <h5 id="empty">현재 담당 중인 회사가 존재하지 않습니다.</h5>
+</c:if>
 </div>
+
+
 </div>
 </div>
 </div>

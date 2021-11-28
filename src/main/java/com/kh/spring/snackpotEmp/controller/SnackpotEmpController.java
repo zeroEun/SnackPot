@@ -1,7 +1,6 @@
 package com.kh.spring.snackpotEmp.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpSession;
 
@@ -40,7 +39,7 @@ public class SnackpotEmpController {
 	private SnackSubs sSub;	
 	private Birthday bSub;
 	
-	private String sempNum;
+	private int sempNum;
 	private String sempComName;
 	private String comCode;
 	private String comName;
@@ -107,7 +106,7 @@ public class SnackpotEmpController {
 	
 	@ResponseBody
 	@RequestMapping("modifyEmp.sn")
-	public String modifyEmp(String sempNum) {
+	public String modifyEmp(int sempNum) {
 		
 		this.sempNum = sempNum;
 		
@@ -218,7 +217,7 @@ public class SnackpotEmpController {
 	
 	@ResponseBody
 	@RequestMapping("modifyCom.sn")
-	public String modifyCom(String sempNum, String sempComName) {
+	public String modifyCom(int sempNum, String sempComName) {
 		
 		this.sempNum = sempNum;
 		this.sempComName = sempComName;
@@ -242,7 +241,7 @@ public class SnackpotEmpController {
 		
 		for(int i=0; i<list.size(); i++) {
 			
-			Company co = list.get(i);
+			co = list.get(i);
 			
 			if(!co.getSempNum().equals("미정")) {
 				sempNum[i] = co.getSempNum();
@@ -282,10 +281,11 @@ public class SnackpotEmpController {
 		if(comName.contains(",")) {
 			
 			//"," 구분자로 회사명을 새로운 배열에 담기
-			String name[] = comName.split(", ");
+			String name[] = comName.split(",");
 			for(int i=0; i<name.length; i++) {
 				//회사가 존재하는지 서치 
-				Company co = ses.searchComName(name[i]);
+				name[i] = name[i].replace(" ", "");
+				co = ses.searchComName(name[i]);
 				
 				//존재한다면 comCode 변수에 구분자를 넣어 담아주기
 				if(co != null) {
@@ -302,7 +302,7 @@ public class SnackpotEmpController {
 						String sempComCode = sempList.get(y).getSempComCode();
 						
 						//코드가 있을 4가지의 경우
-						String code1 = co.getComCode();
+//						String code1 = co.getComCode();
 						String code2 = co.getComCode() + "/";
 						String code3 = "/" + co.getComCode();
 						String code4 = "/" + co.getComCode() + "/";
@@ -357,12 +357,8 @@ public class SnackpotEmpController {
 				
 			}
 			
-			System.out.println("수정할 회사값 찍기(값이 여러 개일 때) : " + comCode);
-			
 			//회사가 존재한다면
 			if(comCode != null) {
-				
-				System.out.println("수정할 회사값 (값이 여러개일 때) : " + comCode);
 				
 				//해당 직원의 sempComCode에 추가 
 				int result = ses.updateCompany(comCode, sempNum);
@@ -394,9 +390,7 @@ public class SnackpotEmpController {
 			
 		// 2. 회사가 1개일 경우 	
 		}else {
-			Company co = ses.searchComName(comName);
-			
-			System.out.println("수정할 회사값 찍기(값이 1개일 때) : " + co.getComCode());
+			co = ses.searchComName(comName);
 			
 			//회사가 존재한다면
 			if(co != null) {
@@ -433,7 +427,7 @@ public class SnackpotEmpController {
 					String sempComCode = sempList.get(y).getSempComCode();
 					
 					//코드가 있을 4가지의 경우
-					String code1 = co.getComCode();
+//					String code1 = co.getComCode();
 					String code2 = co.getComCode() + "/";
 					String code3 = "/" + co.getComCode();
 					String code4 = "/" + co.getComCode() + "/";
@@ -530,7 +524,6 @@ public class SnackpotEmpController {
 			
 		//미정이라면 아무 회사도 담당하고 있지 않은 사원	
 		}else if(comCode.equals("미정")){
-			
 			
 		//그 외 -> 한 회사만 담당하고 있는 사원	
 		}else {
@@ -923,6 +916,44 @@ public class SnackpotEmpController {
 		model.addAttribute("comName", comName);
 		
 		return "headoffice/snackpotEmp/subEmpList";
+	}
+	
+	@RequestMapping("findPw.sn")
+	public String findPw() {
+		
+		return "headoffice/snackpotEmp/findPw";
+	}
+	
+	@ResponseBody
+	@RequestMapping("findPwSelect.sn")
+	public String findIdSelect(int sempNum, String sempName, String sempEmail) {
+		
+		int result = ses.findPw(sempNum, sempName, sempEmail);
+		this.sempNum = sempNum;
+		
+		return String.valueOf(result);
+	}
+	
+	@RequestMapping("modifyNewPw.sn")
+	public String modifyNewPw(@ModelAttribute SnackpotEmp se, Model model) {
+		
+		// 임시 비밀번호 생성
+		String pw = "";
+		for (int i = 0; i < 7; i++) {
+			pw += (char) ((Math.random() * 26) + 97);
+		}
+		
+		//암호회된 비밀번호
+		String encPwd = bCryptPasswordEncoder.encode(pw);
+		
+		se.setSempNum(sempNum);
+		se.setSempPw(encPwd);
+		ses.updatePw(se);
+		
+		model.addAttribute("msg","임시 비밀번호는 " + pw + " 입니다.");
+        model.addAttribute("url","/login.sn");
+		
+		return "common/alert";	
 	}
 }
 

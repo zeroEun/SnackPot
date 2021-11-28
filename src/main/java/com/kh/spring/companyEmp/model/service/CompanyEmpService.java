@@ -18,5 +18,4 @@ public interface CompanyEmpService {
 
 	int deleteEmp(String cempNum, String comCode);
 
-
 }

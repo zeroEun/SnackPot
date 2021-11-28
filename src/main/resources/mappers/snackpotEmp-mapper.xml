@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE SEMP_NUM=#{sempNum}
 	</select>
 	
-	<select id="selectEmp" parameterType="string" resultMap="snackpotEmpResultSet">
+	<select id="selectEmp" parameterType="_int" resultMap="snackpotEmpResultSet">
 		SELECT * FROM SNACKPOT_EMP
 		WHERE SEMP_NUM=#{sempNum} 	
 	</select>
@@ -83,5 +83,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET SEMP_COMCODE=#{sempComCode}
 		WHERE SEMP_NUM=#{sempNum}
 	</update>
+	
+	<select id="findPw" parameterType="hashMap" resultType="_int">
+		SELECT COUNT (*)
+		FROM SNACKPOT_EMP
+		WHERE SEMP_NUM=#{sempNum}
+		AND SEMP_NAME=#{sempName}
+		AND SEMP_EMAIL=#{sempEmail}
+	</select>
 	
 </mapper>

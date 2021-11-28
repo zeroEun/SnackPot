@@ -19,7 +19,7 @@ public interface SnackpotEmpService {
 
 	int checkNum(String sempNum);
 
-	SnackpotEmp selectEmp(String sempNum);
+	SnackpotEmp selectEmp(int sempNum);
 
 	void updateEmp(SnackpotEmp se);
 
@@ -52,5 +52,8 @@ public interface SnackpotEmpService {
 	SnackSubs selectSnackSub(String comCode);
 
 	Birthday selectBirthSub(String comCode);
+
+	int findPw(int sempNum, String sempName, String sempEmail);
+
 
 }

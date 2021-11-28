@@ -38,7 +38,7 @@ public class SnackpotEmpDao {
 		return result;
 	}
 
-	public SnackpotEmp selectEmp(SqlSessionTemplate sqlSession, String sempNum) {
+	public SnackpotEmp selectEmp(SqlSessionTemplate sqlSession, int sempNum) {
 		
 		SnackpotEmp se = sqlSession.selectOne("snackpotEmpMapper.selectEmp", sempNum);
 		
@@ -138,5 +138,16 @@ public class SnackpotEmpDao {
 		
 		return sqlSession.selectOne("birthdayMapper.selectBirthSub", comCode);
 	}
+
+	public int findPw(SqlSessionTemplate sqlSession, int sempNum, String sempName, String sempEmail) {
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("sempNum", sempNum);
+		parameters.put("sempName", sempName);
+		parameters.put("sempEmail", sempEmail);
+		
+		return sqlSession.selectOne("snackpotEmpMapper.findPw", parameters);
+	}
+
 
 }

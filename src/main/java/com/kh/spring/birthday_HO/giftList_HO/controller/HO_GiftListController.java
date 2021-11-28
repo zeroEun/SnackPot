@@ -31,8 +31,7 @@ public class HO_GiftListController {
 	public String selectGiftList(Model model) {
 		
 		ArrayList<HO_GiftList> list = giftListService.selectGiftList();
-		
-		System.out.println("giftList : " + list);
+
 		model.addAttribute("list",list);
 		
 		return "headoffice/birthday_HO/gift_list_HO";
@@ -41,9 +40,7 @@ public class HO_GiftListController {
 	@ResponseBody
 	@RequestMapping(value="selectCtgry.ho")
 	public ArrayList<HO_GiftList> selectCtgry(int ctgryNum){
-		
-		System.out.println("넘겨받은 ctgryNum : " + ctgryNum);
-		
+
 		ArrayList<HO_GiftList> list = new ArrayList<HO_GiftList>();
 		
 		list = giftListService.selectCtgry(ctgryNum);
@@ -56,34 +53,25 @@ public class HO_GiftListController {
 	@ResponseBody
 	@RequestMapping(value="checkedGiftList.ho")
 	public ArrayList<HO_GiftList> checkedGiftList(String[] chkArr){
-		
-		//String[] chkArr = request.getParameterValues("chkArr");
-		
+
 		ArrayList<HO_GiftList> list = new ArrayList<HO_GiftList>();
 		HO_GiftList giftOne = new HO_GiftList();
 		
 		for(int i=0; i<chkArr.length; i++) {
-			System.out.println("chkArr[i] : " + chkArr[i]);
 			giftOne = giftListService.checkedGiftList(chkArr[i]);
-			System.out.println("giftOne : " + giftOne);
 			
 			list.add(giftOne);
 		}
 
-		System.out.println("gglist : " + list);
-		
 		return list;
 	}
 	
 	@RequestMapping(value="insertGift.ho")
 	public String insertGift(HttpServletRequest request, HO_GiftList gl, GiftAttachment at,
 							@RequestParam(name="insertImgFile") MultipartFile file) {
-		
-		System.out.println("HO_GiftList : " + gl);
-		System.out.println("file Origin Name : "+file.getOriginalFilename());
-		
+
 		String savePath = request.getSession().getServletContext().getRealPath("/resources/images");
-		System.out.println("어디저장? " + savePath);
+
 		if(!file.getOriginalFilename().equals("")) {
 			String changeName = saveFile(file, request);
 			
@@ -104,8 +92,6 @@ public class HO_GiftListController {
 		
 		String resources = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = resources + "\\images\\";
-		
-		System.out.println("savePath : " + savePath);
 		
 		String originName = file.getOriginalFilename();
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -138,9 +124,7 @@ public class HO_GiftListController {
 	@RequestMapping(value="updateGift.ho")
 	public String updateGift(HttpServletRequest request, HO_GiftList gl, GiftAttachment at,
 							@RequestParam(name="updateImgFile") MultipartFile file) {
-		
-		System.out.println("file : " + file.getOriginalFilename());
-		System.out.println(file.isEmpty());
+
 		String savePath = request.getSession().getServletContext().getRealPath("/resources/images");
 		//수정할 때 기존 이미지를 변경하지 않고 그대로 유지하는 경우
 		if(file.isEmpty()) {
@@ -169,46 +153,11 @@ public class HO_GiftListController {
 	
 	@ResponseBody
 	@RequestMapping(value="deleteGift.ho")
-	public String deleteGift(HttpServletRequest request) {
-		
-		String[] delArr = request.getParameterValues("delArr");
-		/*
-		String giftNums = "";
-		for(int i=0; i<delArr.length; i++) {
-			giftNums += delArr[i] + ", ";
-		}
-		System.out.println("giftNums: "+giftNums);
-		//마지막 쉼표를 제거하기 위해 substring 활용
-		giftNums = giftNums.substring(0, giftNums.lastIndexOf(","));
-		System.out.println("수정 giftNums : " + giftNums);
-		
-		int result = giftListService.deleteGift(giftNums);
-		*/
+	public String deleteGift(String[] delArr) {
 
 		int result = giftListService.deleteGift(delArr);
 		
 		return String.valueOf(result);
-		
 	}
-	/*
-	 * public ArrayList<HO_GiftList> checkedGiftList(HttpServletRequest request){
-		
-		String[] chkArr = request.getParameterValues("chkArr");
-		//System.out.println("chkArr : " + chkArr);
-		ArrayList<HO_GiftList> list = new ArrayList<HO_GiftList>();
-		HO_GiftList giftOne = new HO_GiftList();
-		
-		for(int i=0; i<chkArr.length; i++) {
-			
-			giftOne = giftListService.checkedGiftList(chkArr[i]);
-			//System.out.println("giftOne : " + giftOne);
-			
-			list.add(giftOne);
-		}
-
-		//System.out.println("gglist : " + list);
-		
-		return list;
-	}
-	 * */
+	
 }

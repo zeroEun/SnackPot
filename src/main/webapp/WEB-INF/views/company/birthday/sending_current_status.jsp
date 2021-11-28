@@ -106,8 +106,10 @@
 </style>
 <script>
 	$(function(){
+		<%-- footer 설정 --%>
 		$("#footer").css("margin-top","150px");
 		
+		<%-- 타이틀에 년도, 월 입력 --%>
 		var presentDate = new Date();
 		var presentYear = presentDate.getFullYear();
 		var presentMonth = presentDate.getMonth()+1;
@@ -135,7 +137,6 @@
                 $("#updateBtn").show();
                 $("#insertBtn").show();
                 $("#deleteBtn").show();
-                //$("#hiddenBtn").css("opacity", "0");
                 $("#tabArea").css("padding-bottom", 4);
             }
     
@@ -324,7 +325,7 @@
 		                                	<div class="form-group row">
 		                                        <label for="" class="col-form-label col-sm-3">사원번호</label>
 		                                        <div class="col-sm-9">
-		                                            <input type="text" class="form-control" id="cNum" required>
+		                                            <input type="text" class="form-control" id="cNum" readonly>
 		                                        </div>
 		                                    </div>                           
 		                                    <div class="form-group row">
@@ -360,7 +361,7 @@
 		                                    <div class="form-group row">
 		                                        <label for="deptName" class="col-form-label col-sm-3">생일날짜</label>
 		                                        <div class="col-sm-9">
-		                                            <input type="date" class="form-control" id="cBirth">
+		                                            <input type="date" class="form-control" id="cBirth" readonly>
 		                                        </div>
 		                                    </div>                                                                
 		                                </div>
@@ -373,7 +374,7 @@
 		                    </div>
 		                </div>
 		
-		                <%-- 발송 완료 테이블 --%>
+		                <%-- 발송 완료 테이블 - ajax로 불러옴 --%>
 		                <table class="table" id="sending_complete_table">
 		                    <thead class="tableHead">
 		                        <tr>
@@ -386,38 +387,10 @@
 		                            <th scope="col">선택완료일</th>
 		                        </tr>
 		                    </thead>
-		                    <!-- <tr><td colspan="8">사원 정보가 등록되지 않았거나 불러오는데 실패했습니다.</td></tr> -->
 		                    <tbody class="tableBody" id="completeCursts">
-		                    	<!--<c:set var="sendListSts" value="${list }"/>-->
 		                    	<c:set var="birthSubsChk" value="${birthSubsChk }"/>
 		                   		<c:if test ="${birthSubsChk > 0}">
-		                   		<!-- 
-		                   		<c:choose>
-			                   			<c:when test="${empty sendListSts }">
-			                   				
-			                   			</c:when>
-			                   			<c:when test="${!empty sendListSts }">
-			                   				<c:forEach items="${ list }" var="sendingSts" varStatus="status">
-												<c:if test="${ sendingSts.selectDate != null }">
-													<c:set var="num2" value="${ num2+1 }" />
-														<tr>
-															<td>${ num2 }</td>
-															<td>${ sendingSts.cempDept }</td>
-															<td>${ sendingSts.cempJob }</td>
-															<td>${ sendingSts.cempName }</td>
-															<td>${ sendingSts.cempPhone }</td>
-															<td>${ sendingSts.cempBirth }</td>
-															<td>${ sendingSts.sendingMsgDate }</td>
-														</tr>
-												</c:if>
-											</c:forEach>
-			                   				<c:if test="${empty num2 }">
-			                   					<tr><td colspan="8">발송 완료인 사원이 없습니다.</td></tr>
-			                   				</c:if>
-			                   				</c:when>
-			                   		</c:choose>
-		                   		 -->
-			                   		
+								<%-- 발송 완료 리스트 들어가는 곳 --%>
 		                   		</c:if>
 		                   		<c:if test ="${birthSubsChk <= 0}">
 		                   			<tr><td colspan="8">구독 정보가 존재하지 않습니다.</td></tr>
@@ -437,11 +410,11 @@
    		<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
         
 	<script>
+		<%-- 발송 완료 리스트 출력 --%>
 		$(function(){
 			$(document).on('click', '#sending_complete', function(){
 				
 				var selectComplete = $("input[name='comCode']").val();
-				console.log(selectComplete);
 				
 				$.ajax({
 					url: "completeCursts.birth",
@@ -450,14 +423,12 @@
 						comCode : selectComplete
 					},
 					success: function(list){
-						console.log(list);
 						var result = '';
 
 						$.each(list, function(index, item){
 							var parsedBirth = dateParse(item.cempBirth);
 							var parsedSelectDate = dateParse(item.selectDate);
-							//console.log(parsedBirth);
-							//console.log(parsedSelectDate);
+
 							result += '<tr>';
 							result += '<td>' + (index+1) + '</td>';
 							result += '<td>' + item.cempDept + '</td>';
@@ -486,10 +457,8 @@
 			d = d.replace(" ","");
 
 			var parsed = new Date(y,m,d);
+			var result = dateToString(parsed);
 
-			var result = toStringByFormatting(parsed);
-			//console.log(result);
-			//console.log(typeof result);
 			return result;
 		}
 		<%-- 월, 일이 10보다 작을 때 앞에 0붙여서 출력하기 위한 함수 --%>
@@ -501,13 +470,12 @@
 			return '0'+value;
 		}
 		<%-- 날짜를 yyyy-MM-dd 형식으로 출력하기 위한 함수 --%>
-		function toStringByFormatting(value){
+		function dateToString(value){
 			const year = value.getFullYear();
 			const month = zeroPlus(value.getMonth() + 1);
 			const day = zeroPlus(value.getDate());
 			
 			return [year, month, day].join('-');
-			
 		}
 		
 		<%-- 전체 체크 설정 --%>
@@ -522,7 +490,7 @@
 	        });
 	
 	        $("input[name='sendingChk']").click(function(){
-	             if($("input[name='sendingChk']:checked").length == rowCount){ /*각각 체크해서 전체를 다 체크했을 때*/
+	             if($("input[name='sendingChk']:checked").length == rowCount){ <%--각각 체크해서 전체를 다 체크했을 때--%>
 	                 $("#sendingChk")[0].checked = true;
 	             }else{
 	                 $("#sendingChk")[0].checked = false;
@@ -544,9 +512,8 @@
 				alert("선택된 항목이 없습니다.");
 			}
 			else{
-				//console.log("chkArr : " + chkArr);
-				//console.log("chkArr 타입 : " + typeof(chkArr));
-				var chk = confirm("정말 삭제하시겠습니까?( 삭제 개수 : " + chkArr.length + " )");
+				var chk = confirm("정말 삭제하시겠습니까?( 삭제 인원 수 : " + chkArr.length + " 명 )");
+				
 				if(chk == true){
 					$.ajax({
 	    				url : "delSendSts.birth",
@@ -557,19 +524,15 @@
 	    					chkArr : chkArr
 	    				},
 	    				success : function(data){
-	    					//console.log("succes진입");
 	    					if(data == chkArr.length){
-	    						//console.log("if진입");
-	    						alert(chkArr.length + "개 삭제가 완료되었습니다.");
+	    						alert(chkArr.length + "명이 리스트에서 삭제되었습니다.");
 	    						location.replace("sendingcursts.birth");
 	    					}else{
-	    						//console.log("else진입");
-	    						alert("삭제하는데 실패했습니다.")
+	    						alert("발송 현황 삭제에 실패했습니다.")
 	    					}
 	    				},
 	    				error : function(error){
-	    					//console.log("error진입" + error);	            					
-	    					alert("에러발생 : " + error);
+	    					console.log(error);
 	    				}
 	    			});
 				}
@@ -580,10 +543,8 @@
 		$(function(){
 			
 			var comCode = $("#comCodeInput").val();
-			console.log("comCode : " + comCode);
 			
 			$("#insertSendStsBtn").click(function(){
-				
 				var cempNum = $("#cempNum").val();
 				var cempDept = $("#cempDept").val();
 				var cempJob = $("#cempJob").val();
@@ -594,8 +555,6 @@
 				
 				var thisMonth = new Date().getMonth() + 1;
 				var empMonth = new Date(cempBirth).getMonth() + 1;
-				console.log("thisMonth : " + thisMonth);
-				console.log("empMonth : " + empMonth);
 				
 				if(cempNum == "" || cempDept == "" || cempJob == "" || cempName == "" || 
 						cempPhone == "" || cempEmail == "" || cempBirth == ""){
@@ -617,18 +576,15 @@
 		    				},
 		    				success : function(result){
 		    					if(result > 0){
-									//console.log("result : " + result);
-									//console.log("result타입 : " + typeof(result));
-									alert("발송 예정 항목 등록 성공!");
+									alert("발송 예정 목록에 추가 등록되었습니다.");
 									location.replace("sendingcursts.birth");
 									
 								}else{
-									alert("발송 예정 항목 등록 실패!");
+									alert("발송 예정 항목 등록에 실패했습니다.");
 								}
 		    				},
 		    				error : function(error){
-		    					//console.log("error진입" + error);	            					
-		    					alert("에러발생 : " + error);
+								console.log(error);
 		    				}
 		    				
 		    			});
@@ -652,23 +608,18 @@
 					cempSeq = list[i].value;
 				}
 			}
-			console.log("cempSeq : " + cempSeq);
-			//console.log("cempSeq[0] : " + cempSeq[0]);
-			console.log("chkArr길이 : " + chkArr.length);
+
 			<%-- 체크된 항목이 1개일 때만 modal 실행 --%>
 			if(chkArr.length == 1){
-				//$("#updateBtn").attr("data-toggle","modal").attr("data-target","#sending_update");
 				$("#updateBtn").attr("data-toggle","modal").attr("data-target","#sending_update");
+				
 				$.ajax({
 					url : "selectEmpOne.birth",
 					type : "POST",
 					data:{
 						cempSeq : cempSeq
 					},
-					success : function(result){	            					
-						console.log("result : " + result);
-						console.log("result2 : " + cempSeq);
-						console.log("result3 : " + result.cempBirthSdf);
+					success : function(result){
 						$("#cSeq").val(cempSeq);
 						$("#cNum").val(result.cempNum);
 						$("#cDept").val(result.cempDept);
@@ -676,16 +627,12 @@
 						$("#cName").val(result.cempName);
 						$("#cPhone").val(result.cempPhone);
 						$("#cEmail").val(result.cempEmail);
-						$("#cBirth").val(result.cempBirthSdf);	            					
-						
+						$("#cBirth").val(result.cempBirthSdf);
 					},
 					error : function(error){
-						//console.log("error진입" + error);	            					
-						alert("에러발생 : " + error);
+						console.log(error);
 					}
-				})
-				
-				//location.href="selectEmpOne.birth?cempSeq="+cempSeq;
+				});
 			}
 			else if(chkArr.length == 0){
 				alert("수정할 항목을 체크한 후 다시 버튼을 클릭해주세요.");
@@ -719,22 +666,15 @@
 					},
 					success : function(result){
 						if(result > 0){
-							//console.log("result : " + result);
-							//console.log("result타입 : " + typeof(result));
-							alert("발송 예정 항목 수정 성공!");
+							alert("해당 사원 정보가 변경되었습니다.");
 							location.replace("sendingcursts.birth");
 							
 						}else{
-							console.log("cempBirth : " + $("#cBirth").val());
-							console.log("cempBirth타입 : " + typeof($("#cBirth").val()));
-							console.log("cempBirth 변환 : " + cempBirthSdf)
-							console.log(new Date(+cempBirthSdf + 3240 * 10000).toISOString().split("T")[0])
 							alert("발송 예정 항목 수정 실패!");
 						}
 					},
 					error : function(error){
-						//console.log("error진입" + error);	            					
-						alert("에러발생 : " + error);
+						console.log(error);
 					}
 					
 				});

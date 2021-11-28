@@ -33,13 +33,7 @@ public class GiftListServiceImpl implements GiftListService {
 		// TODO Auto-generated method stub
 		return giftListDao.selectGiftList(sqlSession, perAmountMax);
 	}
-	/*
-	@Override
-	public ArrayList<GiftFolder> selectFolderArr() {
-		// TODO Auto-generated method stub
-		return giftListDao.selectFolderArr(sqlSession);
-	}*/
-	
+
 	@Override
 	public ArrayList<GiftFolder> selectFolderList() {
 		// TODO Auto-generated method stub

@@ -22,12 +22,7 @@ public class GiftListDao {
 		// TODO Auto-generated method stub
 		return (ArrayList)sqlSession.selectList("birthdayMapper.selectGiftList", perAmountMax);
 	}
-	/*
-	public ArrayList<GiftFolder> selectFolderArr(SqlSessionTemplate sqlSession) {
-		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("birthdayMapper.selectFolderArr");
-	}*/
-	
+
 	public ArrayList<GiftFolder> selectFolderList(SqlSessionTemplate sqlSession) {
 		// TODO Auto-generated method stub
 		return (ArrayList)sqlSession.selectList("birthdayMapper.selectFolderList");

@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>    
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <title>생일 구독 조회</title>
 </head>
@@ -92,6 +92,7 @@
 	}
 </style>
 <script>
+	<%-- ddd --%>
 	$(function(){
 		$("#footer").css("margin-top","150px");
 	});
@@ -99,14 +100,10 @@
 	$(function(){
 		
 		var chkResult = ${chkResult};
-		console.log("chkResult: " + chkResult);
 		
 		if(chkResult > 0){
 			var perAmount = ${b.per_amount};
 			var sendingTime = "${b.sending_time}";		
-			
-			console.log(perAmount);
-			console.log(sendingTime);
 			
 			switch(perAmount){
 			case 10000 :
@@ -153,7 +150,7 @@
 			    	<input type="hidden" name="com_code" value="${loginUser.comCode }"/>
 			    
 			    	<div class="form-group row">
-			    		<label class="col-md-3">1인당 최대 금액</label><!--데이터와 일치하는 값 속성 checked-->
+			    		<label class="col-md-3">1인당 최대 금액</label><%--데이터와 일치하는 값 속성 checked--%>
 			    		<div class="col-md-9 row">
 			        		<div class="form-check form-check-inline per_amount_div">
 				                <label class="form-check-label per_amount" for="per_amount1">
@@ -213,8 +210,8 @@
 			        	<div class="col-md-9 row">
 			        		<select class="custom-select custom-select-md" id="sendMsg">
 				                <option value="0" selected>선택</option>
-				                <option value="1">선택1 메시지에요~</option>
-				                <option value="2">선택2 메시지에요~</option>
+				                <option value="1">당신을 위한 생일 선물이 도착했어요. 아래 링크를 통해 원하는 선물을 직접 골라보세요!</option>
+				                <option value="2">귀하의 생일을 진심으로 축하드립니다~! 저희가 준비한 작은 선물을 링크를 통해 직접 골라보세요!</option>
 				                <option value="3">직접 입력</option>
 				            </select>
 				            <textarea class="form-control" id="sendMsgArea" name="notification_msg" cols="50" rows="5" style="resize: none;" placeholder="선택하세요."></textarea>
@@ -249,7 +246,6 @@
 		$(function(){
 			
 			<%-- 수정 페이지에 들어오면 기존 값을 textarea에 출력, [선택] 옵션을 선택하면 기존의 값을 출력--%>
-			
 			var notification_msg = "${b.notification_msg}";
 			
 			$("#sendMsgArea").attr("disabled", false);
@@ -285,7 +281,6 @@
 		            $("#sendMsgArea").attr("placeholder", "이곳에 메시지를 입력하세요.");
 		            $("#sendMsgArea").val("");                        
 		            break;
-		        
 		        }
 		    });
 		});
@@ -319,7 +314,7 @@
 		    
 		});
 		
-		<%-- 구독 취소 -> 추후 작성 --%>
+		<%-- 구독 취소 --%>
 		function deleteBirthSubs(){
 			
 			var deleteYN = confirm("구독을 취소하시겠습니까?");

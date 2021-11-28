@@ -26,14 +26,11 @@ public class HO_SendListController {
 	public String selectList(Model model, HttpSession session) {
 		
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
-		System.out.println("loginEmp_comCode : " + comCode);
-		
+	
 		int birthSubsChk = sendListService.subscribeChk(comCode);
-		System.out.println("birthSubsChk : " + birthSubsChk);
-		
+	
 		int sendingTime = selectSendingTime(comCode);
-		System.out.println("발송시점 sendingTime : " + sendingTime);
-		
+	
 		if(sendingTime < 0) {
 			model.addAttribute("msg", "생일 구독을 신청하지 않은 회사입니다.");
 			model.addAttribute("url", "/mainPage.ho");
@@ -41,8 +38,7 @@ public class HO_SendListController {
 			return "common/alert";
 		}else {
 			ArrayList<HO_SendList> list = sendListService.selectSendingList(comCode);
-			System.out.println("list확인 : " + list);
-			
+	
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());
 			int thisYear = cal.get(Calendar.YEAR);

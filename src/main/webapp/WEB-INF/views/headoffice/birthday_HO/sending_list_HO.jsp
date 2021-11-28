@@ -9,11 +9,11 @@
     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<title>Insert title here</title>
+<title>발송 리스트(본사)</title>
 </head>
 <style>
     #birthCard{
-    	height: 86%;
+    	height: 81%;
     	width: 96%;
     	margin: auto;
     	overflow: scroll;
@@ -54,8 +54,26 @@
     	margin-top: 12px;
     	float: right;
     }
+    
+    #sListTitleDiv{
+    	margin-bottom: 5px;
+    }
+    #sendListTitle{
+		width: 94%;
+		margin: auto;
+		color: rgb(10, 23, 78);
+    }
 </style>
 <body>
+	<script>
+		$(function(){
+			var presentDate = new Date();
+			var presentYear = presentDate.getFullYear();
+			var presentMonth = presentDate.getMonth()+1;
+			
+			$("#sendListTitle").html(presentYear + "년 " + (presentMonth+1) + "월 발송 예정 리스트");
+		});
+	</script>
 	<section class="birthSection">
 		<div class="container-fluid" id="birthContainer">
 			<div class="row flex-nowrap">
@@ -63,6 +81,7 @@
 				
 				<div class="col-10">
 					<br><br>
+					<div id="sListTitleDiv"><h4 id="sendListTitle"></h4></div>
 					<div class="card text-center" id="birthCard">
 						<div class="card-header" id="tabArea">
 					        <ul class="nav nav-tabs card-header-tabs" id="sendingTab">

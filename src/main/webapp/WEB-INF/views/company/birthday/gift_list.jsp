@@ -10,11 +10,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
-<script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> --%>
+<script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+--%>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/giftList.css">
 <link rel="shortcut icon" href="#">
-<title>Insert title here</title>
+<title>선물 리스트</title>
 </head>
 <style>
 	/*footer 조절*/
@@ -33,11 +34,6 @@
 		transform: translateY(-100%);
 	}
 </style>
-<script>
-	$(function(){
-		$("#footer").css("margin-top","150px");
-	});
-</script>
 <body id="giftListBody">
 
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
@@ -45,22 +41,15 @@
 	<section>
 		<div class="container-fluid" id="giftContainer">
 			<br><br>
-			<%-- 
-			<div id="giftTitleArea">
-				<h3>선물 리스트&nbsp;&nbsp;</h3>
-			</div>
-			--%>
 			<a id="tip" tabindex="0" class="btn" role="button" data-toggle="popover" data-placement="left" data-trigger="focus" 
-			title="선물리스트 추가 기능" data-content="상품에 마우스를 올리면 나타나는 아이콘을 클릭하면 원하는 선물리스트에 추가할 수 있어요!">TIP</a>
-			<br>
+			title="선물리스트 추가 기능" data-content="상품에 마우스를 올리면 나타나는 아이콘을 클릭해 원하는 선물리스트에 추가할 수 있어요!">TIP</a>
+			<br><br>
 			
-			<br>
 			<div id="giftFuncArea">
 				<div class="giftListTop" id="giftSearchArea">
 					<span style="font-size: large;">검색결과 <b id="giftCount"></b>개</span>&nbsp;&nbsp;&nbsp;
 					<div class="searchDiv" id="searchDiv">
 						<input type="text" id="searchInput" placeholder=" 결과 내 재검색">
-						<%-- <span id="searchReset"><i class="fas fa-times-circle"></i></span>&nbsp;&nbsp;--%>
 				        <span><i class="fas fa-search"></i></span>&nbsp;&nbsp;
 					</div>
 				</div>
@@ -141,32 +130,37 @@
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
+	<script>
+		<%-- footer 설정 --%>
+		$(function(){
+			$("#footer").css("margin-top","150px");
+		});
+	</script>
+	
 	<script type="text/javascript">
 		
 		<%-- BEST 상품의 changeName을 담은 array --%>
 		var bestItemsArray;
 		<%-- 익명함수 사용해서 best 상품 골라내기 --%>
-		(function getBestItems(){
-			//console.log($(".cardHead").eq(1).siblings("input[class='getChangeName']").val());			
+		(function getBestItems(){		
 			bestItemsArray = new Array();
 			
 			for(var i=0; i<5; i++){
 				$(".cardHead").eq(i).html("<span>B</span><span>E</span><span>S</span><span>T</span><span>!</span>");
 				bestItemsArray.push($(".cardHead").eq(i).siblings("input[class='getChangeName']").val());
 			}
-			//console.log("###########");
-			//console.log(bestItemsArray);
+			
 			return bestItemsArray;
 		}());
-		//console.log(bestItemsArray);
 		
 		$(function () {
+			<%-- 팝오버 TIP 실행 함수 --%>
 			$('[data-toggle="popover"]').popover();
 		});
 		
 		<%-- 카테고리별 상품 리스트 출력 함수 --%>
 		function selectCategory(categoryNum){
-			//console.log("categoryNum : " + categoryNum);
+			
 			var result = '';
 			
 			$.ajax({
@@ -214,6 +208,7 @@
 					
 					$("#seeMoreItems").show();
 					
+					<%-- 각 카드 감싸는 outer(폴더 아이콘 들어가는 부분) --%>
 					$(".cardOuter").css("opacity","0");
 					
 					<%-- 각 상품에 마우스 올리면 선물리스트 추가하는 아이콘 보이게 설정 --%>
@@ -244,7 +239,6 @@
 			$("#giftCtgry3").html('낮은가격순');
 			
 			$("#seeMoreItems").show();
-			//selectCategory(categoryNum);
 
 			var ctgryNum;
 			<%-- (1) 추천상품순 --%>
@@ -262,10 +256,7 @@
 				
 				$("#seeMoreItems").hide();
 				ctgryNum = 1;
-				
-				//console.log($("#giftListArea").children());
-				//console.log(typeof(ctgryNum));
-				
+
 				selectCategory(ctgryNum);
 			});
 			<%-- (2) 높은가격순 --%>
@@ -283,10 +274,7 @@
 				
 				$("#seeMoreItems").hide();
 				ctgryNum = 2;
-				
-				//console.log($("#giftListArea").children());
-				//console.log(typeof(ctgryNum));
-				
+
 				selectCategory(ctgryNum);
 			});
 			<%-- (3) 낮은가격순 --%>
@@ -304,12 +292,7 @@
 				
 				$("#seeMoreItems").hide();
 				ctgryNum = 3;
-				
-				//console.log($("#giftListArea").children());
-				//console.log(typeof(ctgryNum));
-				
-				//location.href="giftSortList.birth";				
-				
+
 				selectCategory(ctgryNum);
 			});
 		});
@@ -319,14 +302,12 @@
 	    	<%-- 상품 총 개수 출력용 --%>
 			var rowCount = $("#giftListArea").children().length;
 			$("#giftCount").html(rowCount);
-			
 	    	
 	        $("#searchInput").keyup(function(){
-	        	//console.log("순서12");
 	            $(".gift").hide();
 	
 	            var searchText = $(this).val();
-	            searchText = searchText.toUpperCase(); //등록되는 상품 정보에 포함된 알파벳은 전부 대문자이므로 대문자로 검색
+	            searchText = searchText.toUpperCase(); <%-- 등록되는 상품 정보에 포함된 알파벳은 전부 대문자이므로 대문자로 검색 --%>
 	            
 	            var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
 	            var giftName = $(".card-body>p:contains('"+searchText+"')");
@@ -382,9 +363,9 @@
 				$("#searchDiv").css("border","1px solid lightgray");
 			});
 		});
-		<%-- # modal에 폴더 리스트 출력 --%>
+		<%-- # modal에 폴더 리스트를 출력하기 위한 함수 --%>
 		function selectFolderList(){
-			//console.log("순서2");
+			
 			$.ajax({
 				url: "selectFolderList.birth",
 				type: "POST",
@@ -398,13 +379,13 @@
 						result += '<div class="giftListFolder" style="width: 25%; height: 100%; display: flex; align-items: center;">';
 						result += '<button class="giftIcon" type="button" value="' + (index+1) + '" data-toggle="collapse" data-target="#giftCollapse' + (index+1) + '" aria-expanded="false" style="outline: none; border: none; background: white;">';
 						result += '<input class="glistNo" type="hidden" value="' + item.glistNo + '"/>';
-						result += '<i class="fas fa-folder" id="GIFT' + (index+1) + '" style="color: gold; cursor: pointer;"></i></button>';
+						result += '<i class="fas fa-folder" id="GIFT' + (index+1) + '" style="color: gold; cursor: pointer;" data-toggle="tooltip" data-placement="top" title="담은 목록 보기"></i></button>';
 						result += '<span>&ensp;' + item.glistName + '</span></div>';
 						
 						result += '<div class="folderRight">';
 						result += '<input class="folderNo" type="hidden" value="' + item.glistNo + '"/>';
 						result += '<input class="folderRowNum" type="hidden" value="' + (index+1) + '"/>';
-						result += '<span class="badge badge-primary badge-pill folderBadge" style="cursor: pointer; width: 28px; margin-right: 7px;">' + item.folderGiftCount + '</span>';
+						result += '<span class="badge badge-primary badge-pill folderBadge" style="cursor: pointer; width: 28px; margin-right: 7px;" data-toggle="tooltip" data-placement="top" title="폴더에 담기">' + item.folderGiftCount + '</span>';
 						result += '<i class="fas fa-times folderTimes" style="cursor: pointer;"></i></div></li>';
 						result += '<li id="giftCollapse' + (index+1) + '" class="collapse" data-parent="#giftAccordion">';
 						result += '<div style="padding: 1.5rem;">';
@@ -425,7 +406,6 @@
 						result += '</li>';
 					});
 					$("#folderUlTag").html(result);
-						
 				},
 				error: function(error){
 					alert(error);
@@ -435,38 +415,25 @@
 		
 		<%--2. 선택한 제품 원하는 폴더에 추가 기능 (뱃지 클릭해서 추가) --%>
 		$(function(){
-			<%-- 화면 로딩 시 상품 리스트 데이터 조회하여 나열 --%>
+			<%-- 화면 로딩 시 선물 리스트 데이터 조회해둠(modal창에 바로 화면에 나올 수 있게) --%>
 			selectFolderList();
-			
-			//console.log($(".folderTimes").siblings(".folderNo").val());
+
 	    	<%-- (1) 각 상품 클릭하면 해당 GIFT_NO 값을 giftNo에 삽입 --%>
 	    	var giftNo;
 	    	$(document).on('click', '.addGift', function(e){
-	    		//console.log(e.currentTarget);
-	    		//console.log("순서7");
-	            //console.log("GIFT_NO : "+e.currentTarget.value);
 	            giftNo = e.currentTarget.value;
- 
 	    	});
 	    	
 	    	<%-- (2) 뱃지 클릭 시 중복체크 후 뱃지 숫자 증가시킴 --%>
-            $(document).on('click','.folderBadge', function(e2){
-            	//console.log("순서8");
-            	//console.log(typeof($(this).html())+1)
-            	//console.log(typeof($(this).text())+1)
-            	//console.log(parseInt($(this).html())+1)
-            	//console.log(parseInt($(this).text())+1)
-            	
-            	<%-- thisTag : 태그를 ajax로 가지고 들어가기 위해 변수로 선언(여기서는 span 태그를 의미)
-            		 folderGiftCnt : 뱃지(span태그)를 클릭하면 상품이 들어가 +1이 되어야 하므로 기존 값에 +1을 한 값을 이 변수에 대입
+            $(document).on('click','.folderBadge', function(){
+            	<%-- 
+            	thisTag : 태그를 ajax로 가지고 들어가기 위해 변수로 선언(여기서는 span 태그를 의미)
+            	folderGiftCnt : 뱃지(span태그)를 클릭하면 상품이 들어가 +1이 되어야 하므로 기존 값에 +1을 한 값을 이 변수에 대입
             	--%>
             	var thisTag = $(this);
             	var folderGiftCnt = parseInt($(this).html()) + 1;
             	
             	<%-- 선택한 폴더의 glistNo을 가져오기위해 siblings() 활용해 input[type='hidden']의 val값을 가져옴 --%>
-            	//console.log($(this).siblings(".folderNo").val());
-            	//console.log("GLIST_NO : "+$(this).siblings(".folderNo").val());
-            	//console.log("FOLDER_ROWNUM : "+$(this).siblings(".folderRowNum").val());
             	var glistNo = $(this).siblings(".folderNo").val();
             	var folderRowNum = $(this).siblings(".folderRowNum").val();
             	var detailArr = new Array();
@@ -482,7 +449,6 @@
             			detailArr : detailArr
             		},
             		success: function(result){
-            			//console.log("중복체크 결과 : " + result);
             			if(result > 0){
             				alert("이미 해당 기프티콘 정보가 존재합니다.");
             				return false;
@@ -496,10 +462,7 @@
         	            			detailArr : detailArr
         	            		},
         	            		success: function(result){
-        	            			//console.log(result);
-        	            			//console.log("success!!!");
         	            			thisTag.html(''+folderGiftCnt);
-        	            			//selectFolderList();
         	            			selectFolderInfo(folderRowNum);
         	            		},
         	            		error: function(error){
@@ -513,11 +476,9 @@
             		}
             	});	
 	    	});
-            
-            $(document).on('click','.folderTimes', function(e3){
-            	//console.log("순서9");
+            <%-- 폴더 삭제 함수 --%>
+            $(document).on('click','.folderTimes', function(){
             	var folderNo = $(this).siblings(".folderNo").val();
-            	console.log("folderNo : "+folderNo);
             	
             	if(folderNo == 'FOLDER0'){
             		alert("기본 폴더는 삭제할 수 없습니다.");
@@ -531,8 +492,6 @@
                     			glistNo : folderNo
                     		},
                     		success: function(result){
-                    			//console.log("폴더 삭제 성공!!!");
-                    			//console.log(result);
                     			selectFolderList();
                     		},
                     		error: function(error){
@@ -548,9 +507,7 @@
 		
 		<%-- # 각 폴더에 속한 상품 리스트 출력 --%>
 		function selectFolderInfo(rowNumVal){
-			//console.log("순서3");
-			//console.log("value2 : " + rowNumVal);
-			
+
 			$.ajax({
 				url: "selectFolderInfo.birth",
 				type: "POST",
@@ -558,16 +515,12 @@
 					rowNum : rowNumVal
 				},
 				success: function(list){
-					//console.log("폴더info성공");
-					//console.log(list);
-					//console.log(list.length);
-					
+
 					var result='';
 					
 					if(list.length != 0){
 						$.each(list, function(index, item){
 							var price = (item.giftPrice).toLocaleString();
-							//console.log("price:"+price)
 
 							result += '<tr>';
 							result += '<th scope="row" style="text-align:center;">';
@@ -579,9 +532,7 @@
 							result += '<td>' + price + '</td>';
 							result += '</tr>';
 						});
-						
 					}else{
-						<%-- 폴더에 내용 추가되면 아래 내용은 없어져야함 - 추후 수정 --%>
 						result += '<tr><td colspan="5"><h5>추가된 상품이 존재하지 않습니다.</h5></td></tr>';
 					}
 					$("#folderInfoBody"+rowNumVal).html(result);
@@ -590,23 +541,15 @@
 					alert(error);
 				}
 			});
-			
-			
 		}
 		
 		<%-- 4. 선택한 폴더 내 리스트 조회 기능 --%>
 		$(function(){
 
 			$(document).on('click', '.giftIcon', function(e){
-				//console.log("순서4");
 				<%-- 
 	        	e.currentTarget : button 태그 -> value값 추출 가능
 	        	e.target : i 태그
-	        	--%>
-	        	
-	        	<%-- 
-	        	var targetVal = e.currentTarget.value;
-	        	var targetId = e.target.id;  
 	        	--%>
 	        	
 	        	<%-- 폴더 아이콘 변경 코드 --%>
@@ -626,7 +569,7 @@
             	
 				<%-- button value값을 status.count로 구해서 쿼리문에서 WHERE절의 ROWNUM 값으로 활용(GIFT_LIST 테이블)--%> 
 				
-				<%-- 폴더 새로 추가 시 e.currentTarget.value 값이 undefined가 되므로 
+				<%-- 폴더 새로 추가 시 e.currentTarget.value 값이 undefined가 되므로 이거로 구하는건 안될 것 같고,
 					length값으로 targetVal 설정 후 rowNumVal이 null일 때 targetVal에 + 1을 하면
 					원하는 값을 얻을 수 있음
 				--%>
@@ -637,34 +580,24 @@
 				if(rowNumVal == null){
 					rowNumVal = targetVal + 1;
 				}
-				
-				
-				//console.log("rowNumVal : "+rowNumVal);
-				//console.log($("#dddd"));
+
 				<%-- 폴더 내 상품 삭제를 위해 glistNo을 먼저 구한 후 함수로 값을 넘겨줌 --%>
-				//console.log("GLIST_NO22 : "+$(this).children().eq(0).val());
-				
 				var glistNo = $(this).children().eq(0).val();
 				selectFolderInfo(rowNumVal);
-				
-				//deleteFolderDetail(glistNo, rowNumVal);
 			});
 		});
 	
 		$(function(){
+			<%-- 폴더 삭제하는 x 아이콘에 마우스 올릴 때 색 변경 --%>
 			$(".delFolderDetail").hover(function(){
-				//console.log("순서5");
 				$(".delFolderDetail").css("color","red");
-				$(".delFolderDetail").css("background","red");
-			})
+			});
 		});
 		
 		$(function(){
+			<%-- 폴더 상세 테이블에서 기프티콘 삭제할 때 실행되는 함수 --%>
 			$(document).on('click','.delFolderDetail', function(){
-				//console.log("순서6");
 				var thisBadge = $(this).parents("li").prev().find("span:eq(1)");
-				//console.log($(this).parents("li").prev().find("button[class='giftIcon']").children().eq(0).val());
-				//console.log($(this).parents("li").prev().find("input[class='folderRowNum']").val());
 				
 				var delGlistNo = $(this).parents("li").prev().find("button[class='giftIcon']").children().eq(0).val();
 				var delRowNumVal = $(this).parents("li").prev().find("input[class='folderRowNum']").val();
@@ -673,10 +606,6 @@
 				var delGiftArr = new Array();
 				delGiftArr.push(delGlistNo);
 				delGiftArr.push(delGiftNo);
-				
-				//console.log("delGlistNo: " + delGlistNo);
-				//console.log("delRowNumVal: " + delRowNumVal);
-				//console.log("delGiftNo: " + delGiftNo);
 				
 				$.ajax({
 					url: "delFolderDetail.birth",
@@ -687,7 +616,6 @@
 					},
 					success: function(result){						
 						var badgeCount = thisBadge.html();
-						//console.log("badgeCount : " + badgeCount);
 						thisBadge.html(badgeCount-1);
 						selectFolderInfo(delRowNumVal);
 					},
@@ -701,12 +629,9 @@
 	    <%-- 1. 폴더 추가 기능 --%>
 	    $(function(){
 	    	
-	    	//$("#addFolder").click(function(){
 	    	$(document).on('click','#addFolder',function(e){
-	    		//console.log("확인!");
-	    		//console.log("순서10");
+
 	    		var fName= $("input[name='folderName']").val();
-		    	//console.log("fName : " + fName);
 	    		
 	    		$.ajax({
 	    			url: "addGiftFolder.birth",
@@ -715,37 +640,36 @@
 	    				folderName : fName
 	    			},
 	    			success: function(data){
-	    				//console.log("성공!!!");
-	    				//console.log("data : " + data);
 
 	    				<%-- 폴더 생성 후에는 text를 비워줌 --%>
 	    				$("input[name='folderName']").val("");
-	    				<%-- ul내부 li개수를 구해서 modal id뒤의 count를 지정 
-	    				- 한 항목당 li태그가 두 개 들어있으므로 나누기 2한 후 다음 인덱스를 대입하기 위해 +1--%>
+	    				
+	    				<%-- 
+	    				ul내부 li개수를 구해서 modal id뒤의 count를 지정 - 한 항목당 li태그가 두 개 들어있으므로 나누기 2한 후 다음 인덱스를 대입하기 위해 +1
+	    				--%>
 	    				var liCount = $("#folderUlTag").children().length/2 + 1;
-	    				//console.log("li 개수 : "+liCount);
+	    				
 	    				var result = '';
+	    				
 	    				if(data != ""){
 	    					selectFolderList();
 		    				selectFolderInfo(liCount);
 	    				}else{
 	    					alert("폴더명을 입력하세요.");
 	    				}
-
 	    			},
-	    			error: function(e){
-	    				console.log("에러!!!");
+	    			error: function(error){
+	    				console.log(error);
 	    			}
 	    		});
 	    	});
 	    });
 	    	
-	    <%-- 더보기 버튼 클릭 시 실행 함수 --%>
+	    <%-- 화면 로딩 시 정해진 개수만 출력(20개) --%>
 	    function firstHideItems(){
 			var firstItems = 20;
 			const itemsLength = $(".gift").length;
-			console.log("전체 아이템 수 : "+itemsLength);
-			console.log($(".gift").eq(0));
+
 			$("#itemsCount").html(firstItems);
 			$("#wholeItemsCount").html(itemsLength);
 			
@@ -756,7 +680,6 @@
 					$(".gift").eq(i).hide();
 				}
 			}
-
 		}
 	    
 	    $(function(){
@@ -764,6 +687,7 @@
 			var visibleItems = 20;
 			const itemsLnth = $(".gift").length;
 			
+			<%-- 더보기 버튼 클릭 시 실행 함수 --%>
 			$(document).on('click', '#seeMoreItems',  function(){
 				if(visibleItems + 20 > itemsLnth){
 					visibleItems += (itemsLnth - visibleItems)

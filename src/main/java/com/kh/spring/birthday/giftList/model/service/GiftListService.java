@@ -14,9 +14,7 @@ public interface GiftListService {
 	ArrayList<GiftList> selectGiftList(int perAmountMax);
 
 	ArrayList<GiftList> selectCtgry(Map<String,Integer> map);
-	
-	//ArrayList<GiftFolder> selectFolderArr();
-	
+
 	ArrayList<GiftFolder> selectFolderList();
 
 	int addGiftFolder(String folderName);

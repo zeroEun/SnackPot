@@ -64,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       SELECT *
       FROM BIRTHDAY_SERVICE
       WHERE COM_CODE = #{comCode}
+      AND BSERVICE_STATUS='Y'
    	</select>
 
 	<select id="countEmp" resultType="_int">

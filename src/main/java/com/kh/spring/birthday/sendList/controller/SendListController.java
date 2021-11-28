@@ -32,10 +32,8 @@ public class SendListController {
 		String comCode = ((CompanyMember)session.getAttribute("loginUser")).getComCode();
 		
 		int birthSubsChk = sendListService.subscribeChk(comCode);
-		System.out.println("birthSubsChk : " + birthSubsChk);
 		
 		int sendingTime = selectSendingTime(comCode);
-		System.out.println("발송시점 sendingTime : " + sendingTime);
 		
 		if(sendingTime < 0) {
 			model.addAttribute("msg", "구독 정보가 존재하지 않습니다.");
@@ -43,7 +41,6 @@ public class SendListController {
 			return "common/alert";
 		}else {
 			ArrayList<SendList> list = sendListService.selectSendList(comCode);
-			System.out.println("list : " + list);
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());
@@ -60,7 +57,7 @@ public class SendListController {
 			}
 
 			ArrayList<GiftFolder> giftFolder = sendListService.selectGiftFolder();
-			System.out.println("giftFolder : " + giftFolder);
+
 			model.addAttribute("birthSubsChk", birthSubsChk);
 			model.addAttribute("giftFolder", giftFolder);
 			model.addAttribute("list", list);
@@ -134,7 +131,6 @@ public class SendListController {
 		s.setSendMsgDate(thisYear + (sdf.format(cal.getTime())).substring(4));
 
 		int result2 = sendListService.insertSendList2(s);
-		System.out.println("result2 : " + result2);
 		
 		return String.valueOf(result);
 		
@@ -143,15 +139,12 @@ public class SendListController {
 	@ResponseBody
 	@RequestMapping(value="selectEmpOne2.birth")
 	public SendingStatus selectEmpOne(int cempSeq) {
-		System.out.println("cempSeq : " + cempSeq);
+
 		SendingStatus s = sendListService.selectEmpOne(cempSeq);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println("cempBirth : " + s.getCempBirth());
 		
-		s.setCempBirthSdf(sdf.format(s.getCempBirth()));
-		System.out.println("cempBirth2 : " + s.getCempBirthSdf());
-		System.out.println("선택 수정 선택 객체 : " + s);		
+		s.setCempBirthSdf(sdf.format(s.getCempBirth()));	
 		
 		return s;
 		
@@ -162,7 +155,6 @@ public class SendListController {
 	public String updateSendStatus(SendingStatus s) {
 		
 		int result = sendListService.updateSendList(s);
-		System.out.println("수정result: " + result);
 		
 		return String.valueOf(result);
 		
@@ -182,13 +174,10 @@ public class SendListController {
 				gf.setGlistNo(selectArray[i]);
 			}else {
 				gf.setCempSeq(Integer.parseInt(selectArray[i]));
-				System.out.println("gf : " + gf);
 				result += sendListService.updateGiftList(gf);
 			}
 		}
-		System.out.println("나누기 안 한  result : " + result);
 		result = result / (selectArray.length/2);
-		System.out.println("나누기 한 result : " + result);
 		
 		return String.valueOf(result);
 		

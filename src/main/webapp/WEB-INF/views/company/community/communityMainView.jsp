@@ -50,7 +50,7 @@
 }
 /*글쓰기 , 조회 버튼*/
 .writerBtn{
-  background-color: rgb(10, 23, 78);
+ 	 background-color: rgb(10, 23, 78);
     color: white;
     border-style: none;
   	height: 30px;

@@ -48,7 +48,7 @@ public interface ProductService {
 	
 	
 	//스케줄러 테스트용
-//	void updateClosingDate(String today);
+	void updateClosingDate(String today);
 
 
 	

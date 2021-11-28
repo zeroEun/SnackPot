@@ -329,12 +329,14 @@
 	//d-day
 	$(function(){
 
-		const wishEndDate = "<fmt:formatDate value="${list[0].wishEndDate}" pattern="yyyy-MM-dd"/>"
+		const wishEndDate = "<fmt:formatDate value="${list[0].wishEndDate}" pattern="yyyy-MM-dd HH:mm:ss"/>" //초를 맞춰줘야할꺼같음
 			console.log(wishEndDate)
-		const closingDate = new Date(wishEndDate).getTime() //위시리스트 마감일
 	
+		const closingDate = new Date(wishEndDate).getTime() //위시리스트 마감일
+		console.log(closingDate)
 		var x = setInterval(function(){
             var now = new Date().getTime();
+        
 
             var distance = closingDate - now;
             

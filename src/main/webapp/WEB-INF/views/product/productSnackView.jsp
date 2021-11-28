@@ -242,13 +242,13 @@ text-align: center;
       </div>
       </c:if>
    
-      <!-- 랭킹순위 -->
+      <!-- 랭킹순위
      <ul class="rank">
         <li><a>판매인기순</a></li>
         <li><a>높은가격순</a></li>
         <li><a>낮은가격순</a></li>
       </ul>
-      
+       -->
   <br><br>
  <!-- 상품정렬 -->
  <div class="prodContain" >
@@ -274,7 +274,6 @@ text-align: center;
 <script type="text/javascript">
  function wishAdd(val){
    var wishSnackNo = val;
-   alert(wishSnackNo)
     console.log(wishSnackNo)
    //간식번호를 보내서 wishlist에 저장하기
    $.ajax({

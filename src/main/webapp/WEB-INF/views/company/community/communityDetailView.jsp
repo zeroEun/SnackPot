@@ -78,8 +78,6 @@
        margin-left: 75%;
        width: 200px;
 
-       
-
     }
  
     /*수정 삭제btn*/
@@ -127,9 +125,76 @@
         text-align: center;
         padding: 0 10px 0 10px;
     }
-    .updateReply{
-    	background-color: aqua;
+    
+    /*append css*/
+    /*수정버튼*/
+    .updateReply, .deleteReply  , .reReplyAdd ,.deleteReReplyBtn{
+    	border: 1px solid lightgray;
+    	background-color: white;
+    	width: 50px;
+    	margin: 0 3px 0 0;
+    	border-radius: 3px;
     }
+    /* 수정완료 버튼*/
+    #updateComment{
+    	background-color: white;
+    	color: rgb(10, 23, 78);
+  		height: 30px;
+    	width:80px;
+    	border-radius: 3px;
+    }
+   /*부모댓글*/
+  /*댓글안 날짜*/
+  .replyDate{
+  	float: right;
+	font-size: 12px;
+	color: gray;
+	margin-top: 4px;
+
+  }
+  /*부모댓글 */
+  .replyContent1{
+  	display: inline-block;
+  	margin-left: 40px;
+  }
+  /*댓글수정 창*/
+  #reContent2{
+  	margin-left: 200px;
+  	margin-right : 10px;
+  	width: 580px;
+  	height: 35px;
+  	border-radius: 2px;
+  }
+  /*답글 */
+  .rereplyTd{
+  	width: 16%;
+
+  }
+  .rereplyName{
+  	margin-left: 35px;
+  	
+  }
+  /*답글의 화살표*/
+  .imgArrow{
+  	width: 10px;
+  	height: 10px;
+  	margin-right: 5px;
+  	margin-bottom: 9px;
+  }
+  /*답글*/ 
+  #reReContent2{
+  	width: 450px;
+  	height: 35px;
+  }
+ #reReplyBtn{
+     background-color: rgb(10, 23, 78);
+     color: white;
+     border-style: none;
+     height: 30px;
+     width: 90px;
+     border-radius: 10px;
+ 	
+ }		
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
@@ -179,6 +244,7 @@
 	<br>
 	<br>
 	<!-- 댓글!! -->
+	<div class="replyContain" style="padding: 0 4% 0 4%">
 	<button class="far fa-comment-dots" onclick="selectReplyList()">댓글</button>
  		<table id="replyArea" class="table">
                 <thead>
@@ -193,6 +259,7 @@
                     
                 </tbody>
          </table>
+      </div>
      <div class="reReplyModal">
      
      </div>
@@ -212,6 +279,8 @@
 	/*게시글 삭제하기*/
 	function deleteCmnt(val) {
 		const cno = val;
+		
+		
 		if(confirm("정말 삭제하시겠습니가?")){
 			location.href = "delete.cm?cno=" + cno;
 			$.ajax({
@@ -269,44 +338,53 @@
 				var value="";
 				$.each(list, function(index, obj){
 					
-					if("${loginUser.memId}" == obj.reWriter && obj.reGroups == 0){ //글작성자가 본인 && 부모댓글
-						value += "<tr>";
-					    value += "<th class='col-md-1'>" + '익명' + "</th>" + 
-								 "<td class='col-md-8'>" + obj.reContent + "</td>" + 
-								 "<td class='col-md-1'>" + obj.reDate + "</td>" + 
-								 "<td class='col-md-2'><input type='button' value='수정' class='updateReply' data_num='"+obj.reNo+"'data_text='"+obj.reContent+"'data_index='"+index+"'>"+
-								 "<input type='button' value='삭제' class='deleteReply' data_num="+obj.reNo+">"+
+					if("${loginUser.memId}" == obj.reWriter && obj.reGroups == 0 && obj.reContent != '-1'){ //글작성자가 본인 && 부모댓글
+						value += "<tr class='replyParent'>";
+					    value += "<td  style='width: 13%'>" + '익명' + "<label class='replyDate'>" + obj.reDate + "</label>" + "</td>" +
+								 "<td style='width: 50%' class='replyContent'>" +"<label class='replyContent1'>" + obj.reContent + "</label>" +"</td>" + 
+								 "<td></td>"+
+						 	  	 "<td></td>"+
+								 "<td style='width: 40%' ><input type='button' value='수정' class='updateReply' data_num='"+obj.reNo+"'data_text='"+obj.reContent+"'data_index='"+index+"'>"+
+								 "<input type='button' value='삭제' class='deleteReply' data_num="+obj.reNo+" data_reGroup="+obj.reGroup+">"+
 								 "<input type='button' value='답글' class='reReplyAdd' data_num="+obj.reNo+" data_index="+index+" data_text="+obj.reContent+" data_reGroup="+obj.reGroup+" data_reGroupDept="+obj.reGroupDept+" data-toggle='modal' data-target='#myModal"+index+"'></td>"+
-						 	  	 "</tr>";
-						 	  	 
-								 value += "<tr>";
-								 value += "<td colspan='4'><div id='updateCommentFormDiv"+index+"'></div></td>";
+								 "</tr>";
+					 	
+						value += "<tr><td colspan='5'><div id='updateCommentFormDiv"+index+"'></div></td></tr>";
 								 console.log(obj.reContent)
 					}else if(obj.reGroups == 1 && "${loginUser.memId}" != obj.reWriter){ //자식댓글
-						value += "<tr  style='background-color: pink;'>";
-					    value += "<th>" + '익명' + "</th>" + 
-								 "<td>"+'->' + obj.reContent + "</td>" + 
-								 "<td>" + obj.reDate + "</td>"+ 
+						value += "<tr>";
+						value += "<td class='rereplyTd'>" +  "<label class='rereplyName'>" + "<img class='imgArrow' src='${ pageContext.servletContext.contextPath }/resources/images/common/화살표.png'>"+'익명'+"</label>" + "<label class='replyDate'>" + obj.reDate + "</label>" + "</td>" +
+								 "<td style='width: 50%' class='replyContent'>" +"<label class='replyContent1'>" + obj.reContent + "</label>" +"</td>" + 
+					   			 "<td></td>"+
+						 	  	 "<td></td>"+
 						 	  	 "</tr>";	 
-						}else if("${loginUser.memId}" != obj.reWriter && obj.reGroups == 0){
-							value += "<tr>";
-						    value += "<th>" + '익명' + "</th>" + 
-									 "<td>" + obj.reContent + "</td>" + 
-									 "<td>" + obj.reDate + "</td>" + 
-									 "<td>"+
-									 "<input type='button' value='답글' class='reReplyAdd' data_num="+obj.reNo+" data_index="+index+" data_text="+obj.reContent+" data_reGroup="+obj.reGroup+" data_reGroupDept="+obj.reGroupDept+" data-toggle='modal' data-target='#myModal"+index+"'></td>"+
-							 	  	 "</tr>";
-							 	  	 
+						}else if("${loginUser.memId}" != obj.reWriter && obj.reGroups == 0 && obj.reContent != '-1'){ //부모댓글 && 작성자가 다름
+							value += "<tr class='replyParent'>";
+							value += "<td  style='width: 13%'>" + '익명' + "<label class='replyDate'>" + obj.reDate + "</label>" + "</td>" +
+							 "<td style='width: 50%' class='replyContent'>" +"<label class='replyContent1'>" + obj.reContent + "</label>" +"</td>" + 
+							 	 "<td></td>"+
+					 	  	 	 "<td></td>"+
+								  "<td>"+
+								  "<input type='button' value='답글' class='reReplyAdd' data_num="+obj.reNo+" data_index="+index+" data_text="+obj.reContent+" data_reGroup="+obj.reGroup+" data_reGroupDept="+obj.reGroupDept+" data-toggle='modal' data-target='#myModal"+index+"'></td>"+
+							 	  "</tr>";
 									 value += "<tr>";
-									 value += "<td colspan='4'><div id='updateCommentFormDiv"+index+"'></div></td>";
+									 value += "<td><div id='updateCommentFormDiv"+index+"'></div></td>";
 									 console.log(obj.reContent)
 							}else if("${loginUser.memId}" == obj.reWriter && obj.reGroups == 1){ //자식댓글 이고 작성자가 본인일때
-								value += "<tr  style='background-color: pink;'>";
-							    value += "<th>" + '익명' + "</th>" + 
-										 "<td>"+'->' + obj.reContent + "</td>" + 
-										 "<td>" + obj.reDate + "</td>"+ 
+								value += "<tr>";
+								value += "<td class='rereplyTd'>" +  "<label class='rereplyName'>" + "<img class='imgArrow' src='${ pageContext.servletContext.contextPath }/resources/images/common/화살표.png'>"+'익명'+"</label>" + "<label class='replyDate'>" + obj.reDate + "</label>" + "</td>" +
+										 "<td style='width: 50%' class='replyContent'>" +"<label class='replyContent1'>" + obj.reContent + "</label>" +"</td>" + 
+										 "<td></td>"+
 										 "<td><input type='button' value='삭제' class='deleteReReplyBtn' data_num="+obj.reNo+"></td>" + 
 								 	  	 "</tr>";	
+							}else if(obj.reGroups == 0 && obj.reContent == '-1'){
+								value += "<tr class='replyParent'>";
+								value += "<td  style='width: 13%'>" + '익명' + "<label class='replyDate'>" + obj.reDate + "</label>" + "</td>" +
+										 "<td style='width: 50%' class='replyContent'>" +"<label class='replyContent1'>" + '(   삭제된 댓글입니다.  )' + "</label>" +"</td>" + 
+										 "<td></td>"+
+								 	  	 "<td></td>"+
+										 "</tr>";
+										 console.log(obj.reContent == String(-1))
 							}
 					});
 				$("#replyArea tbody").html(value).trigger("create");
@@ -314,8 +392,11 @@
 				//댓글 삭제
 				 $('.deleteReply').on('click', function(){
 					 var reNo = $(this).attr('data_num'); 
-					 console.log(reNo)
-					 
+					 var reGroup = $(this).attr('data_reGroup');
+					 var cno = ${dlist.communityNo};
+					 console.log("삭제할 부모댓글 " + reGroup)
+					 console.log("삭제할 댓글번호 : " + reNo)
+					 console.log("삭제할 cno : " + cno)
 					   $.ajax({
 		                    
 		                    url : "deleteReply.cm",
@@ -323,7 +404,9 @@
 		                        
 		                    data :{
 		                    	
-		                    	reNo : reNo
+		                    	reNo : reNo,
+		                    	reGroup : reGroup,
+		                    	cno : cno
 		                    },
 		                    success : function(){
 		                        alert("삭제되었습니다.");
@@ -359,7 +442,7 @@
 						  },
 					success:function(result){
 						if(result > 0){
-							//$("#replyContent").val("");
+							$("#replyContent").val('');
 							selectReplyList();
 							
 						}else{
@@ -387,11 +470,11 @@
 			 console.log("수정할 댓글 인덱스 : " + index);
 
 				value =  '<input type="hidden" id ="reNo"  value="'+reNo+'">';
-			    value += '<input type="text" id ="reContent2"  value="'+reContent+'" style="width: 850px;">';
+			    value += '<input type="text" id ="reContent2"  value="'+reContent+'">';
 			    value += '<input type="button" value="수정완료" id="updateComment" > ';
 
 	     		   
-		 $('#updateCommentFormDiv'+index).html(value);
+		 $('#updateCommentFormDiv'+index).html(value).trigger("create");
 	 	console.log("value값 : " + '#updateCommentFormDiv'+index)
 	 		
 		$('#updateComment').on('click', function(){
@@ -444,13 +527,13 @@
 		    value += "<div class='modal-header'>"+
 		    		 '<input type="hidden" id ="reNo"  value="'+reNo+'">'+
 		    		 '<input type="hidden" id ="reGroup"  value="'+reGroup+'">'+
-		             '<label>댓글 </label><input type="text" id ="reContent2"  value="'+reContent+'" style="width: 400px;">'+
+		             '<label><h5>답글</h5></label>'+
 		              "<button type='button' class='close' data-dismiss='modal'>×</button>"+
 		             "</div>";
 		            
 		            
 		   value += "<div class='modal-body'>"+
-		              "<label>답글 </label><br><input type='text' id='reReContent2'>"+
+		              "<input type='text' id='reReContent2'>"+
 		            "</div>";
 		            
 		           
@@ -462,41 +545,44 @@
 	          	$('.reReplyModal').html(value);
 	        	$("#myModal"+index).modal();
 	        	//console.log(value);
-	        
-	      	$('#reReplyBtn').on('click', function(){
-	      			var reRecontent = document.getElementById('reReContent2').value;
-	      			var reGroup = $('#reGroup').val();
-	      			var  cmntNo = ${dlist.communityNo};
-	      			console.log('답글 내용 : '  +  reRecontent);
-	      			console.log('답글달 reGroup : '  +  reGroup);
-	      			console.log('답글달 cmntNo : '  +  cmntNo);
-	      			
-	      			$.ajax({
-	      				
-	      				url:"insertReReply.cm",
-	      				data:{
-	      					reRecontent : reRecontent,
-	      					reGroup : reGroup,
-	      					cmntNo : cmntNo
-	      					
-	      				},
-	      				type : "get",
-	      				success : function(){
-	      					alert("답글작성 성공")
-	            			selectReplyList();
-	      				}
-	      				
-	      			});
-	      			
-	      	})//답글 작성하기 끝
-	        	
-		})
-	})//답글달기function 끝
 	
+	       	$('#reReplyBtn').on('click', function(){
+  			var reRecontent = document.getElementById('reReContent2').value;
+  			var reGroup = $('#reGroup').val();
+  			var  cmntNo = ${dlist.communityNo};
+  			console.log('답글 내용 : '  +  reRecontent);
+  			console.log('답글달 reGroup : '  +  reGroup);
+  			console.log('답글달 cmntNo : '  +  cmntNo);
+  			
+  			$.ajax({
+  				
+  				url:"insertReReply.cm",
+  				data:{
+  					reRecontent : reRecontent,
+  					reGroup : reGroup,
+  					cmntNo : cmntNo
+  					
+  				},
+  				type : "get",
+  				success : function(){
+  					alert("답글작성 성공")
+  					$("#reReContent2").val('');
+        			selectReplyList();
+  				}
+  				
+  			});
+  			
+  		})//답글 작성하기 끝
+	        	
+	})
+})//답글달기function 끝
+	
+
 	//답글 삭제
 	$(function(){
 	$(document).on('click', '.deleteReReplyBtn', function(){
 		 var reNo = $(this).attr('data_num');
+	
 			console.log("삭제할 답글번호 : "  + reNo);
 		if(confirm("삭제하시겠습니까?")){
 			

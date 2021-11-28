@@ -2,11 +2,12 @@
 
 /*간식 ,생일 구독 배너*/
 .img1{
-    height: 540px;
+    height: 580px;
+    text-align: center;
+   
 }
-.carousel-caption>h1,p{
+.carousel-caption>h1{
     font-weight: bold;
-    color: black;
    
 }
 
@@ -104,8 +105,81 @@ body{
 .profile-page .profile-header .profile-image img {
     border-radius: 50%;
     width: 120px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
-
-
-
+.card-img-top{
+    width: 250px;
+    margin-left: 50px;
+}
+/*생일*/
+.bDiv1 ,.bDiv2{
+border-radius: 5px;
+background-color: rgba(245, 208, 66, 0.08);
+}
+.bimg1{
+    width: 50%;
+    border-radius: 5px;
+   
+}
+.bimg2{
+    width: 50%;
+    height: 250px;
+    margin-left: 126px;
+    border-radius: 5px;
+}
+/*생일팟 이미지 옆 텍스트*/
+.bl1{
+    margin-left: 140px;
+    font-size:18px;
+}
+.bl2{
+    margin-left: 60px;
+    font-size: 18px;
+}
+/*생일 4컷 이미지*/
+.card-img-top{
+    margin-top: 10px;
+    margin-left: 7px;
+    margin-right: 7px;
+}
+.partnerImg{
+    margin-left: 20%;
+}
+.partnerLb{
+    margin-left: 30%;
+}
+.b4Img{
+    text-align: center;
+}
+.card{
+    margin-right: 15px;
+    margin-top:20px;
+}
+.bnumber{
+    font-weight: bold;
+    font-size: 20px;
+    color:rgb(245, 208, 66);
+}
+.percentImg > label{
+    text-align: center;
+    margin: 3px 90px 0 37px;
+    padding-left: 100px;
+    font-weight: bold;
+}
+/*스낵서비스 이미지 사진*/
+.snackServiceImg{
+    width: 500px;
+    border-radius: 2px;
+}
+.snack4Img{
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.serviceNumber{
+    color:rgb(245, 208, 66);
+    font-weight: bold;
+    margin-right: 10px;
+}
+.card-title{
+    font-weight: bolder;
+}

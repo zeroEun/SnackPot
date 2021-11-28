@@ -104,10 +104,10 @@ public class ProductDao {
 	
 	
 	//스케줄러 테스트용
-//	public void updateClosingDate(SqlSessionTemplate sqlSession, String today) {
+	public void updateClosingDate(SqlSessionTemplate sqlSession, String today) {
 		
-//		sqlSession.update("productMapper.updateClosingDate" , today);
-//	}
+		sqlSession.update("productMapper.updateClosingDate" , today);
+	}
 
 
 	

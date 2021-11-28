@@ -15,6 +15,10 @@
   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
 </head>
 <style>
+  .contain{
+        background-color: rgba(245, 208, 66, 0.08);
+        padding: 30px 0 30px 0 ;
+    }
    .title{
         width:1250px;
         height : 30px;
@@ -23,11 +27,6 @@
     ::placeholder{
         padding-left: 20px;
         padding-top: 40px;
-    }
-    .btn{
-        margin-left: 80px;
-        text-align: center;
-        
     }
     h4{
         text-align: left;
@@ -39,16 +38,44 @@
         height: 0.1px;
         background-color: black;
     }
-    .btn{
-        float: left;
-        margin-left: 150px;
+    .chkBtn{
+    	display: inline-block;
+    	margin-left: 650px;
     }
- 
+	.saveBtn{
+        background-color: rgb(10, 23, 78);
+        color: white;
+        border-style: none;
+        height: 30px;
+        width: 90px;
+        border-radius: 10px;
+        margin-right: 20px;
+    }
+    .backBtn{
+  		background-color: rgb(245, 208, 66);
+        color: white;
+        border-style: none;
+        height: 30px;
+        width: 90px;
+        border-radius: 10px;
+    }
+   .upfile{
+       text-align: left;
+       margin-right: 800px;
+       margin-top: 10px;
+    }
+    .fileBtn{
+    	border: 1px solid lightgray;
+    	background-color: white;
+    	width: 50px;
+    	margin: 0 3px 0 0;
+    	border-radius: 3px;
+    }
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 <br>
-
+<div class="contain" >
   <form action="update.cm" method="post" id="frm" style="text-align:center;" enctype="multipart/form-data">
   <input type="hidden" name="cno" value="${ulist.communityNo }"> 
   	<h3>게시글 수정</h3>
@@ -57,21 +84,21 @@
     <textarea name="seContent" id="smarteditor" rows="100" cols="100" style="width:1250px; height:450px;">${ulist.content}</textarea>
     </div>
     <div>
-    	<button>파일</button>
-    	<!-- <a href="${ pageContext.servletContext.contextPath }/resources/upload_files/cmntAttachment/${ulist.changeName}" class="attachmentfile"> -->
-    	${ ulist.originName }<!-- </a> -->
-		   <input type="file" name="reuploadFile">
+    	<button onclick="deletefile()" class="fileBtn">파일</button>
+    	${ ulist.originName }
+		   <input type="file" name="reuploadFile" class="upfile">
 		  <c:if test="${ !empty ulist.originName }">
-	      <input type="hidden" name="changeName" value="${ ulist.changeName }">
+	      <input type="hidden" name="changeName" value="${ ulist.changeName }" >
 	      <input type="hidden" name="originName" value="${ ulist.originName }">
           </c:if>
 	</div>
 	</form>
-	<div>
-		<input type="button" onclick="update()" value="확인">
-		<input type="button" onclick="back()" value="취소">
 	</div>
-		
+	<br>
+	<div class="chkBtn">
+		<input type="button" onclick="update()" value="확인" class="saveBtn">
+		<input type="button" onclick="back()" value="취소" class="backBtn">
+	</div>	
 </body>
 <!--  -->	
  <script type="text/javascript">
@@ -98,6 +125,15 @@
 	    	
 	    	frm.submit(); 
 	    	return;
+	    }
+	    
+	    function deletefile(){
+	        if(confirm('파일을 삭제하시겠습니까?')){
+	        	alert('네')
+	        }else{
+	        	alert('아니오')
+	        }
+	    	
 	    }
  </script>  
  

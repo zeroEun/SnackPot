@@ -220,19 +220,20 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 
+	@Override
+	public int selectCount(Reply r) {
+		
+		return cmntDao.selectCount(sqlSession , r);
+	}
 
 
+	@Override
+	public int updateReplyContent(Reply r) {
+		
+		return cmntDao.updateReplyContent(sqlSession , r);
+	}
 
 
-
-	
-
-
-	
-
-
-
-	
 
 
 }

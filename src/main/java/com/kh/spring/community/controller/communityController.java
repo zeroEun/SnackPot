@@ -346,10 +346,22 @@ public class communityController {
 	
 	//댓글 삭제
 	@RequestMapping(value="deleteReply.cm")
-	public int deleteReply(Reply r) {
+	public int deleteReply(Reply r , int cno , int reGroup) {
 		
-		return cmntService.deleteReply(r);
+		r.setCommunityNo(cno);
+		r.setReGroup(reGroup);
+		System.out.println("삭제할 댓글 r : " + r);
 		
+		//부모댓글에 달린 답글의 갯수
+		int count = cmntService.selectCount(r); 
+			
+		if(count == 0) { //답글이 없다면 바로 댓글 삭제
+			return cmntService.deleteReply(r);
+			
+		}else { //답글이 있다면  댓글 content에  '-1' 넣기
+			return cmntService.updateReplyContent(r);
+		}
+	
 	}
 	//댓글수정
 	@ResponseBody   

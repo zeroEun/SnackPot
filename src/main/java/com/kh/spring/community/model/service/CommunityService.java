@@ -64,6 +64,10 @@ public interface CommunityService {
 
 	int CountComCode(String comCode); //회사에 게시글이 있는지 없는지부터
 
+	int selectCount(Reply r);
+
+	int updateReplyContent(Reply r);
+
 	
 
 

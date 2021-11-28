@@ -12,6 +12,7 @@
 
     #pagingArea{width:fit-content;margin:auto;}
     /* #pagingArea a{color:black} */
+    
    
     #searchForm{
         width:80%;
@@ -24,6 +25,15 @@
     .select{width:20%;}
     .text{width:53%;}
     .searchBtn{Width:20%;}
+    
+     .content{
+            height: 100vh;
+            padding: 50px 0px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-y: auto;
+        }
+        
 </style>
 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 <!-- Latest compiled and minified CSS -->
@@ -48,9 +58,9 @@
 
 	<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
-    <div class="content">
+    <div class="content col-8">
         <br><br>
-        <div class="innerOuter" style="padding:5% 10%;">
+        <div class="innerOuter" >
             <h2>문의게시판</h2>
             <br>
             

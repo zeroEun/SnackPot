@@ -48,6 +48,12 @@ public interface InvenManagementService {
 	ArrayList<Chart> snackChart();
 
 	int checkAmount(int snackNo);
+
+	int checkSnackNo(int snackNo);
+
+	String getsnackName(int snackNo);
+
+	
 	
 
 }

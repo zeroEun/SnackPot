@@ -11,6 +11,7 @@
     #enrollForm>table *{ margin:5px;}
 </style>
 </head>
+
 <body>
     <jsp:include page="../common/menubar.jsp"/>
 

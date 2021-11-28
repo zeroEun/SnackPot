@@ -12,6 +12,7 @@
 	width: 100%
 }*/
 
+
 #contentArea * {
 	margin: 5px
 }

@@ -68,10 +68,38 @@
 }
 
 .btn {
-	width: 50px;
+	width: 150px;
 	background-color: rgb(245, 208, 66);
 	color: rgb(10, 23, 78);
 }
+
+  
+ .content{
+            height: 70vh;
+            padding: 50px 0px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-y: auto;
+        }
+        
+        
+ #addBtn{
+ 
+        float: right;
+        color: #F5D042;
+        background-color: #0A174E;
+ }
+ 
+  .datepicker{
+ 
+ margin: 20px 0px;
+ 
+ }
+      
+      
+        
+        
+
 </style>
 
 <!-- Latest compiled and minified CSS -->
@@ -97,36 +125,11 @@
 
 			<jsp:include page="../../common/sidebar.jsp" />
 
-			<div id="modal" class="modal-overlay">
-				<div class="modal-window">
-					<div class="title">
-						<h2>입고등록</h2>
-					</div>
-					<div class="close-area">X</div>
-					<form id="arrivalEnroll" action="arrivalInsert.im" method="post">
-						<div class="content">
-							<p>
-								<label class="inputLabel">제품코드</label> <input type="number"
-									name="snackNo">
-							</p>
-							<p>
-								<label class="inputLabel">수량</label> <input type="number"
-									name="amount">
-							</p>
-							<p>
-								<label class="inputLabel">비고</label> <input type="text"
-									name="remark">
-							</p>
-							<br> <br> <input type="submit" value="등록하기" class="btn">
-						</div>
-					</form>
-				</div>
-			</div>
-
-			<div id="arrivalWrap">
+		
+			<div id="arrivalWrap" class="content col-8">
 
 
-				<h3>입고목록</h3>
+				<h2>입고목록</h2>
 
 				 <input type="text" id="datepicker" name="datepicker" class="datepicker">
 	
@@ -166,15 +169,6 @@
         });
     </script>
  <br>
-				<form name="search">
-					<select name="searchType">
-						<option value="1">상품코드</option>
-						<option value="2">상품명</option>
-						<option value="3">입고번호</option>
-					</select> <input type="text" name="searchInput"> <input
-						type="submit" name="searchBtn">
-				</form>
-				<br> <br>
 
 
 				<table id="boardList" class="table table-hover" align="center">
@@ -243,7 +237,7 @@
 			}, 5000);--%>
 		})
 	</script>
-
+<!-- 
 				<div id="pagingArea">
 					<ul class="pagination">
 						<c:choose>
@@ -282,9 +276,40 @@
 						</c:choose>
 					</ul>
 				</div>
-				<button id="addBtn">입고 등록</button>
+				
+				 -->
+				<button id="addBtn" class="btn btn-primary">입고 등록</button>
 
 			</div>
+			
+			
+			<div id="modal" class="modal-overlay">
+				<div class="modal-window">
+					<div class="title">
+						<h2>입고등록</h2>
+					</div>
+					<div class="close-area">X</div>
+					<form id="arrivalEnroll" action="arrivalInsert.im" method="post">
+						<div class="content">
+							<p>
+								<label class="inputLabel">제품코드</label> <input type="number"
+									name="snackNo" id="snackNo">
+							</p>
+							<div id="checkSnackNo"></div>
+							<p>
+								<label class="inputLabel">수량</label> <input type="number"
+									name="amount">
+							</p>
+							<p>
+								<label class="inputLabel">비고</label> <input type="text"
+									name="remark">
+							</p>
+							<br> <br> <input type="submit" value="등록하기" class="btn" id="submitBtn" >
+						</div>
+					</form>
+				</div>
+			</div>
+			
 
 
 		</div>
@@ -293,6 +318,44 @@
 	</div>
 
 	<script>
+	
+	$('#snackNo').blur(function() {
+		var snackNo = $('#snackNo').val();
+		console.log(snackNo);
+		$.ajax({
+			url : 'checkSnackNo.im',
+			type : 'post',
+			data: {'snackNo' : $('#snackNo').val()},
+			success : function (data) {
+				console.log("스낵 번호: " + snackNo);
+				if (data.snackName === "") {
+					console.log("확인");
+					$("#checkSnackNo").text("존재하지 않는 상품코드입니다");
+					$("#checkSnackNo").css("color", "red");
+					$("#submitBtn").attr("disabled", true);
+				} else if(snackNo == ""){
+					console.log("확인");
+					$('#checkSnackNo').text('상품코드를 입력해주세요');
+					$('#checkSnackNo').css('color', 'red');
+					$("#submitBtn").attr("disabled", true);				
+					
+				} else{
+					console.log("확인");
+					$('#checkSnackNo').html('상품명 : ' + data.snackName + '<br>' + '재고량 : ' + data.stock);
+
+					$('#checkSnackNo').css('color', 'blue');
+					$("#submitBtn").removeAttr( 'disabled' );
+					
+				}
+				
+			},
+			error : function() {
+				console.log("통신실패");
+			}
+			
+			
+		})
+	})
        
     
     const modal = document.getElementById("modal")

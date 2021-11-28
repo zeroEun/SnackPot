@@ -177,7 +177,7 @@ public class InvenManagementController {
 
 		int listCount = invenManagementService.todayArrivalCount(date);
 
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 
 		ArrayList<Arrival> list = invenManagementService.todayArrivalList(pi, date);
 
@@ -198,7 +198,7 @@ public class InvenManagementController {
 
 		int listCount = invenManagementService.todayReleaseCount(date);
 
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 
 		ArrayList<Release> list = invenManagementService.todayReleaseList(pi, date);
 
@@ -211,7 +211,7 @@ public class InvenManagementController {
 
 		int listCount = invenManagementService.invenListCount();
 
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 
 		ArrayList<Snack> list = invenManagementService.invenList(pi);
 
@@ -233,7 +233,7 @@ public class InvenManagementController {
 		int search = Integer.parseInt(before);
 		int listCount = invenManagementService.sNoSearchCount(search);
 
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 
 		ArrayList<Snack> list = invenManagementService.sNoSearch(pi, search);
 
@@ -256,7 +256,7 @@ public class InvenManagementController {
 		System.out.println("category 1 ========================== ");
 		int listCount = invenManagementService.sNameSearchCount(search);
 
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 
 		ArrayList<Snack> list = invenManagementService.sNameSearch(pi, search);
 
@@ -281,6 +281,7 @@ public class InvenManagementController {
 
 		model.addAttribute("snack", snack);
 		model.addAttribute("pa", pa);
+		
 
 		return "headoffice/invenManagement/invenDetail";
 	}
@@ -297,58 +298,82 @@ public class InvenManagementController {
 		String amountResult = "";
 
 		for (int i = 0; i < chart.size(); i++) {
-			
-			if( i != 0 && chart.size() > i) {
+
+			if (i != 0 && chart.size() > i) {
 				nameResult += ",";
 				amountResult += ",";
 			}
 			nameResult += "'" + chart.get(i).getSnackName() + "', {role : 'annotation'}";
-			amountResult +=  chart.get(i).getAmount() + "," + chart.get(i).getAmount() ;
-			
+			amountResult += chart.get(i).getAmount() + "," + chart.get(i).getAmount();
+
 		}
-		
+
 		System.out.println(nameResult);
 		System.out.println(amountResult);
-		
+
 		model.addAttribute("chart", chart);
 		model.addAttribute("name", nameResult);
 		model.addAttribute("amount", amountResult);
 
 		return "headoffice/chart/snackChart";
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value = "checkAmount.im", produces = "application/json; charset=utf-8")
-	private int checkAmount(@RequestParam(value = "amount") int amount,
-				@RequestParam(value = "snackNo") int snackNo) {
-		
+	@RequestMapping(value = "checkAmount.im")
+	private int checkAmount(@RequestParam(value = "amount") int amount, @RequestParam(value = "snackNo") int snackNo) {
+
 		int result = 1;
 		System.out.println("넘어온 값 : " + amount);
-		
+
 		int stock = invenManagementService.checkAmount(snackNo);
-		
+
 		System.out.println("재고 : " + stock);
-		
-		if((stock - amount) >= 0) {
-			
+
+		if ((stock - amount) >= 0) {
+
 			result = 0;
-			
+
 		}
-		
-		
+
+		System.out.println(result);
+
 		return result;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "checkSnackNo.im", produces = "application/json; charset=utf-8")
+	private Snack checkSnackNo(@RequestParam(value = "snackNo") int snackNo) {
+
+		System.out.println("넘어온 값 : " + snackNo);
+
+		int count = invenManagementService.checkSnackNo(snackNo);
+		System.out.println(count);
+		int stock = 0;
+		String name = "";
+		if (count > 0) {
+
+			name = invenManagementService.getsnackName(snackNo);
+			stock = invenManagementService.checkAmount(snackNo);
+			System.out.println(name);
+			System.out.println(stock);
+
+		}
+
+		Snack s = new Snack();
+		s.setSnackName(name);
+		s.setStock(stock);
+
+		return s;
 	}
 	
 	
-	/*@ResponseBody
-	@RequestMapping(value = "checkSnackNo.im", produces = "application/json; charset=utf-8")
-	private int checkSnackNo(@RequestParam(value = "snackNo") int snackNo) {
+	@ResponseBody
+	@RequestMapping(value = "enrollSnackNo.im")
+	private int enrollSnackNo(@RequestParam(value = "snackNo") int snackNo) {
+
 		
-		System.out.println("넘어온 값 : " + snackNo);
+
 		
-		//int amount = 
-		
-		
-		return 1;
-	}*/
+		return invenManagementService.checkSnackNo(snackNo);
+	}
 }

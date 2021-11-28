@@ -17,6 +17,7 @@ public class QnaDao {
 	public int selectListCount(SqlSessionTemplate sqlSession) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("qnaMapper.selectListCount");
+		
 	}
 
 	public ArrayList<Qna> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {

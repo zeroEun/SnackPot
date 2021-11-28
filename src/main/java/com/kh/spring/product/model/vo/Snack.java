@@ -33,4 +33,5 @@ public class Snack {
 	private String category;
 	private String detail;
 	
+	
 }

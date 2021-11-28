@@ -21,12 +21,14 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style>
-#contentArea {
-	width: 100%
-}
 
-#contentArea * {
-	margin: 5px
+
+.content {
+	height: 100vh;
+	padding: 50px 0px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow-y: auto;
 }
 </style>
 </head>
@@ -36,10 +38,10 @@
 
 	<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
-	<div class="content">
+	<div class="content col-8">
 		<br>
 		<br>
-		<div class="innerOuter">
+
 			<h2>문의 답변 작성</h2>
 			<br> <br>
 			<br>
@@ -83,12 +85,13 @@
 			</table>
 			<br>
 		
-		  <div class="innerOuter">
+		
+		  
 			<h2>답변</h2>
             <br>
 			
             <form id="answerForm" method="post" action="answerInsert.qna" enctype="multipart/form-data">
-                <table align="center">
+                <table >
                     <tr>
                         <th><label for="title">제목</label></th>
                         <td><input type="text" id="title" class="form-control" name="aTitle" required></td>
@@ -111,11 +114,11 @@
             </form>
         </div>
 			
-			</div>
-			</div>
 			
+	
 			
+		</div>	
 	</div>
-	</div>
+
 </body>
 </html>

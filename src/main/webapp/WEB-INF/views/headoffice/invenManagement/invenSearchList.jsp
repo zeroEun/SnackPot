@@ -24,16 +24,19 @@
 
 
 <style type="text/css">
+.content {
+	height: 100vh;
+	padding: 50px 0px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow-y: auto;
+}
 
-/* .content{
-            height: 100vh;
-            padding: 50px 0px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-y: auto;
-        }*/
+
+    #pagingArea{width:fit-content;margin:auto;}
 </style>
 </head>
+
 <body>
 
 	<div class="container-fluid">
@@ -41,10 +44,9 @@
 
 			<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
-			<section class="order-list">
 
-				<div class="container-fluid">
-					<div class="row flex-nowrap">
+
+
 
 						<div class="content col-8">
 							<h5>재고조회</h5>
@@ -54,11 +56,13 @@
 								<!-- form-inline : 한줄에 배치 -->
 								<form method="post" id="searchList" name="searchList">
 									<select class="search-select form-control" id="category"
-										name="category" required  onchange="selectCategory()">
-										<option value="0" <c:if test='${category == 0 }'> selected</c:if>>상품코드</option>
-										<option value="1" <c:if test='${category == 1 }'> selected</c:if>>상품명</option>
-									</select> <input type="text" required name="search" id="search" value="${search}"><input
-										hidden="hidden">
+										name="category" required onchange="selectCategory()">
+										<option value="0"
+											<c:if test='${category == 0 }'> selected</c:if>>상품코드</option>
+										<option value="1"
+											<c:if test='${category == 1 }'> selected</c:if>>상품명</option>
+									</select> <input type="text" required name="search" id="search"
+										value="${search}"><input hidden="hidden">
 									<!-- enter 눌렀을 때 submit 방지 -->
 									<input class="btn btn-primary" id="searchBtn" type="button"
 										value="검색" onclick='return searchSubmit()'>
@@ -94,104 +98,104 @@
 
 							</table>
 							<c:if test=" ${category == 0 }">
-							
-							<div id="pagingArea">
-								<ul class="pagination">
-									<c:choose>
-										<c:when test="${ pi.currentPage ne 1 }">
-											<li class="page-item"><a class="page-link"
-												href="searchSno.pm?currentPage=${ pi.currentPage-1 }">Previous</a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="page-item disabled"><a class="page-link"
-												href="">Previous</a></li>
-										</c:otherwise>
-									</c:choose>
 
-									<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }"
-										var="p">
+								<div id="pagingArea" class="content col-8" align="center">
+									<ul class="pagination">
 										<c:choose>
-											<c:when test="${ pi.currentPage ne p }">
+											<c:when test="${ pi.currentPage ne 1 }">
 												<li class="page-item"><a class="page-link"
-													href="searchSno.pm?currentPage=${ p }">${ p }</a></li>
+													href="searchSno.pm?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 											</c:when>
 											<c:otherwise>
 												<li class="page-item disabled"><a class="page-link"
-													href="">${ p }</a></li>
+													href="">Previous</a></li>
 											</c:otherwise>
 										</c:choose>
-									</c:forEach>
+
+										<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }"
+											var="p">
+											<c:choose>
+												<c:when test="${ pi.currentPage ne p }">
+													<li class="page-item"><a class="page-link"
+														href="searchSno.pm?currentPage=${ p }">${ p }</a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="page-item disabled"><a class="page-link"
+														href="">${ p }</a></li>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
 
 
-									<c:choose>
-										<c:when test="${ pi.currentPage ne pi.maxPage }">
-											<li class="page-item"><a class="page-link"
-												href="invenList.pm?currentPage=${ pi.currentPage+1 }">Next</a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="page-item disabled"><a class="page-link"
-												href="invenList.pm?currentPage=${ pi.currentPage+1 }">Next</a></li>
-										</c:otherwise>
-									</c:choose>
-								</ul>
-							</div>
-							
-							
+										<c:choose>
+											<c:when test="${ pi.currentPage ne pi.maxPage }">
+												<li class="page-item"><a class="page-link"
+													href="invenList.pm?currentPage=${ pi.currentPage+1 }">Next</a></li>
+											</c:when>
+											<c:otherwise>
+												<li class="page-item disabled"><a class="page-link"
+													href="invenList.pm?currentPage=${ pi.currentPage+1 }">Next</a></li>
+											</c:otherwise>
+										</c:choose>
+									</ul>
+								</div>
+
+
 							</c:if>
-							
+
 							<c:if test="${category == 1 }">
-							
-							
-							<div id="pagingArea">
-								<ul class="pagination">
-									<c:choose>
-										<c:when test="${ pi.currentPage ne 1 }">
-											<li class="page-item"><a class="page-link"
-												href="searchSname.im?currentPage=${ pi.currentPage-1 }">Previous</a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="page-item disabled"><a class="page-link"
-												href="">Previous</a></li>
-										</c:otherwise>
-									</c:choose>
 
-									<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }"
-										var="p">
+
+								<div id="pagingArea" class="content col-8" align="center">
+									<ul class="pagination">
 										<c:choose>
-											<c:when test="${ pi.currentPage ne p }">
+											<c:when test="${ pi.currentPage ne 1 }">
 												<li class="page-item"><a class="page-link"
-													href="searchSname.im?currentPage=${ p }">${ p }</a></li>
+													href="searchSname.im?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 											</c:when>
 											<c:otherwise>
 												<li class="page-item disabled"><a class="page-link"
-													href="">${ p }</a></li>
+													href="">Previous</a></li>
 											</c:otherwise>
 										</c:choose>
-									</c:forEach>
+
+										<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }"
+											var="p">
+											<c:choose>
+												<c:when test="${ pi.currentPage ne p }">
+													<li class="page-item"><a class="page-link"
+														href="searchSname.im?currentPage=${ p }">${ p }</a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="page-item disabled"><a class="page-link"
+														href="">${ p }</a></li>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
 
 
-									<c:choose>
-										<c:when test="${ pi.currentPage ne pi.maxPage }">
-											<li class="page-item"><a class="page-link"
-												href="searchSname.im?currentPage=${ pi.currentPage+1 }">Next</a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="page-item disabled"><a class="page-link"
-												href="searchSname.im?currentPage=${ pi.currentPage+1 }">Next</a></li>
-										</c:otherwise>
-									</c:choose>
-								</ul>
-							</div>
-							
-							
+										<c:choose>
+											<c:when test="${ pi.currentPage ne pi.maxPage }">
+												<li class="page-item"><a class="page-link"
+													href="searchSname.im?currentPage=${ pi.currentPage+1 }">Next</a></li>
+											</c:when>
+											<c:otherwise>
+												<li class="page-item disabled"><a class="page-link"
+													href="searchSname.im?currentPage=${ pi.currentPage+1 }">Next</a></li>
+											</c:otherwise>
+										</c:choose>
+									</ul>
+								</div>
+
+
 							</c:if>
-							
-							
+
+
 						</div>
 					</div>
 				</div>
 
-			</section>
+
 
 			<script>
 				$(function() {
@@ -261,15 +265,12 @@
 						console.log(search);
 						$( '#search' ).removeAttr( 'onKeyup' );
 
-					}
+					
 					
 				}
 				   });
 				
 			</script>
-
-		</div>
-	</div>
 
 </body>
 </html>

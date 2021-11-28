@@ -70,6 +70,7 @@ public class qnaController {
 			qa = saveFile(file, request);
 			q.setChangeName(qa.getChangeName());
 			qnaService.insertQnaAttachment(qa);
+			
 
 		}
 

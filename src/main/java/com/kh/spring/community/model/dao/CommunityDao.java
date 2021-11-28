@@ -206,6 +206,20 @@ public class CommunityDao {
 
 
 
+	public int selectCount(SqlSession sqlSession, Reply r) {
+
+		return sqlSession.selectOne("cmntMapper.selectCount" , r);
+	}
+
+
+
+	public int updateReplyContent(SqlSession sqlSession, Reply r) {
+		
+		return sqlSession.update("cmntMapper.updateReplyContent" , r);
+	}
+
+
+
 
 
 

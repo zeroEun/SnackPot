@@ -220,6 +220,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE RE_NO =#{reNo}
 </delete>
 
+
 <update id="updateRely">
 	UPDATE REPLY SET RE_CONTENT = #{reContent} , RE_WRITERDATE = SYSDATE
 	WHERE RE_NO = #{reNo}
@@ -236,4 +237,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	VALUES (REPLY_SEQ.NEXTVAL , #{communityNo} , #{reGroup} ,  1 ,  #{reGroupDept} , #{reWriter} , #{reContent} , SYSDATE)
 </insert>
 
+<select id="selectCount" resultType="_int">
+	SELECT COUNT(*)
+	FROM REPLY
+	WHERE COMMUNITY_NO = #{communityNo} 
+	AND RE_GROUP = #{reGroup}
+	AND RE_GROUPS = 1
+</select>
+
+<update id="updateReplyContent">
+	UPDATE REPLY SET RE_CONTENT = TO_CHAR(-1)
+	WHERE RE_NO = #{reNo}
+</update>
 </mapper>

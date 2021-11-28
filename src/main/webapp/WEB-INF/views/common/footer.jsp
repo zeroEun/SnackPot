@@ -8,17 +8,12 @@
 <style>
     /* div{border:1px solid red;} */
     #footer{
-        width:80%;
+        width:90%;
         height:200px;
         margin:auto;
-        margin-top:50px;
+        margin-top:10px;
     }
-    #footer-1{
-        width:100%;
-        height:20%;
-        border-top:1px solid lightgray;
-        border-bottom:1px solid lightgray;
-    }
+
     #footer-2{
         width:100%;
         height:80%;
@@ -45,23 +40,24 @@
 </style>
 </head>
 <body>
+	<hr>
 	<div id="footer">
         <div id="footer-1">
             <a href="#">이용약관</a> | 
             <a href="#">개인정보취급방침</a> | 
-            <a href="#">인재채용</a> | 
-            <a href="#">고객센터</a> 
+            <a href="#">구독하기</a> | 
+            <a href="#">문의하기</a> 
         </div>
 
         <div id="footer-2">
             <p id="p1">
-                강남지원 1관 : 서울특별시 강남구 테헤란로14길 6 남도빌딩 2F, 3F, 4F, 5F <br>
-                강남지원 2관 : 서울특별시 강남구 테헤란로10길 9 그랑프리 빌딩 4F, 5F, 7F <br>
-                강남지원 3관 : 서울특별시 강남구 테헤란로 130 호산빌딩 5F, 6F <br>
-                종로지원 : 서울특별시 중구 남대문로 120 대일빌딩 2F, 3F <br>
-                당산지원 : 서울특별시 영등포구 선유동2로 57 이레빌딩 (구관) 19F, 20F 
+                	주식회사 스낵팟 대표이사 탕비실수호대 사업자등록번호 2021-12-00025 <br>
+          			본사 : 서울특별시 용산구 한강대로 100 스낵팟<br>
+          			물류 : 서울 금천구 가산디지털1로 119 , sk트윈B동 B119호 물류센터<br>
+       				서비스신청문의 : snackpotservice@snackPot.com
+       				마케팅 제휴 : snackpotmarketing@snackPot.com
             </p>
-            <p id="p2">Copyright ⓒ 1998-2019 KH Information Educational Institute All Right Reserved</p>     
+            <p id="p2"> ⓒ 1945 office pantry guard zzang All Right Reserved</p>     
         </div>
     </div>
 </body>

@@ -241,19 +241,19 @@ public class ProductController {
 	 * 1. 현재 날짜를 가져와서 WISHLIST에 보내기
 	 * 2. 동일하면 WISHLIST STATUS를 'N'-> 'Y'로
 	 * */
-//	@Scheduled(cron = "*/10 * * * * *") 	// 10초마다
-//	@Scheduled(cron = "0 25 17 1/1 * ?") //매일 5시 50분 마다 실행 (0시0분으로 바꿔서 다시해보기)
-//	public void updateClosingDate() {
 	
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
-//		Calendar cal = Calendar.getInstance();
+	@Scheduled(cron = "0 0 0 1/1 * ?")
+	public void updateClosingDate() {
+	
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+		Calendar cal = Calendar.getInstance();
 			
-//		String today = sdf.format(cal.getTime());
-//		System.out.println("today 오늘의 날짜? : " + today); 
+		String today = sdf.format(cal.getTime());
+		System.out.println("오늘의 위시리스트마감이 시작되었습니다.");
+		productService.updateClosingDate(today);
 		
-//		productService.updateClosingDate(today);
+		System.out.println("위시리스트 마감이 완료되었습니다 ."); 
+		System.out.println("확인해주세요.");
 		
-//		System.out.println("마감이 완료되었습니다 ."); 
-		
-//	}
+	}
 }

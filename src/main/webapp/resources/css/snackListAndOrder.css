@@ -138,3 +138,17 @@
 #ratio p {
 	margin: auto;
 }
+
+/*페이징바*/
+ #pagingArea{
+ 	width: fit-content;
+ 	float: none;
+ 	margin: 0 auto;
+}
+
+/*리스트 발송 스케줄 */
+.month {
+	background: rgb(245, 208, 66);
+	padding: 10px 15px;
+	border-radius: 0.25rem;
+}

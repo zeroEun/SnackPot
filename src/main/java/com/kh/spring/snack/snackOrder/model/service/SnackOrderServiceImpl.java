@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.spring.common.PageInfo;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.vo.SearchList;
@@ -96,13 +97,13 @@ public class SnackOrderServiceImpl implements SnackOrderService {
 	}
 
 	@Override
-	public ArrayList<Orders> selectComOrderedList(String comCode) {
-		return snackOrderDao.selectComOrderedList(sqlSession, comCode);
+	public ArrayList<Orders> selectComOrderedList(String comCode, PageInfo pi) {
+		return snackOrderDao.selectComOrderedList(sqlSession, comCode, pi);
 	}
 
 	@Override
-	public ArrayList<Orders> selectHoOrderedList(HashMap map) {
-		return snackOrderDao.selectHoOrderedList(sqlSession, map);
+	public ArrayList<Orders> selectHoOrderedList(HashMap map, PageInfo pi) {
+		return snackOrderDao.selectHoOrderedList(sqlSession, map, pi);
 	}
 
 	@Override
@@ -152,13 +153,33 @@ public class SnackOrderServiceImpl implements SnackOrderService {
 	}
 
 	@Override
-	public ArrayList<Orders> selectComSearchOrder(SearchList search) {
-		return snackOrderDao.selectComSearchOrder(sqlSession, search);
+	public ArrayList<Orders> selectComSearchOrder(SearchList search, PageInfo pi) {
+		return snackOrderDao.selectComSearchOrder(sqlSession, search, pi);
 	}
 
 	@Override
-	public ArrayList<Orders> selectHoSearchOrder(SearchList search) {
-		return snackOrderDao.selectHoSearchOrder(sqlSession, search);
+	public ArrayList<Orders> selectHoSearchOrder(SearchList search, PageInfo pi) {
+		return snackOrderDao.selectHoSearchOrder(sqlSession, search, pi);
+	}
+
+	@Override
+	public int selectListCountForString(String comCode) {
+		return snackOrderDao.selectListCountForString(sqlSession, comCode);
+	}
+
+	@Override
+	public int selectListCountForMap(HashMap map) {
+		return snackOrderDao.selectListCountForMap(sqlSession, map);
+	}
+
+	@Override
+	public int selectListCountForComSearch(SearchList search) {
+		return snackOrderDao.selectListCountForComSearch(sqlSession, search);
+	}
+
+	@Override
+	public int selectListCountForHoSearch(SearchList search) {
+		return snackOrderDao.selectListCountForHoSearch(sqlSession, search);
 	}
 
 }

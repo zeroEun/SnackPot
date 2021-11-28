@@ -40,6 +40,7 @@
 		<typeAlias type="com.kh.spring.snack.snackList.model.vo.SnackList" alias="SnackList"/>
 		<typeAlias type="com.kh.spring.snack.snackList.model.vo.SnackDList" alias="SnackDList"/>
 		<typeAlias type="com.kh.spring.snack.snackList.model.vo.SearchSnack" alias="SearchSnack"/>
+		<typeAlias type="com.kh.spring.snack.snackList.model.vo.SearchList" alias="SearchList"/>
 		<typeAlias type="com.kh.spring.snack.snackOrder.model.vo.Orders" alias="Orders"/>
 		<typeAlias type="com.kh.spring.snack.snackOrder.model.vo.OrderDetail" alias="OrderDetail"/>
 		<typeAlias type="com.kh.spring.snack.snackList.model.vo.ComListInfo" alias="ComListInfo"/>

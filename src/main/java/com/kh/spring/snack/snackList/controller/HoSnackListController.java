@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.spring.common.PageInfo;
+import com.kh.spring.common.Pagination;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.SnackSubCategory;
 import com.kh.spring.product.model.vo.WishListDtail;
@@ -40,7 +42,7 @@ public class HoSnackListController {
 	@RequestMapping("listSchedule.sn")
 	public String listScheduleForm(Model model, HttpSession session) {
 	
-		//세션에서 로그인 사원의 담당 회사 코드 불러오기, 회사 코드 여러개일 때?
+		//세션에서 로그인 사원의 담당 회사 코드 불러오기
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
 		model.addAttribute("schedule", companyInfo(comCode));
@@ -67,7 +69,6 @@ public class HoSnackListController {
 		info.setListNo(listNo);
 		info.setTotalPrice(selectTotalPrice(listNo));
 		
-		System.out.println(info);
 		model.addAttribute("dList", dList);
 		model.addAttribute("i", info);
 		
@@ -105,8 +106,6 @@ public class HoSnackListController {
 	@RequestMapping("searchSnack.sn")
 	public String searchSnack(String comCode, int listNo, SearchSnack search, Model model) {
 		
-		System.out.println(search);
-		
 		ArrayList<Product> searchList = hoSnackListService.searchSnack(search);
 		
 		ComListInfo info = companyInfo(comCode).get(0);
@@ -123,7 +122,6 @@ public class HoSnackListController {
 	@RequestMapping("deleteSnackDNo.sn")
 	public String deleteSnackDNo(String comCode, int listNo, String snackDNoCheck, Model model) {
 		
-		System.out.println(snackDNoCheck);
 		hoSnackListService.deleteSnackDNo(snackDNoCheck);
 		
 		ComListInfo info = companyInfo(comCode).get(0);
@@ -139,7 +137,6 @@ public class HoSnackListController {
 	@RequestMapping("addDList.sn")
 	public String addSanckDList(String comCode, SnackDList snackD, Model model) {
 		
-		System.out.println("snackD" + snackD);
 		hoSnackListService.addSanckDList(snackD);
 		int listNo = snackD.getSnackListNo();
 		
@@ -193,23 +190,32 @@ public class HoSnackListController {
 	}
 	
 	@RequestMapping("sendSnackList.sn")
-	public String sendSnackList(ComListInfo info, Model model) {
-		
-		System.out.println(info);
+	public String sendSnackList(ComListInfo info, Model model, HttpSession session) {
 		
 		info.setOrderNo(hoSnackListService.selectOrderNo());
 		
 		hoSnackListService.insertOrder(info);
 		
+		session.setAttribute("m", "간식 리스트 발송이 완료되었습니다.");
 		return "redirect:/listSchedule.sn";
 	}
 	
 	@RequestMapping("sendingList.sn")
-	public String snackSendingList(Model model, HttpSession session) {
+	public String snackSendingList(@RequestParam(value="currentPage", required = false , defaultValue = "1") int currentPage, Model model, HttpSession session) {
 		
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
-		model.addAttribute("sendingList", selectSendingList(comCode));
+		HashMap map = new HashMap();
+		String[] comArr = comCode.split("/");
+		map.put("comArr", comArr);
+		
+		int listCount = hoSnackListService.selectListCount(map);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<SnackList> list =  hoSnackListService.selectSendingList(map, pi);
+		
+		model.addAttribute("sendingList", list);
+		model.addAttribute("pi", pi);
 		
 		return "headoffice/snack/snackSendingList";
 	}
@@ -227,7 +233,7 @@ public class HoSnackListController {
 	}
 	
 	@RequestMapping("searchList.sn")
-	public String searchSendingList(SearchList searchList, Model model, HttpSession session) {
+	public String searchSendingList(@RequestParam(value="currentPage", required = false , defaultValue = "1") int currentPage, SearchList searchList, Model model, HttpSession session) {
 		
 		String comCode = ((SnackpotEmp)session.getAttribute("loginEmp")).getSempComCode();
 		
@@ -240,12 +246,14 @@ public class HoSnackListController {
 		
 		searchList.setComArr(comArr);
 		
-		System.out.println(searchList);
-		ArrayList<SnackList> sendingList = hoSnackListService.searchSendingList(searchList);
+		int listCount = hoSnackListService.selectSearchListCount(searchList);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<SnackList> sendingList = hoSnackListService.searchSendingList(searchList, pi);
 
 		model.addAttribute("sendingList", sendingList);
+		model.addAttribute("pi", pi);
 		
-		return "headoffice/snack/snackSendingList";
+		return "headoffice/snack/snackSearchSendingList";
 	}
 	
 	//구독 회사의 리스트 정보(스케줄)를 생성하는 메소드 comListInfo
@@ -260,8 +268,7 @@ public class HoSnackListController {
 		ArrayList<ComListInfo> info = hoSnackListService.selectSubsInfo(map);
 
 		// 현재 월에 신청한 구독 건은 제외
-		// 간식 배송예정일 20, 신청일 10/4
-		// 리스트 발송 예정일 : 배송 예정일 -7, 주문 마감일 : -2 , 배송예정일 : 해당월 20일
+		// 리스트 발송 예정일 : 배송 예정일 -7, 주문 마감일 : -2 , 배송예정일 : 해당월 배송일
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -305,7 +312,6 @@ public class HoSnackListController {
 			} else {
 				i.setStatus("N");
 			}
-			System.out.println(i);
 		}
 
 		return info;
@@ -343,10 +349,6 @@ public class HoSnackListController {
 		ArrayList<SnackDList> dList = new ArrayList<SnackDList>();
 		
 		int amount = defaultAmount;
-		//int snackCount = hoSnackListService.selectSnackCount()-1;
-		int snackCount = list.size();
-		System.out.println("snackCount" + snackCount);
-		
 		int budget = subs.getBudget();
 		int snackBudget = budget * subs.getSnackRatio()/100;
 		int drinkBudget = budget * subs.getDrinkRatio()/100;
@@ -382,7 +384,6 @@ public class HoSnackListController {
 			budget = snackBudget + drinkBudget + retortBudget;
 		}
 		
-		
 		//랜덤으로 상품번호 가져와서 list에 번호가 있는지 확인
 		//있으면 수량 체크(재고 있는지)확인
 		//재고가 있으면 수량 * 금액 각 카테고리 번호 확인하여 해당 카테고리 금액에서 마이너스, 예산에서 뺀 금액에 마이너스가 되면 continue
@@ -390,69 +391,45 @@ public class HoSnackListController {
 		
 		while(budget > 0) {
 			
-			if(list.isEmpty()) break; //예산 초과 시 해당 항목을 지워 무한루프 방지
+			if(list.isEmpty()) break; //무한루프 방지
 			
-			System.out.println( "budget: " +  budget);
-			int r = (int)((Math.random())*snackCount + 1); //랜덤 범위 과자 개수 불러오기
-			System.out.println(r);
+			int r = (int)((Math.random())*list.size()); //랜덤 범위 지정
+			SnackDList s = list.get(r);
 			
-			Iterator<SnackDList> iter = list.iterator();
-			while(iter.hasNext()) {
-				
-				SnackDList s = iter.next();
-				if(r == s.getRowNum()) {
-					System.out.println("------------일치----------");
-					
-					if(s.getStock() >= amount) {
-
-						switch(s.getCategoryNo()){
-						case 1: 
-							if(snackBudget > 0) {
-								snackBudget -= s.getReleasePrice()*amount;
-								System.out.println("snackBudget" + snackBudget);
-							}else{
-								iter.remove(); 
-								continue;
-							}break;
-						case 2: 
-							if(drinkBudget > 0) {
-								drinkBudget -= s.getReleasePrice()*amount;
-								System.out.println("drinkBudget" + drinkBudget);
-							}else{
-								iter.remove();
-								continue;
-							}break;
-						case 3: 
-							if(retortBudget > 0) {
-								retortBudget -= s.getReleasePrice()*amount;
-								System.out.println("retortBudget" + retortBudget);
-							}else{
-								iter.remove();
-								continue;
-							}break;	
-						}
-						s.setAmount(amount);
-						s.setSnackListNo(listNo);
-						dList.add(s);
-						budget = snackBudget + drinkBudget + retortBudget;
-					}
-					iter.remove(); //중복 제거를 위해 remove
+			if(s.getStock() >= amount) {
+				switch(s.getCategoryNo()){
+				case 1: 
+					if(snackBudget > 0) {
+						snackBudget -= s.getReleasePrice()*amount;
+					}else{
+						list.remove(r);
+						continue;
+					}break;
+				case 2: 
+					if(drinkBudget > 0) {
+						drinkBudget -= s.getReleasePrice()*amount;
+					}else{
+						list.remove(r);
+						continue;
+					}break;
+				case 3: 
+					if(retortBudget > 0) {
+						retortBudget -= s.getReleasePrice()*amount;
+					}else{
+						list.remove(r);
+						continue;
+					}break;	
 				}
+				s.setAmount(amount);
+				s.setSnackListNo(listNo);
+				dList.add(s);
+				budget = snackBudget + drinkBudget + retortBudget;
 			}
+			list.remove(r);
 		}
 		
 		hoSnackListService.insertSnackDList(dList);
 		
 	}
 	
-	
-	public ArrayList<SnackList> selectSendingList(String comCode){
-		
-		HashMap map = new HashMap();
-		String[] comArr = comCode.split("/");
-		map.put("comArr", comArr);
-		
-		return hoSnackListService.selectSendingList(map);
-	}
-
 }

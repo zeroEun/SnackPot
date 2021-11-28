@@ -1,7 +1,5 @@
 package com.kh.spring.common;
 
-import com.kh.spring.qna.model.vo.PageInfo;
-
 public class Pagination {
 	
 	public static PageInfo getPageInfo(int listCount, int currentPage, int pageLimit, int boardLimit) {

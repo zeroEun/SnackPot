@@ -3,6 +3,7 @@ package com.kh.spring.snack.snackList.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.spring.common.PageInfo;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.vo.ComListInfo;
@@ -44,19 +45,22 @@ public interface HoSnackListService {
 
 	ArrayList<WishListDtail> selectWishList(ComListInfo info);
 	
-	int selectSnackCount();
-
 	void insertOrder(ComListInfo schedule);
 
-	ArrayList<SnackList> selectSendingList(HashMap map);
+	ArrayList<SnackList> selectSendingList(HashMap map, PageInfo pi);
 
 	SnackList selectSnackList(int snackListNo);
 
 	int selectOrderNo();
 
-	ArrayList<SnackList> searchSendingList(SearchList searchList);
+	ArrayList<SnackList> searchSendingList(SearchList searchList, PageInfo pi);
 
 	ArrayList<SnackDList> selectWish(ComListInfo info);
+
+	int selectListCount(HashMap map);
+
+	int selectSearchListCount(SearchList searchList);
+
 
 
 }

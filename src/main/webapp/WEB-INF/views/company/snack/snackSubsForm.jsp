@@ -21,7 +21,14 @@
 		</script>
 	</c:if>
 
- 	<!-- snack subscribe section-->
+	<c:if test="${ !empty m }">
+		<script>
+			alert("${m}");
+		</script>
+		<c:remove var="m" scope="session" />
+	</c:if>
+
+	<!-- snack subscribe section-->
     <section class="snack-subs">
 
         <div class="container-fluid">
@@ -39,7 +46,8 @@
                             <!-- 숫자만 입력하도록 하기-->
                             <label for="budget" class="col-md-2 col-form-label">간식 예산</label> 
                             <div class="col-md-3 d-flex">
-                                <input type="text" class="form-control" id="budget" name="budget" placeholder="금액을 입력해 주세요" required> <p>원</p>
+                                <input type="hidden" class="form-control" id="budget" name="budget" >
+                                <input type="text" class="form-control" id="inputBudget" name="inputBudget" placeholder="금액을 입력해 주세요" required> <p>원</p>
                             </div>
                            
                         </div>
@@ -217,7 +225,7 @@
 			return value.replace(/[^0-9]/g,"")
 		}
 		
-		$('#budget').on('keyup', function(){
+		$('#inputBudget').on('keyup', function(){
 			$(this).val(addCommas(onlyNum($(this).val())));
 		});
 		
@@ -239,6 +247,7 @@
 		
 		$('#subsBtn').on('click', function(){
 			
+			$('#budget').val(uncomma($('#inputBudget').val()));
 			var snack = Number($('#snack-ratio').val());
 			var drink = Number($('#drink-ratio').val());
 			var retort = Number($('#retort-ratio').val());
@@ -246,8 +255,6 @@
 			
 			if(total != 100){
 				alert("간식 비율의 합이 100이 되도록 해주세요.");
-			}else{
-				$('#budget').val(uncomma($('#budget').val()));
 			}
 			
 			$.ajax({
@@ -258,7 +265,6 @@
 
 					if (result > 0) {
 						alert("이미 구독중 입니다.");
-						$('#budget').val(addCommas($('#budget').val()));
 					} else {
 						$('#subsEnroll').attr('onsubmit', 'return true');
 					}

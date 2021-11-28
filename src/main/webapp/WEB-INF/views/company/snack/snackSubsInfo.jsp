@@ -15,6 +15,12 @@
 
 <jsp:include page="/WEB-INF/views/common/menubar.jsp"/>
 
+	<c:if test="${ !empty m }">
+		<script>
+			alert("${m}");
+		</script>
+		<c:remove var="m" scope="session" />
+	</c:if>
 
  	<!-- snack subscribe section-->
     <section class="snack-subs">

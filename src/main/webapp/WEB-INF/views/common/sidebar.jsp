@@ -48,18 +48,18 @@
 	}
 	
 	/*메뉴 사이 간격*/
-	.sidebar .nav:not (.sub-menu ) >.nav-item {
+	.sidebar .nav:not(.sub-menu ) >.nav-item {
 		margin-top: .2rem;
 	}
 	
 	/*메뉴에 마우스 올릴 때*/
-	.sidebar .nav:not (.sub-menu ) >.nav-item:hover>.nav-link {
+	.sidebar .nav:not(.sub-menu ) >.nav-item:hover>.nav-link {
 		background: rgb(35, 46, 95);
 		border-radius: 0.437rem;
 	}
 	
 	/*토글 있는 메뉴 클릭시*/
-	.sidebar .nav:not (.sub-menu ) >.nav-item>.nav-link[aria-expanded="true"]
+	.sidebar .nav:not(.sub-menu ) >.nav-item>.nav-link[aria-expanded="true"]
 		{
 		border-radius: 0.437rem 0.437rem 0 0;
 		background: rgb(35, 46, 95);
@@ -75,13 +75,20 @@
 	}
 	
 	/*토클 없는 메뉴 클릭시,  클래스에 link-a 추가*/
-	.sidebar .nav:not (.sub-menu ) >.nav-item>.link-a:focus {
+	.sidebar .nav:not(.sub-menu ) >.nav-item>.link-a:focus {
 		background: rgb(35, 46, 95);
 		border-radius: 0.437rem;
 }
 </style>
 </head>
 <body>
+
+		<c:if test="${ !empty m }">
+			<script>
+				alert("${m}");
+			</script>
+			<c:remove var="m" scope="session"/>
+		</c:if>
 
             <!-- Sidebar -->
 

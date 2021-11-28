@@ -3,6 +3,7 @@ package com.kh.spring.snack.snackOrder.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.spring.common.PageInfo;
 import com.kh.spring.product.model.vo.WishListDtail;
 import com.kh.spring.snack.snackList.model.vo.SearchList;
 import com.kh.spring.snack.snackOrder.model.vo.OrderDetail;
@@ -30,9 +31,9 @@ public interface SnackOrderService {
 
 	void updateSnackOrder(int orderNo);
 
-	ArrayList<Orders> selectComOrderedList(String comCode);
+	ArrayList<Orders> selectComOrderedList(String comCode, PageInfo pi);
 
-	ArrayList<Orders> selectHoOrderedList(HashMap map);
+	ArrayList<Orders> selectHoOrderedList(HashMap map, PageInfo pi);
 
 	Orders selectOrderForNo(int orderNo);
 
@@ -40,8 +41,18 @@ public interface SnackOrderService {
 
 	void orderCancel(HashMap order);
 
-	ArrayList<Orders> selectComSearchOrder(SearchList search);
+	ArrayList<Orders> selectComSearchOrder(SearchList search, PageInfo pi);
 
-	ArrayList<Orders> selectHoSearchOrder(SearchList search);
+	ArrayList<Orders> selectHoSearchOrder(SearchList search, PageInfo pi);
+
+	int selectListCountForString(String comCode);
+
+	int selectListCountForMap(HashMap map);
+
+	int selectListCountForComSearch(SearchList search);
+
+	int selectListCountForHoSearch(SearchList search);
+
+	
 
 }

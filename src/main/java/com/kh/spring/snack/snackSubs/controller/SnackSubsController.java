@@ -2,7 +2,6 @@ package com.kh.spring.snack.snackSubs.controller;
 
 import javax.servlet.http.HttpSession;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.kh.spring.companyMember.model.vo.CompanyMember;
-import com.kh.spring.snack.snackOrder.controller.SnackOrderController;
 import com.kh.spring.snack.snackSubs.model.service.SnackSubsService;
 import com.kh.spring.snack.snackSubs.model.vo.SnackSubs;
 
@@ -24,9 +22,6 @@ public class SnackSubsController {
 	
 	@Autowired
 	private SnackSubsService snackSubsService;
-	
-	@Autowired
-	private SnackOrderController SnackOrderController;
 	
 
 	@RequestMapping("subsForm.sn")
@@ -53,11 +48,10 @@ public class SnackSubsController {
 	@RequestMapping("insertSubs.sn")
 	public String insertSnackSubs(SnackSubs snackSubs, HttpSession session) {
 		
-		//이미 구독 중일 경우 알림 띄우기 화면단에서 validation check?
-		
 		snackSubsService.insertSnackSubs(snackSubs);
 		
-		//session.setAttribute("msg", "간식 구독이 성공적으로 완료되었습니다.");
+		session.setAttribute("m", "간식 구독이 성공적으로 완료되었습니다.");
+		
 		return "redirect:subsInfo.sn";
 	}
 	
@@ -77,10 +71,11 @@ public class SnackSubsController {
 	}
 	
 	@RequestMapping("updateSubs.sn")
-	public String updateSnackSubs(SnackSubs snackSubs) {
+	public String updateSnackSubs(SnackSubs snackSubs, HttpSession session) {
 		
 		snackSubsService.updateSnackSubs(snackSubs);
 		
+		session.setAttribute("m", "간식 구독 내용이 수정되었습니다.");
 		return "redirect:subsInfo.sn";
 	}
 	
@@ -92,6 +87,7 @@ public class SnackSubsController {
 		snackSubsService.cancelSnackSubs(subsNo, comCode);
 		sessionStatus.setComplete();
 		
+		session.setAttribute("m", "간식 구독이 취소되었습니다.");
 		return "company/snack/snackSubsInfo";
 	}
 	

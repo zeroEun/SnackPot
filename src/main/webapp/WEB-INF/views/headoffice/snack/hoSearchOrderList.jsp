@@ -19,7 +19,7 @@
 </head>
 <body>
 
-    <section class="snack-list">
+    <section class="order-list">
     
         <div class="container-fluid">
             <div class="row flex-nowrap">
@@ -28,49 +28,52 @@
 				<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
             
                 <div class="content col-8">
-                    <h5>간식 리스트 발송 내역</h5>
+                    <h5>간식 주문 내역</h5>
                     <hr>
 
                     <div class="search form-inline"><!-- form-inline : 한줄에 배치 -->
-                    	<form action="searchList.sn" method="post" id="searchList">
+                    	<form action="hoSearchOrder.sn" method="post" id="searchList">
 	                        <select class="search-select form-control" id="category" name="category">
 	                            <option value="0">카테고리</option>
-	                            <option value="1">리스트 번호</option>
+	                            <option value="1">주문 번호</option>
 	                            <option value="2">회사명</option>
-	                            <option value="3">발송 상품</option>
 	                        </select>
 	
 							<input hidden="hidden"><!-- enter 눌렀을 때 submit 방지 -->
 	                        <input type="text" class="form-control" name="search" id="searchInput" placeholder="검색어 입력">
+	                        
+	                        <span>주문일: </span>
 	                        <input type="date" class="form-control" name="startDate" id="startDate">
 	                        <input type="date" class="form-control" name="endDate" id="endDate">
 	
 	                        <button class="btn btn-warning yellowBtn" type="button" id="searchBtn">검색</button>
                         </form>
                     </div>
-
-                    <table class="table table-bordered" id="snackList">
+                    
+                    <table class="table table-bordered" id="orderList">
                         <thead class="thead-light">
                             <tr>
-                            	<th>리스트 발송일</th>
-                            	<th>리스트 번호</th>
-                                <th>회사명</th>
-                                <th>발송 내역</th>
-                                <th>예산</th>
-                                <th>총 금액</th>
+                            	<th>주문일</th>
+                            	<th>주문 번호</th>
+                            	<th>회사명</th>
+                            	<th>예산</th>
+                                <th>주문 금액</th>
+                                <th>배송 예정일</th>
+                                <th>상태</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                        	<c:forEach items="${sendingList}" var="s">
+                        	<c:forEach items="${orderList}" var="o">
                         	
                         		<tr>
-                        			<td>${s.transDate}</td>
-                        			<td>${s.snackListNo}</td>
-	                                <td>${s.comName}</td>
-	                                <td>${s.content} 외...</td>
-	                                <td><fmt:formatNumber value="${s.budget}" groupingUsed="true"/></td>
-	                                <td><fmt:formatNumber value="${s.totalPrice}" groupingUsed="true"/></td>
+                        			<td>${o.orderDate}</td>
+	                                <td>${o.orderNo}</td>
+	                                <td>${o.comName}</td>
+	                                <td><fmt:formatNumber value="${o.budget}" groupingUsed="true"/></td>
+	                                <td><fmt:formatNumber value="${o.totalPrice}" groupingUsed="true"/></td>
+	                                <td>${o.deliveryDate}</td>
+	                                <td>${o.status}</td>
                             	</tr>
                         	
                         	</c:forEach>
@@ -82,7 +85,7 @@
 		                <ul class="pagination">
 		                	<c:choose>
 		                		<c:when test="${ pi.currentPage ne 1 }">
-		                			<li class="page-item"><a class="page-link" href="sendingList.sn?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+		                			<li class="page-item"><a class="page-link" href="hoSearchOrder.sn?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 		                		</c:when>
 		                		<c:otherwise>
 		                			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
@@ -92,7 +95,7 @@
 		                    <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 		                    	<c:choose>
 			                		<c:when test="${ pi.currentPage ne p }">
-		                    			<li class="page-item"><a class="page-link" href="sendingList.sn?currentPage=${ p }">${ p }</a></li>
+		                    			<li class="page-item"><a class="page-link" href="hoSearchOrder.sn?currentPage=${ p }">${ p }</a></li>
 			                		</c:when>
 			                		<c:otherwise>
 			                			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
@@ -103,10 +106,10 @@
 		                    
 		                    <c:choose>
 		                		<c:when test="${ pi.currentPage ne pi.maxPage }">
-		                			<li class="page-item"><a class="page-link" href="sendingList.sn?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                			<li class="page-item"><a class="page-link" href="hoSearchOrder.sn?currentPage=${ pi.currentPage+1 }">Next</a></li>
 		                		</c:when>
 		                		<c:otherwise>
-		                			<li class="page-item disabled"><a class="page-link" href="sendingList.sn?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                			<li class="page-item disabled"><a class="page-link" href="hoSearchOrder.sn?currentPage=${ pi.currentPage+1 }">Next</a></li>
 		                		</c:otherwise>
 		                	</c:choose>
 		                </ul>
@@ -120,16 +123,18 @@
     
 <script>
 	$(function(){
-		$("#snackList tbody tr").click(function(){
-			location.href="sendingDetail.sn?snackListNo=" + $(this).children().eq(1).text();
+		$("#orderList tbody tr").click(function(){
+			location.href="hoOrderDetail.sn?orderNo=" + $(this).children().eq(1).text();
 		});
 		
 		
 		<%--날짜 값을 설정하지 않으면 형변환 에러가 발생하므로 disabled속성 주기, disabled는  객체 전송 안됨--%>
 		$('#searchBtn').click(function(){
 			
+			var category = $('select[name=category]').val();
 			var startDate = $('#startDate').val();
 			var endDate = $('#endDate').val();
+			var input = $('#searchInput').val();
 			
 			if(startDate == ''){
 				$('#startDate').attr('disabled', true);
@@ -139,15 +144,13 @@
 				$('#endDate').attr('disabled', true);
 			}
 			
-			<%--카테고리 리스트번호 선택 후 검색어 입력하지 않았을 경우 --%>
-			var c = $('select[name=category]').val();
-			var text = $('#searchInput').val();
-			
-			if(c == 1 && text == ''){
-				$('select[name=category]').val(0);
+			if(input != '' && category == 0){
+				alert("카테고리를 선택해 주세요");
+				$('#startDate').removeAttr('disabled');
+				$('#endDate').removeAttr('disabled');
+			}else{
+				$('#searchList').submit();
 			}
-			
-			$('#searchList').submit();
 			
 		});
 		

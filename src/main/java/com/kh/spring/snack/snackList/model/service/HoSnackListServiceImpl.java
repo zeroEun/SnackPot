@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.spring.common.PageInfo;
 import com.kh.spring.common.exception.CommException;
 import com.kh.spring.product.model.vo.Product;
 import com.kh.spring.product.model.vo.WishListDtail;
@@ -149,40 +150,32 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 
 
 	@Override
-	public int selectSnackCount() {
-		return  hoSnackListDao.selectSnackCount(sqlSession);
-	}
-
-
-	@Override
 	public void insertOrder(ComListInfo info) {
 		
 		int result1 = hoSnackListDao.insertOrder(sqlSession, info);
 		
-		if(result1 > 0) {
-			int result2 = hoSnackListDao.insertOrderDetail(sqlSession, info);
-			
-			if(result2 > 0) {
-				int result3 = hoSnackListDao.updateTransStatus(sqlSession, info);
-				
-				if(result3 < 0) {
-					throw new CommException("updateTransStatus 실패");
-				}
-				
-			}else {
-				throw new CommException("insertOrderDetail 실패");
-			}
-			
-		}else {
+		if(result1 < 0) {
 			throw new CommException("insertOrder 실패");
+		}
+		
+		int result2 = hoSnackListDao.insertOrderDetail(sqlSession, info);
+		
+		if(result2 < 0) {
+			throw new CommException("insertOrderDetail 실패");
+		}
+		
+		int result3 = hoSnackListDao.updateTransStatus(sqlSession, info);
+		
+		if(result3 < 0) {
+			throw new CommException("updateTransStatus 실패");
 		}
 		
 	}
 
 	@Override
-	public ArrayList<SnackList> selectSendingList(HashMap map) {
+	public ArrayList<SnackList> selectSendingList(HashMap map, PageInfo pi) {
 		
-		return hoSnackListDao.selectSendingList(sqlSession, map);
+		return hoSnackListDao.selectSendingList(sqlSession, map, pi);
 	}
 
 
@@ -199,14 +192,26 @@ public class HoSnackListServiceImpl implements HoSnackListService {
 
 
 	@Override
-	public ArrayList<SnackList> searchSendingList(SearchList searchList) {
-		return  hoSnackListDao.searchSendingList(sqlSession, searchList);
+	public ArrayList<SnackList> searchSendingList(SearchList searchList, PageInfo pi) {
+		return  hoSnackListDao.searchSendingList(sqlSession, searchList, pi);
 	}
 
 
 	@Override
 	public ArrayList<SnackDList> selectWish(ComListInfo info) {
 		return hoSnackListDao.selectWish(sqlSession, info);
+	}
+
+
+	@Override
+	public int selectListCount(HashMap map) {
+		return hoSnackListDao.selectListCount(sqlSession, map);
+	}
+
+
+	@Override
+	public int selectSearchListCount(SearchList searchList) {
+		return hoSnackListDao.selectSearchListCount(sqlSession, searchList);
 	}
 
 

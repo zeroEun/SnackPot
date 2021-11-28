@@ -36,6 +36,7 @@
         
  
  
+ 
     #pagingArea{width:fit-content;margin:auto;}
 
 </style>

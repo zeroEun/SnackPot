@@ -130,6 +130,7 @@
 					}
 				}
 			};
+			
 
 			var chart = new google.visualization.BarChart(document
 					.getElementById('bar_chart_div'));

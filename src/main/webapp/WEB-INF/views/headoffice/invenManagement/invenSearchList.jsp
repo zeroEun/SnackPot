@@ -36,6 +36,7 @@
     #pagingArea{width:fit-content;margin:auto;}
 </style>
 </head>
+
 <body>
 
 	<div class="container-fluid">

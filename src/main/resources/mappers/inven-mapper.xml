@@ -407,4 +407,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE SNACK_NO = ${snackNo}
 	
 	</select>
+	
 </mapper>

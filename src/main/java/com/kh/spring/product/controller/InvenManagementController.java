@@ -281,6 +281,7 @@ public class InvenManagementController {
 
 		model.addAttribute("snack", snack);
 		model.addAttribute("pa", pa);
+		
 
 		return "headoffice/invenManagement/invenDetail";
 	}

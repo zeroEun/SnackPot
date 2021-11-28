@@ -12,6 +12,7 @@
 
     #pagingArea{width:fit-content;margin:auto;}
     /* #pagingArea a{color:black} */
+    
    
     #searchForm{
         width:80%;

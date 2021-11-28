@@ -20,3 +20,4 @@ public class Chart {
 	private String snackName;
 
 }
+

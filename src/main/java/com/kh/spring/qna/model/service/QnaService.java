@@ -24,5 +24,6 @@ public interface QnaService {
 	void updateQna(Qna q);
 
 	void answerInsert(Qna q);
+	
 
 }

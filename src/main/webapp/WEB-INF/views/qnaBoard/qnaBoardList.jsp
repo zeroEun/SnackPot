@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>문의게시판</title>
 <style>
+
 	#boardList{text-align: center;}
     #boardList>tbody>tr:hover{cursor:pointer;}
 

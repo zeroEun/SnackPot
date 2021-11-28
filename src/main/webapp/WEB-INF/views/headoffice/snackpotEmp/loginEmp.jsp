@@ -59,13 +59,20 @@
                 <h1 id="title">LOGIN</h1><br>
                 <input type="text" class="input" id="sempNum" name="sempNum" placeholder=" 사원번호" minlength="1" maxlength="8"><br>
                 <input type="password" class="input" id="sempPw" name="sempPw" placeholder=" 비밀번호" minlength="4" maxlength="10" autocomplete="new-password"><br>
-                <div id="find"><a href="modifyPw.sn">비밀번호 찾기</a><br><br></div>
+                <div id="find"><a href="findPw.sn">비밀번호 찾기</a><br><br></div>
                 <button type="button" id="loginBtn" onclick="login();">로그인</button><br>
                 </form>
             </div>
         </div>
 </body> 
 <script>
+
+//사원번호 
+$("#sempNum").keyup(function(event){
+    var inputVal = $(this).val();
+    $(this).val(inputVal.replace(/[^0-9]/g,''));
+});
+
 function login(){
 	var sempNum = $("input[name='sempNum']");
 	var sempPw = $("input[name='sempPw']");

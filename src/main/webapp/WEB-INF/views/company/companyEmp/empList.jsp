@@ -72,7 +72,10 @@
     #btnDiv{
     	margin-top: 20px;
     }
- 
+    #empty{
+    	text-align: center;
+    	margin-top: 50px;
+    }
 </style>
 </head>
 <body>
@@ -112,6 +115,9 @@
      </c:forEach>
     </tbody>
 </table>
+<c:if test="${empty list }">
+    <h5 id="empty">사원이 존재하지 않습니다.<br><br>생일구독서비스를 이용하시려면 사원을 등록해주세요.</h5>
+</c:if>
 </div>
 <div id="btnDiv">
 <input type="button" id="enrollBtn" value="사원등록" onclick="location.href='enrollEmp.em'">

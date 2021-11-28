@@ -1,7 +1,5 @@
 package com.kh.spring.companyMember.model.service;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.kh.spring.company.model.vo.Company;

@@ -70,7 +70,7 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 	}
 
 	@Override
-	public SnackpotEmp selectEmp(String sempNum) {
+	public SnackpotEmp selectEmp(int sempNum) {
 		
 		return sed.selectEmp(sqlSession, sempNum);
 	}
@@ -200,6 +200,17 @@ public class SnackpotEmpServiceImpl implements SnackpotEmpService {
 	public Birthday selectBirthSub(String comCode) {
 		
 		return sed.selectBirthSub(sqlSession, comCode);
+	}
+
+	@Override
+	public int findPw(int sempNum, String sempName, String sempEmail) {
+		int result = sed.findPw(sqlSession, sempNum, sempName, sempEmail);
+		
+		if(result < 0) {
+			throw new CommException("사원 비밀번호 찾기에 실패했습니다");
+		}
+		
+		return result;
 	}
 
 }

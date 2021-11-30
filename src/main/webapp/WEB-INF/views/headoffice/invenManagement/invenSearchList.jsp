@@ -32,6 +32,15 @@
 	overflow-y: auto;
 }
 
+  #searchBtn{
+        
+        float: right;
+        color: #F5D042;
+        background-color: #0A174E;
+       	margin-left: 10px;
+        
+        }
+
 
     #pagingArea{width:fit-content;margin:auto;}
 </style>
@@ -49,7 +58,7 @@
 
 
 						<div class="content col-8">
-							<h5>재고조회</h5>
+							<h2>재고조회</h2>
 							<hr>
 
 							<div class="search form-inline">
@@ -64,12 +73,12 @@
 									</select> <input type="text" required name="search" id="search"
 										value="${search}"><input hidden="hidden">
 									<!-- enter 눌렀을 때 submit 방지 -->
-									<input class="btn btn-primary" id="searchBtn" type="button"
+									<input class="btn" id="searchBtn" type="button"
 										value="검색" onclick='return searchSubmit()'>
 								</form>
 							</div>
 							<br>
-							<table class="table table-bordered" id="invenList">
+							<table class="table table-bordered table-hover" id="invenList">
 								<thead class="thead-light">
 									<tr>
 										<th>상품코드</th>

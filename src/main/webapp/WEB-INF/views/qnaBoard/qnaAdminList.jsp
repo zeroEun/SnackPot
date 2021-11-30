@@ -9,6 +9,8 @@
 <style>
 	#boardList{text-align: center;}
     #boardList>tbody>tr:hover{cursor:pointer;}
+    
+    
 
     #pagingArea{width:fit-content;margin:auto;}
     /* #pagingArea a{color:black} */
@@ -80,8 +82,8 @@
 	                    <tr>
 	                        <td>${ q.QNo }</td>
 	                        <td>${ q.QTitle }</td>
-	                        <td>${ q.writer }</td>
-	                        <td>${ q.createDate }
+	                        <td>${ q.name }</td>
+	                        <td>${ q.viewDate }
 	                        </td>
 	                        <td>
 	             			 <c:if test="${not empty q.ATitle}">

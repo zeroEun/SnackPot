@@ -30,6 +30,20 @@
 	margin-right: auto;
 	overflow-y: auto;
 }
+
+       #btn1{
+
+        color: #F5D042;
+        background-color: #0A174E;
+ }
+ 
+   #btn2{
+
+        color: #F5D042;
+        background-color: #0A174E;
+ }
+        
+        }
 </style>
 </head>
 <body>
@@ -54,7 +68,7 @@
 					<th>작성자</th>
 					<td>${ q.writer }</td>
 					<th>작성일</th>
-					<td>${ q.createDate }</td>
+					<td>${ q.viewDate }</td>
 				</tr>
 
 				<tr>
@@ -91,7 +105,7 @@
             <br>
 			
             <form id="answerForm" method="post" action="answerInsert.qna" enctype="multipart/form-data">
-                <table >
+                <table id="contentArea" align="center" class="table">
                     <tr>
                         <th><label for="title">제목</label></th>
                         <td><input type="text" id="title" class="form-control" name="aTitle" required></td>
@@ -108,8 +122,8 @@
 
                 <div align="center">
                 <input type="hidden" value="${q.QNo}" name="qNo">
-                    <button type="submit" class="btn btn-primary">등록하기</button>
-                    <button type="reset" class="btn btn-danger" onclick="javascript:history.go(-1);">취소하기</button>
+                    <button type="submit" class="btn" id="btn1">등록하기</button>
+                    <button type="reset" class="btn" id="btn2" onclick="javascript:history.go(-1);">취소하기</button>
                 </div>
             </form>
         </div>

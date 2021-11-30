@@ -34,8 +34,18 @@
         }
         
         
- 
- 
+         
+        #searchBtn{
+        
+        float: right;
+        color: #F5D042;
+        background-color: #0A174E;
+       	margin-left: 10px;
+        
+        }
+ 	
+	#invenList{text-align: center;}
+    #invenList>tbody>tr:hover{cursor:pointer;}
  
     #pagingArea{width:fit-content;margin:auto;}
 
@@ -64,12 +74,12 @@
 									</select> <input type="text" required name="search" id="search" value="${search}"><input
 										hidden="hidden">
 									<!-- enter 눌렀을 때 submit 방지 -->
-									<input class="btn btn-primary" id="searchBtn" type="button"
+									<input class="btn" id="searchBtn" type="button"
 										value="검색" onclick='return searchSubmit()'>
 								</form>
 					</div>
 					<br>
-					<table class="table table-bordered" id="invenList">
+					<table class="table table-bordered table-hover" id="invenList">
 						<thead class="thead-light">
 							<tr>
 								<th>상품코드</th>

@@ -7,10 +7,45 @@
 <meta charset="UTF-8">
 <title>문의게시판</title>
 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  
 <style>
 /*#contentArea {
 	width: 100%
 }*/
+
+
+  .content{
+            height: 100vh;
+            padding: 50px 0px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-y: auto;
+ 
+        }
+        
+        
+        #btn1{
+
+        color: #F5D042;
+        background-color: #0A174E;
+ }
+ 
+   #btn2{
+
+        color: #F5D042;
+        background-color: #0A174E;
+ }
+       
+       
+   #btn3{
+
+        color: #F5D042;
+        background-color: #0A174E;
+        float: right;
+ }
+         
+        
 
 
 #contentArea * {
@@ -19,9 +54,11 @@
 </style>
 </head>
 <body>
+
+
 	<jsp:include page="../common/menubar.jsp" />
 
-	<div class="content">
+	<div class="content col-8">
 		<br>
 		<br>
 		<div class="innerOuter">
@@ -35,9 +72,9 @@
 				</tr>
 				<tr>
 					<th>작성자</th>
-					<td>${ q.writer }</td>
+					<td>${ q.name }</td>
 					<th>작성일</th>
-					<td>${ q.createDate }</td>
+					<td>${ q.viewDate }</td>
 				</tr>
 
 				<tr>
@@ -70,8 +107,8 @@
 
 			<c:if test="${ loginUser.memId eq q.writer }">
 				<div align="center">
-					<button class="btn btn-primary" onclick="postFormSubmit(1);">수정하기</button>
-					<button class="btn btn-danger" onclick="postFormSubmit(2);">삭제하기</button>
+					<button class="btn" onclick="postFormSubmit(1);" id="btn1">수정하기</button>
+					<button class="btn" onclick="postFormSubmit(2);" id="btn2">삭제하기</button>
 				</div>
 
 				<form id="postForm" action="" method="post">
@@ -102,11 +139,7 @@
 					<th width="100">답변제목</th>
 					<td colspan="3">${q.ATitle }</td>
 				</tr>
-				<tr>
-					<th>작성일</th>
-					<td>${ q.ADate }</td>
-				</tr>
-
+		
 				<tr>
 					<th>내용</th>
 					<td colspan="3"></td>
@@ -123,10 +156,15 @@
 			</table>
 			
 			</c:if>
+			<div>
+			
+			 <button class="btn" id="btn3" onclick="location.href='list.qna';">목록으로</button>
+			
+			</div>
 			
 			</div>
 			</div>
-
+	
 	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>

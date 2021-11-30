@@ -75,16 +75,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="detailQna" resultMap="qnaResultSet">
 
 		SELECT
-		Q_NO,
-		WRITER,
-		Q_TITLE,
-		Q_CONTENT,
-		CREATE_DATE,
-		A_TITLE,
-		A_CONTENT,
-		A_DATE,
-		CHANGE_NAME
-		FROM QNA
+		A.Q_NO,
+		A.WRITER,
+		A.Q_TITLE,
+		A.Q_CONTENT,
+		A.CREATE_DATE,
+		A.A_TITLE,
+		A.A_CONTENT,
+		A.A_DATE,
+		A.CHANGE_NAME,
+		B.MEM_NAME
+		FROM QNA A
+		JOIN COMPANY_MEMBER B
+		ON A.WRITER = B.MEM_ID
 		WHERE Q_NO = ${qno}
 		AND STATUS = 'Y'
 

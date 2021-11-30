@@ -43,6 +43,16 @@ public class qnaController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 
 		ArrayList<Qna> list = qnaService.selectList(pi);
+		
+		SimpleDateFormat fomat = new SimpleDateFormat("yyyy년 MM월 dd일");
+
+		
+		for( Qna q : list){
+			
+		q.setViewDate(fomat.format(q.getCreateDate())); 
+		System.out.println(q.getViewDate());
+			
+		}
 
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
@@ -124,6 +134,9 @@ public class qnaController {
 
 		Qna q = qnaService.detailQna(qno);
 
+		SimpleDateFormat fomat = new SimpleDateFormat("yyyy년 MM월 dd일 HH : MM");
+		
+		q.setViewDate(fomat.format(q.getCreateDate()));
 		
 		mv.addObject("q", q).setViewName("qnaBoard/qnaDetailView");
 		
@@ -203,6 +216,10 @@ public class qnaController {
 	public ModelAndView answerForm(int qno, ModelAndView mv) {
 		
 		Qna q = qnaService.detailQna(qno);
+		
+		SimpleDateFormat fomat = new SimpleDateFormat("yyyy년 MM월 dd일 HH : MM");
+		
+		q.setViewDate(fomat.format(q.getCreateDate()));
 
 		
 		mv.addObject("q", q).setViewName("qnaBoard/qnaAnswerForm");
@@ -232,9 +249,19 @@ public class qnaController {
 		int listCount = qnaService.selectListCount();
 		System.out.println(listCount);
 
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 
 		ArrayList<Qna> list = qnaService.selectList(pi);
+		
+		SimpleDateFormat fomat = new SimpleDateFormat("yyyy년 MM월 dd일");
+		
+		for( Qna q : list){
+			
+		q.setViewDate(fomat.format(q.getCreateDate())); 
+		System.out.println(q.getViewDate());
+			
+		}
+
 
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);

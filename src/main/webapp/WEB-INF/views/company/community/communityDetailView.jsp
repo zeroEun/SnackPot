@@ -384,7 +384,6 @@
 										 "<td></td>"+
 								 	  	 "<td></td>"+
 										 "</tr>";
-										 console.log(obj.reContent == String(-1))
 							}
 					});
 				$("#replyArea tbody").html(value).trigger("create");

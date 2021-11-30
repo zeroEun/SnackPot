@@ -242,18 +242,20 @@ public class ProductController {
 	 * 2. 동일하면 WISHLIST STATUS를 'N'-> 'Y'로
 	 * */
 	
+	
+	//@Scheduled(cron = "0 */5 * * * *")
 	@Scheduled(cron = "0 0 0 1/1 * ?")
 	public void updateClosingDate() {
-	
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+		System.out.println("위시리스트 마감이 시작되었습니다. ");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
-			
+
 		String today = sdf.format(cal.getTime());
-		System.out.println("오늘의 위시리스트마감이 시작되었습니다.");
+
 		productService.updateClosingDate(today);
 		
-		System.out.println("위시리스트 마감이 완료되었습니다 ."); 
-		System.out.println("확인해주세요.");
+		System.out.println("위시리스트 마감이 완료되었습니다 .");
 		
+
 	}
 }

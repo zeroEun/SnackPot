@@ -105,7 +105,7 @@
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
     <div class="content" style="padding-left: 3%; padding-right: 3%;">		
 		<div class="top-img">
-            <label><h4>${loginUser.comName}&nbsp;&nbsp;&nbsp;COMMUNITY</h4></label>
+			<label><h4>[ ${loginUser.comName} ]</h4></label>
 		</div>
 		<!--인기글-->
 		<div class="hotBoard">
@@ -157,7 +157,6 @@
 					<th>작성일</th>
 					<th>추천</th>
 					<th>조회</th>
-					<th>작성자</th>
 				</tr>
 			</thead>
 			<tbody id="myTable">
@@ -166,16 +165,15 @@
 				<tr style="text-align: center;">
 					<td>${c.communityNo }</td>
 					<c:if  test="${ !empty c.originName }">
-					<td>${c.title}<label>[댓글수]</label>&nbsp;&nbsp;<i class="far fa-image"></i></td>
+					<td>${c.title}&nbsp;&nbsp;<i class="far fa-image"></i></td>
 					</c:if>
 					
 					<c:if  test="${ empty c.originName }">
-					<td>${c.title}<label>[댓글수]</label></td>
+					<td>${c.title}</td>
 					</c:if>		
 					<td>${c.writerDate }</td>
 					<td>${c.recommend }</td>
 					<td>${c.views }</td>
-					<td>${c.writer}</td>
 				</tr>
 			</c:forEach>
 			</tbody>

@@ -322,7 +322,6 @@ public class communityController {
 		int reCount = cmntService.selectReplyCount(cno);
 		
 		if(reCount == 0) {
-			System.out.println("댓글 단게 없어요~!");
 			//그냥 insert해준다
 			r.setCommunityNo(cno);
 			int result = cmntService.insertNewReply(r);
@@ -330,7 +329,6 @@ public class communityController {
 		}else {
 		//1. re_Group의 마지막 번호를 가져와야한다 (cno를 기준으로)
 		int count = cmntService.selectMaxGroupNo(cno);
-		System.out.println("68번쨰의 가장 마지막 댓글 번호는?" + count);
 
 		//2. re_Group에 +1 을 해주고 insert해준다 
 		int reGroup = count+1;
@@ -350,7 +348,6 @@ public class communityController {
 		
 		r.setCommunityNo(cno);
 		r.setReGroup(reGroup);
-		System.out.println("삭제할 댓글 r : " + r);
 		
 		//부모댓글에 달린 답글의 갯수
 		int count = cmntService.selectCount(r); 

@@ -426,6 +426,12 @@
 	    		}else{
 	    			imgClickforChk.prop("checked", true);
 	    		}
+	    		
+	    		if($("input[name='giftChk']:checked").length == rowCount){ <%--각각 체크해서 전체를 다 체크했을 때--%>
+	                $("#giftChk")[0].checked = true;
+	            }else{
+	                $("#giftChk")[0].checked = false;
+	            }
 	    	});
 	    	
 	    	<%-- 전체 선택하면 모든 체크박스가 checked --%>
@@ -565,13 +571,13 @@
 	            var searchText = $(this).val();
 	            searchText = searchText.toUpperCase();
 	            
-	            var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
+	            //var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
 	            var giftName = $(".card-body>p:contains('"+searchText+"')");
-	            var giftPrice = $(".card-body>h6:contains('"+searchText+"')");
+	            //var giftPrice = $(".card-body>h6:contains('"+searchText+"')");
 
-	            $(giftBrand).parent().parent().parent().show();
+	            //$(giftBrand).parent().parent().parent().show();
 	            $(giftName).parent().parent().parent().show();
-	            $(giftPrice).parent().parent().parent().show();
+	            //$(giftPrice).parent().parent().parent().show();
 	
 				var newCount = 0;
 	            

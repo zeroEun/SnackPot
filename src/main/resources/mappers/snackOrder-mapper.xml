@@ -90,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{item}
 			</foreach>)
 		AND ORDER_STATUS != 'N'
-		ORDER BY A.ORDER_DATE DESC, B.COM_NAME
+		ORDER BY A.ORDER_DATE DESC, B.COM_NAME, A.ORDER_NO DESC
 	</select>
 	
 	<select id="selectOrderDetail" parameterType="_int" resultMap="orderDetailResultSet">

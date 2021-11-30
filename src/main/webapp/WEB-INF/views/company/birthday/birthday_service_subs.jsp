@@ -357,7 +357,7 @@
 		<%-- 사원 등록이 아직 완료되지 않은 경우 사원 등록 페이지로 이동할 수 있게 설정 --%>
 		$(function(){
 			$("#moveRegisterPage").click(function(){
-	    		location.href="insertEmp.em"; /* 사원 등록 페이지로 이동 */
+	    		location.href="empManage.em"; /* 사원 등록 페이지로 이동 */
 	    	});
 		});
 		<%-- 구독 신청 버튼을 누르면 신청 정보를 확인할 수 있는 모달창을 통해 submit을 수행 --%>

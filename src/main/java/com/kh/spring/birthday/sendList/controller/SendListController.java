@@ -54,6 +54,10 @@ public class SendListController {
 				cal.add(Calendar.DATE, -sendingTime);
 				
 				list.get(i).setSendMsgDate(thisYear + (sdf.format(cal.getTime())).substring(4));
+				
+				String phone = (list.get(i).getCempPhone()).substring(0,3)+"-"+(list.get(i).getCempPhone()).substring(3,7)+"-"+(list.get(i).getCempPhone().substring(7,11));
+				
+				list.get(i).setCempPhone(phone);
 			}
 
 			ArrayList<GiftFolder> giftFolder = sendListService.selectGiftFolder();

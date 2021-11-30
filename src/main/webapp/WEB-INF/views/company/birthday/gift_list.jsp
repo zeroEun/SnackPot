@@ -309,13 +309,14 @@
 	            var searchText = $(this).val();
 	            searchText = searchText.toUpperCase(); <%-- 등록되는 상품 정보에 포함된 알파벳은 전부 대문자이므로 대문자로 검색 --%>
 	            
-	            var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
+	            <%-- h5,h6를 p로 다 바꿔서 하나만 있어도 됨 --%>
+	            //var giftBrand = $(".card-body>h5:contains('"+searchText+"')");
 	            var giftName = $(".card-body>p:contains('"+searchText+"')");
-	            var giftPrice = $(".card-body>h6:contains('"+searchText+"')");
+	            //var giftPrice = $(".card-body>h6:contains('"+searchText+"')");
 	
-	            $(giftBrand).parent().parent().parent().show();
+	            //$(giftBrand).parent().parent().parent().show();
 	            $(giftName).parent().parent().parent().show();
-	            $(giftPrice).parent().parent().parent().show();
+	            //$(giftPrice).parent().parent().parent().show();
 
 	            var newCount = 0;
 	            
@@ -462,8 +463,10 @@
         	            			detailArr : detailArr
         	            		},
         	            		success: function(result){
-        	            			thisTag.html(''+folderGiftCnt);
-        	            			selectFolderInfo(folderRowNum);
+        	            			if(result > 0){
+        	            				thisTag.html(''+folderGiftCnt);
+            	            			selectFolderInfo(folderRowNum);
+        	            			}
         	            		},
         	            		error: function(error){
         	            			alert(error);
@@ -577,12 +580,18 @@
 				
 				var rowNumVal = e.currentTarget.value;
 				
+				<%-- selectFolderList 함수를 따로 만들었기 때문에 필요없어짐
 				if(rowNumVal == null){
 					rowNumVal = targetVal + 1;
 				}
-
-				<%-- 폴더 내 상품 삭제를 위해 glistNo을 먼저 구한 후 함수로 값을 넘겨줌 --%>
+				console.log(rowNumVal);
+				--%>
+				
+				<%-- 
+				폴더 내 상품 삭제를 위해 glistNo을 먼저 구한 후 함수로 값을 넘겨줌 
 				var glistNo = $(this).children().eq(0).val();
+				--%>
+				
 				selectFolderInfo(rowNumVal);
 			});
 		});
@@ -645,7 +654,7 @@
 	    				$("input[name='folderName']").val("");
 	    				
 	    				<%-- 
-	    				ul내부 li개수를 구해서 modal id뒤의 count를 지정 - 한 항목당 li태그가 두 개 들어있으므로 나누기 2한 후 다음 인덱스를 대입하기 위해 +1
+	    				ul내부 li개수를 구해서 modal id뒤의 count를 지정 - 한 항목당 li태그가 두 개 들어있으므로 나누기 2를 해야함. 그 다음 인덱스를 대입하기 위해 +1
 	    				--%>
 	    				var liCount = $("#folderUlTag").children().length/2 + 1;
 	    				

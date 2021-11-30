@@ -428,13 +428,14 @@
 						$.each(list, function(index, item){
 							var parsedBirth = dateParse(item.cempBirth);
 							var parsedSelectDate = dateParse(item.selectDate);
-
+							var phoneNumber = (item.cempPhone).substring(0, 3) + '-' + (item.cempPhone).substring(3, 7) + '-' + (item.cempPhone).substring(7, 11);
+							
 							result += '<tr>';
 							result += '<td>' + (index+1) + '</td>';
 							result += '<td>' + item.cempDept + '</td>';
 							result += '<td>' + item.cempJob + '</td>';
 							result += '<td>' + item.cempName + '</td>';
-							result += '<td>' + item.cempPhone + '</td>';
+							result += '<td>' + phoneNumber + '</td>';
 							result += '<td>' + parsedBirth + '</td>';
 							result += '<td>' + parsedSelectDate + '</td>';
 							result += '</tr>';
@@ -650,34 +651,48 @@
 				var cempBirthSdf = new Date($("#cBirth").val());
 				var cempBirth_final = new Date(+cempBirthSdf + 3240 * 10000).toISOString().split("T")[0];
 				
-				$.ajax({
-					
-					url : "updSendSts.birth",
-					type : "POST",
-					data:{
-						cempSeq : $("#cSeq").val(),
-						cempNum : $("#cNum").val(),
-						cempDept : $("#cDept").val(),
-						cempJob : $("#cJob").val(),
-						cempName : $("#cName").val(),
-						cempPhone : $("#cPhone").val(),
-						cempEmail : $("#cEmail").val(),
-						cempBirth : cempBirth_final
-					},
-					success : function(result){
-						if(result > 0){
-							alert("해당 사원 정보가 변경되었습니다.");
-							location.replace("sendingcursts.birth");
-							
-						}else{
-							alert("발송 예정 항목 수정 실패!");
+				var cempSeq = $("#cSeq").val();
+				var cempNum = $("#cNum").val();
+				var cempDept = $("#cDept").val();
+				var cempJob = $("#cJob").val();
+				var cempName = $("#cName").val();
+				var cempPhone = $("#cPhone").val();
+				var cempEmail = $("#cEmail").val();
+				
+				if(cempDept == "" || cempJob == "" || cempName == "" || 
+						cempPhone == "" || cempEmail == ""){
+					alert("모든 항목을 입력해주세요.");
+				}else{
+
+					$.ajax({
+						
+						url : "updSendSts.birth",
+						type : "POST",
+						data:{
+							cempSeq : cempSeq,
+							cempNum : cempNum,
+							cempDept : cempDept,
+							cempJob : cempJob,
+							cempName : cempName,
+							cempPhone : cempPhone,
+							cempEmail : cempEmail,
+							cempBirth : cempBirth_final
+						},
+						success : function(result){
+							if(result > 0){
+								alert("해당 사원 정보가 변경되었습니다.");
+								location.replace("sendingcursts.birth");
+								
+							}else{
+								alert("발송 예정 항목 수정 실패!");
+							}
+						},
+						error : function(error){
+							console.log(error);
 						}
-					},
-					error : function(error){
-						console.log(error);
-					}
-					
-				});
+						
+					});
+				}
 			});
 		});
 	</script>

@@ -249,13 +249,14 @@
 						$.each(list, function(index, item){
 							var parsedBirth = dateParse(item.cempBirth);
 							var parsedSelectDate = dateParse(item.selectDate);
+							var phoneNumber = (item.cempPhone).substring(0, 3) + '-' + (item.cempPhone).substring(3, 7) + '-' + (item.cempPhone).substring(7, 11);
 
 							result += '<tr>';
 							result += '<td>' + (index+1) + '</td>';
 							result += '<td>' + item.cempDept + '</td>';
 							result += '<td>' + item.cempJob + '</td>';
 							result += '<td>' + item.cempName + '</td>';
-							result += '<td>' + item.cempPhone + '</td>';
+							result += '<td>' + phoneNumber + '</td>';
 							result += '<td>' + parsedBirth + '</td>';
 							result += '<td>' + parsedSelectDate + '</td>';
 							result += '</tr>';

@@ -26,6 +26,27 @@
     .text{width:53%;}
     .searchBtn{Width:20%;}
     .hidden{display:none; visibility: collapse;}
+    
+     #addBtn{
+ 
+        float: right;
+        color: #F5D042;
+        background-color: #0A174E;
+        
+        
+        
+       
+ }
+ 
+ .my.pagination > .active > a, 
+.my.pagination > .active > span, 
+.my.pagination > .active > a:hover, 
+.my.pagination > .active > span:hover, 
+.my.pagination > .active > a:focus, 
+.my.pagination > .active > span:focus {
+  background: red;
+  border-color: red;
+}
 </style>
 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
@@ -59,7 +80,7 @@
 	                        <td>${ q.QNo }</td>
 	                        <td>${ q.QTitle }</td>
 	                        <td>${ q.name }</td>
-	                        <td>${ q.createDate }</td>
+	                        <td>${ q.viewDate }</td>
 	             			<td>
 	             			 <c:if test="${not empty q.ATitle}">
 	                        답변완료
@@ -73,13 +94,13 @@
             <br>
 
             <div id="pagingArea">
-                <ul class="pagination">
+                <ul class="pagination my">
                 	<c:choose>
                 		<c:when test="${ pi.currentPage ne 1 }">
-                			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+                			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage-1 }">이전</a></li>
                 		</c:when>
                 		<c:otherwise>
-                			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+                			<li class="page-item disabled"><a class="page-link" href="">이전</a></li>
                 		</c:otherwise>
                 	</c:choose>
                 	
@@ -97,10 +118,10 @@
                     
                     <c:choose>
                 		<c:when test="${ pi.currentPage ne pi.maxPage }">
-                			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                			<li class="page-item"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage+1 }">다음</a></li>
                 		</c:when>
                 		<c:otherwise>
-                			<li class="page-item disabled"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage+1 }">Next</a></li>
+                			<li class="page-item disabled"><a class="page-link" href="list.qna?currentPage=${ pi.currentPage+1 }">다음</a></li>
                 		</c:otherwise>
                 	</c:choose>
                 </ul>
@@ -108,7 +129,7 @@
             
             <br>
             <c:if test="${ !empty loginUser }">
-            	<a class="btn btn-secondary" style="float:right" href="enrollForm.qna">글쓰기</a>
+            	<a class="btn" style="float:right" href="enrollForm.qna" id="addBtn">글쓰기</a>
             </c:if>
            
             <br clear="both"><br>
@@ -124,14 +145,16 @@
     
     <script>
     
-	var writer = $("#boardList tbody tr").children().eq(5).text();
+	//var writer = $("#boardList tbody tr").children().eq(5).text();
 	var loginUser = '${loginUser.getMemId()}';
-	console.log(loginUser);
-	console.log(writer);
+	console.log("로그인 유저 " + loginUser);
+	
      
     	$(function(){
     		
     		$("#boardList tbody tr").click(function(){
+    			var writer = $(this).children().eq(5).text();
+    			console.log("작성자 : " + writer);
     			if(writer == loginUser){
     			console.log($(this).children().eq(0).text());
     			location.href="detail.qna?qno=" + $(this).children().eq(0).text();

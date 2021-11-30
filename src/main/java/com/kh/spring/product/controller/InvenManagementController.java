@@ -66,7 +66,7 @@ public class InvenManagementController {
 		invenManagementService.insertSnackAttach(pa);
 
 		model.addAttribute("msg", "상품 등록이 완료되었습니다.");
-		model.addAttribute("url", "/");
+		model.addAttribute("url", "/snackEnrollForm.pm");
 
 		return "common/alert";
 	}

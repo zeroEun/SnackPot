@@ -29,4 +29,5 @@ public class Product {
 	private int aromaNo; //향 번호
 	private String changeName; //간식이미지
 	
+	
 }

@@ -175,8 +175,8 @@
                         <div class="collapse" id="snack-management">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item"> <a class="nav-link" href="snackEnrollForm.pm">품목 등록</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="arrivalList.pm">입고 등록</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="releaseList.pm">출고 등록</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="arrivalList.im">입고 등록</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="releaseList.im">출고 등록</a></li>
                             <li class="nav-item"> <a class="nav-link" href="invenList.pm">재고 조회</a></li>
                         </ul>
                         </div>
@@ -189,16 +189,14 @@
                         </a>
                         <div class="collapse" id="chart">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">품목 등록</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">입고 등록</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">출고 등록</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">재고 조회</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="snackChart.im">간식 통계</a></li>
+                           
                         </ul>
                         </div>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link link-a" href="#">
+                        <a class="nav-link link-a" href="adminList.qna">
                           <span class="menu-title">문의 사항</span>
                         </a>
                     </li>

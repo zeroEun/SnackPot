@@ -68,7 +68,7 @@
 }
 
 .btn {
-	width: 70px;
+	width: 150px;
 	background-color: rgb(245, 208, 66);
 	color: rgb(10, 23, 78);
 }
@@ -82,8 +82,7 @@
             overflow-y: auto;
         }
    
-        
-             
+                
              
  #addBtn{
  
@@ -156,7 +155,7 @@
     	  onSelect: function (dateText, inst) {
     	      
           	var date = $( "#datepicker" ).datepicker( "getDate" );
-          	topList();
+          	releaseList();
           	
           }
     	

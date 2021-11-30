@@ -81,7 +81,7 @@
                     </td>     
                </tr>
                <tr>
-                     <td><b>공급가액</b>
+                     <td><b>공급가</b>
                         <br>
                         <input type="text" name="releasePrice" class="inputForm">
                      </td>
@@ -116,6 +116,7 @@
                         <label for="6">껌</label>
                         <input type="radio" id ="7"name="detailNo" value="7">
                         <label for="7">시리얼바</label>
+                        </fieldset>
                         <br>
                         음료류
                         <br>

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Subscribe</title>
 <!-- css style -->
 <link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 
@@ -255,26 +255,29 @@
 			
 			if(total != 100){
 				alert("간식 비율의 합이 100이 되도록 해주세요.");
-			}
-			
-			$.ajax({
+			}else{
+				$.ajax({
 
-				url : 'checkSubsDup.sn',
-				data : {comCode : '${loginUser.comCode}'},
-				success : function(result) {
+					url : 'checkSubsDup.sn',
+					data : {comCode : '${loginUser.comCode}'},
+					success : function(result) {
 
-					if (result > 0) {
-						alert("이미 구독중 입니다.");
-					} else {
-						$('#subsEnroll').attr('onsubmit', 'return true');
+						if (result > 0) {
+							alert("이미 구독중 입니다.");
+						} else {
+							$('#subsEnroll').attr('onsubmit', 'return true').submit();
+						}
+
+					},
+					error : function() {
+						console.log("ajax 통신 실패");
 					}
 
-				},
-				error : function() {
-					console.log("ajax 통신 실패");
-				}
-
-			});
+				});
+				
+			}
+			
+			
 		});
 
 	});

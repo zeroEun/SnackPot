@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SnackList</title>
 <!-- css style -->
 		<link rel="stylesheet" type="text/css" href="resources/css/snackListAndOrder.css">
 </head>

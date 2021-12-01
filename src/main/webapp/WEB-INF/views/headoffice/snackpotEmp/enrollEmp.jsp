@@ -144,6 +144,9 @@ function enroll(){
 	}else if(sempPw.val().trim() == ""){
 		alert("비밀번호를 입력하세요");
 		return false;
+	}else if(sempPw.val().length<4){
+		alert("비밀번호는 4자리 이상 입력해주세요");
+		return false;
 	}else{
 		$("#insertEmpForm").submit();
 		return true;

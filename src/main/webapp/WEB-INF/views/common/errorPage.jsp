@@ -12,7 +12,7 @@
 	<br>
 	<div align="center">	
 	
-		<img src="${ pageContext.servletContext.contextPath }/resources/images/error.png" width="300">
+		<img src="${ pageContext.servletContext.contextPath }/resources/images/common/error.png" width="300">
 		<br><br>
 		<h1 style="font-weight:bold">${ msg }</h1>
 		<h1 style="font-weight:bold">${ ref_form }</h1>

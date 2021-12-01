@@ -16,7 +16,7 @@
         <h1 id="title">SIGN UP</h1><br>
      
         <input type="radio" class="radioVal" id="member" value="member" name="memType" checked><label for="member">사원</label>
-        <input type="radio" class="radioVal" id="admin" value="admin" name="memType"><label for="admin">관리자</label><br>
+        <input type="radio" class="radioVal" id="admin" value="admin" name="memType"><label for="admin">담당자</label><br>
         <div id="comCodeDiv">
          &emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="input" name="comCodeMem" placeholder=" 회사코드" autocomplete="off">
         <button type="button" class="check" id="codeCheckBtn" onclick="checkCode();">코드확인</button><br>
